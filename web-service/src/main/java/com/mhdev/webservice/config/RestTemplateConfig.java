@@ -28,11 +28,17 @@ public class RestTemplateConfig {
 
     @Value("${server.ssl.trust-store-password}")
     private String trustStorePassword;
+    @Value("${server.ssl.key-store}")
+    private Resource keyStore;
+
+    @Value("${server.ssl.key-store-password}")
+    private String keyStorePassword;
 
     @Bean
     public CloseableHttpClient customHttpClient() throws IOException, GeneralSecurityException {
 
         SSLContext sslContext = SSLContexts.custom()
+                .loadKeyMaterial(keyStore.getURL(), keyStorePassword.toCharArray(), keyStorePassword.toCharArray())
                 .loadTrustMaterial(trustStore.getURL(), trustStorePassword.toCharArray())
                 .build();
 
