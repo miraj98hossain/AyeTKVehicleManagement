@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="backend-service" />
         <module name="web-service" />
         <module name="mobile-service" />
       </profile>
@@ -13,6 +14,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="backend-service" options="-parameters" />
       <module name="mobile-service" options="-parameters" />
       <module name="web-service" options="-parameters" />
     </option>
