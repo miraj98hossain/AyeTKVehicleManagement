@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product CRUD</title>
+    <link rel="stylesheet" href="/css/product.css">
+    <link rel="sc">
+</head>
+<body>
+<h1>Product CRUD</h1>
+
+<button class="button" id="createBtn">Create Product</button>
+
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="prod : ${products}">
+        <td th:text="${prod.id}">1</td>
+        <td th:text="${prod.name}">Product Name</td>
+        <td th:text="${prod.price}">100.0</td>
+        <td>
+            <a th:href="@{'/products/edit/' + ${prod.id}}">
+                <button class="action-btn edit-btn">Edit</button>
+            </a>
+            <a th:href="@{'/products/delete/' + ${prod.id}}" onclick="return confirm('Are you sure?')">
+                <button class="action-btn delete-btn">Delete</button>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <form th:action="@{/products/save}" th:object="${product}" method="post">
+            <input type="hidden" th:field="*{id}">
+            <label>Name:</label>
+            <input type="text" th:field="*{name}" required>
+            <label>Price:</label>
+            <input type="number" step="0.01" th:field="*{price}" required>
+            <button type="submit" class="button">Save</button>
+        </form>
+    </div>
+</div>
+<script src="/js/product-page.js"></script>
+<!--<script>-->
+<!--    const modal = document.getElementById("productModal");-->
+<!--    const btn = document.getElementById("createBtn");-->
+<!--    const span = document.getElementsByClassName("close")[0];-->
+
+<!--    btn.onclick = function() { modal.style.display = "block"; }-->
+<!--    span.onclick = function() { modal.style.display = "none"; }-->
+<!--    window.onclick = function(event) {-->
+<!--        if (event.target === modal) { modal.style.display = "none"; }-->
+<!--    }-->
+<!--</script>-->
+</body>
+</html>
