@@ -1,4 +1,5 @@
 package com.mhdev.webservice.service;
+import com.mhdev.webservice.feignclient.BackendServiceClient;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +11,12 @@ import org.springframework.web.client.RestTemplate;
 public class TestService {
     @Autowired
     RestTemplate restTemplate ;
+    @Autowired
+    private BackendServiceClient backendServiceClient;
 
+    public String feignTest(){
+        return backendServiceClient.test();
+    }
 
     public String test() {
 

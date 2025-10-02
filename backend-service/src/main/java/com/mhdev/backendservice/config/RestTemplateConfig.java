@@ -21,7 +21,7 @@ import javax.net.ssl.SSLContext;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
-@Configuration
+//@Configuration
 public class RestTemplateConfig {
 
     @Value("${server.ssl.trust-store}")

@@ -14,7 +14,7 @@ public class TestController {
     @GetMapping()
     public String test(){
         try {
-            return testService.test();
+            return testService.feignTest();
         }catch (Exception e){
            throw  new RuntimeException(e.getMessage());
         }
