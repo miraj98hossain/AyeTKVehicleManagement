@@ -1,7 +1,7 @@
 package com.mhdev.webservice.dto.requestdto;
 
-import com.mhdev.backendservice.dto.validationgroup.ProductCreateValidation;
-import com.mhdev.backendservice.dto.validationgroup.ProductUpdateValidation;
+import com.mhdev.webservice.dto.validationgroup.ProductCreateValidation;
+import com.mhdev.webservice.dto.validationgroup.ProductUpdateValidation;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

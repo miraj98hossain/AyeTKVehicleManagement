@@ -2,7 +2,6 @@ package com.mhdev.webservice.feignclient;
 import com.mhdev.webservice.dto.requestdto.ProductReqDto;
 import com.mhdev.webservice.dto.responsedto.ProductResDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 

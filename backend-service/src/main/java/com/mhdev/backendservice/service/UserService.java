@@ -27,11 +27,14 @@ public class UserService {
     }
 
     public LoginResDto login(LoginReqDto loginReqDto) {
-       userRepository.findByPhone(loginReqDto.getUsername()).orElseThrow(
+      var user= userRepository.findByPhone(loginReqDto.getUsername()).orElseThrow(
                ()-> new EntityNotFoundException("User not found with phone: " + loginReqDto.getUsername())
        );
-       LoginResDto loginResDto = new LoginResDto();
-       loginResDto.setStatus(true);
+      LoginResDto loginResDto = new LoginResDto();
+        loginResDto.setStatus(false);
+      if(user.getPassword().equals(loginReqDto.getPassword())){
+          loginResDto.setStatus(true);
+      }
        return loginResDto;
     }
 }
