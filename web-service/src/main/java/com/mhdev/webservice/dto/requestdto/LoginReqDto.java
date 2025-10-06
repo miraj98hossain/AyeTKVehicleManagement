@@ -1,9 +1,12 @@
 package com.mhdev.webservice.dto.requestdto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
 public class LoginReqDto {
     @NotBlank(message = "Username is required")
     private String username;

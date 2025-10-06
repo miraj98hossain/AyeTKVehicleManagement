@@ -1,8 +1,10 @@
 package com.mhdev.backendservice.dto.responsedto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
 public class ProductResDto {
     private Long id;
     private String name;

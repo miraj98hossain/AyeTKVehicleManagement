@@ -10,15 +10,6 @@
         <module name="web-service" />
         <module name="mobile-service" />
       </profile>
-      <profile name="Annotation profile for crud" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
-        </processorPath>
-        <module name="crud" />
-      </profile>
       <profile name="Annotation profile for backend-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -32,7 +23,19 @@
         </processorPath>
         <module name="backend-service" />
       </profile>
+      <profile name="Annotation profile for webclient" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
+        </processorPath>
+        <module name="webclient" />
+      </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="crud" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -40,6 +43,7 @@
       <module name="crud" options="-parameters" />
       <module name="mobile-service" options="-parameters" />
       <module name="web-service" options="-parameters" />
+      <module name="webclient" options="-parameters" />
     </option>
   </component>
 </project>

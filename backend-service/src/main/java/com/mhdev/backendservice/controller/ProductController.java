@@ -6,6 +6,7 @@ import com.mhdev.backendservice.dto.validationgroup.ProductCreateValidation;
 import com.mhdev.backendservice.dto.validationgroup.ProductUpdateValidation;
 import com.mhdev.backendservice.entity.Product;
 import com.mhdev.backendservice.service.ProductService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.groups.Default;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +29,7 @@ public class ProductController {
             ProductResDto productResDto = productService.createProduct(productReqDto);
             return new ResponseEntity<>(productResDto, HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage(),e);
         }
     }
     @PutMapping
@@ -37,7 +38,7 @@ public class ProductController {
             ProductResDto productResDto = productService.updateProduct(productReqDto);
             return new ResponseEntity<>(productResDto, HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage(),e);
         }
     }
     @DeleteMapping("/{id}")
@@ -45,8 +46,8 @@ public class ProductController {
         try {
              productService.deleteProduct(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+        } catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage(),e);
         }
     }
     @GetMapping("/{id}")
@@ -54,20 +55,19 @@ public class ProductController {
         try {
             ProductResDto productResDto = productService.getProduct(id);
             return new ResponseEntity<>(productResDto,HttpStatus.OK);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+        }  catch (EntityNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage(),e);
         }
     }
-    @GetMapping()
-    public ResponseEntity<List<ProductResDto>> getProduct() {
-        try {
-            List<ProductResDto> productResDto = productService.getAllProduct();
-            if (productResDto.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(productResDto,HttpStatus.OK);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+    @GetMapping("/getAll")
+    public ResponseEntity<List<ProductResDto>> getAllProduct() {
+        List<ProductResDto> productResDto = productService.getAllProduct();
+
+        if (productResDto == null || productResDto.isEmpty()) {
+            return ResponseEntity.noContent().build();  // ✅ Sends 204 without body
         }
+        return ResponseEntity.ok(productResDto);
     }
+
+
 }

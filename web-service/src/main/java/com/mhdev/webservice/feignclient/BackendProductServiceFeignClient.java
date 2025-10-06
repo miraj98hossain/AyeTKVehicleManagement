@@ -18,6 +18,6 @@ public interface BackendProductServiceFeignClient {
      void deleteProduct(@PathVariable(name = "id") Long id);
     @GetMapping("/{id}")
     ProductResDto getProduct(@PathVariable(name = "id") Long id) ;
-    @GetMapping()
+    @GetMapping("/getAll")
     List<ProductResDto> getAllProduct() ;
 }

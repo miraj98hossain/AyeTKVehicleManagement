@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-public class ProductResDto {
-    private Long id;
-    private String name;
-    private Double price;
+public class ErrorResponse {
+    private String message;
+    private String timestamp;
+    private int status;
 }

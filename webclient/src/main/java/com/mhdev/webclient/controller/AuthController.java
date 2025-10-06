@@ -1,7 +1,7 @@
-package com.mhdev.crud.controller;
+package com.mhdev.webclient.controller;
 
-import com.mhdev.crud.entity.AppUser;
-import com.mhdev.crud.service.AppUserDetailsService;
+import com.mhdev.webclient.dto.requestdto.RegistrationReqDto;
+import com.mhdev.webclient.service.AppUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,14 +20,13 @@ private AppUserDetailsService appUserDetailsService;
 
     @GetMapping("/registration")
     public String registration(Model model) {
-        model.addAttribute("user", new AppUser());
+        model.addAttribute("user", new RegistrationReqDto());
         return "registration-page";
     }
     @PostMapping("/registration")
-    public String registerUser(@ModelAttribute("user") AppUser user) {
+    public String registerUser(@ModelAttribute("user") RegistrationReqDto user) {
         appUserDetailsService.createUser(user);
         return "redirect:/login";
     }
-
 
 }

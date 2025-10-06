@@ -5,9 +5,11 @@ import com.mhdev.backendservice.dto.validationgroup.ProductUpdateValidation;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class ProductReqDto {
     @NotNull(groups = {ProductUpdateValidation.class}, message = "Product Id cannot be null")
     private Long id;

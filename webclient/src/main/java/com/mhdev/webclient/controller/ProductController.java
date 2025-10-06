@@ -1,7 +1,8 @@
-package com.mhdev.crud.controller;
+package com.mhdev.webclient.controller;
 
-import com.mhdev.crud.entity.Product;
-import com.mhdev.crud.service.ProductService;
+import com.mhdev.webclient.dto.requestdto.ProductReqDto;
+import com.mhdev.webclient.dto.responsedto.ProductResDto;
+import com.mhdev.webclient.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +20,12 @@ public class ProductController {
     @GetMapping("/products")
     public String listProducts(Model model) {
         model.addAttribute("products", productService.findAll());
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new ProductResDto());
         return "product-page";
     }
 
     @PostMapping("/products/save")
-    public String saveProduct(@ModelAttribute Product product) {
+    public String saveProduct(@ModelAttribute ProductReqDto product) {
         productService.save(product);
         return "redirect:/products";
     }

@@ -28,7 +28,7 @@ public class ProductController {
             ProductResDto productResDto = productService.createProduct(productReqDto);
             return new ResponseEntity<>(productResDto, HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage(),e);
         }
     }
     @PutMapping
@@ -37,7 +37,7 @@ public class ProductController {
             ProductResDto productResDto = productService.updateProduct(productReqDto);
             return new ResponseEntity<>(productResDto, HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage(),e);
         }
     }
     @DeleteMapping("/{id}")
@@ -46,7 +46,7 @@ public class ProductController {
              productService.deleteProduct(id);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage(),e);
         }
     }
     @GetMapping("/{id}")
@@ -55,19 +55,19 @@ public class ProductController {
             ProductResDto productResDto = productService.getProduct(id);
             return new ResponseEntity<>(productResDto,HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage(),e);
         }
     }
-    @GetMapping()
-    public ResponseEntity<List<ProductResDto>> getProduct() {
+    @GetMapping("/getAll")
+    public ResponseEntity<List<ProductResDto>> getAllProduct() {
         try {
             List<ProductResDto> productResDto = productService.getAllProduct();
-            if (productResDto.isEmpty()) {
+            if (productResDto == null || productResDto.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             return new ResponseEntity<>(productResDto,HttpStatus.OK);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage(),e);
         }
     }
 }
