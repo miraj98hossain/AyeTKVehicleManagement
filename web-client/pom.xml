@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.mhdev</groupId>
-	<artifactId>webclient</artifactId>
+	<artifactId>web-client</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>webclient</name>
-	<description>webclient</description>
+	<name>web-client</name>
+	<description>web-client</description>
 	<url/>
 	<licenses>
 		<license/>
