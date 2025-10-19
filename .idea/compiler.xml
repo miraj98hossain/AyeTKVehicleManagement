@@ -29,9 +29,10 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.40/lombok-1.18.40.jar" />
         </processorPath>
         <module name="webclient" />
+        <module name="web-client" />
+        <module name="common-lib" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -41,8 +42,10 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="backend-service" options="-parameters -Amapstruct.defaultComponentModel=spring" />
+      <module name="common-lib" options="-parameters" />
       <module name="crud" options="-parameters" />
       <module name="mobile-service" options="-parameters" />
+      <module name="web-client" options="-parameters" />
       <module name="web-service" options="-parameters" />
       <module name="webclient" options="-parameters" />
     </option>
