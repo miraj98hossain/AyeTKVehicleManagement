@@ -1,10 +1,10 @@
 package com.mhdev.backendservice.service;
 
-import com.mhdev.backendservice.dto.requestdto.ProductReqDto;
-import com.mhdev.backendservice.dto.responsedto.ProductResDto;
 import com.mhdev.backendservice.entity.Product;
 import com.mhdev.backendservice.mapper.ProductMapper;
 import com.mhdev.backendservice.repository.ProductRepository;
+import com.mhdev.commonlib.dto.request.ProductReqDto;
+import com.mhdev.commonlib.dto.response.ProductResDto;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

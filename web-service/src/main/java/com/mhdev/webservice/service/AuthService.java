@@ -1,10 +1,11 @@
 package com.mhdev.webservice.service;
 
 
-import com.mhdev.webservice.dto.requestdto.LoginReqDto;
-import com.mhdev.webservice.dto.requestdto.RegistrationReqDto;
-import com.mhdev.webservice.dto.responsedto.LoginResDto;
-import com.mhdev.webservice.dto.responsedto.RegistrationResDto;
+
+import com.mhdev.commonlib.dto.request.LoginReqDto;
+import com.mhdev.commonlib.dto.request.RegistrationReqDto;
+import com.mhdev.commonlib.dto.response.LoginResDto;
+import com.mhdev.commonlib.dto.response.RegistrationResDto;
 import com.mhdev.webservice.feignclient.BackendAuthServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

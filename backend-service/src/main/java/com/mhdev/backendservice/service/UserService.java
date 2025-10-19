@@ -1,14 +1,13 @@
 package com.mhdev.backendservice.service;
 
-import com.mhdev.backendservice.dto.requestdto.LoginReqDto;
-import com.mhdev.backendservice.dto.requestdto.RegistrationReqDto;
-import com.mhdev.backendservice.dto.responsedto.LoginResDto;
-import com.mhdev.backendservice.dto.responsedto.RegistrationResDto;
 import com.mhdev.backendservice.entity.AppUser;
 import com.mhdev.backendservice.mapper.UserMapper;
 import com.mhdev.backendservice.repository.UserRepository;
+import com.mhdev.commonlib.dto.request.LoginReqDto;
+import com.mhdev.commonlib.dto.request.RegistrationReqDto;
+import com.mhdev.commonlib.dto.response.LoginResDto;
+import com.mhdev.commonlib.dto.response.RegistrationResDto;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -1,10 +1,11 @@
-package com.mhdev.webservice.dto.responsedto;
+package com.mhdev.commonlib.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class ProductResDto {
     private Long id;

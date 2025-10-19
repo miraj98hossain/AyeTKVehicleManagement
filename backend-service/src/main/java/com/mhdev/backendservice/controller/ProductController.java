@@ -1,11 +1,10 @@
 package com.mhdev.backendservice.controller;
 
-import com.mhdev.backendservice.dto.requestdto.ProductReqDto;
-import com.mhdev.backendservice.dto.responsedto.ProductResDto;
-import com.mhdev.backendservice.dto.validationgroup.ProductCreateValidation;
-import com.mhdev.backendservice.dto.validationgroup.ProductUpdateValidation;
-import com.mhdev.backendservice.entity.Product;
 import com.mhdev.backendservice.service.ProductService;
+import com.mhdev.commonlib.dto.request.ProductReqDto;
+import com.mhdev.commonlib.dto.response.ProductResDto;
+import com.mhdev.commonlib.dto.validationGroup.ProductCreateValidation;
+import com.mhdev.commonlib.dto.validationGroup.ProductUpdateValidation;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.groups.Default;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +63,7 @@ public class ProductController {
         List<ProductResDto> productResDto = productService.getAllProduct();
 
         if (productResDto == null || productResDto.isEmpty()) {
-            return ResponseEntity.noContent().build();  // ✅ Sends 204 without body
+            return ResponseEntity.noContent().build();  // Sends 204 without body
         }
         return ResponseEntity.ok(productResDto);
     }

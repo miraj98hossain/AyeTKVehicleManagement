@@ -1,9 +1,8 @@
-package com.mhdev.webservice.dto.requestdto;
+package com.mhdev.commonlib.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

@@ -1,10 +1,10 @@
 package com.mhdev.backendservice.controller;
 
-import com.mhdev.backendservice.dto.requestdto.LoginReqDto;
-import com.mhdev.backendservice.dto.requestdto.RegistrationReqDto;
-import com.mhdev.backendservice.dto.responsedto.LoginResDto;
-import com.mhdev.backendservice.dto.responsedto.RegistrationResDto;
 import com.mhdev.backendservice.service.UserService;
+import com.mhdev.commonlib.dto.request.LoginReqDto;
+import com.mhdev.commonlib.dto.request.RegistrationReqDto;
+import com.mhdev.commonlib.dto.response.LoginResDto;
+import com.mhdev.commonlib.dto.response.RegistrationResDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

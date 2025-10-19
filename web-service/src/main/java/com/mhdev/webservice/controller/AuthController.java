@@ -1,17 +1,16 @@
 package com.mhdev.webservice.controller;
 
 
-import com.mhdev.webservice.dto.requestdto.LoginReqDto;
-import com.mhdev.webservice.dto.requestdto.RegistrationReqDto;
-import com.mhdev.webservice.dto.responsedto.LoginResDto;
-import com.mhdev.webservice.dto.responsedto.RegistrationResDto;
+import com.mhdev.commonlib.dto.request.LoginReqDto;
+import com.mhdev.commonlib.dto.request.RegistrationReqDto;
+import com.mhdev.commonlib.dto.response.LoginResDto;
+import com.mhdev.commonlib.dto.response.RegistrationResDto;
 
 import com.mhdev.webservice.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
