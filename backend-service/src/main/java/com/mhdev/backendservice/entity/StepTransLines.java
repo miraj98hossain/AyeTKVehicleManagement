@@ -1,0 +1,47 @@
+package com.mhdev.backendservice.entity;
+
+import com.mhdev.backendservice.utils.enums.StepStatus;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Date;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "STEP_TRANS_LINES",schema = "MAPPS")
+public class StepTransLines {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name="STEP_TRANS_LINES_ID")
+    private Long stepTransLinesId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STEP_TRANS_ID",nullable = false,referencedColumnName = "STEP_TRANS_ID")
+    private StepTrans stepTrans;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "STEP_ID",nullable = false,referencedColumnName = "STEP_ID")
+    private Step step;
+
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "STEP_STATUS",nullable = false)
+    private StepStatus stepStatus;
+
+    @Column(name = "REMARKS",nullable = false)
+    private String remarks;
+
+    @Column(name = "CREATED_BY",nullable = false,updatable = false)
+    private Long createdBy;
+    @Column(name = "CREATED_AT",nullable = false,updatable = false)
+    private Date createdAt;
+    @Column(name = "UPDATED_BY",insertable = false)
+    private Long updatedBy;
+    @Column(name = "UPDATED_AT",insertable = false)
+    private Date updatedAt;
+}

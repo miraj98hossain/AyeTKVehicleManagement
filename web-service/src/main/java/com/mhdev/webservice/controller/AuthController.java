@@ -1,11 +1,6 @@
 package com.mhdev.webservice.controller;
 
 
-import com.mhdev.commonlib.dto.request.LoginReqDto;
-import com.mhdev.commonlib.dto.request.RegistrationReqDto;
-import com.mhdev.commonlib.dto.response.LoginResDto;
-import com.mhdev.commonlib.dto.response.RegistrationResDto;
-
 import com.mhdev.webservice.service.AuthService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

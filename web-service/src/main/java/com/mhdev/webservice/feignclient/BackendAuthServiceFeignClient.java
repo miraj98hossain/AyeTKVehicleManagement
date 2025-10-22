@@ -1,8 +1,4 @@
 package com.mhdev.webservice.feignclient;
-import com.mhdev.commonlib.dto.request.LoginReqDto;
-import com.mhdev.commonlib.dto.request.RegistrationReqDto;
-import com.mhdev.commonlib.dto.response.LoginResDto;
-import com.mhdev.commonlib.dto.response.RegistrationResDto;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

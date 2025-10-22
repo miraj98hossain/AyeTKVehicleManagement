@@ -1,10 +1,6 @@
 package com.mhdev.webservice.controller;
 
 
-import com.mhdev.commonlib.dto.request.ProductReqDto;
-import com.mhdev.commonlib.dto.response.ProductResDto;
-import com.mhdev.commonlib.dto.validationGroup.ProductCreateValidation;
-import com.mhdev.commonlib.dto.validationGroup.ProductUpdateValidation;
 import com.mhdev.webservice.service.ProductService;
 import jakarta.validation.groups.Default;
 import org.springframework.beans.factory.annotation.Autowired;

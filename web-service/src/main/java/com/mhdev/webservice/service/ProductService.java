@@ -1,7 +1,5 @@
 package com.mhdev.webservice.service;
 
-import com.mhdev.commonlib.dto.request.ProductReqDto;
-import com.mhdev.commonlib.dto.response.ProductResDto;
 import com.mhdev.webservice.feignclient.BackendProductServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

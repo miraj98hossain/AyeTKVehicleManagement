@@ -1,0 +1,8 @@
+package com.mhdev.backendservice.repository;
+
+import com.mhdev.backendservice.entity.StepTransLines;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+public interface StepTransLinesRepository extends JpaRepository<StepTransLines,Long>, JpaSpecificationExecutor<StepTransLines> {
+}
