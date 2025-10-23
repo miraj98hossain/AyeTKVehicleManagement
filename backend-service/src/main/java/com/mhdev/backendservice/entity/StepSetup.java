@@ -30,7 +30,7 @@ public class StepSetup {
 
     @OneToMany(mappedBy = "stepSetup",fetch = FetchType.LAZY)
     @OrderBy("serialNo ASC")
-    private List<StepSetupDetails> stepSetupDetails= new ArrayList<>();
+    private List<StepSetupDetails> stepSetupDetails; //new ArrayList<>();
 
 
     @Column(name = "CREATED_BY",nullable = false,updatable = false)

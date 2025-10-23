@@ -1,6 +1,7 @@
 package com.mhdev.backendservice.service.implementations;
 
 
+import com.mhdev.backendservice.entity.StepSetup;
 import com.mhdev.backendservice.entity.StepSetupDetails;
 import com.mhdev.backendservice.mapper.StepSetupDetailsMapper;
 import com.mhdev.backendservice.repository.StepSetupDetailsRepository;
@@ -47,12 +48,32 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public StepSetupDetailsResponse getStepStatusDetails(Long stepSetupDetailsId){
+    public StepSetupDetailsResponse getStepSetupDetails(Long stepSetupDetailsId){
       StepSetupDetails stepSetupDetails=  this.stepSetupDetailsRepository.findById(stepSetupDetailsId).orElseThrow(
                 ()-> new EntityNotFoundException("Entity Not Found With this id"+stepSetupDetailsId)
         );
       return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetails);
     }
+
+    @Transactional(readOnly = true)
+    public List<StepSetupDetailsResponse> getDetailsBySetupId(StepSetup stepSetup){
+        return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("stepSetup"), stepSetup));
+            predicates.add(cb.equal(root.get("isActive"), 1));
+            return cb.and(predicates.toArray(new Predicate[0]));
+        }).stream().map(this.stepSetupDetailsMapper::toResponseDto).toList();
+    }
+//    @Transactional(readOnly = true)
+//    public List<StepSetupDetailsResponse> getDetailsBySetupIds(List<StepSetup> stepSetups){
+//        return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
+//            List<Predicate> predicates = new ArrayList<>();
+//
+//            predicates.add(cb.in(root.get("stepSetup"), stepSetups));
+//            predicates.add(cb.equal(root.get("isActive"), 1));
+//            return cb.and(predicates.toArray(new Predicate[0]));
+//        }).stream().map(this.stepSetupDetailsMapper::toResponseDto).toList();
+//    }
 
     @Transactional(readOnly = true)
     public Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable){
