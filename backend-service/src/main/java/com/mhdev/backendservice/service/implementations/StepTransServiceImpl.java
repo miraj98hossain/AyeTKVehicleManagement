@@ -1,12 +1,22 @@
 package com.mhdev.backendservice.service.implementations;
 
+import com.mhdev.backendservice.entity.StepSetup;
+import com.mhdev.backendservice.entity.StepSetupDetails;
 import com.mhdev.backendservice.entity.StepTrans;
+import com.mhdev.backendservice.entity.StepTransLines;
 import com.mhdev.backendservice.mapper.StepTransMapper;
 import com.mhdev.backendservice.repository.StepTransRepository;
 import com.mhdev.backendservice.service.StepSetupService;
+import com.mhdev.backendservice.service.StepTransLinesService;
+import com.mhdev.backendservice.service.StepTransService;
+import com.mhdev.backendservice.utils.enums.StepStatus;
+import com.mhdev.commonlib.dto.request.StepTransLinesRequest;
 import com.mhdev.commonlib.dto.request.StepTransRequest;
 import com.mhdev.commonlib.dto.response.StepTransResponse;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Fetch;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,35 +29,36 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class StepTransServiceImpl {
+public class StepTransServiceImpl implements StepTransService {
     @Autowired
     StepTransRepository stepTransRepository;
     @Autowired
     StepTransMapper stepTransMapper;
     @Autowired
-    StepSetupService stepSetupService;
+    StepTransLinesService  stepTransLinesService;
     @Transactional
+    @Override
     public StepTransResponse saveStepTrans(StepTransRequest stepTransRequest){
         StepTrans stepTrans = this.stepTransMapper.toEntity(stepTransRequest);
-        if(stepTransRequest.getStepTransId()!=null){
-            this.stepTransRepository.findById(stepTransRequest.getStepTransId()).orElseThrow(
-                    ()-> new EntityNotFoundException("Entity not found with this id"+stepTransRequest.getStepTransId())
-            );
-            stepTrans.setStepSetup(this.stepSetupService.getStepSetup(stepTransRequest.getStepSetupId()));
-            stepTrans.setUpdatedAt(new Date());
-            stepTrans.setUpdatedBy((long)1);
-            return this.stepTransMapper.toResponseDto(this.stepTransRepository.save(stepTrans));
-        }
-
         stepTrans.setCreatedAt(new Date());
         stepTrans.setCreatedBy((long)1);
-        stepTrans.setStepSetup(this.stepSetupService.getStepSetup(stepTransRequest.getStepSetupId()));
-
-        return this.stepTransMapper.toResponseDto(this.stepTransRepository.save(stepTrans));
-
+        stepTrans= this.stepTransRepository.save(stepTrans);
+        List<StepSetupDetails> stepSetup=stepTrans.getStepSetup().getStepSetupDetails();
+        var existingTrans=stepTrans.getStepTransLinesList();
+        if(existingTrans==null|| existingTrans.isEmpty()){
+            var step = stepSetup.get(0).getStep();
+            StepTransLines stepTransLines = new StepTransLines();
+            stepTransLines.setStepTrans(stepTrans);
+            stepTransLines.setStep(step);
+            stepTransLines.setStepStatus(StepStatus.PENDING);
+            this.stepTransLinesService.saveStepTransLines(stepTransLines);
+        }
+        return this.stepTransMapper.toResponseDto(stepTrans);
     }
 
+
     @Transactional(readOnly = true)
+    @Override
     public StepTransResponse getStepTrans(Long stepTransId){
        StepTrans stepTrans= this.stepTransRepository.findById(stepTransId).orElseThrow(
                 ()-> new EntityNotFoundException("Entity not found with this id"+stepTransId)
@@ -55,11 +66,44 @@ public class StepTransServiceImpl {
         return this.stepTransMapper.toResponseDto(stepTrans);
     }
     @Transactional(readOnly = true)
+    @Override
     public Page<StepTransResponse> getAllStepTrans(Pageable pageable){
         return this.stepTransRepository.findAll((root, query, cb) -> {
+            Fetch<StepTrans, StepTransLines> detailsFetch = root.fetch("stepTransLinesList", JoinType.INNER);
+            Join<StepTrans, StepTransLines> detailsJoin = (Join<StepTrans, StepTransLines>) detailsFetch;
             List<Predicate> predicates = new ArrayList<>();
-            predicates.add(cb.equal(root.get("isActive"), 1));
+
+            predicates.add(cb.notEqual(detailsJoin.get("stepStatus"), "Completed"));
             return cb.and(predicates.toArray(new Predicate[0]));
-        },pageable).map(this.stepTransMapper::toResponseDto);
+        }, pageable).map(stepTransMapper::toResponseDto);
     }
+
+
+//    if(stepTransRequest.getStepTransId()!=null){
+//        this.stepTransRepository.findById(stepTransRequest.getStepTransId()).orElseThrow(
+//                ()-> new EntityNotFoundException("Entity not found with this id"+stepTransRequest.getStepTransId())
+//        );
+//        stepTrans.setStepSetup(this.stepSetupService.getStepSetup(stepTransRequest.getStepSetupId()));
+//        stepTrans.setUpdatedAt(new Date());
+//        stepTrans.setUpdatedBy((long)1);
+//        return this.stepTransMapper.toResponseDto(this.stepTransRepository.save(stepTrans));
+//    }
+
+
+
+//    if(existingTrans==null|| existingTrans.isEmpty()){
+//        var step = stepSetup.get(0).getStep();
+//        StepTransLines stepTransLines = new StepTransLines();
+//        stepTransLines.setStepTrans(stepTrans);
+//        stepTransLines.setStep(step);
+//        this.stepTransLinesService.saveStepTransLines(stepTransLines);
+//    }else if(stepSetup.size()==existingTrans.size()){
+//        //TODO
+//    } else{
+//        var step = stepSetup.get(existingTrans.size()).getStep();
+//        StepTransLines stepTransLines = new StepTransLines();
+//        stepTransLines.setStepTrans(stepTrans);
+//        stepTransLines.setStep(step);
+//        this.stepTransLinesService.saveStepTransLines(stepTransLines);
+//    }
 }

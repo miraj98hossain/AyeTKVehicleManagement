@@ -7,16 +7,16 @@ import com.mhdev.commonlib.dto.response.StepTransLinesResponse;
 
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring",injectionStrategy = InjectionStrategy.CONSTRUCTOR,nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,uses = {ReferenceMapper.class,StepStatusTypeMapper.class, StepTransMapper.class,StepMapper.class},builder = @Builder(disableBuilder = true))
+@Mapper(componentModel = "spring",injectionStrategy = InjectionStrategy.CONSTRUCTOR,nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,uses = {ReferenceMapper.class,StepStatusTypeMapper.class,StepMapper.class},builder = @Builder(disableBuilder = true))
 public interface StepTransLinesMapper {
 
     StepTransLines toEntity(Long id);
     //Long toId(StepTransLines value);
-    @Mapping(source = "stepTransId",target = "stepTrans")
+    //@Mapping(source = "stepTransId",target = "stepTrans")
     @Mapping(source = "stepId",target = "step")
     @Mapping(source = "stepStatus.",target = "stepStatus",qualifiedByName = "toStepStatusType")
     StepTransLines toEntity(StepTransLinesRequest stepTransLinesRequest);
-    @Mapping(source = "stepTrans.stepTransId",target = "stepTransId")
+    //@Mapping(source = "stepTrans.stepTransId",target = "stepTransId")
     @Mapping(source = "step.stepId",target = "stepId")
     @Mapping(source = "stepStatus",target = "stepStatus",qualifiedByName = "toDisplayName")
     StepTransLinesResponse toResponseDto(StepTransLines stepTransLines);

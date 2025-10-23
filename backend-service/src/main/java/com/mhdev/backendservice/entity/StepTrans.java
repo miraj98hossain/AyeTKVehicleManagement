@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.SQLRestriction;
 
 
 import java.util.ArrayList;
@@ -46,6 +47,7 @@ public class StepTrans {
     private String transportName;
 
     @OneToMany(mappedBy = "stepTrans",fetch = FetchType.LAZY)
+    @OrderBy("createdAt desc")
     private List<StepTransLines> stepTransLinesList =new ArrayList<>();
 
     @Column(name = "CREATED_BY",nullable = false,updatable = false)

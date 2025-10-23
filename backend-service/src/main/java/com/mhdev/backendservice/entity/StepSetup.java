@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.DialectOverride;
+import org.hibernate.annotations.SQLRestriction;
+import org.hibernate.annotations.Where;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +33,7 @@ public class StepSetup {
 
     @OneToMany(mappedBy = "stepSetup",fetch = FetchType.LAZY)
     @OrderBy("serialNo ASC")
+    @SQLRestriction("IS_ACTIVE  = 1")
     private List<StepSetupDetails> stepSetupDetails=new ArrayList<>();
 
 

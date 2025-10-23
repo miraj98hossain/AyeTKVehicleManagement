@@ -33,7 +33,7 @@ public class StepTransLines {
     @Column(name = "STEP_STATUS",nullable = false)
     private StepStatus stepStatus;
 
-    @Column(name = "REMARKS",nullable = false)
+    @Column(name = "REMARKS")
     private String remarks;
 
     @Column(name = "CREATED_BY",nullable = false,updatable = false)

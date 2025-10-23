@@ -22,23 +22,11 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     @Autowired
     StepTransLinesMapper stepTransLinesMapper;
     @Transactional
-    public StepTransLinesResponse saveStepTransLines(StepTransLinesRequest stepTransLinesRequest){
-        StepTransLines stepTransLines = stepTransLinesMapper.toEntity(stepTransLinesRequest);
+    public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines){
         stepTransLines.setCreatedAt(new Date());
         stepTransLines.setCreatedBy((long)1);
-        var stepSetupList = stepTransLines.getStepTrans().getStepSetup().getStepSetupDetails();
-        var exitingList = stepTransLines.getStepTrans().getStepTransLinesList();
-
-        if(stepSetupList.size()==exitingList.size()){
-            //Do Something to mark the header as done.
-        }else{
-            stepTransLines.setStep(stepSetupList.get(exitingList.size()+1).getStep());
-        }
-
-
+        //Todo update code
         return  this.stepTransLinesMapper.toResponseDto(this.stepTransLinesRepository.save(stepTransLines));
-
-
     }
 
 

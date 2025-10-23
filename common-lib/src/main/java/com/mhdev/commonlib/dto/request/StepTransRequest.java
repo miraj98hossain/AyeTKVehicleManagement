@@ -23,7 +23,7 @@ public class StepTransRequest {
     @NotBlank(groups = {StepTransCreateValidation.class,StepTransUpdateValidation.class},message = "Vehicle number is required")
     private String vehicleNumber;
 
-    @NotBlank(groups = {StepTransCreateValidation.class,StepTransUpdateValidation.class},message = "Step Setup id is required")
+    @NotNull(groups = {StepTransCreateValidation.class,StepTransUpdateValidation.class},message = "Step Setup id is required")
     private Long stepSetupId;
 
     @Size(max = 11,min = 11,message = "Phone number must be 11")
@@ -37,7 +37,9 @@ public class StepTransRequest {
     private String item;
 
     @DecimalMin(value = "0.0",inclusive = false, groups = {StepTransCreateValidation.class,StepTransUpdateValidation.class},message = "Quantity can not be zero")
+    @NotNull(groups = {StepTransCreateValidation.class,StepTransUpdateValidation.class},message = "Quantity is required")
     private Double quantity;
+
 
     @NotBlank(groups = {StepTransCreateValidation.class,StepTransUpdateValidation.class},message = "Transport name is required")
     private String transportName;
