@@ -10,6 +10,7 @@ import com.mhdev.commonlib.dto.request.StepSetupRequest;
 import com.mhdev.commonlib.dto.response.StepSetupDetailsResponse;
 import com.mhdev.commonlib.dto.response.StepSetupResponse;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Fetch;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
@@ -73,14 +74,22 @@ public class StepSetupServiceImpl  implements StepSetupService {
     }
     @Transactional(readOnly = true)
     public Page<StepSetupResponse> getAllStepSetup(Pageable pageable){
-
-
         return this.stepSetupRepository.findAll((root, query, cb) -> {
-            Join<StepSetup, StepSetupDetails> detailsJoin = root.join("stepSetupDetails", JoinType.INNER);
+            Fetch<StepSetup, StepSetupDetails> detailsFetch = root.fetch("stepSetupDetails", JoinType.INNER);
+            Join<StepSetup, StepSetupDetails> detailsJoin = (Join<StepSetup, StepSetupDetails>) detailsFetch;
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("isActive"), 1));
             predicates.add(cb.equal(detailsJoin.get("isActive"), 1));
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable).map(stepSetupMapper::toResponseDto);
+
+
+//        return this.stepSetupRepository.findAll((root, query, cb) -> {
+//            Join<StepSetup, StepSetupDetails> detailsJoin = root.join("stepSetupDetails", JoinType.INNER);
+//            List<Predicate> predicates = new ArrayList<>();
+//            predicates.add(cb.equal(root.get("isActive"), 1));
+//            predicates.add(cb.equal(detailsJoin.get("isActive"), 1));
+//            return cb.and(predicates.toArray(new Predicate[0]));
+//        }, pageable).map(stepSetupMapper::toResponseDto);
     }
 }

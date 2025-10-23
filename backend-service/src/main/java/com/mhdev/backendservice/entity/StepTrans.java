@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class StepTrans {
     private String transportName;
 
     @OneToMany(mappedBy = "stepTrans",fetch = FetchType.LAZY)
-    private List<StepTransLines> stepTransLinesList;
+    private List<StepTransLines> stepTransLinesList =new ArrayList<>();
 
     @Column(name = "CREATED_BY",nullable = false,updatable = false)
     private Long createdBy;

@@ -12,5 +12,6 @@ public interface StepSetupDetailsMapper {
     @Mapping(source = "stepId",target = "step")
     StepSetupDetails toEntity(StepSetupDetailsRequest stepDetailsRequest);
     @Mapping(source = "step.stepId",target = "stepId")
+    @Mapping(source = "stepSetup.stepSetupId",target = "stepSetupId")
     StepSetupDetailsResponse toResponseDto(StepSetupDetails stepDetails);
 }

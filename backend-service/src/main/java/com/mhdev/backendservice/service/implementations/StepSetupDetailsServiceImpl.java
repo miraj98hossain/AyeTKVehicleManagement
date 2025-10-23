@@ -64,16 +64,6 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
             return cb.and(predicates.toArray(new Predicate[0]));
         }).stream().map(this.stepSetupDetailsMapper::toResponseDto).toList();
     }
-//    @Transactional(readOnly = true)
-//    public List<StepSetupDetailsResponse> getDetailsBySetupIds(List<StepSetup> stepSetups){
-//        return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
-//            List<Predicate> predicates = new ArrayList<>();
-//
-//            predicates.add(cb.in(root.get("stepSetup"), stepSetups));
-//            predicates.add(cb.equal(root.get("isActive"), 1));
-//            return cb.and(predicates.toArray(new Predicate[0]));
-//        }).stream().map(this.stepSetupDetailsMapper::toResponseDto).toList();
-//    }
 
     @Transactional(readOnly = true)
     public Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable){
@@ -84,7 +74,7 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
         },pageable).map(this.stepSetupDetailsMapper::toResponseDto);
     }
     @Transactional
-   public void saveAll(List<StepSetupDetails> stepSetupDetails){
+    public void saveAll(List<StepSetupDetails> stepSetupDetails){
         this.stepSetupDetailsRepository.saveAll(stepSetupDetails);
     }
 }
