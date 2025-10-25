@@ -110,23 +110,4 @@ public class StepTransServiceImpl implements StepTransService {
         return this.stepTransLinesService.saveStepTransLines(dbstepTransLines);
     }
 
-
-//    if(stepTransRequest.getStepTransId()!=null){
-//        this.stepTransRepository.findById(stepTransRequest.getStepTransId()).orElseThrow(
-//                ()-> new EntityNotFoundException("Entity not found with this id"+stepTransRequest.getStepTransId())
-//        );
-//        stepTrans.setStepSetup(this.stepSetupService.getStepSetup(stepTransRequest.getStepSetupId()));
-//        stepTrans.setUpdatedAt(new Date());
-//        stepTrans.setUpdatedBy((long)1);
-//        return this.stepTransMapper.toResponseDto(this.stepTransRepository.save(stepTrans));
-//    }
-
-
-//    if(existingTrans==null|| existingTrans.isEmpty()){
-//        var step = stepSetup.get(0).getStep();
-//        StepTransLines stepTransLines = new StepTransLines();
-//        stepTransLines.setStepTrans(stepTrans);
-//        stepTransLines.setStep(step);
-//        this.stepTransLinesService.saveStepTransLines(stepTransLines);
-//    }
 }
