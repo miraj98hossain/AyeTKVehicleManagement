@@ -24,24 +24,30 @@ public class StepServiceImpl implements StepService {
     @Autowired
     private StepMapper stepMapper;
 
-    public StepResponse saveStep(StepRequest stepRequest){
+    public StepResponse saveStep(StepRequest stepRequest) {
         Step step = stepMapper.toEntity(stepRequest);
-        if(step.getStepId()!=null){
-           var extStep = this.stepRepository.findById(stepRequest.getStepId()).orElseThrow(
-                    ()-> new EntityNotFoundException("Entity not found with this id"+stepRequest.getStepId()));
+        if (step.getStepId() != null) {
+            var extStep = this.stepRepository.findById(stepRequest.getStepId()).orElseThrow(
+                    () -> new EntityNotFoundException("No Active Step found with this id " + stepRequest.getStepId()));
             step.setCreatedAt(extStep.getCreatedAt());
             step.setCreatedBy(extStep.getCreatedBy());
             step.setUpdatedAt(new Date());
-            step.setUpdatedBy((long)1);
+            step.setUpdatedBy((long) 1);
             return this.stepMapper.toResponseDto(this.stepRepository.save(step));
         }
         step.setCreatedAt(new Date());
-        step.setCreatedBy((long)1);
+        step.setCreatedBy((long) 1);
         return this.stepMapper.toResponseDto(this.stepRepository.save(step));
     }
-    public  StepResponse getStep(Long stepId){
-        Step step = this.stepRepository.findById(stepId).orElseThrow(
-                ()-> new EntityNotFoundException("Entity not found with this id"+stepId));
+
+    public StepResponse getStep(Long stepId) {
+        Step step = this.stepRepository.findOne((root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("stepId"), stepId));
+            predicates.add(cb.equal(root.get("isActive"), 1));
+            return cb.and(predicates.toArray(new Predicate[0]));
+        }).orElseThrow(
+                () -> new EntityNotFoundException("No Active Step found with this id " + stepId));
         return this.stepMapper.toResponseDto(step);
     }
 
