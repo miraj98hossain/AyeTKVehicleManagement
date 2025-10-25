@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Step Management</title>
+    <link rel="stylesheet" th:href="@{/css/steps.css}">
+</head>
+<body>
+<div class="container">
+
+    <h1>Step Management</h1>
+
+    <!-- Create / Update Form -->
+    <form class="form-box" method="post" th:action="@{/steps}" th:object="${step}">
+
+        <input th:field="*{stepId}" type="hidden"/>
+
+        <label>Step Name</label>
+        <input placeholder="Enter step name" required th:field="*{stepName}" type="text">
+
+        <label>Is Active</label>
+        <select required th:field="*{isActive}">
+            <option value="">Select status</option>
+            <option th:selected="${step.isActive == 1}" value="1">Active</option>
+            <option th:selected="${step.isActive == 0}" value="0">Inactive</option>
+        </select>
+
+        <div class="button-group">
+            <button class="btn save-btn" th:text="${step.stepId != null ? 'Update Step' : 'Add Step'}"
+                    type="submit"></button>
+            <a class="btn cancel-btn" th:href="@{/steps}">Clear</a>
+        </div>
+    </form>
+
+    <!-- Table of Steps -->
+    <h2>All Steps</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Step Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${steps}">
+            <td th:text="${s.stepId}"></td>
+            <td th:text="${s.stepName}"></td>
+            <td>
+                <span th:classappend="${s.isActive == 1} ? 'active' : 'inactive'"
+                      th:text="${s.isActive == 1 ? 'Active' : 'Inactive'}"></span>
+            </td>
+            <td>
+                <a class="btn edit-btn" th:href="@{'/steps/edit/' + ${s.stepId}}">Edit</a>
+                <a class="btn delete-btn" th:href="@{'/steps/delete/' + ${s.stepId}}">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
