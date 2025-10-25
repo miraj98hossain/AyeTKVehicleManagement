@@ -14,7 +14,15 @@ import java.util.Date;
 @Table(name = "STEP", schema = "MAPPS")
 public class Step {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "step_seq_gen"
+    )
+    @SequenceGenerator(
+            name = "step_seq_gen",
+            sequenceName = "STEP_SEQ",
+            allocationSize = 1
+    )
     @Column(name = "STEP_ID")
     private Long stepId;
     @Column(name = "STEP_NAME", nullable = false)

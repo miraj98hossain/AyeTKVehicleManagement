@@ -14,34 +14,42 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "STEP_TRANS_LINES",schema = "MAPPS")
+@Table(name = "STEP_TRANS_LINES", schema = "MAPPS")
 public class StepTransLines {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Column(name="STEP_TRANS_LINES_ID")
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "step_trans_lines_seq_gen"
+    )
+    @SequenceGenerator(
+            name = "step_trans_lines_seq_gen",
+            sequenceName = "STEP_TRANS_LINES_SEQ",
+            allocationSize = 1
+    )
+    @Column(name = "STEP_TRANS_LINES_ID")
     private Long stepTransLinesId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STEP_TRANS_ID",nullable = false,referencedColumnName = "STEP_TRANS_ID")
+    @JoinColumn(name = "STEP_TRANS_ID", nullable = false, referencedColumnName = "STEP_TRANS_ID")
     private StepTrans stepTrans;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "STEP_ID",nullable = false,referencedColumnName = "STEP_ID")
+    @JoinColumn(name = "STEP_ID", nullable = false, referencedColumnName = "STEP_ID")
     private Step step;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "STEP_STATUS",nullable = false)
+    @Column(name = "STEP_STATUS", nullable = false)
     private StepStatus stepStatus;
 
     @Column(name = "REMARKS")
     private String remarks;
 
-    @Column(name = "CREATED_BY",nullable = false,updatable = false)
+    @Column(name = "CREATED_BY", nullable = false, updatable = false)
     private Long createdBy;
-    @Column(name = "CREATED_AT",nullable = false,updatable = false)
+    @Column(name = "CREATED_AT", nullable = false, updatable = false)
     private Date createdAt;
-    @Column(name = "UPDATED_BY",insertable = false)
+    @Column(name = "UPDATED_BY", insertable = false)
     private Long updatedBy;
-    @Column(name = "UPDATED_AT",insertable = false)
+    @Column(name = "UPDATED_AT", insertable = false)
     private Date updatedAt;
 }

@@ -19,8 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-
 @RestController
 @RequestMapping("/aye-tk-vhcle-mng/api/step-trans")
 public class StepTransController {
@@ -31,11 +29,12 @@ public class StepTransController {
     public ResponseEntity<StepTransResponse> create(@Validated({StepTransCreateValidation.class, Default.class}) @RequestBody StepTransRequest stepTransRequest, UriComponentsBuilder uriBuilder) {
         try {
             StepTransResponse stepTransResponse = this.stepTransService.saveStepTrans(stepTransRequest);
-            URI location = uriBuilder
-                    .path("/step-trans/{id}")
-                    .buildAndExpand(stepTransResponse.getStepTransId())
-                    .toUri();
-            return ResponseEntity.created(location).body(stepTransResponse);
+            return getStepTrans(stepTransResponse.getStepTransId());
+//            URI location = uriBuilder
+//                    .path("/step-trans/{id}")
+//                    .buildAndExpand(stepTransResponse.getStepTransId())
+//                    .toUri();
+//            return ResponseEntity.created(location).body(stepTransResponse);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
