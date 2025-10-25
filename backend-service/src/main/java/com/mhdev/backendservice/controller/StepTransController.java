@@ -29,22 +29,17 @@ public class StepTransController {
     public ResponseEntity<StepTransResponse> create(@Validated({StepTransCreateValidation.class, Default.class}) @RequestBody StepTransRequest stepTransRequest, UriComponentsBuilder uriBuilder) {
         try {
             StepTransResponse stepTransResponse = this.stepTransService.saveStepTrans(stepTransRequest);
-            return getStepTrans(stepTransResponse.getStepTransId());
-//            URI location = uriBuilder
-//                    .path("/step-trans/{id}")
-//                    .buildAndExpand(stepTransResponse.getStepTransId())
-//                    .toUri();
-//            return ResponseEntity.created(location).body(stepTransResponse);
+            return ResponseEntity.status(HttpStatus.CREATED).body(stepTransResponse);
         } catch (Exception e) {
             e.printStackTrace();
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
-    @PostMapping("/update")
-    public ResponseEntity<StepTransLinesResponse> update(@Validated({StepTransLinesUpdateValidation.class, Default.class}) @RequestBody StepTransLinesRequest stepTransLinesRequest) {
+    @PostMapping("/update-lines")
+    public ResponseEntity<StepTransLinesResponse> updateLines(@Validated({StepTransLinesUpdateValidation.class, Default.class}) @RequestBody StepTransLinesRequest stepTransLinesRequest) {
         try {
-            StepTransLinesResponse stepTransLinesResponse = this.stepTransService.updateTrans(stepTransLinesRequest);
+            StepTransLinesResponse stepTransLinesResponse = this.stepTransService.updateTransLines(stepTransLinesRequest);
             return ResponseEntity.ok().body(stepTransLinesResponse);
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,9 +48,9 @@ public class StepTransController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<StepTransResponse>> getAllStepTrans(Pageable pageable) {
+    public ResponseEntity<Page<StepTransResponse>> findAll(Pageable pageable) {
         try {
-            Page<StepTransResponse> list = this.stepTransService.getAllStepTrans(pageable);
+            Page<StepTransResponse> list = this.stepTransService.findAll(pageable);
             if (list == null || list.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
@@ -67,9 +62,9 @@ public class StepTransController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StepTransResponse> getStepTrans(@PathVariable("id") Long id) {
+    public ResponseEntity<StepTransResponse> findById(@PathVariable("id") Long id) {
         try {
-            StepTransResponse stepTransResponse = this.stepTransService.getStepTrans(id);
+            StepTransResponse stepTransResponse = this.stepTransService.findById(id);
             return ResponseEntity.ok().body(stepTransResponse);
         } catch (Exception e) {
             e.printStackTrace();

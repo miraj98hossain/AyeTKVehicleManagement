@@ -30,7 +30,7 @@ public class StepTrans {
     @Column(name = "STEP_TRANS_ID")
     private Long stepTransId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STEP_SETUP_ID", referencedColumnName = "STEP_SETUP_ID")
     private StepSetup stepSetup;
 
@@ -52,7 +52,7 @@ public class StepTrans {
     @Column(name = "TRANSPORT_NAME", nullable = false)
     private String transportName;
 
-    @OneToMany(mappedBy = "stepTrans", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "stepTrans", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @OrderBy("createdAt desc")
     private List<StepTransLines> stepTransLinesList = new ArrayList<>();
 

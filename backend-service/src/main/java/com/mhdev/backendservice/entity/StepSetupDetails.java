@@ -28,11 +28,11 @@ public class StepSetupDetails {
     @Column(name = "STEP_SETUP_DETAILS_ID")
     private Long stepSetupDetailsId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STEP_SETUP_ID", nullable = false, referencedColumnName = "STEP_SETUP_ID")
     private StepSetup stepSetup;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STEP_ID", nullable = false, referencedColumnName = "STEP_ID")
     private Step step;
 

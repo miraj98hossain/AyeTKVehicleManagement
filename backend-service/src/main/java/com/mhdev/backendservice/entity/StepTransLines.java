@@ -29,11 +29,11 @@ public class StepTransLines {
     @Column(name = "STEP_TRANS_LINES_ID")
     private Long stepTransLinesId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STEP_TRANS_ID", nullable = false, referencedColumnName = "STEP_TRANS_ID")
     private StepTrans stepTrans;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STEP_ID", nullable = false, referencedColumnName = "STEP_ID")
     private Step step;
 

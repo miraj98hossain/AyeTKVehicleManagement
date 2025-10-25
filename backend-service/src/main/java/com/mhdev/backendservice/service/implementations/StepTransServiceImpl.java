@@ -44,27 +44,27 @@ public class StepTransServiceImpl implements StepTransService {
     @Transactional
     @Override
     public StepTransResponse saveStepTrans(StepTransRequest stepTransRequest) {
-        StepTrans stepTrans = this.stepTransMapper.toEntity(stepTransRequest);
+        StepTrans stepTrans = stepTransMapper.toEntity(stepTransRequest);
         stepTrans.setCreatedAt(new Date());
-        stepTrans.setCreatedBy((long) 1);
-        stepTrans = this.stepTransRepository.save(stepTrans);
-        List<StepSetupDetails> stepSetup = stepTrans.getStepSetup().getStepSetupDetails();
-        var existingTrans = stepTrans.getStepTransLinesList();
-        if (existingTrans == null || existingTrans.isEmpty()) {
-            var step = stepSetup.get(0).getStep();
-            StepTransLines stepTransLines = new StepTransLines();
-            stepTransLines.setStepTrans(stepTrans);
-            stepTransLines.setStep(step);
-            stepTransLines.setStepStatus(StepStatus.PENDING);
-            this.stepTransLinesService.saveStepTransLines(stepTransLines);
+        stepTrans.setCreatedBy(1L);
+
+        if (stepTrans.getStepTransLinesList().isEmpty()) {
+            StepTransLines line = new StepTransLines();
+            line.setStepTrans(stepTrans);
+            line.setStep(stepTrans.getStepSetup().getStepSetupDetails().get(0).getStep());
+            line.setStepStatus(StepStatus.PENDING);
+            line.setCreatedBy(1L);
+            line.setCreatedAt(new Date());
+            stepTrans.getStepTransLinesList().add(line);
         }
-        return this.stepTransMapper.toResponseDto(stepTrans);
+        stepTrans = stepTransRepository.save(stepTrans);
+        return stepTransMapper.toResponseDto(stepTrans);
     }
 
 
-    @Transactional(readOnly = true)
+    @Transactional()
     @Override
-    public StepTransResponse getStepTrans(Long stepTransId) {
+    public StepTransResponse findById(Long stepTransId) {
         StepTrans stepTrans = this.stepTransRepository.findById(stepTransId).orElseThrow(
                 () -> new EntityNotFoundException("StepTrans not found with this id " + stepTransId)
         );
@@ -73,7 +73,7 @@ public class StepTransServiceImpl implements StepTransService {
 
     @Transactional(readOnly = true)
     @Override
-    public Page<StepTransResponse> getAllStepTrans(Pageable pageable) {
+    public Page<StepTransResponse> findAll(Pageable pageable) {
         return this.stepTransRepository.findAll((root, query, cb) -> {
             Fetch<StepTrans, StepTransLines> detailsFetch = root.fetch("stepTransLinesList", JoinType.INNER);
             Join<StepTrans, StepTransLines> detailsJoin = (Join<StepTrans, StepTransLines>) detailsFetch;
@@ -85,7 +85,7 @@ public class StepTransServiceImpl implements StepTransService {
     }
 
     @Override
-    public StepTransLinesResponse updateTrans(StepTransLinesRequest stepTransLinesRequest) {
+    public StepTransLinesResponse updateTransLines(StepTransLinesRequest stepTransLinesRequest) {
         StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(stepTransLinesRequest);
         StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(stepTransLinesRequest.getStepTransLinesId());
 

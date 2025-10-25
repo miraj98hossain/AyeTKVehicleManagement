@@ -17,6 +17,7 @@ public class Step {
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
             generator = "step_seq_gen"
+
     )
     @SequenceGenerator(
             name = "step_seq_gen",

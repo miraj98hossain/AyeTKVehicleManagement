@@ -15,9 +15,9 @@ public interface StepTransService {
 
     StepTransResponse saveStepTrans(StepTransRequest stepTransRequest);
 
-    StepTransResponse getStepTrans(Long stepTransId);
+    StepTransResponse findById(Long stepTransId);
 
-    Page<StepTransResponse> getAllStepTrans(Pageable pageable);
+    Page<StepTransResponse> findAll(Pageable pageable);
 
-    StepTransLinesResponse updateTrans(StepTransLinesRequest stepTransLinesRequest);
+    StepTransLinesResponse updateTransLines(StepTransLinesRequest stepTransLinesRequest);
 }

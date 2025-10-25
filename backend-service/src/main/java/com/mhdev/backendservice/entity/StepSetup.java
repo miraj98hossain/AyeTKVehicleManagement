@@ -37,7 +37,7 @@ public class StepSetup {
     @Column(name = "IS_ACTIVE")
     private Integer isActive;
 
-    @OneToMany(mappedBy = "stepSetup", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "stepSetup", fetch = FetchType.EAGER)
     @OrderBy("serialNo ASC")
     @SQLRestriction("IS_ACTIVE  = 1")
     private List<StepSetupDetails> stepSetupDetails = new ArrayList<>();
