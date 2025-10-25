@@ -38,7 +38,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
 
     public StepTransLines getStepTransLine(Long stepTransLineId) {
         return this.stepTransLinesRepository.findById(stepTransLineId).orElseThrow(
-                () -> new EntityNotFoundException("Entity not found with id" + stepTransLineId));
+                () -> new EntityNotFoundException("StepTransLine not found with id " + stepTransLineId));
     }
 
     public Page<StepTransLinesResponse> getAllStepTransLine(Pageable pageable) {

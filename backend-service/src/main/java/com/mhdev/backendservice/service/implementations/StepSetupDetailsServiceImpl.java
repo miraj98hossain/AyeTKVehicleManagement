@@ -28,35 +28,35 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     private StepSetupDetailsMapper stepSetupDetailsMapper;
 
     @Transactional
-    public StepSetupDetailsResponse saveStepStatusDetails(StepSetupDetailsRequest stepSetupDetailsRequest){
+    public StepSetupDetailsResponse saveStepStatusDetails(StepSetupDetailsRequest stepSetupDetailsRequest) {
         StepSetupDetails stepSetupDetails = stepSetupDetailsMapper.toEntity(stepSetupDetailsRequest);
 
-        if(stepSetupDetails.getStepSetupDetailsId()!=null){
-           var extstepSetupDetails= this.stepSetupDetailsRepository.findById(stepSetupDetails.getStepSetupDetailsId()).orElseThrow(
-                    ()-> new EntityNotFoundException("Entity Not Found With this id"+stepSetupDetails.getStepSetupDetailsId())
+        if (stepSetupDetails.getStepSetupDetailsId() != null) {
+            var extstepSetupDetails = this.stepSetupDetailsRepository.findById(stepSetupDetails.getStepSetupDetailsId()).orElseThrow(
+                    () -> new EntityNotFoundException("StepSetupDetails Not Found With this id" + stepSetupDetails.getStepSetupDetailsId())
             );
             stepSetupDetails.setCreatedAt(extstepSetupDetails.getCreatedAt());
             stepSetupDetails.setCreatedBy(extstepSetupDetails.getCreatedBy());
             stepSetupDetails.setUpdatedAt(new Date());
-            stepSetupDetails.setUpdatedBy((long)1);
-           return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetailsRepository.save(stepSetupDetails)) ;
+            stepSetupDetails.setUpdatedBy((long) 1);
+            return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetailsRepository.save(stepSetupDetails));
         }
         stepSetupDetails.setCreatedAt(new Date());
-        stepSetupDetails.setCreatedBy((long)1);
-        return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetailsRepository.save(stepSetupDetails)) ;
+        stepSetupDetails.setCreatedBy((long) 1);
+        return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetailsRepository.save(stepSetupDetails));
 
     }
 
     @Transactional(readOnly = true)
-    public StepSetupDetailsResponse getStepSetupDetails(Long stepSetupDetailsId){
-      StepSetupDetails stepSetupDetails=  this.stepSetupDetailsRepository.findById(stepSetupDetailsId).orElseThrow(
-                ()-> new EntityNotFoundException("Entity Not Found With this id"+stepSetupDetailsId)
+    public StepSetupDetailsResponse getStepSetupDetails(Long stepSetupDetailsId) {
+        StepSetupDetails stepSetupDetails = this.stepSetupDetailsRepository.findById(stepSetupDetailsId).orElseThrow(
+                () -> new EntityNotFoundException("StepSetupDetails Not Found With this id " + stepSetupDetailsId)
         );
-      return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetails);
+        return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetails);
     }
 
     @Transactional(readOnly = true)
-    public List<StepSetupDetailsResponse> getDetailsBySetupId(StepSetup stepSetup){
+    public List<StepSetupDetailsResponse> getDetailsBySetupId(StepSetup stepSetup) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("stepSetup"), stepSetup));
@@ -66,15 +66,16 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable){
+    public Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("isActive"), 1));
             return cb.and(predicates.toArray(new Predicate[0]));
-        },pageable).map(this.stepSetupDetailsMapper::toResponseDto);
+        }, pageable).map(this.stepSetupDetailsMapper::toResponseDto);
     }
+
     @Transactional
-    public void saveAll(List<StepSetupDetails> stepSetupDetails){
+    public void saveAll(List<StepSetupDetails> stepSetupDetails) {
         this.stepSetupDetailsRepository.saveAll(stepSetupDetails);
     }
 }

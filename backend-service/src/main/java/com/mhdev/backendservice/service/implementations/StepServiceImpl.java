@@ -32,11 +32,11 @@ public class StepServiceImpl implements StepService {
             step.setCreatedAt(extStep.getCreatedAt());
             step.setCreatedBy(extStep.getCreatedBy());
             step.setUpdatedAt(new Date());
-            step.setUpdatedBy((long) 1);
+            step.setUpdatedBy(1L);
             return this.stepMapper.toResponseDto(this.stepRepository.save(step));
         }
         step.setCreatedAt(new Date());
-        step.setCreatedBy((long) 1);
+        step.setCreatedBy(1L);
         return this.stepMapper.toResponseDto(this.stepRepository.save(step));
     }
 

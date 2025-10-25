@@ -66,7 +66,7 @@ public class StepTransServiceImpl implements StepTransService {
     @Override
     public StepTransResponse getStepTrans(Long stepTransId) {
         StepTrans stepTrans = this.stepTransRepository.findById(stepTransId).orElseThrow(
-                () -> new EntityNotFoundException("Entity not found with this id" + stepTransId)
+                () -> new EntityNotFoundException("StepTrans not found with this id " + stepTransId)
         );
         return this.stepTransMapper.toResponseDto(stepTrans);
     }
@@ -93,7 +93,7 @@ public class StepTransServiceImpl implements StepTransService {
         dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
 
         StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
-                () -> new EntityNotFoundException("Entity not found with this id" + dbstepTransLines.getStepTrans().getStepTransId()));
+                () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
 
         List<StepSetupDetails> stepSetup = stepTrans.getStepSetup().getStepSetupDetails();
         var existingTrans = stepTrans.getStepTransLinesList();
