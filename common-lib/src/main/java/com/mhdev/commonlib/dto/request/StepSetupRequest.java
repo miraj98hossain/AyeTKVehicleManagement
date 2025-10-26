@@ -30,6 +30,6 @@ public class StepSetupRequest {
     @Max(value = 1, message = "Is Active must be 0 or 1")
     private Integer isActive;
     //@NotNull(groups = {StepSetupCreateValidation.class, StepSetupUpdateValidation.class}, message = "Step setup details information is required")
-    @Size(min = 1, message = "Minimum one Setup Details is required")
+    @Size(groups = {StepSetupCreateValidation.class}, min = 1, message = "Minimum one Setup Details is required")
     private List<StepSetupDetailsRequest> stepSetupDetailsRequests;
 }

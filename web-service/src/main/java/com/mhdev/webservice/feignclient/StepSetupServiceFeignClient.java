@@ -4,8 +4,6 @@ import com.mhdev.commonlib.dto.request.StepSetupRequest;
 import com.mhdev.commonlib.dto.response.StepSetupDetailsResponse;
 import com.mhdev.commonlib.dto.response.StepSetupResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,5 +23,5 @@ public interface StepSetupServiceFeignClient {
     List<StepSetupDetailsResponse> getStepSetup(@PathVariable("id") Long id);
 
     @GetMapping()
-    Page<StepSetupResponse> getAllStepsSetup(Pageable pageable);
+    List<StepSetupResponse> getAllStepsSetup();
 }

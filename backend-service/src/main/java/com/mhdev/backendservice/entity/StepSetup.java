@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLRestriction;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -37,9 +36,9 @@ public class StepSetup {
     @Column(name = "IS_ACTIVE")
     private Integer isActive;
 
-    @OneToMany(mappedBy = "stepSetup", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "stepSetup", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("serialNo ASC")
-    @SQLRestriction("IS_ACTIVE  = 1")
+//    @SQLRestriction("IS_ACTIVE  = 1")
     private List<StepSetupDetails> stepSetupDetails = new ArrayList<>();
 
 

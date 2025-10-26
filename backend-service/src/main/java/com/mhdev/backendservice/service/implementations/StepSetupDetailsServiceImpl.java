@@ -28,7 +28,7 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     private StepSetupDetailsMapper stepSetupDetailsMapper;
 
     @Transactional
-    public StepSetupDetailsResponse saveStepStatusDetails(StepSetupDetailsRequest stepSetupDetailsRequest) {
+    public StepSetupDetailsResponse saveStepSetupDetails(StepSetupDetailsRequest stepSetupDetailsRequest) {
         StepSetupDetails stepSetupDetails = stepSetupDetailsMapper.toEntity(stepSetupDetailsRequest);
 
         if (stepSetupDetails.getStepSetupDetailsId() != null) {
@@ -48,11 +48,10 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     }
 
     @Transactional(readOnly = true)
-    public StepSetupDetailsResponse getStepSetupDetails(Long stepSetupDetailsId) {
-        StepSetupDetails stepSetupDetails = this.stepSetupDetailsRepository.findById(stepSetupDetailsId).orElseThrow(
+    public StepSetupDetails findById(Long stepSetupDetailsId) {
+        return this.stepSetupDetailsRepository.findById(stepSetupDetailsId).orElseThrow(
                 () -> new EntityNotFoundException("StepSetupDetails Not Found With this id " + stepSetupDetailsId)
         );
-        return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetails);
     }
 
     @Transactional(readOnly = true)

@@ -8,8 +8,6 @@ import com.mhdev.commonlib.dto.validationGroup.StepSetupCreateValidation;
 import com.mhdev.webservice.service.StepSetupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -58,9 +56,9 @@ public class StepSetupController {
     }
 
     @GetMapping()
-    public ResponseEntity<Page<StepSetupResponse>> getAllStepsSetup(Pageable pageable) {
+    public ResponseEntity<List<StepSetupResponse>> getAllStepsSetup() {
         try {
-            var list = this.stepSetupService.getAllStepsSetup(pageable);
+            var list = this.stepSetupService.getAllStepsSetup();
             if (list == null || list.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }

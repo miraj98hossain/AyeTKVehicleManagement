@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Step Transaction Details</title>
+    <link rel="stylesheet" th:href="@{/css/steps-trans.css}">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- Header Section -->
+    <section class="header-block">
+        <h2>Step Transaction Header</h2>
+        <form class="form-box" method="post" th:action="@{/step-trans/create}" th:object="${stepTrans}">
+            <div class="form-grid">
+
+
+                <div>
+                    <label>Setup I'd:</label>
+                    <select id="setupList" required th:field="${stepTrans.stepSetupId}">
+                        <option value="">-- Select Setup --</option>
+                        <option th:each="setup : ${setupList}" th:text="${setup.getStepSetupId()}"
+                                th:value="${setup.getStepSetupId()}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label>Vehicle No:</label>
+                    <input placeholder="Enter Vehicle No" required th:field="${stepTrans.vehicleNumber}" type="text">
+                </div>
+                <div>
+                    <label>Driver Phone:</label>
+                    <input placeholder="Enter Driver Phone" required th:field="${stepTrans.driverPhoneNo}" type="text">
+                </div>
+                <div>
+                    <label>Party Name:</label>
+                    <input placeholder="Enter Party Phone" required th:field="${stepTrans.partyName}" type="text">
+                </div>
+                <div>
+                    <label>Item:</label>
+                    <input placeholder="Enter Item" required th:field="${stepTrans.item}" type="text">
+                </div>
+                <div>
+                    <label>Quantity:</label>
+                    <input placeholder="Enter Quantity" required th:field="${stepTrans.quantity}" type="text">
+                </div>
+                <div>
+                    <label>Transport Name:</label>
+                    <input placeholder="Enter Transport Name" required th:field="${stepTrans.transportName}"
+                           type="text">
+                </div>
+                <div class="button-group">
+                    <button class="btn save-btn" th:text="${stepTrans.stepTransId!= null ? 'Update' : 'Create'}"
+                            type="submit"></button>
+                    <button class="btn cancel-btn" th:href="@{/steps}">Clear</button>
+                </div>
+            </div>
+        </form>
+    </section>
+    <section class="line-block"></section>
+    <h2>All Step Trans Lines</h2>
+    <table>
+        <thead>
+        <tr>
+            <th class="col-trans">TransId</th>
+            <th class="col-line">LinesId</th>
+            <th class="col-veh">VehicleNo</th>
+            <th class="col-party">Party</th>
+            <th class="col-step">StepId</th>
+            <th class="col-status">Status</th>
+            <th class="col-actions">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${stepTransList}">
+            <td th:text="${s.stepTransId}"></td>
+            <td th:text="${s.stepTransLinesResponseList[0].stepTransLinesId}"></td>
+            <td th:text="${s.vehicleNumber}"></td>
+            <td th:text="${s.partyName}"></td>
+            <td th:text="${s.stepTransLinesResponseList[0].stepId}"></td>
+            <td th:text="${s.stepTransLinesResponseList[0].stepStatus}"></td>
+            <td class="action-buttons">
+
+                <form method="post" style="display:inline;" th:action="@{/step-trans/update-lines}"
+                      th:object="${linesRequest}">
+                    <input name="stepTransLinesId" th:value="${s.stepTransLinesResponseList[0].stepTransLinesId}"
+                           type="hidden"/>
+                    <input name="stepStatus" type="hidden" value="COMPLETED"/>
+                    <button class="btn edit-btn" type="submit">Approve</button>
+                </form>
+
+                <form method="post" style="display:inline;" th:action="@{/step-trans/update-lines}"
+                      th:object="${linesRequest}">
+                    <input name="stepTransLinesId" th:value="${s.stepTransLinesResponseList[0].stepTransLinesId}"
+                           type="hidden"/>
+                    <input name="stepStatus" type="hidden" value="REJECTED"/>
+                    <button class="btn delete-btn" onclick="return confirm('Are you sure you want to reject?');"
+                            type="submit">Reject
+                    </button>
+                </form>
+            </td>
+
+
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+
+</body>
+</html>
+

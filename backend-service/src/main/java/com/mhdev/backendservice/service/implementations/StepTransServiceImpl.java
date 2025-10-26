@@ -78,8 +78,7 @@ public class StepTransServiceImpl implements StepTransService {
             Fetch<StepTrans, StepTransLines> detailsFetch = root.fetch("stepTransLinesList", JoinType.INNER);
             Join<StepTrans, StepTransLines> detailsJoin = (Join<StepTrans, StepTransLines>) detailsFetch;
             List<Predicate> predicates = new ArrayList<>();
-
-            predicates.add(cb.notEqual(detailsJoin.get("stepStatus"), "Completed"));
+            predicates.add(cb.equal(detailsJoin.get("stepStatus"), "PENDING"));
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable).map(stepTransMapper::toResponseDto);
     }

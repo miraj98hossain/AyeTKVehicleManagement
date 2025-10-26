@@ -13,13 +13,15 @@ import java.util.List;
 public interface StepSetupDetailsService {
 
 
-    StepSetupDetailsResponse saveStepStatusDetails(StepSetupDetailsRequest stepSetupDetailsRequest);
+    StepSetupDetailsResponse saveStepSetupDetails(StepSetupDetailsRequest stepSetupDetailsRequest);
 
 
-    StepSetupDetailsResponse getStepSetupDetails(Long stepSetupDetailsId);
+    StepSetupDetails findById(Long stepSetupDetailsId);
 
     Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable);
+
     List<StepSetupDetailsResponse> getDetailsBySetupId(StepSetup stepSetup);
-//    List<StepSetupDetailsResponse> getDetailsBySetupIds(List<StepSetup> stepSetups);
+
+    //    List<StepSetupDetailsResponse> getDetailsBySetupIds(List<StepSetup> stepSetups);
     void saveAll(List<StepSetupDetails> stepSetupDetails);
 }

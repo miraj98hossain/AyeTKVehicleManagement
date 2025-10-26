@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeRequests ->
 
-                                authorizeRequests.requestMatchers("/registration", "/steps/**", "/css/**", "/js/**").permitAll()
+                                authorizeRequests.requestMatchers("/registration", "/steps/**", "/step-trans/**", "/css/**", "/js/**").permitAll()
 
                                         .anyRequest().authenticated()
 

@@ -2,13 +2,10 @@ package com.mhdev.backendservice.controller;
 
 import com.mhdev.backendservice.service.StepSetupService;
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
-
-
 import com.mhdev.commonlib.dto.response.StepSetupDetailsResponse;
 import com.mhdev.commonlib.dto.response.StepSetupResponse;
 import com.mhdev.commonlib.dto.validationGroup.StepSetupCreateValidation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +24,7 @@ public class StepSetupController {
     StepSetupService stepSetupService;
 
     @PostMapping("/save")
-    public ResponseEntity<StepSetupResponse> saveStepSetup(@Validated({StepSetupCreateValidation.class})@RequestBody StepSetupRequest stepSetupRequest, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<StepSetupResponse> saveStepSetup(@Validated({StepSetupCreateValidation.class}) @RequestBody StepSetupRequest stepSetupRequest, UriComponentsBuilder uriBuilder) {
         try {
             StepSetupResponse savedStepSetup = stepSetupService.saveStepSetup(stepSetupRequest);
             URI location = uriBuilder
@@ -37,7 +34,7 @@ public class StepSetupController {
             return ResponseEntity.created(location).body(savedStepSetup);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 //    @PutMapping("/save")
@@ -53,31 +50,31 @@ public class StepSetupController {
 //    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<StepSetupDetailsResponse>> getStepSetup(@PathVariable("id")Long id) {
+    public ResponseEntity<List<StepSetupDetailsResponse>> getStepSetup(@PathVariable("id") Long id) {
         try {
-            var list = this.stepSetupService.getStepSetupRes(id);
-            if(list==null||list.isEmpty()){
+            var list = this.stepSetupService.findByIdRes(id);
+            if (list == null || list.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok().body(list);
         } catch (Exception e) {
 
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 
     @GetMapping()
-    public ResponseEntity<Page<StepSetupResponse>> getAllStepsSetup(Pageable pageable) {
+    public ResponseEntity<List<StepSetupResponse>> getAllStepsSetup(Pageable pageable) {
         try {
-            var list =this.stepSetupService.getAllStepSetup(pageable);
-            if(list==null||list.isEmpty()){
+            var list = this.stepSetupService.findAllStepSetup();
+            if (list == null || list.isEmpty()) {
                 return ResponseEntity.noContent().build();
             }
             return ResponseEntity.ok().body(list);
         } catch (Exception e) {
             e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
 }
