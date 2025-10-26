@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@FeignClient(name = "StepSetupServiceFeignClient", url = "${backend.service.url}${backend.service.steps.setup.prefix}")
+@FeignClient(name = "StepSetupServiceFeignClient", url = "${web.service.url}${web.service.steps.setup.prefix}")
 public interface StepSetupServiceFeignClient {
 
 

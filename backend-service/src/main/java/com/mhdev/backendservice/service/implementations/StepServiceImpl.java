@@ -34,9 +34,13 @@ public class StepServiceImpl implements StepService {
             step.setUpdatedAt(new Date());
             step.setUpdatedBy(1L);
             return this.stepMapper.toResponseDto(this.stepRepository.save(step));
+        } else {
+            step.setCreatedAt(new Date());
+            step.setCreatedBy(1L);
+            step.setIsActive(1);
         }
-        step.setCreatedAt(new Date());
-        step.setCreatedBy(1L);
+
+
         return this.stepMapper.toResponseDto(this.stepRepository.save(step));
     }
 

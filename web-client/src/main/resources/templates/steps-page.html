@@ -13,18 +13,29 @@
     <!-- Create / Update Form -->
     <form class="form-box" method="post" th:action="@{/steps}" th:object="${step}">
 
-        <input th:field="*{stepId}" type="hidden"/>
+        <div class="input-group">
+            <input th:field="*{stepId}" type="hidden"/>
 
-        <label>Step Name</label>
-        <input placeholder="Enter step name" required th:field="*{stepName}" type="text">
+            <!-- Step Name -->
+            <div class="form-field">
+                <label>Step Name</label>
+                <label>
+                    <input placeholder="Enter step name" required th:field="*{stepName}" type="text">
+                </label>
+            </div>
 
-        <label>Is Active</label>
-        <select required th:field="*{isActive}">
-            <option value="">Select status</option>
-            <option th:selected="${step.isActive == 1}" value="1">Active</option>
-            <option th:selected="${step.isActive == 0}" value="0">Inactive</option>
-        </select>
-
+            <!-- Is Active -->
+            <div th:if="${step.stepId != null}">
+                <label>Is Active</label>
+                <label>
+                    <select th:field="*{isActive}">
+                        <option value="">Select status</option>
+                        <option th:selected="${step.isActive == 1}" value="1">Active</option>
+                        <option th:selected="${step.isActive == 0}" value="0">Inactive</option>
+                    </select>
+                </label>
+            </div>
+        </div>
         <div class="button-group">
             <button class="btn save-btn" th:text="${step.stepId != null ? 'Update Step' : 'Add Step'}"
                     type="submit"></button>
@@ -44,7 +55,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="s : ${steps}">
+        <tr th:each="s : ${stepsList}">
             <td th:text="${s.stepId}"></td>
             <td th:text="${s.stepName}"></td>
             <td>
@@ -53,7 +64,7 @@
             </td>
             <td>
                 <a class="btn edit-btn" th:href="@{'/steps/edit/' + ${s.stepId}}">Edit</a>
-                <a class="btn delete-btn" th:href="@{'/steps/delete/' + ${s.stepId}}">Delete</a>
+                <!--                <a class="btn delete-btn" th:href="@{'/steps/delete/' + ${s.stepId}}">Delete</a>-->
             </td>
         </tr>
         </tbody>

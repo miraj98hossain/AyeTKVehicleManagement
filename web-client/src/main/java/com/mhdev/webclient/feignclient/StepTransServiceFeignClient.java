@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "StepTransServiceFeignClient", url = "${backend.service.url}${backend.service.step.trans.prefix}")
+@FeignClient(name = "StepTransServiceFeignClient", url = "${web.service.url}${web.service.step.trans.prefix}")
 public interface StepTransServiceFeignClient {
 
 

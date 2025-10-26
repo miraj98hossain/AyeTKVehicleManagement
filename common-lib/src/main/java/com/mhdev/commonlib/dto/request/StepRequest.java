@@ -20,7 +20,7 @@ public class StepRequest {
     private Long stepId;
     @NotBlank(groups = {StepCreateValidation.class, StepUpdateValidation.class}, message = "Step Name is required")
     private String stepName;
-    @NotNull(groups = {StepCreateValidation.class, StepUpdateValidation.class}, message = "Step is active is required")
+    @NotNull(groups = {StepUpdateValidation.class}, message = "Step is active is required")
     @Min(value = 0, message = "Is Active must be 0 or 1")
     @Max(value = 1, message = "Is Active must be 0 or 1")
     private Integer isActive;

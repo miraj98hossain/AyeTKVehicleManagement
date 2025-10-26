@@ -18,42 +18,31 @@ public class StepController {
     @Autowired
     private StepService stepService;
 
-    /**
-     * Load list + form (one page)
-     */
     @GetMapping
     public String listSteps(@RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "10") int size,
                             Model model) {
 
         Page<StepResponse> stepPage = stepService.getSteps(PageRequest.of(page, size));
-
-        model.addAttribute("steps", stepPage.getContent());
+        model.addAttribute("stepsList", stepPage.getContent());
         model.addAttribute("step", new StepRequest());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", stepPage.getTotalPages());
 
-        return "steps";
+        return "steps-page";
     }
 
-    /**
-     * Save or Update Step
-     */
+
     @PostMapping
     public String saveStep(@ModelAttribute("step") StepRequest step) {
         if (step.getStepId() == null) {
-            // Create new step
             stepService.saveStep(step);
         } else {
-            // Update existing step
             stepService.updateStep(step);
         }
         return "redirect:/steps";
     }
 
-    /**
-     * Edit Step (prefill form)
-     */
     @GetMapping("/edit/{id}")
     public String editStep(@PathVariable Long id, Model model,
                            @RequestParam(defaultValue = "0") int page,
@@ -68,23 +57,13 @@ public class StepController {
         stepRequest.setIsActive(existingStep.getIsActive());
 
         model.addAttribute("step", stepRequest);
-        model.addAttribute("steps", stepPage.getContent());
+        model.addAttribute("stepsList", stepPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", stepPage.getTotalPages());
 
-        return "steps";
+        return "steps-page";
     }
 
-//    /**
-//     * Delete Step
-//     */
-//    @GetMapping("/delete/{id}")
-//    public String deleteStep(@PathVariable Long id) {
-//        // Assuming delete endpoint is handled inside Feign client,
-//        // if not yet implemented, you can extend your StepServiceFeignClient
-//        stepServiceFeignClient.deleteStep(id);
-//        return "redirect:/steps";
-//    }
 }
 
 
