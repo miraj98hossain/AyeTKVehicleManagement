@@ -15,22 +15,22 @@ public class StepService {
     StepServiceFeignClient stepServiceFeignClient;
 
     public StepResponse saveStep(StepRequest stepRequest) {
-        return stepServiceFeignClient.saveStep(stepRequest);
+        return stepServiceFeignClient.saveStep(stepRequest).getBody();
     }
 
 
     public StepResponse updateStep(StepRequest stepRequest) {
-        return stepServiceFeignClient.updateStep(stepRequest);
+        return stepServiceFeignClient.updateStep(stepRequest).getBody();
     }
 
 
     public StepResponse getStep(Long id) {
-        return stepServiceFeignClient.getStep(id);
+        return stepServiceFeignClient.getStep(id).getBody();
     }
 
 
     public Page<StepResponse> getSteps(Pageable pageable) {
-        return stepServiceFeignClient.getAllSteps(pageable);
+        return stepServiceFeignClient.getAllSteps(pageable).getBody();
     }
 }
 

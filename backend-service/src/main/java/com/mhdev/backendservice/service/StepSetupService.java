@@ -3,21 +3,20 @@ package com.mhdev.backendservice.service;
 import com.mhdev.backendservice.entity.StepSetup;
 import com.mhdev.commonlib.dto.request.StepSetupDetailsRequest;
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
-import com.mhdev.commonlib.dto.response.StepSetupDetailsResponse;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import com.mhdev.commonlib.dto.response.StepSetupResponse;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
 
 
 public interface StepSetupService {
 
-    StepSetupResponse saveStepSetup(StepSetupRequest stepSetupRequest);
+    ApiRequestResponse saveStepSetup(StepSetupRequest stepSetupRequest);
 
-    List<StepSetupDetailsResponse> findByIdRes(Long StepSetup);
+    ApiRequestResponse findByIdRes(Long StepSetup);
 
     StepSetup findById(Long id);
 
     StepSetupResponse addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest);
 
-    List<StepSetupResponse> findAllStepSetup();
+    ApiRequestResponse findAllStepSetup(Pageable pageable);
 }

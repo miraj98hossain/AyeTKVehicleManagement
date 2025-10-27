@@ -1,13 +1,10 @@
 package com.mhdev.webservice.service;
 
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
-import com.mhdev.commonlib.dto.response.StepSetupDetailsResponse;
-import com.mhdev.commonlib.dto.response.StepSetupResponse;
 import com.mhdev.webservice.feignclient.StepSetupServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class StepSetupService {
@@ -16,18 +13,18 @@ public class StepSetupService {
     StepSetupServiceFeignClient stepSetupServiceFeignClient;
 
 
-    public StepSetupResponse saveStepSetup(StepSetupRequest stepSetupRequest) {
-        return stepSetupServiceFeignClient.saveStepSetup(stepSetupRequest);
+    public Response saveStepSetup(StepSetupRequest stepSetupRequest) {
+        return stepSetupServiceFeignClient.saveStepSetup(stepSetupRequest).getBody();
     }
 
 
-    public List<StepSetupDetailsResponse> getStepSetup(Long id) {
-        return stepSetupServiceFeignClient.getStepSetup(id);
+    public Response getStepSetup(Long id) {
+        return stepSetupServiceFeignClient.getStepSetup(id).getBody();
     }
 
 
-    public List<StepSetupResponse> getAllStepsSetup() {
-        return stepSetupServiceFeignClient.getAllStepsSetup();
+    public Response getAllStepsSetup(Pageable pageable) {
+        return stepSetupServiceFeignClient.getAllStepsSetup(pageable).getBody();
     }
 }
 

@@ -17,13 +17,11 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                ex.getMessage(),
-                LocalDateTime.now().toString(),
-                HttpStatus.NOT_FOUND.value()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    public ResponseEntity<Response> handleEntityNotFoundException(EntityNotFoundException ex) {
+        Response response = new Response();
+        response.setSuccess(Boolean.FALSE);
+        response.setMessage(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)

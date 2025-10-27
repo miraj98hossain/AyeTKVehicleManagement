@@ -1,10 +1,8 @@
 package com.mhdev.webservice.service;
 
 import com.mhdev.commonlib.dto.request.StepRequest;
-import com.mhdev.commonlib.dto.response.StepResponse;
 import com.mhdev.webservice.feignclient.StepServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -14,23 +12,23 @@ public class StepService {
     @Autowired
     StepServiceFeignClient stepServiceFeignClient;
 
-    public StepResponse saveStep(StepRequest stepRequest) {
-        return stepServiceFeignClient.saveStep(stepRequest);
+    public Response saveStep(StepRequest stepRequest) {
+        return stepServiceFeignClient.saveStep(stepRequest).getBody();
     }
 
 
-    StepResponse updateStep(StepRequest stepRequest) {
-        return stepServiceFeignClient.updateStep(stepRequest);
+    Response updateStep(StepRequest stepRequest) {
+        return stepServiceFeignClient.updateStep(stepRequest).getBody();
     }
 
 
-    public StepResponse getStep(Long id) {
-        return stepServiceFeignClient.getStep(id);
+    public Response getStep(Long id) {
+        return stepServiceFeignClient.getStep(id).getBody();
     }
 
 
-    public Page<StepResponse> getSteps(Pageable pageable) {
-        return stepServiceFeignClient.getAllSteps(pageable);
+    public Response getSteps(Pageable pageable) {
+        return stepServiceFeignClient.getAllSteps(pageable).getBody();
     }
 }
 

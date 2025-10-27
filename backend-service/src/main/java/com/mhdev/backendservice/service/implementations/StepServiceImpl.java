@@ -1,16 +1,20 @@
 package com.mhdev.backendservice.service.implementations;
 
 import com.mhdev.backendservice.entity.Step;
+import com.mhdev.backendservice.mapper.ApiRequestResponseMapper;
 import com.mhdev.backendservice.mapper.StepMapper;
 import com.mhdev.backendservice.repository.StepRepository;
 import com.mhdev.backendservice.service.StepService;
 import com.mhdev.commonlib.dto.request.StepRequest;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
+import com.mhdev.commonlib.dto.response.ApiRequestResponseDetail;
 import com.mhdev.commonlib.dto.response.StepResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,31 +24,47 @@ import java.util.List;
 @Service
 public class StepServiceImpl implements StepService {
     @Autowired
+    ApiRequestResponseMapper responseMapper;
+    @Autowired
     private StepRepository stepRepository;
     @Autowired
     private StepMapper stepMapper;
 
-    public StepResponse saveStep(StepRequest stepRequest) {
-        Step step = stepMapper.toEntity(stepRequest);
-        if (step.getStepId() != null) {
+    public ApiRequestResponse saveStep(StepRequest stepRequest) {
+        Step reqStep = stepMapper.toEntity(stepRequest);
+        ApiRequestResponse response = new ApiRequestResponse();
+        if (reqStep.getStepId() != null) {
             var extStep = this.stepRepository.findById(stepRequest.getStepId()).orElseThrow(
                     () -> new EntityNotFoundException("No Active Step found with this id " + stepRequest.getStepId()));
-            step.setCreatedAt(extStep.getCreatedAt());
-            step.setCreatedBy(extStep.getCreatedBy());
-            step.setUpdatedAt(new Date());
-            step.setUpdatedBy(1L);
-            return this.stepMapper.toResponseDto(this.stepRepository.save(step));
+            reqStep.setCreatedAt(extStep.getCreatedAt());
+            reqStep.setCreatedBy(extStep.getCreatedBy());
+            reqStep.setUpdatedAt(new Date());
+            reqStep.setUpdatedBy(1L);
+            response.setMessage("Successfully updated the step");
         } else {
-            step.setCreatedAt(new Date());
-            step.setCreatedBy(1L);
-            step.setIsActive(1);
+            reqStep.setCreatedAt(new Date());
+            reqStep.setCreatedBy(1L);
+            reqStep.setIsActive(1);
+            response.setMessage("Successfully created the Step");
         }
 
+        reqStep = this.stepRepository.save(reqStep);
+        List<Object> stepResponses = new ArrayList<>();
+        stepResponses.add(stepMapper.toResponseDto(reqStep));
 
-        return this.stepMapper.toResponseDto(this.stepRepository.save(step));
+        return responseMapper.toApiRequestResponseMapper(
+                HttpStatus.OK.name(),
+                response.getMessage(),
+                "stepResponse",
+                ApiRequestResponseDetail.ObjectType.O,
+                stepResponses,
+                StepResponse.class
+        );
+
     }
 
-    public StepResponse getStep(Long stepId) {
+    public ApiRequestResponse getStep(Long stepId) {
+
         Step step = this.stepRepository.findOne((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("stepId"), stepId));
@@ -52,17 +72,40 @@ public class StepServiceImpl implements StepService {
             return cb.and(predicates.toArray(new Predicate[0]));
         }).orElseThrow(
                 () -> new EntityNotFoundException("No Active Step found with this id " + stepId));
-        return this.stepMapper.toResponseDto(step);
+
+
+        List<Object> stepResponses = new ArrayList<>();
+        stepResponses.add(stepMapper.toResponseDto(step));
+
+        return responseMapper.toApiRequestResponseMapper(
+                HttpStatus.OK.name(),
+                "Successfully retrieved the step",
+                "stepResponse",
+                ApiRequestResponseDetail.ObjectType.O,
+                stepResponses,
+                StepResponse.class
+        );
     }
 
-    public Page<StepResponse> getAllSteps(Pageable pageable) {
-        Page<Step> allActiveSteps = this.stepRepository.findAll((root, query, cb) -> {
+    public ApiRequestResponse getAllSteps(Pageable pageable) {
+
+        Page<StepResponse> allActiveSteps = this.stepRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("isActive"), 1));
             return cb.and(predicates.toArray(new Predicate[0]));
-        }, pageable);
+        }, pageable).map(stepMapper::toResponseDto);
 
-        return allActiveSteps.map(stepMapper::toResponseDto);
+        List<Object> stepResponses = new ArrayList<>();
+        stepResponses.add(allActiveSteps);
+        return responseMapper.toApiRequestResponseMapper(
+                HttpStatus.OK.name(),
+                "Successfully retrieved the steps",
+                "stepResponse",
+                ApiRequestResponseDetail.ObjectType.PD,
+                stepResponses,
+                StepResponse.class
+        );
     }
+
 
 }
