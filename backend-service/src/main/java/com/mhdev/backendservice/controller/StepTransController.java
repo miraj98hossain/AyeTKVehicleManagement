@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -27,48 +26,28 @@ public class StepTransController {
 
     @PostMapping("/create")
     public ResponseEntity<StepTransResponse> create(@Validated({StepTransCreateValidation.class, Default.class}) @RequestBody StepTransRequest stepTransRequest, UriComponentsBuilder uriBuilder) {
-        try {
-            StepTransResponse stepTransResponse = this.stepTransService.saveStepTrans(stepTransRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(stepTransResponse);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        StepTransResponse stepTransResponse = this.stepTransService.saveStepTrans(stepTransRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(stepTransResponse);
     }
 
     @PostMapping("/update-lines")
     public ResponseEntity<StepTransLinesResponse> updateLines(@Validated({StepTransLinesUpdateValidation.class, Default.class}) @RequestBody StepTransLinesRequest stepTransLinesRequest) {
-        try {
-            StepTransLinesResponse stepTransLinesResponse = this.stepTransService.updateTransLines(stepTransLinesRequest);
-            return ResponseEntity.ok().body(stepTransLinesResponse);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        StepTransLinesResponse stepTransLinesResponse = this.stepTransService.updateTransLines(stepTransLinesRequest);
+        return ResponseEntity.ok().body(stepTransLinesResponse);
     }
 
     @GetMapping
     public ResponseEntity<Page<StepTransResponse>> findAll(Pageable pageable) {
-        try {
-            Page<StepTransResponse> list = this.stepTransService.findAll(pageable);
-            if (list == null || list.isEmpty()) {
-                return ResponseEntity.noContent().build();
-            }
-            return ResponseEntity.ok().body(list);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        Page<StepTransResponse> list = this.stepTransService.findAll(pageable);
+        if (list == null || list.isEmpty()) {
+            return ResponseEntity.noContent().build();
         }
+        return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<StepTransResponse> findById(@PathVariable("id") Long id) {
-        try {
-            StepTransResponse stepTransResponse = this.stepTransService.findById(id);
-            return ResponseEntity.ok().body(stepTransResponse);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
+        StepTransResponse stepTransResponse = this.stepTransService.findById(id);
+        return ResponseEntity.ok().body(stepTransResponse);
     }
 }
