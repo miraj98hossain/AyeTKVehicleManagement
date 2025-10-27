@@ -1,7 +1,7 @@
 package com.mhdev.backendservice.service.implementations;
 
+
 import com.mhdev.backendservice.entity.Step;
-import com.mhdev.backendservice.mapper.ApiRequestResponseMapper;
 import com.mhdev.backendservice.mapper.StepMapper;
 import com.mhdev.backendservice.repository.StepRepository;
 import com.mhdev.backendservice.service.StepService;
@@ -23,8 +23,7 @@ import java.util.List;
 
 @Service
 public class StepServiceImpl implements StepService {
-    @Autowired
-    ApiRequestResponseMapper responseMapper;
+
     @Autowired
     private StepRepository stepRepository;
     @Autowired
@@ -49,17 +48,18 @@ public class StepServiceImpl implements StepService {
         }
 
         reqStep = this.stepRepository.save(reqStep);
-        List<Object> stepResponses = new ArrayList<>();
-        stepResponses.add(stepMapper.toResponseDto(reqStep));
+        response.setHttpStatus(HttpStatus.OK.name());
+        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
+        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
+                .objectTag("stepResponse")
+                .object(this.stepMapper.toResponseDto(reqStep))
+                .mapperClass(StepResponse.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.O)
+                .build();
+        detailsResList.add(details);
+        response.setApiRequestResponseDetails(detailsResList);
 
-        return responseMapper.toApiRequestResponseMapper(
-                HttpStatus.OK.name(),
-                response.getMessage(),
-                "stepResponse",
-                ApiRequestResponseDetail.ObjectType.O,
-                stepResponses,
-                StepResponse.class
-        );
+       return response;
 
     }
 
@@ -73,18 +73,19 @@ public class StepServiceImpl implements StepService {
         }).orElseThrow(
                 () -> new EntityNotFoundException("No Active Step found with this id " + stepId));
 
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.OK.name());
+        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
+        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
+                .objectTag("stepResponse")
+                .object(this.stepMapper.toResponseDto(step))
+                .mapperClass(StepResponse.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.O)
+                .build();
+        detailsResList.add(details);
+        response.setApiRequestResponseDetails(detailsResList);
 
-        List<Object> stepResponses = new ArrayList<>();
-        stepResponses.add(stepMapper.toResponseDto(step));
-
-        return responseMapper.toApiRequestResponseMapper(
-                HttpStatus.OK.name(),
-                "Successfully retrieved the step",
-                "stepResponse",
-                ApiRequestResponseDetail.ObjectType.O,
-                stepResponses,
-                StepResponse.class
-        );
+        return response;
     }
 
     public ApiRequestResponse getAllSteps(Pageable pageable) {
@@ -95,16 +96,18 @@ public class StepServiceImpl implements StepService {
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable).map(stepMapper::toResponseDto);
 
-        List<Object> stepResponses = new ArrayList<>();
-        stepResponses.add(allActiveSteps);
-        return responseMapper.toApiRequestResponseMapper(
-                HttpStatus.OK.name(),
-                "Successfully retrieved the steps",
-                "stepResponse",
-                ApiRequestResponseDetail.ObjectType.PD,
-                stepResponses,
-                StepResponse.class
-        );
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.OK.name());
+        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
+        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
+                .objectTag("allStepsResponse")
+                .object(allActiveSteps)
+                .mapperClass(Page.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.PD)
+                .build();
+        detailsResList.add(details);
+        response.setApiRequestResponseDetails(detailsResList);
+        return response;
     }
 
 

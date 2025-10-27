@@ -16,7 +16,7 @@ public interface StepSetupService {
 
     StepSetup findById(Long id);
 
-    StepSetupResponse addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest);
+    ApiRequestResponse addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest);
 
     ApiRequestResponse findAllStepSetup(Pageable pageable);
 }

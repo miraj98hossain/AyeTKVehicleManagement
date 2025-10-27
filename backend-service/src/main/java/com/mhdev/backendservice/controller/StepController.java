@@ -2,6 +2,7 @@ package com.mhdev.backendservice.controller;
 
 import com.mhdev.backendservice.service.StepService;
 import com.mhdev.commonlib.dto.request.StepRequest;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import com.mhdev.commonlib.dto.validationGroup.StepCreateValidation;
 import com.mhdev.commonlib.dto.validationGroup.StepUpdateValidation;
 import jakarta.validation.groups.Default;
@@ -18,22 +19,22 @@ public class StepController {
     private StepService stepService;
 
     @PostMapping("/save")
-    public ResponseEntity<Response> saveStep(@Validated({StepCreateValidation.class, Default.class}) @RequestBody StepRequest stepRequest) {
+    public ResponseEntity<ApiRequestResponse> saveStep(@Validated({StepCreateValidation.class, Default.class}) @RequestBody StepRequest stepRequest) {
         return ResponseEntity.ok().body(this.stepService.saveStep(stepRequest));
     }
 
     @PutMapping("/save")
-    public ResponseEntity<Response> updateStep(@Validated({StepUpdateValidation.class}) @RequestBody StepRequest stepRequest) {
+    public ResponseEntity<ApiRequestResponse> updateStep(@Validated({StepUpdateValidation.class}) @RequestBody StepRequest stepRequest) {
         return ResponseEntity.ok().body(this.stepService.saveStep(stepRequest));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getStep(@PathVariable("id") Long id) {
+    public ResponseEntity<ApiRequestResponse> getStep(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(this.stepService.getStep(id));
     }
 
     @GetMapping()
-    public ResponseEntity<Response> getSteps(Pageable pageable) {
+    public ResponseEntity<ApiRequestResponse> getSteps(Pageable pageable) {
         var list = this.stepService.getAllSteps(pageable);
         if (list == null) {
             return ResponseEntity.noContent().build();

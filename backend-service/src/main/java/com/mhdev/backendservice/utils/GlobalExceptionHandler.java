@@ -1,6 +1,7 @@
 package com.mhdev.backendservice.utils;
 
 import com.mhdev.backendservice.dto.responsedto.ErrorResponse;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,9 +18,9 @@ import java.time.LocalDateTime;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<Response> handleEntityNotFoundException(EntityNotFoundException ex) {
-        Response response = new Response();
-        response.setSuccess(Boolean.FALSE);
+    public ResponseEntity<ApiRequestResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
         response.setMessage(ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

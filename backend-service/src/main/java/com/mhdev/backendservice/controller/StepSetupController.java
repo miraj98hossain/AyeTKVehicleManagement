@@ -2,6 +2,7 @@ package com.mhdev.backendservice.controller;
 
 import com.mhdev.backendservice.service.StepSetupService;
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import com.mhdev.commonlib.dto.validationGroup.StepSetupCreateValidation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +21,14 @@ public class StepSetupController {
     StepSetupService stepSetupService;
 
     @PostMapping("/save")
-    public ResponseEntity<Response> saveStepSetup(@Validated({StepSetupCreateValidation.class}) @RequestBody StepSetupRequest stepSetupRequest, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ApiRequestResponse> saveStepSetup(@Validated({StepSetupCreateValidation.class}) @RequestBody StepSetupRequest stepSetupRequest, UriComponentsBuilder uriBuilder) {
 
-        Response response = stepSetupService.saveStepSetup(stepSetupRequest);
+        ApiRequestResponse response = stepSetupService.saveStepSetup(stepSetupRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//        try {
-//
-//
-//
-//        } catch (Exception ex) {
-//            log.error(ex.getMessage(), ex);
-//            Response response = new Response();
-//            response.setSuccess(Boolean.FALSE);
-//            response.setMessage(ex.getMessage());
-//            return ResponseEntity.status(HttpStatus.OK).body(response);
-//        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getStepSetup(@PathVariable("id") Long id) {
+    public ResponseEntity<ApiRequestResponse> getStepSetup(@PathVariable("id") Long id) {
         var list = this.stepSetupService.findByIdRes(id);
         if (list == null) {
             return ResponseEntity.noContent().build();
@@ -47,7 +37,7 @@ public class StepSetupController {
     }
 
     @GetMapping()
-    public ResponseEntity<Response> getAllStepsSetup(Pageable pageable) {
+    public ResponseEntity<ApiRequestResponse> getAllStepsSetup(Pageable pageable) {
         var list = this.stepSetupService.findAllStepSetup(pageable);
         if (list == null) {
             return ResponseEntity.noContent().build();

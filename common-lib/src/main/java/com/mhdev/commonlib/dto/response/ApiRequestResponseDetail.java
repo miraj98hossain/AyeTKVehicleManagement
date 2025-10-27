@@ -24,4 +24,6 @@ public class ApiRequestResponseDetail {
             this.displayField = displayField;
         }
     }
+
+
 }

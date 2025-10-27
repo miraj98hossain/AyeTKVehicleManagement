@@ -20,6 +20,7 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -67,17 +68,20 @@ public class StepSetupServiceImpl implements StepSetupService {
             detail.setIsActive(1);
             detail.setStepSetup(stepSetup);
         }
+
+        stepSetup = stepSetupRepository.save(stepSetup);
+
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
         response.setMessage("Successfully created the step setup");
         List<ApiRequestResponseDetail> details = new ArrayList<>();
-        stepSetup = stepSetupRepository.save(stepSetup);
         ApiRequestResponseDetail apiRequestResponseDetail = ApiRequestResponseDetail.builder()
                 .objectTag("stepSetupResponse")
                 .mapperClass(StepSetupResponse.class.getName())
                 .objectType(ApiRequestResponseDetail.ObjectType.O)
                 .object(stepSetupMapper.toResponseDto(stepSetup))
                 .build();
+        details.add(apiRequestResponseDetail);
         response.setApiRequestResponseDetails(details);
         return response;
     }
@@ -113,9 +117,12 @@ public class StepSetupServiceImpl implements StepSetupService {
         dbDetails.setUpdatedAt(new Date());
         dbDetails.setUpdatedBy(1L);
         dbDetails.setIsActive(requestDetails.getIsActive());
-        stepSetup.getStepSetupDetails().stream().filter(
-                stepSetupDetails -> stepSetupDetails.getStepSetupDetailsId().equals(dbDetails.getStepSetupDetailsId())
-        );
+        stepSetup.getStepSetupDetails().stream()
+                .filter(
+                        stepSetupDetails -> stepSetupDetails.
+                                getStepSetupDetailsId().
+                                equals(dbDetails.getStepSetupDetailsId())
+                );
         stepSetup = stepSetupRepository.save(stepSetup);
 
         response.setHttpStatus(HttpStatus.OK.name());
@@ -134,12 +141,21 @@ public class StepSetupServiceImpl implements StepSetupService {
 
     @Transactional(readOnly = true)
     @Override
-    public Response findByIdRes(Long stepSetupId) {
-        StepSetup stepSetup = this.stepSetupRepository.findById(stepSetupId).orElseThrow(() -> new EntityNotFoundException("Step Setup Not Found with id:" + stepSetupId));
-        Response response = new Response();
-        response.setSuccess(true);
-        response.setMessage("Success");
-        response.setData(this.stepSetupDetailsService.getDetailsBySetupId(stepSetup));
+    public ApiRequestResponse findByIdRes(Long stepSetupId) {
+        StepSetup stepSetup = this.stepSetupRepository.findById(stepSetupId).orElseThrow(
+                () -> new EntityNotFoundException("Step Setup Not Found with id:" + stepSetupId));
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.OK.name());
+        response.setMessage("Successfully found the step setup");
+        List<ApiRequestResponseDetail> details = new ArrayList<>();
+        ApiRequestResponseDetail apiRequestResponseDetail = ApiRequestResponseDetail.builder()
+                .objectTag("stepSetupResponse")
+                .mapperClass(StepSetupResponse.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.O)
+                .object(stepSetupMapper.toResponseDto(stepSetup))
+                .build();
+        details.add(apiRequestResponseDetail);
+        response.setApiRequestResponseDetails(details);
         return response;
 
     }
@@ -154,10 +170,11 @@ public class StepSetupServiceImpl implements StepSetupService {
 
     @Transactional(readOnly = true)
     @Override
-    public Response findAllStepSetup(Pageable pageable) {
-        Response response = new Response();
-        response.setSuccess(true);
-        response.setMessage("Success");
+    public ApiRequestResponse findAllStepSetup(Pageable pageable) {
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.OK.name());
+        response.setMessage("Successfully found all the step setups");
+
         var page = this.stepSetupRepository.findAll((root, query, cb) -> {
             Fetch<StepSetup, StepSetupDetails> detailsFetch = root.fetch("stepSetupDetails", JoinType.INNER);
             Join<StepSetup, StepSetupDetails> detailsJoin = (Join<StepSetup, StepSetupDetails>) detailsFetch;
@@ -166,7 +183,16 @@ public class StepSetupServiceImpl implements StepSetupService {
             predicates.add(cb.equal(detailsJoin.get("isActive"), 1));
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable).map(stepSetupMapper::toResponseDto);
-        response.setData(page);
+
+        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
+        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
+                .objectTag("allStepSetupResponse")
+                .object(page)
+                .mapperClass(Page.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.PD)
+                .build();
+        detailsResList.add(details);
+        response.setApiRequestResponseDetails(detailsResList);
         return response;
 
     }
