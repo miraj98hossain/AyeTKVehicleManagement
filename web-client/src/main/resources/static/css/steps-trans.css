@@ -224,5 +224,56 @@ th {
     }
 }
 
+/* Pagination Styles */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination ul {
+    list-style: none;
+    display: inline-flex;
+    gap: 8px;
+    background: #f8f9fa;
+    padding: 10px 15px;
+    border-radius: 50px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pagination li {
+    display: inline-block;
+}
+
+.pagination a {
+    text-decoration: none;
+    color: #007bff;
+    padding: 8px 14px;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.pagination a:hover {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.pagination li.active a {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: 600;
+    cursor: default;
+}
+
+.pagination li.disabled a {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination li:first-child a,
+.pagination li:last-child a {
+    font-weight: 600;
+}
 
 

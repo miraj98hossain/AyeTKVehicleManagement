@@ -1,6 +1,7 @@
 package com.mhdev.webservice.service;
 
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import com.mhdev.webservice.feignclient.StepSetupServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -13,17 +14,17 @@ public class StepSetupService {
     StepSetupServiceFeignClient stepSetupServiceFeignClient;
 
 
-    public Response saveStepSetup(StepSetupRequest stepSetupRequest) {
+    public ApiRequestResponse saveStepSetup(StepSetupRequest stepSetupRequest) {
         return stepSetupServiceFeignClient.saveStepSetup(stepSetupRequest).getBody();
     }
 
 
-    public Response getStepSetup(Long id) {
+    public ApiRequestResponse getStepSetup(Long id) {
         return stepSetupServiceFeignClient.getStepSetup(id).getBody();
     }
 
 
-    public Response getAllStepsSetup(Pageable pageable) {
+    public ApiRequestResponse getAllStepsSetup(Pageable pageable) {
         return stepSetupServiceFeignClient.getAllStepsSetup(pageable).getBody();
     }
 }

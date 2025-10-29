@@ -20,7 +20,6 @@ import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -186,9 +185,9 @@ public class StepSetupServiceImpl implements StepSetupService {
 
         List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
         ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("allStepSetupResponse")
+                .objectTag("stepSetupResponseList")
                 .object(page)
-                .mapperClass(Page.class.getName())
+                .mapperClass(StepSetupResponse.class.getName())
                 .objectType(ApiRequestResponseDetail.ObjectType.PD)
                 .build();
         detailsResList.add(details);

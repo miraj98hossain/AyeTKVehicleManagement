@@ -16,7 +16,7 @@ import java.util.List;
 
 public class StepTransResponse {
     private Long stepTransId;
-    private String stepSetupId;
+    private Long stepSetupId;
     private String vehicleNumber;
     private String driverPhoneNo;
     private String partyName;

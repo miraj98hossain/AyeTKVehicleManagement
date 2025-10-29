@@ -2,6 +2,7 @@ package com.mhdev.webservice.controller;
 
 
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import com.mhdev.commonlib.dto.validationGroup.StepSetupCreateValidation;
 import com.mhdev.webservice.service.StepSetupService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +22,13 @@ public class StepSetupController {
     StepSetupService stepSetupService;
 
     @PostMapping("/save")
-    public ResponseEntity<Response> saveStepSetup(@Validated({StepSetupCreateValidation.class}) @RequestBody StepSetupRequest stepSetupRequest) {
+    public ResponseEntity<ApiRequestResponse> saveStepSetup(@Validated({StepSetupCreateValidation.class}) @RequestBody StepSetupRequest stepSetupRequest) {
         var savedStepSetup = stepSetupService.saveStepSetup(stepSetupRequest);
         return ResponseEntity.status(HttpStatus.OK).body(savedStepSetup);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Response> getStepSetup(@PathVariable("id") Long id) {
+    public ResponseEntity<ApiRequestResponse> getStepSetup(@PathVariable("id") Long id) {
         var list = this.stepSetupService.getStepSetup(id);
         if (list == null) {
             return ResponseEntity.noContent().build();
@@ -36,7 +37,7 @@ public class StepSetupController {
     }
 
     @GetMapping()
-    public ResponseEntity<Response> getAllStepsSetup(Pageable pageable) {
+    public ResponseEntity<ApiRequestResponse> getAllStepsSetup(Pageable pageable) {
         var list = this.stepSetupService.getAllStepsSetup(pageable);
         if (list == null) {
             return ResponseEntity.noContent().build();

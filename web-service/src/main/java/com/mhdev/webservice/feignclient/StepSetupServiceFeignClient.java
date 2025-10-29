@@ -1,6 +1,7 @@
 package com.mhdev.webservice.feignclient;
 
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,12 @@ public interface StepSetupServiceFeignClient {
 
 
     @PostMapping("/save")
-    ResponseEntity<Response> saveStepSetup(@RequestBody StepSetupRequest stepSetupRequest);
+    ResponseEntity<ApiRequestResponse> saveStepSetup(@RequestBody StepSetupRequest stepSetupRequest);
 
 
     @GetMapping("/{id}")
-    ResponseEntity<Response> getStepSetup(@PathVariable("id") Long id);
+    ResponseEntity<ApiRequestResponse> getStepSetup(@PathVariable("id") Long id);
 
     @GetMapping()
-    ResponseEntity<Response> getAllStepsSetup(Pageable pageable);
+    ResponseEntity<ApiRequestResponse> getAllStepsSetup(Pageable pageable);
 }

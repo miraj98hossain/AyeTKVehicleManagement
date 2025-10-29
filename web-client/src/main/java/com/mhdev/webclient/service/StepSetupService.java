@@ -1,13 +1,10 @@
 package com.mhdev.webclient.service;
 
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
-import com.mhdev.commonlib.dto.response.StepSetupDetailsResponse;
-import com.mhdev.commonlib.dto.response.StepSetupResponse;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import com.mhdev.webclient.feignclient.StepSetupServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class StepSetupService {
@@ -16,18 +13,18 @@ public class StepSetupService {
     StepSetupServiceFeignClient stepSetupServiceFeignClient;
 
 
-    public StepSetupResponse saveStepSetup(StepSetupRequest stepSetupRequest) {
-        return stepSetupServiceFeignClient.saveStepSetup(stepSetupRequest);
+    public ApiRequestResponse saveStepSetup(StepSetupRequest stepSetupRequest) {
+        return stepSetupServiceFeignClient.saveStepSetup(stepSetupRequest).getBody();
     }
 
 
-    public List<StepSetupDetailsResponse> getStepSetup(Long id) {
-        return stepSetupServiceFeignClient.getStepSetup(id);
+    public ApiRequestResponse getStepSetup(Long id) {
+        return stepSetupServiceFeignClient.getStepSetup(id).getBody();
     }
 
 
-    public List<StepSetupResponse> getAllStepsSetup() {
-        return stepSetupServiceFeignClient.getAllStepsSetup();
+    public ApiRequestResponse getAllStepsSetup() {
+        return stepSetupServiceFeignClient.getAllStepsSetup().getBody();
     }
 }
 

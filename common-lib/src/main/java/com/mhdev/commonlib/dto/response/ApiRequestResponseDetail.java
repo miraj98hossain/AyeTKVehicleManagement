@@ -16,6 +16,7 @@ public class ApiRequestResponseDetail {
     private Object object;
     private String mapperClass;
 
+
     public enum ObjectType {
         A("Array List"), O("Object"), P("Parameter"), PD("Pageable Data");
         final String displayField;

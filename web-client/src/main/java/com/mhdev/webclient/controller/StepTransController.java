@@ -2,17 +2,17 @@ package com.mhdev.webclient.controller;
 
 import com.mhdev.commonlib.dto.request.StepTransLinesRequest;
 import com.mhdev.commonlib.dto.request.StepTransRequest;
+import com.mhdev.commonlib.dto.response.StepTransLinesResponse;
 import com.mhdev.commonlib.dto.response.StepTransResponse;
+import com.mhdev.webclient.service.ApiResponseConversionService;
 import com.mhdev.webclient.service.StepSetupService;
 import com.mhdev.webclient.service.StepTransService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 
 @Controller
 @RequestMapping("/step-trans")
@@ -21,6 +21,8 @@ public class StepTransController {
     private StepTransService stepTransService;
     @Autowired
     private StepSetupService stepSetupService;
+    @Autowired
+    private ApiResponseConversionService conversionService;
 
     @Autowired
     public StepTransController(StepTransService stepTransService) {
@@ -31,41 +33,40 @@ public class StepTransController {
     public String listStepTrans(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size,
                                 Model model) {
-        model.addAttribute("setupList", stepSetupService.getAllStepsSetup());
-
-        Page<StepTransResponse> stepTransPage = stepTransService.findAll(PageRequest.of(page, size));
-        if (stepTransPage == null) {
-            model.addAttribute("stepTransList", Collections.emptyList());
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", 0);
-        } else {
-            stepTransPage.getContent();
-            model.addAttribute("stepTransList", stepTransPage.getContent());
-            model.addAttribute("currentPage", page);
-            model.addAttribute("totalPages", stepTransPage.getTotalPages());
-        }
-
-        model.addAttribute("stepTrans", new StepTransRequest());            // for creation form
-        model.addAttribute("linesRequest", new StepTransLinesRequest());    // for update-lines form (can be reused per row)
-
+        conversionService.apiResponseConversion(stepSetupService.getAllStepsSetup(), model);
+        conversionService.apiResponseConversion(stepTransService.findAll(PageRequest.of(page, size)), model);
+        model.addAttribute("stepTransResponse", new StepTransResponse());            // for creation form
+        model.addAttribute("stepTransLinesResponse", new StepTransLinesResponse());    // for update-lines form (can be reused per row)
 
         return "steps-trans-page";
     }
 
     // create a new StepTrans
     @PostMapping("/create")
-    public String createNewStepTrans(@ModelAttribute("stepTrans") StepTransRequest stepTrans) {
+    public String createNewStepTrans(@ModelAttribute("stepTransResponse") StepTransResponse stepTrans) {
         if (stepTrans.getStepTransId() == null) {
-            stepTransService.create(stepTrans);
+            StepTransRequest stepTransRequest = new StepTransRequest();
+            stepTransRequest.setStepSetupId(stepTrans.getStepSetupId());
+            stepTransRequest.setVehicleNumber(stepTrans.getVehicleNumber());
+            stepTransRequest.setDriverPhoneNo(stepTrans.getDriverPhoneNo());
+            stepTransRequest.setPartyName(stepTrans.getPartyName());
+            stepTransRequest.setItem(stepTrans.getItem());
+            stepTransRequest.setQuantity(stepTrans.getQuantity());
+            stepTransRequest.setTransportName(stepTrans.getTransportName());
+            stepTransService.create(stepTransRequest);
         }
         return "redirect:/step-trans";
     }
 
     // update step trans lines
     @PostMapping("/update-lines")
-    public String updateLines(@ModelAttribute("linesRequest") StepTransLinesRequest linesRequest) {
+    public String updateLines(@ModelAttribute("linesRequest") StepTransLinesResponse linesRequest) {
         if (linesRequest.getStepTransLinesId() != null) {
-            stepTransService.updateLines(linesRequest);
+            StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
+            stepTransLinesRequest.setStepTransLinesId(linesRequest.getStepTransLinesId());
+            stepTransLinesRequest.setStepStatus(linesRequest.getStepStatus());
+            stepTransLinesRequest.setRemarks(linesRequest.getRemarks());
+            stepTransService.updateLines(stepTransLinesRequest);
         }
         return "redirect:/step-trans";
     }

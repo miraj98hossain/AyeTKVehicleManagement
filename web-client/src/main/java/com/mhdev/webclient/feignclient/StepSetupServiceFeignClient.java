@@ -1,27 +1,25 @@
 package com.mhdev.webclient.feignclient;
 
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
-import com.mhdev.commonlib.dto.response.StepSetupDetailsResponse;
-import com.mhdev.commonlib.dto.response.StepSetupResponse;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
-import java.util.List;
 
 @FeignClient(name = "StepSetupServiceFeignClient", url = "${web.service.url}${web.service.steps.setup.prefix}")
 public interface StepSetupServiceFeignClient {
 
 
     @PostMapping("/save")
-    StepSetupResponse saveStepSetup(@RequestBody StepSetupRequest stepSetupRequest);
+    ResponseEntity<ApiRequestResponse> saveStepSetup(@RequestBody StepSetupRequest stepSetupRequest);
 
 
     @GetMapping("/{id}")
-    List<StepSetupDetailsResponse> getStepSetup(@PathVariable("id") Long id);
+    ResponseEntity<ApiRequestResponse> getStepSetup(@PathVariable("id") Long id);
 
     @GetMapping()
-    List<StepSetupResponse> getAllStepsSetup();
+    ResponseEntity<ApiRequestResponse> getAllStepsSetup();
 }

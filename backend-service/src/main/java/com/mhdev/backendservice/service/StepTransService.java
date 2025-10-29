@@ -2,9 +2,7 @@ package com.mhdev.backendservice.service;
 
 import com.mhdev.commonlib.dto.request.StepTransLinesRequest;
 import com.mhdev.commonlib.dto.request.StepTransRequest;
-import com.mhdev.commonlib.dto.response.StepTransLinesResponse;
-import com.mhdev.commonlib.dto.response.StepTransResponse;
-import org.springframework.data.domain.Page;
+import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +11,11 @@ import org.springframework.stereotype.Service;
 public interface StepTransService {
 
 
-    StepTransResponse saveStepTrans(StepTransRequest stepTransRequest);
+    ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest);
 
-    StepTransResponse findById(Long stepTransId);
+    ApiRequestResponse findById(Long stepTransId);
 
-    Page<StepTransResponse> findAll(Pageable pageable);
+    ApiRequestResponse findAll(Pageable pageable);
 
-    StepTransLinesResponse updateTransLines(StepTransLinesRequest stepTransLinesRequest);
+    ApiRequestResponse updateTransLines(StepTransLinesRequest stepTransLinesRequest);
 }

@@ -12,7 +12,6 @@ import com.mhdev.commonlib.dto.response.StepResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -59,7 +58,7 @@ public class StepServiceImpl implements StepService {
         detailsResList.add(details);
         response.setApiRequestResponseDetails(detailsResList);
 
-       return response;
+        return response;
 
     }
 
@@ -90,7 +89,7 @@ public class StepServiceImpl implements StepService {
 
     public ApiRequestResponse getAllSteps(Pageable pageable) {
 
-        Page<StepResponse> allActiveSteps = this.stepRepository.findAll((root, query, cb) -> {
+        var allActiveSteps = this.stepRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("isActive"), 1));
             return cb.and(predicates.toArray(new Predicate[0]));
@@ -98,11 +97,12 @@ public class StepServiceImpl implements StepService {
 
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
+        response.setMessage("Successfully");
         List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
         ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
                 .objectTag("allStepsResponse")
                 .object(allActiveSteps)
-                .mapperClass(Page.class.getName())
+                .mapperClass(StepResponse.class.getName())
                 .objectType(ApiRequestResponseDetail.ObjectType.PD)
                 .build();
         detailsResList.add(details);

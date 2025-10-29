@@ -11,7 +11,9 @@
     <h1>Step Management</h1>
 
     <!-- Create / Update Form -->
-    <form class="form-box" method="post" th:action="@{/steps}" th:object="${step}">
+    <form class="form-box" method="post"
+          th:action="@{/steps}"
+          th:object="${stepResponse}">
 
         <div class="input-group">
             <input th:field="*{stepId}" type="hidden"/>
@@ -25,21 +27,22 @@
             </div>
 
             <!-- Is Active -->
-            <div th:if="${step.stepId != null}">
+            <div th:if="${stepResponse.stepId != null}">
                 <label>Is Active</label>
                 <label>
                     <select th:field="*{isActive}">
                         <option value="">Select status</option>
-                        <option th:selected="${step.isActive == 1}" value="1">Active</option>
-                        <option th:selected="${step.isActive == 0}" value="0">Inactive</option>
+                        <option th:selected="${stepResponse.isActive == 1}" value="1">Active</option>
+                        <option th:selected="${stepResponse.isActive == 0}" value="0">Inactive</option>
                     </select>
                 </label>
             </div>
         </div>
         <div class="button-group">
-            <button class="btn save-btn" th:text="${step.stepId != null ? 'Update Step' : 'Add Step'}"
+            <button class="btn save-btn" th:text="${stepResponse.stepId != null ? 'Update Step' : 'Add Step'}"
                     type="submit"></button>
-            <a class="btn cancel-btn" th:href="@{/steps}">Clear</a>
+            <a class="btn cancel-btn"
+               th:href="@{/steps}">Clear</a>
         </div>
     </form>
 
@@ -55,7 +58,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="s : ${stepsList}">
+        <tr th:each="s : ${allStepsResponse.getContent()}">
             <td th:text="${s.stepId}"></td>
             <td th:text="${s.stepName}"></td>
             <td>
@@ -63,12 +66,38 @@
                       th:text="${s.isActive == 1 ? 'Active' : 'Inactive'}"></span>
             </td>
             <td>
-                <a class="btn edit-btn" th:href="@{'/steps/edit/' + ${s.stepId}}">Edit</a>
+                <a class="btn edit-btn"
+                   th:href="@{'/steps/edit/' + ${s.stepId}(page=${allStepsResponse.number},size=${allStepsResponse.size})}">Edit</a>
                 <!--                <a class="btn delete-btn" th:href="@{'/steps/delete/' + ${s.stepId}}">Delete</a>-->
             </td>
         </tr>
         </tbody>
     </table>
+    <div class="pagination">
+        <ul>
+            <!-- Previous -->
+            <li th:classappend="${!allStepsResponse.hasPrevious()} ? 'disabled'">
+                <a th:href="@{/steps(page=${allStepsResponse.number - 1}, size=${allStepsResponse.size})}"
+                   th:if="${allStepsResponse.hasPrevious()}">Previous</a>
+                <a href="javascript:void(0)" th:unless="${allStepsResponse.hasPrevious()}">Previous</a>
+            </li>
+
+
+            <!-- Page numbers -->
+            <li th:classappend="${i == allStepsResponse.number} ? 'active'"
+                th:each="i : ${allStepsResponse.totalPages > 0 ? #numbers.sequence(0, allStepsResponse.totalPages - 1) : 0}">
+                <a th:href="@{/steps(page=${i}, size=${allStepsResponse.size})}" th:text="${i + 1}"></a>
+            </li>
+
+            <!-- Next -->
+
+            <li th:classappend="${!allStepsResponse.hasNext()} ? 'disabled'">
+                <a th:href="@{/steps(page=${allStepsResponse.number + 1}, size=${allStepsResponse.size})}"
+                   th:if="${allStepsResponse.hasNext()}">Next</a>
+                <a href="javascript:void(0)" th:unless="${allStepsResponse.hasNext()}">Next</a>
+            </li>
+        </ul>
+    </div>
 
 </div>
 </body>
