@@ -1,6 +1,5 @@
 package com.mhdev.backendservice.utils;
 
-import com.mhdev.backendservice.dto.responsedto.ErrorResponse;
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.time.LocalDateTime;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -26,61 +23,50 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                ex.getMessage(),
-                LocalDateTime.now().toString(),
-                HttpStatus.BAD_REQUEST.value()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiRequestResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
+        response.setMessage(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiRequestResponse> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         String errorMessage = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .findFirst()
                 .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .orElse("Validation error");
-
-        ErrorResponse errorResponse = new ErrorResponse(
-                errorMessage,
-                LocalDateTime.now().toString(),
-                HttpStatus.BAD_REQUEST.value()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
+        response.setMessage(errorMessage);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    public ResponseEntity<ErrorResponse> handleResponseStatusException(ResponseStatusException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                ex.getReason(),   // Ex: "Product not found with id: 1"
-                LocalDateTime.now().toString(),
-                ex.getStatusCode().value()
-        );
-        return new ResponseEntity<>(errorResponse, ex.getStatusCode());
+    public ResponseEntity<ApiRequestResponse> handleResponseStatusException(ResponseStatusException ex) {
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
+        response.setMessage(ex.getReason());
+        return new ResponseEntity<>(response, ex.getStatusCode());
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                "Database constraint violation: " + extractMeaningfulMessage(ex),
-                LocalDateTime.now().toString(),
-                HttpStatus.BAD_REQUEST.value()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<ApiRequestResponse> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
+        response.setMessage("Database constraint violation: " + extractMeaningfulMessage(ex));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Fallback for any other unhandled exception
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
-        ErrorResponse errorResponse = new ErrorResponse(
-                "Unexpected error: " + ex.getMessage(),
-                LocalDateTime.now().toString(),
-                HttpStatus.INTERNAL_SERVER_ERROR.value()
-        );
-        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ApiRequestResponse> handleGenericException(Exception ex) {
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR.name());
+        response.setMessage(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     // Optional: Extract more readable message from nested SQL exception
