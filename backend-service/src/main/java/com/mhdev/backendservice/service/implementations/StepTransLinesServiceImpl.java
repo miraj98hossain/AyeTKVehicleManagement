@@ -43,8 +43,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
 
     @Override
     public StepTransLines getChildStepLine(Long stepTransLineId) {
-        return this.stepTransLinesRepository.findByParentLineId(stepTransLineId).orElseThrow(
-                () -> new EntityNotFoundException("StepTransLine not found with id " + stepTransLineId));
+        return this.stepTransLinesRepository.findByParentLineId(stepTransLineId).orElse(null);
     }
 
     @Override

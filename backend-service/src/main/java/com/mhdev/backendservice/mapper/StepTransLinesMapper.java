@@ -17,6 +17,7 @@ public interface StepTransLinesMapper {
 
     @Mapping(source = "stepTrans.stepTransId", target = "stepTransId")
     @Mapping(source = "step.stepId", target = "stepId")
+    @Mapping(source = "step.stepName", target = "stepName")
     @Mapping(source = "stepStatus", target = "stepStatus", qualifiedByName = "toDisplayName")
     StepTransLinesResponse toResponseDto(StepTransLines stepTransLines);
 }

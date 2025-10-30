@@ -15,6 +15,7 @@ public class StepTransLinesResponse {
     private Long stepTransLinesId;
     private Long stepTransId;
     private Long stepId;
+    private String stepName;
     private String stepStatus;
     private String remarks;
     private Long parentLineId;

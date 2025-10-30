@@ -59,18 +59,30 @@ public class StepTransController {
     }
 
     // update step trans lines
-    @PostMapping("/update-lines")
-    public String updateLines(@ModelAttribute("linesRequest") StepTransLinesResponse linesRequest) {
-        if (linesRequest.getStepTransLinesId() != null) {
+//    @PostMapping("/update-lines")
+//    public String updateLines(@ModelAttribute("linesRequest") StepTransLinesResponse linesRequest) {
+//        if (linesRequest.getStepTransLinesId() != null) {
+//            StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
+//            stepTransLinesRequest.setStepTransLinesId(linesRequest.getStepTransLinesId());
+//            stepTransLinesRequest.setStepStatus(linesRequest.getStepStatus());
+//            stepTransLinesRequest.setRemarks(linesRequest.getRemarks());
+//            stepTransService.updateLines(stepTransLinesRequest);
+//        }
+//        return "redirect:/step-trans";
+//    }
+    @GetMapping("/update-lines")
+    public String updateLines(@RequestParam(name = "stepTransLineId") Long stepTransLineId,
+                              @RequestParam(name = "stepStatus") String stepStatus,
+                              @RequestParam(name = "pick", required = false) Integer pick) {
+        if (stepTransLineId != null) {
             StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
-            stepTransLinesRequest.setStepTransLinesId(linesRequest.getStepTransLinesId());
-            stepTransLinesRequest.setStepStatus(linesRequest.getStepStatus());
-            stepTransLinesRequest.setRemarks(linesRequest.getRemarks());
-            stepTransService.updateLines(stepTransLinesRequest);
+            stepTransLinesRequest.setStepTransLinesId(stepTransLineId);
+            stepTransLinesRequest.setStepStatus(stepStatus);
+            stepTransLinesRequest.setPick(pick);
+            var res = stepTransService.updateLines(stepTransLinesRequest);
         }
         return "redirect:/step-trans";
     }
-
 //    // optional: view single (if you want to implement a detail page later)
 //    @GetMapping("/{id}")
 //    public String viewById(@PathVariable("id") Long id, Model model) {

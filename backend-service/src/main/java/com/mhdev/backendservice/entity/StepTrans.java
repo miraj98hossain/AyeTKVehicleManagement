@@ -53,7 +53,7 @@ public class StepTrans {
     private String transportName;
 
     @OneToMany(mappedBy = "stepTrans", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @OrderBy("createdAt desc")
+    @OrderBy("createdAt asc ")
     private List<StepTransLines> stepTransLinesList = new ArrayList<>();
 
     @Column(name = "CREATED_BY", nullable = false, updatable = false)

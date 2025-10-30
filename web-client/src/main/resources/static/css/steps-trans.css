@@ -203,6 +203,10 @@ th {
     background-color: #4CAF50; /* Green */
 }
 
+.pick-btn {
+    background-color: #f5b740; /* Green */
+}
+
 .delete-btn {
     background-color: #f44336; /* Red */
 }

@@ -195,6 +195,11 @@ public class StepTransServiceImpl implements StepTransService {
                         this.stepTransLinesService.saveStepTransLines(newStepTransLines);
                         //updating new line
                         objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);
+                    } else {
+                        //There is no step left to create also no child left to increase its stage.
+                        dbstepTransLines.setStepStatus(reqStepTransLines.getStepStatus());
+                        dbstepTransLines.setStage(dbstepTransLines.getStage() + 1);
+                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);
                     }
                 }
             }
@@ -206,9 +211,11 @@ public class StepTransServiceImpl implements StepTransService {
                     dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
                     objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);//Changing Status.
                     var childLine = this.stepTransLinesService.getChildStepLine(dbstepTransLines.getStepTransLinesId());
-                    childLine.setStage(childLine.getStage() + 1);//current value should be 1(0->1). Eligible to be at wip now.
-                    //updating child
-                    this.stepTransLinesService.saveStepTransLines(childLine);
+                    if (childLine != null) {
+                        childLine.setStage(childLine.getStage() + 1);//current value should be 1(0->1). Eligible to be at wip now.
+                        //updating child
+                        this.stepTransLinesService.saveStepTransLines(childLine);
+                    }
                 }
             }
 
