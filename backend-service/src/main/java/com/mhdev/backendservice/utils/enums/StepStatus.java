@@ -4,13 +4,14 @@ import lombok.Getter;
 
 @Getter
 public enum StepStatus {
-    PENDING("Pending"),
-    WORK_IN_PROGRESS("Work in progress"),
-    COMPLETED("Completed"),
-    REJECTED("Rejected");
+    N("New"),
+    W("WIP"),
+    C("Complete"),
+    R("Reject");
 
     private final String displayName;
-     StepStatus(String displayName){
-        this.displayName=displayName;
+
+    StepStatus(String displayName) {
+        this.displayName = displayName;
     }
 }

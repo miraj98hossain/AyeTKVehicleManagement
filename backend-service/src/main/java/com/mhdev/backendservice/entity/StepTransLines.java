@@ -43,7 +43,10 @@ public class StepTransLines {
 
     @Column(name = "REMARKS")
     private String remarks;
-
+    @Column(name = "PARENT_LINE_ID", nullable = false)
+    private Long parentLineId;
+    @Column(name = "STAGE", nullable = false)
+    private Integer stage;
     @Column(name = "CREATED_BY", nullable = false, updatable = false)
     private Long createdBy;
     @Column(name = "CREATED_AT", nullable = false, updatable = false)

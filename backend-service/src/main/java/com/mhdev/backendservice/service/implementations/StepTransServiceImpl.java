@@ -53,7 +53,9 @@ public class StepTransServiceImpl implements StepTransService {
             StepTransLines line = new StepTransLines();
             line.setStepTrans(stepTrans);
             line.setStep(stepTrans.getStepSetup().getStepSetupDetails().get(0).getStep());
-            line.setStepStatus(StepStatus.PENDING);
+            line.setStepStatus(StepStatus.N);
+            line.setParentLineId(0L);
+            line.setStage(0);
             line.setCreatedBy(1L);
             line.setCreatedAt(new Date());
             stepTrans.getStepTransLinesList().add(line);
@@ -98,12 +100,21 @@ public class StepTransServiceImpl implements StepTransService {
     @Override
     public ApiRequestResponse findAll(Pageable pageable) {
         var list = this.stepTransRepository.findAll((root, query, cb) -> {
-            //Fetch<StepTrans, StepTransLines> detailsFetch = root.fetch("stepTransLinesList", JoinType.INNER);
-            Join<StepTrans, StepTransLines> detailsJoin = root.join("stepTransLinesList", JoinType.INNER);
+            assert query != null;
+            query.distinct(true);
+
+            Join<StepTrans, StepTransLines> linesJoin = root.join("stepTransLinesList", JoinType.INNER);
+
             List<Predicate> predicates = new ArrayList<>();
-            predicates.add(cb.equal(detailsJoin.get("stepStatus"), "PENDING"));
+            predicates.add(cb.not(linesJoin.get("stepStatus").in('C', 'R')));
+
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable).map(stepTransMapper::toResponseDto);
+        list.forEach(stepTransResponse -> stepTransResponse.setStepTransLinesResponseList(
+                stepTransResponse.getStepTransLinesResponseList().stream()
+                        .filter(line -> !"Complete".equals(line.getStepStatus()) && !"Reject".equals(line.getStepStatus()))
+                        .toList()
+        ));
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
         response.setMessage("Successfully found all step trans");
@@ -118,35 +129,106 @@ public class StepTransServiceImpl implements StepTransService {
     }
 
     @Override
-    public ApiRequestResponse updateTransLines(StepTransLinesRequest stepTransLinesRequest) {
-        StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(stepTransLinesRequest);
-        StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(stepTransLinesRequest.getStepTransLinesId());
+    public ApiRequestResponse updateTransLines(StepTransLinesRequest linesReq) {
+        //requestedLine
+        StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(linesReq);
+        //databaseLine
+        StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesId());
+        //for storing response
+        StepTransLinesResponse objResponse = new StepTransLinesResponse();
 
-        dbstepTransLines.setStepStatus(reqStepTransLines.getStepStatus());
-        dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
+        //-----------------------Business for pick event Start----------------------------------
 
-        StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
-                () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
+        //Checking Request is a pick event or not
+        if (linesReq.getPick() != null && linesReq.getPick() == 1) {
+            //Checking it is child or not
+            //if parent do not need to get it's parentTrans just increment the stage
+            if (dbstepTransLines.getParentLineId() == 0) {
+                if (dbstepTransLines.getStage() == 1) {
+                    throw new IllegalArgumentException("This Step Trans is already picked");
+                }
+                dbstepTransLines.setStage(dbstepTransLines.getStage() + 1); //current value should be 1(0->1). Eligible to be at wip now.
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);//updating
 
-        List<StepSetupDetails> stepSetup = stepTrans.getStepSetup().getStepSetupDetails();
-        var existingTrans = stepTrans.getStepTransLinesList();
-        if (reqStepTransLines.getStepStatus().equals(StepStatus.COMPLETED)) {
-            if (!(stepSetup.size() == existingTrans.size())) {
-                var step = stepSetup.get(existingTrans.size()).getStep();
-                StepTransLines newStepTransLines = new StepTransLines();
-                newStepTransLines.setStepStatus(StepStatus.PENDING);
-                newStepTransLines.setStepTrans(stepTrans);
-                newStepTransLines.setStep(step);
-                this.stepTransLinesService.saveStepTransLines(newStepTransLines);
+            } else {
+                var parentTransLine = this.stepTransLinesService.getStepTransLine(dbstepTransLines.getParentLineId());
+                if (parentTransLine.getStage() == 2) {
+                    throw new IllegalArgumentException("This Step Trans is already picked");
+                }
+                parentTransLine.setStage(parentTransLine.getStage() + 1); //current value should be 2(1->2). Eligible to be at com now.
+                objResponse = this.stepTransLinesService.saveStepTransLines(parentTransLine);//updating
+
             }
         }
-        var linesRes = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);
+
+        //-----------------------Business for pick event End----------------------------------
+
+        //-----------------------Business for status change event Start----------------------------------
+
+        //Checking Request is a Status Change event or not
+        if (linesReq.getPick() == null) {
+
+            if (reqStepTransLines.getStepStatus().equals(StepStatus.W)) {
+                if (!(dbstepTransLines.getStage() == 1)) {
+                    throw new IllegalArgumentException("This step trans is not eligible for WIP");
+                } else {
+                    //Creating a new Step Trans and changing status
+                    dbstepTransLines.setStepStatus(StepStatus.W);
+                    dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
+                    //Fetching the setup
+                    StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
+                            () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
+                    List<StepSetupDetails> stepSetup = stepTrans.getStepSetup().getStepSetupDetails();
+                    var existingTrans = stepTrans.getStepTransLinesList();
+
+                    //if (reqStepTransLines.getStepStatus().equals(StepStatus.C)) {}
+
+                    if (!(stepSetup.size() == existingTrans.size())) {
+                        var step = stepSetup.get(existingTrans.size()).getStep();
+                        StepTransLines newStepTransLines = new StepTransLines();
+                        newStepTransLines.setStepStatus(StepStatus.N);
+                        newStepTransLines.setStepTrans(stepTrans);
+                        newStepTransLines.setStep(step);
+                        newStepTransLines.setParentLineId(dbstepTransLines.getStepTransLinesId());
+                        newStepTransLines.setStage(0);
+                        //creating new line
+                        this.stepTransLinesService.saveStepTransLines(newStepTransLines);
+                        //updating new line
+                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);
+                    }
+                }
+            }
+            if (reqStepTransLines.getStepStatus().equals(StepStatus.C)) {
+                if (!(dbstepTransLines.getStage() == 2)) {
+                    throw new IllegalArgumentException("This step trans is not eligible for Complete");
+                } else {
+                    dbstepTransLines.setStepStatus(StepStatus.C);
+                    dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
+                    objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);//Changing Status.
+                    var childLine = this.stepTransLinesService.getChildStepLine(dbstepTransLines.getStepTransLinesId());
+                    childLine.setStage(childLine.getStage() + 1);//current value should be 1(0->1). Eligible to be at wip now.
+                    //updating child
+                    this.stepTransLinesService.saveStepTransLines(childLine);
+                }
+            }
+
+            if (reqStepTransLines.getStepStatus().equals(StepStatus.R)) {
+                dbstepTransLines.setStepStatus(StepStatus.R);
+                dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);//Changing Status.
+            }
+        }
+
+
+        //-----------------------Business for status change event End----------------------------------
+
+
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
         response.setMessage("Successfully updated step trans");
         ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
                 .objectTag("stepTransLinesResponse")
-                .object(linesRes)
+                .object(objResponse)
                 .mapperClass(StepTransLinesResponse.class.getName())
                 .objectType(ApiRequestResponseDetail.ObjectType.O)
                 .build();

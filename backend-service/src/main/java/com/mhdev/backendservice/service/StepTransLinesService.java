@@ -12,6 +12,8 @@ public interface StepTransLinesService {
 
     StepTransLines getStepTransLine(Long stepTransLineId);
 
+    StepTransLines getChildStepLine(Long stepTransLineId);
+
     Page<StepTransLinesResponse> getAllStepTransLine(Pageable pageable);
 }
 

@@ -35,12 +35,19 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
 
     }
 
-
+    @Override
     public StepTransLines getStepTransLine(Long stepTransLineId) {
         return this.stepTransLinesRepository.findById(stepTransLineId).orElseThrow(
                 () -> new EntityNotFoundException("StepTransLine not found with id " + stepTransLineId));
     }
 
+    @Override
+    public StepTransLines getChildStepLine(Long stepTransLineId) {
+        return this.stepTransLinesRepository.findByParentLineId(stepTransLineId).orElseThrow(
+                () -> new EntityNotFoundException("StepTransLine not found with id " + stepTransLineId));
+    }
+
+    @Override
     public Page<StepTransLinesResponse> getAllStepTransLine(Pageable pageable) {
         return this.stepTransLinesRepository.findAll(pageable).map(this.stepTransLinesMapper::toResponseDto);
     }
