@@ -21,5 +21,4 @@ public class StepTransLinesRequest {
     @NotBlank(groups = {StepTransLinesCreateValidation.class, StepTransLinesUpdateValidation.class}, message = "Step Status is required")
     private String stepStatus;
     private String remarks;
-    private Integer pick;
 }

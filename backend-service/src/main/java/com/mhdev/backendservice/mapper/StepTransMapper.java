@@ -5,8 +5,11 @@ import com.mhdev.commonlib.dto.request.StepTransRequest;
 import com.mhdev.commonlib.dto.response.StepTransResponse;
 import org.mapstruct.*;
 
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {ReferenceMapper.class, StepSetupMapper.class, StepTransLinesMapper.class}
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {ReferenceMapper.class,
+                StepSetupMapper.class,
+                StepTransLinesMapper.class}
         , builder = @Builder(disableBuilder = true))
 public interface StepTransMapper {
     StepTrans toEntity(Long id);

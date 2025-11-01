@@ -1,9 +1,11 @@
 package com.mhdev.backendservice.service.implementations;
 
 import com.mhdev.backendservice.entity.StepTransLines;
+import com.mhdev.backendservice.entity.StepTransTimeline;
 import com.mhdev.backendservice.mapper.StepTransLinesMapper;
 import com.mhdev.backendservice.repository.StepTransLinesRepository;
 import com.mhdev.backendservice.service.StepTransLinesService;
+import com.mhdev.backendservice.service.StepTransTimeLineService;
 import com.mhdev.commonlib.dto.response.StepTransLinesResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Service
@@ -20,9 +23,21 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     StepTransLinesRepository stepTransLinesRepository;
     @Autowired
     StepTransLinesMapper stepTransLinesMapper;
+    @Autowired
+    StepTransTimeLineService stepTransTimeLineService;
 
     @Transactional
-    public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines) {
+    public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange) {
+        if (isStatusChange) {
+            //-----------------------Saving StepTransTimeLine----------------------------------
+            StepTransTimeline stepTransTimeline = new StepTransTimeline();
+            stepTransTimeline.setStep(stepTransLines.getStep());
+            stepTransTimeline.setStepTransLines(stepTransLines);
+            stepTransTimeline.setIgnitionTime(LocalDateTime.now());
+            stepTransTimeline.setStepStatus(stepTransLines.getStepStatus());
+            stepTransLines.getStepTransTimelineList().add(stepTransTimeline);
+            //-----------------------Ends StepTransTimeLine----------------------------------
+        }
         if (stepTransLines.getStepTransLinesId() == null) {
             stepTransLines.setCreatedAt(new Date());
             stepTransLines.setCreatedBy((long) 1);
@@ -31,8 +46,6 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             stepTransLines.setUpdatedBy((long) 1);
         }
         return this.stepTransLinesMapper.toResponseDto(this.stepTransLinesRepository.save(stepTransLines));
-
-
     }
 
     @Override

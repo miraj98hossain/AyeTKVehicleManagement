@@ -6,8 +6,11 @@ import com.mhdev.commonlib.dto.response.StepSetupResponse;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",
-        injectionStrategy = InjectionStrategy.CONSTRUCTOR, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {ReferenceMapper.class, StepMapper.class, StepSetupDetailsMapper.class},
+        injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {ReferenceMapper.class,
+                StepMapper.class,
+                StepSetupDetailsMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface StepSetupMapper {
     StepSetup toEntity(Long id);

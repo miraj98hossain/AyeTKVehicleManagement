@@ -7,6 +7,7 @@ public enum StepStatus {
     N("New"),
     W("WIP"),
     C("Complete"),
+    P("Pick"),
     R("Reject");
 
     private final String displayName;

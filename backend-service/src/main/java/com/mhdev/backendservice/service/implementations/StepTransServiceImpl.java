@@ -3,6 +3,7 @@ package com.mhdev.backendservice.service.implementations;
 import com.mhdev.backendservice.entity.StepSetupDetails;
 import com.mhdev.backendservice.entity.StepTrans;
 import com.mhdev.backendservice.entity.StepTransLines;
+import com.mhdev.backendservice.entity.StepTransTimeline;
 import com.mhdev.backendservice.mapper.StepTransLinesMapper;
 import com.mhdev.backendservice.mapper.StepTransMapper;
 import com.mhdev.backendservice.repository.StepTransRepository;
@@ -26,6 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +43,7 @@ public class StepTransServiceImpl implements StepTransService {
     StepTransLinesMapper stepTransLinesMapper;
     @Autowired
     StepTransLinesService stepTransLinesService;
+
 
     @Transactional
     @Override
@@ -59,6 +62,15 @@ public class StepTransServiceImpl implements StepTransService {
             line.setCreatedBy(1L);
             line.setCreatedAt(new Date());
             stepTrans.getStepTransLinesList().add(line);
+
+            //-----------------------Saving StepTransTimeLine----------------------------------
+            StepTransTimeline stepTransTimeline = new StepTransTimeline();
+            stepTransTimeline.setStep(line.getStep());
+            stepTransTimeline.setStepTransLines(line);
+            stepTransTimeline.setIgnitionTime(LocalDateTime.now());
+            stepTransTimeline.setStepStatus(line.getStepStatus());
+            //-----------------------Ends StepTransTimeLine----------------------------------
+            line.getStepTransTimelineList().add(stepTransTimeline);
         }
         stepTrans = stepTransRepository.save(stepTrans);
         ApiRequestResponse response = new ApiRequestResponse();
@@ -140,23 +152,26 @@ public class StepTransServiceImpl implements StepTransService {
         //-----------------------Business for pick event Start----------------------------------
 
         //Checking Request is a pick event or not
-        if (linesReq.getPick() != null && linesReq.getPick() == 1) {
+        if (reqStepTransLines.getStepStatus().equals(StepStatus.P)) {
             //Checking it is child or not
             //if parent do not need to get it's parentTrans just increment the stage
             if (dbstepTransLines.getParentLineId() == 0) {
                 if (dbstepTransLines.getStage() == 1) {
                     throw new IllegalArgumentException("This Step Trans is already picked");
                 }
+                dbstepTransLines.setStepStatus(StepStatus.P);
                 dbstepTransLines.setStage(dbstepTransLines.getStage() + 1); //current value should be 1(0->1). Eligible to be at wip now.
-                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);//updating
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);//updating
 
             } else {
+                dbstepTransLines.setStepStatus(StepStatus.P);
                 var parentTransLine = this.stepTransLinesService.getStepTransLine(dbstepTransLines.getParentLineId());
                 if (parentTransLine.getStage() == 2) {
                     throw new IllegalArgumentException("This Step Trans is already picked");
                 }
                 parentTransLine.setStage(parentTransLine.getStage() + 1); //current value should be 2(1->2). Eligible to be at com now.
-                objResponse = this.stepTransLinesService.saveStepTransLines(parentTransLine);//updating
+                this.stepTransLinesService.saveStepTransLines(parentTransLine, false);//updating parent
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);//updating
 
             }
         }
@@ -166,7 +181,7 @@ public class StepTransServiceImpl implements StepTransService {
         //-----------------------Business for status change event Start----------------------------------
 
         //Checking Request is a Status Change event or not
-        if (linesReq.getPick() == null) {
+        if (!reqStepTransLines.getStepStatus().equals(StepStatus.P)) {
 
             if (reqStepTransLines.getStepStatus().equals(StepStatus.W)) {
                 if (!(dbstepTransLines.getStage() == 1)) {
@@ -192,14 +207,14 @@ public class StepTransServiceImpl implements StepTransService {
                         newStepTransLines.setParentLineId(dbstepTransLines.getStepTransLinesId());
                         newStepTransLines.setStage(0);
                         //creating new line
-                        this.stepTransLinesService.saveStepTransLines(newStepTransLines);
+                        this.stepTransLinesService.saveStepTransLines(newStepTransLines, true);
                         //updating new line
-                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);
+                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);
                     } else {
                         //There is no step left to create also no child left to increase its stage.
                         dbstepTransLines.setStepStatus(reqStepTransLines.getStepStatus());
                         dbstepTransLines.setStage(dbstepTransLines.getStage() + 1);
-                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);
+                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);
                     }
                 }
             }
@@ -209,12 +224,12 @@ public class StepTransServiceImpl implements StepTransService {
                 } else {
                     dbstepTransLines.setStepStatus(StepStatus.C);
                     dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
-                    objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);//Changing Status.
+                    objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);//Changing Status.
                     var childLine = this.stepTransLinesService.getChildStepLine(dbstepTransLines.getStepTransLinesId());
                     if (childLine != null) {
                         childLine.setStage(childLine.getStage() + 1);//current value should be 1(0->1). Eligible to be at wip now.
                         //updating child
-                        this.stepTransLinesService.saveStepTransLines(childLine);
+                        this.stepTransLinesService.saveStepTransLines(childLine, false);
                     }
                 }
             }
@@ -222,7 +237,7 @@ public class StepTransServiceImpl implements StepTransService {
             if (reqStepTransLines.getStepStatus().equals(StepStatus.R)) {
                 dbstepTransLines.setStepStatus(StepStatus.R);
                 dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
-                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines);//Changing Status.
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);//Changing Status.
             }
         }
 

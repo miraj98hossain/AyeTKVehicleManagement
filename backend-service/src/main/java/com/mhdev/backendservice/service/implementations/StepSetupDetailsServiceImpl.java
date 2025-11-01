@@ -28,6 +28,7 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     private StepSetupDetailsMapper stepSetupDetailsMapper;
 
     @Transactional
+    @Override
     public StepSetupDetailsResponse saveStepSetupDetails(StepSetupDetailsRequest stepSetupDetailsRequest) {
         StepSetupDetails stepSetupDetails = stepSetupDetailsMapper.toEntity(stepSetupDetailsRequest);
 
@@ -48,6 +49,7 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public StepSetupDetails findById(Long stepSetupDetailsId) {
         return this.stepSetupDetailsRepository.findById(stepSetupDetailsId).orElseThrow(
                 () -> new EntityNotFoundException("StepSetupDetails Not Found With this id " + stepSetupDetailsId)
@@ -55,6 +57,7 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<StepSetupDetailsResponse> getDetailsBySetupId(StepSetup stepSetup) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -65,6 +68,7 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -74,6 +78,7 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     }
 
     @Transactional
+    @Override
     public void saveAll(List<StepSetupDetails> stepSetupDetails) {
         this.stepSetupDetailsRepository.saveAll(stepSetupDetails);
     }

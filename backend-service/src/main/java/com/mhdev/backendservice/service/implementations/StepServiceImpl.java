@@ -28,6 +28,7 @@ public class StepServiceImpl implements StepService {
     @Autowired
     private StepMapper stepMapper;
 
+    @Override
     public ApiRequestResponse saveStep(StepRequest stepRequest) {
         Step reqStep = stepMapper.toEntity(stepRequest);
         ApiRequestResponse response = new ApiRequestResponse();
@@ -62,6 +63,7 @@ public class StepServiceImpl implements StepService {
 
     }
 
+    @Override
     public ApiRequestResponse getStep(Long stepId) {
 
         Step step = this.stepRepository.findOne((root, query, cb) -> {
@@ -87,6 +89,7 @@ public class StepServiceImpl implements StepService {
         return response;
     }
 
+    @Override
     public ApiRequestResponse getAllSteps(Pageable pageable) {
 
         var allActiveSteps = this.stepRepository.findAll((root, query, cb) -> {

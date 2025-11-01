@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 
 public interface StepTransLinesService {
 
-    StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines);
+    StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange);
 
     StepTransLines getStepTransLine(Long stepTransLineId);
 

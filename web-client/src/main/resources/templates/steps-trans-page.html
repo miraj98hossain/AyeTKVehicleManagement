@@ -106,8 +106,8 @@
                        th:if="${line.stage == 1} and ${line.stepStatus != 'WIP'}">WIP</a>
 
                     <a class="btn pick-btn"
-                       th:href="@{'/step-trans/update-lines'(stepTransLineId=${line.stepTransLinesId}, stepStatus=${line.stepStatus}, pick=1)}"
-                       th:if="${line.stage} == 0">Pick</a>
+                       th:href="@{'/step-trans/update-lines'(stepTransLineId=${line.stepTransLinesId}, stepStatus='Pick')}"
+                       th:if="${line.stage} == 0 and ${line.stepStatus != 'Pick'}">Pick</a>
 
                     <a class="btn delete-btn"
                        th:href="@{'/step-trans/update-lines'(stepTransLineId=${line.stepTransLinesId}, stepStatus='Reject')}">

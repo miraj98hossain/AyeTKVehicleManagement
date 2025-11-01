@@ -72,13 +72,11 @@ public class StepTransController {
 //    }
     @GetMapping("/update-lines")
     public String updateLines(@RequestParam(name = "stepTransLineId") Long stepTransLineId,
-                              @RequestParam(name = "stepStatus") String stepStatus,
-                              @RequestParam(name = "pick", required = false) Integer pick) {
+                              @RequestParam(name = "stepStatus") String stepStatus) {
         if (stepTransLineId != null) {
             StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
             stepTransLinesRequest.setStepTransLinesId(stepTransLineId);
             stepTransLinesRequest.setStepStatus(stepStatus);
-            stepTransLinesRequest.setPick(pick);
             var res = stepTransService.updateLines(stepTransLinesRequest);
         }
         return "redirect:/step-trans";
