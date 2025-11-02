@@ -10,13 +10,11 @@ import org.mapstruct.*;
         uses = {ReferenceMapper.class,
                 StepMapper.class,
 //                StepTransMapper.class,
-                StepTransLinesMapper.class,
-                StepStatusTypeMapper.class},
+                StepTransLinesMapper.class,},
         builder = @Builder(disableBuilder = true))
 public interface StepTransTimelineMapper {
     //    @Mapping(source = "stepTransId",target = "stepTrans")
     @Mapping(source = "stepTransLinesId", target = "stepTransLines")
     @Mapping(source = "stepId", target = "step")
-    @Mapping(source = "stepStatus", target = "stepStatus")
     StepTransTimeline toEntity(StepTransTimelineRequest stepTransTimelineRequest);
 }

@@ -29,6 +29,8 @@ public class StepTrans {
     )
     @Column(name = "STEP_TRANS_ID")
     private Long stepTransId;
+    @Column(name = "STEP_TRANS_NO", unique = true, nullable = false)
+    private String stepTransNo;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STEP_SETUP_ID", referencedColumnName = "STEP_SETUP_ID")

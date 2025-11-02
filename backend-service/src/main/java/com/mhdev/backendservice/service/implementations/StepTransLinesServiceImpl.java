@@ -5,7 +5,6 @@ import com.mhdev.backendservice.entity.StepTransTimeline;
 import com.mhdev.backendservice.mapper.StepTransLinesMapper;
 import com.mhdev.backendservice.repository.StepTransLinesRepository;
 import com.mhdev.backendservice.service.StepTransLinesService;
-import com.mhdev.backendservice.service.StepTransTimeLineService;
 import com.mhdev.commonlib.dto.response.StepTransLinesResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,34 +23,55 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     @Autowired
     StepTransLinesMapper stepTransLinesMapper;
     @Autowired
-    StepTransTimeLineService stepTransTimeLineService;
+    NoGenService noGenService;
 
     @Transactional
     public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange) {
         if (isStatusChange) {
-            //-----------------------Saving StepTransTimeLine----------------------------------
-            StepTransTimeline stepTransTimeline = new StepTransTimeline();
-            stepTransTimeline.setStep(stepTransLines.getStep());
-            stepTransTimeline.setStepTransLines(stepTransLines);
-            stepTransTimeline.setIgnitionTime(LocalDateTime.now());
-            stepTransTimeline.setStepStatus(stepTransLines.getStepStatus());
-            stepTransLines.getStepTransTimelineList().add(stepTransTimeline);
-            //-----------------------Ends StepTransTimeLine----------------------------------
+            switch (stepTransLines.getStepStatus()) {
+                case N -> {
+                    StepTransTimeline stepTransTimeline = new StepTransTimeline();
+                    stepTransTimeline.setStep(stepTransLines.getStep());
+                    stepTransTimeline.setStepTransLines(stepTransLines);
+                    stepTransTimeline.setIgnTimeN(LocalDateTime.now());
+                    stepTransLines.setStepTransTimeline(stepTransTimeline);
+                }
+                case P -> {
+                    stepTransLines.getStepTransTimeline().setIgnTimeP(LocalDateTime.now());
+                }
+                case W -> {
+                    stepTransLines.getStepTransTimeline().setIgnTimeW(LocalDateTime.now());
+                }
+                case C -> {
+                    stepTransLines.getStepTransTimeline().setIgnTimeC(LocalDateTime.now());
+                }
+                case R -> {
+                    stepTransLines.getStepTransTimeline().setIgnTimeR(LocalDateTime.now());
+                }
+            }
         }
         if (stepTransLines.getStepTransLinesId() == null) {
             stepTransLines.setCreatedAt(new Date());
             stepTransLines.setCreatedBy((long) 1);
+            stepTransLines.setStepTransLinesNo(noGenService.createTransLNo());
         } else {
             stepTransLines.setUpdatedAt(new Date());
             stepTransLines.setUpdatedBy((long) 1);
         }
+
         return this.stepTransLinesMapper.toResponseDto(this.stepTransLinesRepository.save(stepTransLines));
     }
 
     @Override
-    public StepTransLines getStepTransLine(Long stepTransLineId) {
-        return this.stepTransLinesRepository.findById(stepTransLineId).orElseThrow(
-                () -> new EntityNotFoundException("StepTransLine not found with id " + stepTransLineId));
+    public StepTransLines getStepTransLine(String stepTransLinesNo) {
+        return this.stepTransLinesRepository.findByStepTransLinesNo(stepTransLinesNo).orElseThrow(
+                () -> new EntityNotFoundException("StepTransLine not found with No " + stepTransLinesNo));
+    }
+
+    @Override
+    public StepTransLines getStepTransLine(Long stepTransLinesId) {
+        return this.stepTransLinesRepository.findById(stepTransLinesId).orElseThrow(
+                () -> new EntityNotFoundException("StepTransLine not found with id " + stepTransLinesId));
     }
 
     @Override

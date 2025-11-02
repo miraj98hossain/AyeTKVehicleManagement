@@ -29,6 +29,9 @@ public class StepTransDetails {
     @Column(name = "STEP_TRANS_DTL_ID")
     private Long stepTransDtlId;
 
+    @Column(name = "STEP_TRANS_DTL_NO", unique = true, nullable = false)
+    private String stepTransDtlNo;
+
     @JoinColumn(name = "STEP_TRANS_ID", nullable = false, referencedColumnName = "STEP_TRANS_ID")
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private StepTrans stepTrans;

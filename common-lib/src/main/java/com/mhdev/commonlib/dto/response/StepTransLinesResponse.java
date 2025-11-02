@@ -12,13 +12,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StepTransLinesResponse {
-    private Long stepTransLinesId;
-    private Long stepTransId;
+    private String stepTransLinesNo;
+    private String stepTransNo;
     private Long stepId;
     private String stepName;
     private String stepStatus;
     private String remarks;
-    private Long parentLineId;
     private Integer stage;
     private Long createdBy;
     private Date createdAt;

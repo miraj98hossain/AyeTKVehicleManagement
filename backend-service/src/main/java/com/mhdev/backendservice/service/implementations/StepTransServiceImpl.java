@@ -43,6 +43,8 @@ public class StepTransServiceImpl implements StepTransService {
     StepTransLinesMapper stepTransLinesMapper;
     @Autowired
     StepTransLinesService stepTransLinesService;
+    @Autowired
+    NoGenService noGenService;
 
 
     @Transactional
@@ -57,6 +59,7 @@ public class StepTransServiceImpl implements StepTransService {
             line.setStepTrans(stepTrans);
             line.setStep(stepTrans.getStepSetup().getStepSetupDetails().get(0).getStep());
             line.setStepStatus(StepStatus.N);
+            line.setStepTransLinesNo(noGenService.createTransLNo());
             line.setParentLineId(0L);
             line.setStage(0);
             line.setCreatedBy(1L);
@@ -67,11 +70,11 @@ public class StepTransServiceImpl implements StepTransService {
             StepTransTimeline stepTransTimeline = new StepTransTimeline();
             stepTransTimeline.setStep(line.getStep());
             stepTransTimeline.setStepTransLines(line);
-            stepTransTimeline.setIgnitionTime(LocalDateTime.now());
-            stepTransTimeline.setStepStatus(line.getStepStatus());
+            stepTransTimeline.setIgnTimeN(LocalDateTime.now());
             //-----------------------Ends StepTransTimeLine----------------------------------
-            line.getStepTransTimelineList().add(stepTransTimeline);
+            line.setStepTransTimeline(stepTransTimeline);
         }
+        stepTrans.setStepTransNo(noGenService.createTransNo());
         stepTrans = stepTransRepository.save(stepTrans);
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
@@ -141,26 +144,27 @@ public class StepTransServiceImpl implements StepTransService {
     }
 
     @Override
+    @Transactional()
     public ApiRequestResponse updateTransLines(StepTransLinesRequest linesReq) {
         //requestedLine
         StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(linesReq);
         //databaseLine
-        StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesId());
+        StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesNo());
         //for storing response
         StepTransLinesResponse objResponse = new StepTransLinesResponse();
 
-        //-----------------------Business for pick event Start----------------------------------
+        //-----------------------Business for pick event Starts----------------------------------
 
         //Checking Request is a pick event or not
         if (reqStepTransLines.getStepStatus().equals(StepStatus.P)) {
             //Checking it is child or not
-            //if parent do not need to get it's parentTrans just increment the stage
+            //if parent ? Do not need to find it's parentTrans just increment the stage
             if (dbstepTransLines.getParentLineId() == 0) {
                 if (dbstepTransLines.getStage() == 1) {
                     throw new IllegalArgumentException("This Step Trans is already picked");
                 }
                 dbstepTransLines.setStepStatus(StepStatus.P);
-                dbstepTransLines.setStage(dbstepTransLines.getStage() + 1); //current value should be 1(0->1). Eligible to be at wip now.
+                dbstepTransLines.setStage(dbstepTransLines.getStage() + 1); //current value should be 1(0->1). Eligible to be at WIP now.
                 objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);//updating
 
             } else {
@@ -176,9 +180,9 @@ public class StepTransServiceImpl implements StepTransService {
             }
         }
 
-        //-----------------------Business for pick event End----------------------------------
+        //-----------------------Business for pick event Ends----------------------------------
 
-        //-----------------------Business for status change event Start----------------------------------
+        //-----------------------Business for status change event Starts----------------------------------
 
         //Checking Request is a Status Change event or not
         if (!reqStepTransLines.getStepStatus().equals(StepStatus.P)) {
@@ -242,7 +246,7 @@ public class StepTransServiceImpl implements StepTransService {
         }
 
 
-        //-----------------------Business for status change event End----------------------------------
+        //-----------------------Business for status change event Ends----------------------------------
 
 
         ApiRequestResponse response = new ApiRequestResponse();

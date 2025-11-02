@@ -63,7 +63,7 @@
                            type="text">
                 </div>
                 <div class="button-group">
-                    <button class="btn save-btn" th:text="${stepTransReq.stepTransId!= null ? 'Update' : 'Create'}"
+                    <button class="btn save-btn" th:text="${stepTransReq.stepTransNo!= null ? 'Update' : 'Create'}"
                             type="submit"></button>
                     <button class="btn cancel-btn" th:href="@{/step-trans}">Clear</button>
                 </div>
@@ -76,8 +76,8 @@
     <table>
         <thead>
         <tr>
-            <th class="col-trans">TransId</th>
-            <th class="col-line">LinesId</th>
+            <th class="col-trans">TransNo</th>
+            <th class="col-line">LinesNo</th>
             <th class="col-veh">VehicleNo</th>
             <th class="col-party">Driver Name</th>
             <th class="col-step">Step</th>
@@ -93,8 +93,8 @@
                 <!-- Show these cells only once per transaction -->
                 <td th:if="${lineStat.index == 0}"
                     th:rowspan="${#lists.size(s.stepTransLinesResponseList)}"
-                    th:text="${s.stepTransId}"></td>
-                <td th:text="${line.stepTransLinesId}"></td>
+                    th:text="${s.stepTransNo}"></td>
+                <td th:text="${line.stepTransLinesNo}"></td>
 
                 <td th:if="${lineStat.index == 0}"
                     th:rowspan="${#lists.size(s.stepTransLinesResponseList)}"
@@ -109,19 +109,19 @@
 
                 <td class="action-buttons">
                     <a class="btn view-btn"
-                       th:href="@{'/step-trans/update-lines'(stepTransLineId=${line.stepTransLinesId}, stepStatus='Complete')}"
+                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Complete')}"
                        th:if="${line.stage} == 2">Approve</a>
 
                     <a class="btn edit-btn"
-                       th:href="@{'/step-trans/update-lines'(stepTransLineId=${line.stepTransLinesId}, stepStatus='WIP')}"
+                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='WIP')}"
                        th:if="${line.stage == 1} and ${line.stepStatus != 'WIP'}">WIP</a>
 
                     <a class="btn pick-btn"
-                       th:href="@{'/step-trans/update-lines'(stepTransLineId=${line.stepTransLinesId}, stepStatus='Pick')}"
+                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Pick')}"
                        th:if="${line.stage} == 0 and ${line.stepStatus != 'Pick'}">Pick</a>
 
                     <a class="btn delete-btn"
-                       th:href="@{'/step-trans/update-lines'(stepTransLineId=${line.stepTransLinesId}, stepStatus='Reject')}">
+                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject')}">
                         Reject
                     </a>
                 </td>

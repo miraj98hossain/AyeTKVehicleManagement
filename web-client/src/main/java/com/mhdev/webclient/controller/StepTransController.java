@@ -26,11 +26,6 @@ public class StepTransController {
     private ApiResponseConversionService conversionService;
 
 
-    @Autowired
-    public StepTransController(StepTransService stepTransService) {
-        this.stepTransService = stepTransService;
-    }
-
     @GetMapping
     public String listStepTrans(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "10") int size,
@@ -45,18 +40,18 @@ public class StepTransController {
     // create a new StepTrans
     @PostMapping("/create")
     public String createNewStepTrans(@ModelAttribute("stepTransReq") StepTransRequest stepTransReq) {
-        if (stepTransReq.getStepTransId() == null) {
+        if (stepTransReq.getStepTransNo() == null) {
             stepTransService.create(stepTransReq);
         }
         return "redirect:/step-trans";
     }
 
     @GetMapping("/update-lines")
-    public String updateLines(@RequestParam(name = "stepTransLineId") Long stepTransLineId,
+    public String updateLines(@RequestParam(name = "stepTransLinesNo") String stepTransLinesNo,
                               @RequestParam(name = "stepStatus") String stepStatus) {
-        if (stepTransLineId != null) {
+        if (stepTransLinesNo != null) {
             StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
-            stepTransLinesRequest.setStepTransLinesId(stepTransLineId);
+            stepTransLinesRequest.setStepTransLinesNo(stepTransLinesNo);
             stepTransLinesRequest.setStepStatus(stepStatus);
             var res = stepTransService.updateLines(stepTransLinesRequest);
         }

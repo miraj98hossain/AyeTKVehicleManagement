@@ -8,4 +8,6 @@ import java.util.Optional;
 
 public interface StepTransLinesRepository extends JpaRepository<StepTransLines, Long>, JpaSpecificationExecutor<StepTransLines> {
     Optional<StepTransLines> findByParentLineId(Long parentLineId);
+
+    Optional<StepTransLines> findByStepTransLinesNo(String stepTransLinesNo);
 }

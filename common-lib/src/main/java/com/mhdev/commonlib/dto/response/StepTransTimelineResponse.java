@@ -17,6 +17,14 @@ public class StepTransTimelineResponse {
     private Long stepTransTLId;
     private Long stepTransLinesId;
     private Long stepId;
-    private String stepStatus;
-    private LocalDateTime ignitionTime;
+    
+    private LocalDateTime ignTimeN;
+
+    private LocalDateTime ignTimeP;
+
+    private LocalDateTime ignTimeW;
+
+    private LocalDateTime ignTimeC;
+
+    private LocalDateTime ignTimeR;
 }

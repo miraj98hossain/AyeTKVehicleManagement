@@ -7,9 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -31,6 +29,9 @@ public class StepTransLines {
     @Column(name = "STEP_TRANS_LINES_ID")
     private Long stepTransLinesId;
 
+    @Column(name = "STEP_TRANS_LINES_NO", unique = true, nullable = false)
+    private String stepTransLinesNo;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STEP_TRANS_ID", nullable = false, referencedColumnName = "STEP_TRANS_ID")
     private StepTrans stepTrans;
@@ -49,8 +50,8 @@ public class StepTransLines {
     private Long parentLineId;
     @Column(name = "STAGE", nullable = false)
     private Integer stage;
-    @OneToMany(mappedBy = "stepTransLines", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<StepTransTimeline> stepTransTimelineList = new ArrayList<>();
+    @OneToOne(mappedBy = "stepTransLines", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private StepTransTimeline stepTransTimeline;
 
 
     @Column(name = "CREATED_BY", nullable = false, updatable = false)

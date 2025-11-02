@@ -20,7 +20,7 @@ public interface StepTransLinesMapper {
     @Mapping(source = "stepStatus.", target = "stepStatus", qualifiedByName = "toStepStatusType")
     StepTransLines toEntity(StepTransLinesRequest stepTransLinesRequest);
 
-    @Mapping(source = "stepTrans.stepTransId", target = "stepTransId")
+    @Mapping(source = "stepTrans.stepTransNo", target = "stepTransNo")
     @Mapping(source = "step.stepId", target = "stepId")
     @Mapping(source = "step.stepName", target = "stepName")
     @Mapping(source = "stepStatus", target = "stepStatus", qualifiedByName = "toDisplayName")

@@ -2,6 +2,7 @@ package com.mhdev.backendservice.utils;
 
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.server.ResponseStatusException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -19,6 +21,7 @@ public class GlobalExceptionHandler {
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
         response.setMessage(ex.getMessage());
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -27,6 +30,7 @@ public class GlobalExceptionHandler {
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
         response.setMessage(ex.getMessage());
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -41,6 +45,7 @@ public class GlobalExceptionHandler {
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
         response.setMessage(errorMessage);
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -49,6 +54,7 @@ public class GlobalExceptionHandler {
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
         response.setMessage(ex.getReason());
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -57,6 +63,7 @@ public class GlobalExceptionHandler {
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
         response.setMessage("Database constraint violation: " + extractMeaningfulMessage(ex));
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -66,6 +73,7 @@ public class GlobalExceptionHandler {
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR.name());
         response.setMessage(ex.getMessage());
+        log.error(ex.getMessage(), ex);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

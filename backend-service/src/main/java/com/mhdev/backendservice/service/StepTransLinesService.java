@@ -10,7 +10,9 @@ public interface StepTransLinesService {
 
     StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange);
 
-    StepTransLines getStepTransLine(Long stepTransLineId);
+    StepTransLines getStepTransLine(String stepTransLinesNo);
+
+    StepTransLines getStepTransLine(Long stepTransLinesId);
 
     StepTransLines getChildStepLine(Long stepTransLineId);
 
