@@ -5,6 +5,7 @@ import com.mhdev.commonlib.dto.request.StepTransLinesRequest;
 import com.mhdev.commonlib.dto.request.StepTransRequest;
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +25,7 @@ public interface StepTransServiceFeignClient {
     ResponseEntity<ApiRequestResponse> updateLines(@RequestBody StepTransLinesRequest stepTransLinesRequest);
 
     @GetMapping
-    ResponseEntity<ApiRequestResponse> findAll(Pageable pageable);
+    ResponseEntity<ApiRequestResponse> findAll(@SpringQueryMap Pageable pageable);
 
     @GetMapping("/{id}")
     ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id);

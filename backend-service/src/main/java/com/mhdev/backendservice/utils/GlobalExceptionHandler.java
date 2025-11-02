@@ -49,7 +49,7 @@ public class GlobalExceptionHandler {
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
         response.setMessage(ex.getReason());
-        return new ResponseEntity<>(response, ex.getStatusCode());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)

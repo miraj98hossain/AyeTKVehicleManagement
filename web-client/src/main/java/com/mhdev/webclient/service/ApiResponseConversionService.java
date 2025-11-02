@@ -43,6 +43,8 @@ public class ApiResponseConversionService {
                     throw new RuntimeException(e);
                 }
             });
+        } else {
+            modelMap.addAttribute("errorMessage", apiRequestResponse);
         }
 
     }
