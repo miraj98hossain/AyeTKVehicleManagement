@@ -16,9 +16,32 @@ public interface StepTransMapper {
     //Long toId(StepTrans value);
 
     @Mapping(source = "stepSetupId", target = "stepSetup")
+    @Mapping(target = "vehicleNumber", expression = "java(combineVehicleInfo(stepTransRequest))")
     StepTrans toEntity(StepTransRequest stepTransRequest);
 
     @Mapping(source = "stepSetup.stepSetupId", target = "stepSetupId")
     @Mapping(source = "stepTransLinesList", target = "stepTransLinesResponseList")
     StepTransResponse toResponseDto(StepTrans stepTrans);
+
+
+    default String combineVehicleInfo(StepTransRequest request) {
+        if (request == null) return null;
+
+        String vehicleNumber = request.getVehicleNumber();
+        String vhNumber = null;
+
+        if (nonNull(vehicleNumber) && vehicleNumber.length() > 2) {
+            vhNumber = vehicleNumber.substring(0, 2) + "-" + vehicleNumber.substring(2);
+        } else {
+            vhNumber = vehicleNumber;
+        }
+        return String.join("-",
+                nonNull(request.getVehicleCity()) ? request.getVehicleCity() : "",
+                nonNull(request.getVehicleCityClass()) ? request.getVehicleCityClass() : ""
+        ) + " " + (nonNull(vhNumber) ? vhNumber : "").replaceAll("(^-|-$)", "");
+    }
+
+    private boolean nonNull(String str) {
+        return str != null && !str.isBlank();
+    }
 }

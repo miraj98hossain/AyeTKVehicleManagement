@@ -18,11 +18,13 @@ public class StepTransResponse {
     private Long stepTransId;
     private Long stepSetupId;
     private String vehicleNumber;
-    private String driverPhoneNo;
-    private String partyName;
-    private String item;
-    private Double quantity;
     private String transportName;
+    private String driverPhoneNo;
+    private String driverName;
+//    private String partyName;
+//    private String item;
+//    private Double quantity;
+
     private List<StepTransLinesResponse> stepTransLinesResponseList = new ArrayList<>();
     private Long createdBy;
     private Date createdAt;

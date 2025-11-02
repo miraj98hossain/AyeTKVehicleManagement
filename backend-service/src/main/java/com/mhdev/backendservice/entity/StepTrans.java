@@ -40,14 +40,8 @@ public class StepTrans {
     @Column(name = "DRIVER_PHONE_NO", nullable = false)
     private String driverPhoneNo;
 
-    @Column(name = "PARTY_NAME", nullable = false)
-    private String partyName;
-
-    @Column(name = "ITEM", nullable = false)
-    private String item;
-
-    @Column(name = "QUANTITY", nullable = false)
-    private Double quantity;
+    @Column(name = "DRIVER_NAME", nullable = false)
+    private String driverName;
 
     @Column(name = "TRANSPORT_NAME", nullable = false)
     private String transportName;

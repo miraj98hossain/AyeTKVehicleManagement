@@ -2,11 +2,10 @@ package com.mhdev.webclient.controller;
 
 import com.mhdev.commonlib.dto.request.StepTransLinesRequest;
 import com.mhdev.commonlib.dto.request.StepTransRequest;
-import com.mhdev.commonlib.dto.response.StepTransLinesResponse;
-import com.mhdev.commonlib.dto.response.StepTransResponse;
 import com.mhdev.webclient.service.ApiResponseConversionService;
 import com.mhdev.webclient.service.StepSetupService;
 import com.mhdev.webclient.service.StepTransService;
+import com.mhdev.webclient.service.VhCityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -22,7 +21,10 @@ public class StepTransController {
     @Autowired
     private StepSetupService stepSetupService;
     @Autowired
+    private VhCityService vhCityService;
+    @Autowired
     private ApiResponseConversionService conversionService;
+
 
     @Autowired
     public StepTransController(StepTransService stepTransService) {
@@ -34,26 +36,17 @@ public class StepTransController {
                                 @RequestParam(defaultValue = "10") int size,
                                 Model model) {
         conversionService.apiResponseConversion(stepSetupService.getAllStepsSetup(), model);
+        conversionService.apiResponseConversion(vhCityService.getAllVehicleCity(), model);
         conversionService.apiResponseConversion(stepTransService.findAll(PageRequest.of(page, size)), model);
-        model.addAttribute("stepTransResponse", new StepTransResponse());            // for creation form
-        model.addAttribute("stepTransLinesResponse", new StepTransLinesResponse());    // for update-lines form (can be reused per row)
-
+        model.addAttribute("stepTransReq", new StepTransRequest());// for creation form
         return "steps-trans-page";
     }
 
     // create a new StepTrans
     @PostMapping("/create")
-    public String createNewStepTrans(@ModelAttribute("stepTransResponse") StepTransResponse stepTrans) {
-        if (stepTrans.getStepTransId() == null) {
-            StepTransRequest stepTransRequest = new StepTransRequest();
-            stepTransRequest.setStepSetupId(stepTrans.getStepSetupId());
-            stepTransRequest.setVehicleNumber(stepTrans.getVehicleNumber());
-            stepTransRequest.setDriverPhoneNo(stepTrans.getDriverPhoneNo());
-            stepTransRequest.setPartyName(stepTrans.getPartyName());
-            stepTransRequest.setItem(stepTrans.getItem());
-            stepTransRequest.setQuantity(stepTrans.getQuantity());
-            stepTransRequest.setTransportName(stepTrans.getTransportName());
-            stepTransService.create(stepTransRequest);
+    public String createNewStepTrans(@ModelAttribute("stepTransReq") StepTransRequest stepTransReq) {
+        if (stepTransReq.getStepTransId() == null) {
+            stepTransService.create(stepTransReq);
         }
         return "redirect:/step-trans";
     }

@@ -98,6 +98,7 @@ select {
     calc(100% - 10px) calc(50% - 3px);
     background-size: 5px 5px, 5px 5px;
     background-repeat: no-repeat;
+    
 }
 
 /* Add hover and focus feedback */

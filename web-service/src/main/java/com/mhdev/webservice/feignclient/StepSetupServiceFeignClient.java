@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "StepSetupServiceFeignClient", url = "${backend.service.url}${backend.service.steps.setup.prefix}")
+@FeignClient(name = "StepSetupServiceFeignClient",
+        url = "${backend.service.url}${backend.service.steps.setup.prefix}")
 public interface StepSetupServiceFeignClient {
 
 
