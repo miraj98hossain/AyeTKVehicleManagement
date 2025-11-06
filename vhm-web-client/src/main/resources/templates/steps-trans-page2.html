@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html data-layout-decorate="~{fragments/layout}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Step Transaction</title>
+    <link rel="stylesheet" th:href="@{/css/steps-trans.css}">
+</head>
+<body>
+
+<div class="right_col container" data-layout-fragment="content" role="main">
+
+    <!-- Header Section -->
+    <section class="header-block">
+        <h2>Step Transaction Header</h2>
+        <form class="form-box" method="post" th:action="@{/step-trans/create}" th:object="${stepTransReq}">
+            <div class="form-grid">
+                <div>
+                    <label>Template I'd:</label>
+                    <input placeholder="Template Id" readonly th:value="${tempDtlId}" type="text">
+                </div>
+                <div>
+                    <label>Template Steps:</label>
+                    <select id="tempSteps" name="tempSteps">
+                        <option value="">-- Select Setup --</option>
+                        <option th:each="step : ${tempSteps}"
+                                th:text="${step.stepName}"
+                                th:value="${step.stepId}"></option>
+                    </select>
+                </div>
+                <div>
+
+                    <label>Vehicle City:</label>
+                    <select id="vhCtyResList" required th:field="${stepTransReq.vehicleCity}">
+                        <option value="">-- Select --</option>
+                        <option th:each="vhCty : ${vhCtyResList}"
+                                th:text="${vhCty.vhCtyName}"
+                                th:value="${vhCty.vhCtyName}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label>Vehicle City Class:</label>
+                    <select id="vhCtyClsResList" required th:field="${stepTransReq.vehicleCityClass}">
+                        <option value="">-- Select --</option>
+                        <option th:each="vhCtyCls : ${vhCtyClsResList}"
+                                th:text="${vhCtyCls.vhCtyClassName}"
+                                th:value="${vhCtyCls.vhCtyClassName}"></option>
+                    </select>
+                </div>
+                <div>
+                    <label>Vehicle No:</label>
+                    <input placeholder="Enter Vehicle No" required th:field="${stepTransReq.vehicleNumber}"
+                           type="text">
+                </div>
+                <div>
+                    <label>Transport Name:</label>
+                    <input placeholder="Enter Transport Name" required th:field="${stepTransReq.transportName}"
+                           type="text">
+                </div>
+                <div>
+                    <label>Driver Name:</label>
+                    <input placeholder="Enter Driver" required th:field="${stepTransReq.driverName}"
+                           type="text">
+                </div>
+                <div>
+                    <label>Driver Phone:</label>
+                    <input placeholder="Enter Driver Phone" required th:field="${stepTransReq.driverPhoneNo}"
+                           type="text">
+                </div>
+                <div class="button-group">
+                    <button class="btn save-btn" th:text="${stepTransReq.stepTransNo!= null ? 'Update' : 'Create'}"
+                            type="submit"></button>
+                    <button class="btn cancel-btn" th:href="@{/step-trans}">Clear</button>
+
+                </div>
+            </div>
+        </form>
+    </section>
+    <section class="line-block"></section>
+    <h2>All Step Trans Lines</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th class="col-trans">TransNo</th>
+            <th class="col-line">LinesNo</th>
+            <th class="col-veh">VehicleNo</th>
+            <th class="col-party">Driver Name</th>
+            <th class="col-step">Step</th>
+            <th class="col-status">Status</th>
+            <th class="col-actions">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Outer loop for transactions -->
+        <th:block th:each="s : ${stepTransResponseList.getContent()}">
+            <!-- Inner loop for each line under a transaction -->
+            <tr th:each="line, lineStat : ${s.stepTransLinesResponseList}">
+                <!-- Show these cells only once per transaction -->
+                <td th:if="${lineStat.index == 0}"
+                    th:rowspan="${#lists.size(s.stepTransLinesResponseList)}"
+                    th:text="${s.stepTransNo}"></td>
+                <td th:text="${line.stepTransLinesNo}"></td>
+
+                <td th:if="${lineStat.index == 0}"
+                    th:rowspan="${#lists.size(s.stepTransLinesResponseList)}"
+                    th:text="${s.vehicleNumber}"></td>
+
+                <td th:if="${lineStat.index == 0}"
+                    th:rowspan="${#lists.size(s.stepTransLinesResponseList)}"
+                    th:text="${s.driverName}"></td>
+
+                <td th:text="${line.stepName}"></td>
+                <td th:text="${line.stepStatus}"></td>
+
+                <td class="action-buttons">
+                    <a class="btn view-btn"
+                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Complete')}"
+                       th:if="${line.stage} == 2">Approve</a>
+
+                    <a class="btn edit-btn"
+                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='WIP')}"
+                       th:if="${line.stage == 1} and ${line.stepStatus != 'WIP'}">WIP</a>
+
+                    <a class="btn pick-btn"
+                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Pick')}"
+                       th:if="${line.stage} == 0 and ${line.stepStatus != 'Pick'}">Pick</a>
+
+                    <a class="btn delete-btn"
+                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject')}">
+                        Reject
+                    </a>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <div class="pagination">
+        <ul>
+            <!-- Previous -->
+            <li th:classappend="${!stepTransResponseList.hasPrevious()} ? 'disabled'">
+                <a th:href="@{/step-trans(page=${stepTransResponseList.number - 1}, size=${stepTransResponseList.size})}"
+                   th:if="${stepTransResponseList.hasPrevious()}">Previous</a>
+                <a href="javascript:void(0)" th:unless="${stepTransResponseList.hasPrevious()}">Previous</a>
+            </li>
+
+
+            <!-- Page numbers -->
+            <li th:classappend="${i == stepTransResponseList.number} ? 'active'"
+                th:each="i : ${stepTransResponseList.totalPages > 0 ? #numbers.sequence(0, stepTransResponseList.totalPages - 1) : 0}">
+                <a th:href="@{/step-trans(page=${i}, size=${stepTransResponseList.size})}" th:text="${i + 1}"></a>
+            </li>
+
+            <li th:classappend="${!stepTransResponseList.hasNext()} ? 'disabled'">
+                <a th:href="@{/step-trans(page=${stepTransResponseList.number + 1}, size=${stepTransResponseList.size})}"
+                   th:if="${stepTransResponseList.hasNext()}">Next</a>
+                <a href="javascript:void(0)" th:unless="${stepTransResponseList.hasNext()}">Next</a>
+            </li>
+        </ul>
+    </div>
+
+
+</div>
+
+</body>
+</html>
+
