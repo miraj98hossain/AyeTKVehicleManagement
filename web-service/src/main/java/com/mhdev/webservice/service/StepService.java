@@ -28,8 +28,8 @@ public class StepService {
     }
 
 
-    public ApiRequestResponse getSteps(Pageable pageable) {
-        return stepServiceFeignClient.getAllSteps(pageable).getBody();
+    public ApiRequestResponse getSteps(String searchWords, Pageable pageable) {
+        return stepServiceFeignClient.getAllSteps(searchWords, pageable).getBody();
     }
 }
 

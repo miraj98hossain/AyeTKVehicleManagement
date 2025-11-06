@@ -39,8 +39,8 @@ public class StepController {
     }
 
     @GetMapping()
-    public ResponseEntity<ApiRequestResponse> getSteps(Pageable pageable) {
-        var list = this.stepService.getSteps(pageable);
+    public ResponseEntity<ApiRequestResponse> getSteps(@RequestParam(required = false) String searchWords, Pageable pageable) {
+        var list = this.stepService.getSteps(searchWords, pageable);
         if (list == null) {
             return ResponseEntity.noContent().build();
         }

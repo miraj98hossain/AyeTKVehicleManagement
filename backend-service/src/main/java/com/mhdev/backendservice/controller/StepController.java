@@ -33,13 +33,21 @@ public class StepController {
         return ResponseEntity.ok().body(this.stepService.getStep(id));
     }
 
-    @GetMapping()
-    public ResponseEntity<ApiRequestResponse> getSteps(Pageable pageable) {
-        var list = this.stepService.getAllSteps(pageable);
-        if (list == null) {
-            return ResponseEntity.noContent().build();
+    @GetMapping
+    public ResponseEntity<ApiRequestResponse> getSteps(
+            Pageable pageable,
+            @RequestParam(required = false) String searchWords) {
+
+        if (searchWords != null && !searchWords.isBlank()) {
+            var list = stepService.getSearchedSteps(searchWords);
+            return list == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(list);
+        } else {
+            var list = stepService.getAllSteps(pageable);
+            return list == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(list);
         }
-        return ResponseEntity.ok().body(list);
+
+
     }
+
 
 }

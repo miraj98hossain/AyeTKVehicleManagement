@@ -36,6 +36,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="crud" target="17" />
+      <module name="vhm-web-client" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -44,6 +45,7 @@
       <module name="common-lib" options="-parameters" />
       <module name="crud" options="-parameters" />
       <module name="mobile-service" options="-parameters" />
+      <module name="vhm-web-client" options="-parameters" />
       <module name="web-client" options="-parameters" />
       <module name="web-service" options="-parameters" />
       <module name="webclient" options="-parameters" />

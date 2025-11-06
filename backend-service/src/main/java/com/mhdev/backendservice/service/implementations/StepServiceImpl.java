@@ -95,6 +95,7 @@ public class StepServiceImpl implements StepService {
         var allActiveSteps = this.stepRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("isActive"), 1));
+
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable).map(stepMapper::toResponseDto);
 
@@ -113,5 +114,31 @@ public class StepServiceImpl implements StepService {
         return response;
     }
 
+    @Override
+    public ApiRequestResponse getSearchedSteps(String searchWords) {
+
+        var allActiveSteps = this.stepRepository.findAll((root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (searchWords != null && !searchWords.isEmpty()) {
+                predicates.add(cb.like(cb.lower(root.get("stepName")), "%" + searchWords.toLowerCase() + "%"));
+            }
+            predicates.add(cb.equal(root.get("isActive"), 1));
+            return cb.and(predicates.toArray(new Predicate[0]));
+        }).stream().map(stepMapper::toResponseDto);
+
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.OK.name());
+        response.setMessage("Successfully");
+        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
+        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
+                .objectTag("allStepsResponse")
+                .object(allActiveSteps)
+                .mapperClass(StepResponse.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.A)
+                .build();
+        detailsResList.add(details);
+        response.setApiRequestResponseDetails(detailsResList);
+        return response;
+    }
 
 }
