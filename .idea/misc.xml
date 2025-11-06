@@ -18,7 +18,6 @@
     <option name="ignoredFiles">
       <set>
         <option value="$PROJECT_DIR$/backend-service/common-lib/pom.xml" />
-        <option value="$PROJECT_DIR$/vhm-web-client/pom.xml" />
       </set>
     </option>
   </component>

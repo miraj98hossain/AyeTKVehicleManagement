@@ -3,13 +3,12 @@ package com.aye.vhmwebclient.service;
 import com.aye.vhmwebclient.feignclient.StepSetupServiceFeignClient;
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StepSetupService {
 
-    @Autowired
+
     StepSetupServiceFeignClient stepSetupServiceFeignClient;
 
 
