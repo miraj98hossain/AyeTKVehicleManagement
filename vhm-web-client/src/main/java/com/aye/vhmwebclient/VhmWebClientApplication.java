@@ -1,4 +1,4 @@
-package com.mhdev.webclient;
+package com.aye.vhmwebclient;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,10 +10,10 @@ import static org.springframework.data.web.config.EnableSpringDataWebSupport.Pag
 @SpringBootApplication
 @EnableFeignClients
 @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
-public class WebClientApplication {
+public class VhmWebClientApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(com.mhdev.webclient.WebClientApplication.class, args);
+        SpringApplication.run(VhmWebClientApplication.class, args);
     }
 
 }

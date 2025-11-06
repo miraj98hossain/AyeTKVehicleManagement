@@ -21,22 +21,21 @@
         </processorPath>
         <module name="backend-service" />
       </profile>
-      <profile name="Annotation profile for web-service" enabled="true">
+      <profile name="Annotation profile for vhm-web-client" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
         </processorPath>
+        <module name="vhm-web-client" />
         <module name="common-lib" />
         <module name="webclient" />
-        <module name="web-client" />
         <module name="web-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="crud" target="17" />
-      <module name="vhm-web-client" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -46,7 +45,6 @@
       <module name="crud" options="-parameters" />
       <module name="mobile-service" options="-parameters" />
       <module name="vhm-web-client" options="-parameters" />
-      <module name="web-client" options="-parameters" />
       <module name="web-service" options="-parameters" />
       <module name="webclient" options="-parameters" />
     </option>

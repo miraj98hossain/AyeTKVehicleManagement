@@ -1,4 +1,4 @@
-package com.mhdev.webclient.config;
+package com.aye.vhmwebclient.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

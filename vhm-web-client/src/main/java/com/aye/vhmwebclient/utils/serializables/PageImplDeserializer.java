@@ -1,4 +1,4 @@
-package com.mhdev.webclient.utils.serializables;
+package com.aye.vhmwebclient.utils.serializables;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
