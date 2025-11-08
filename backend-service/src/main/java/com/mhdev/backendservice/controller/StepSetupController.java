@@ -44,4 +44,14 @@ public class StepSetupController {
         }
         return ResponseEntity.ok().body(list);
     }
+
+    @GetMapping("/filterStepSetup")
+    public ResponseEntity<ApiRequestResponse> filterStepSetup(
+            @RequestParam() Long orgId, @RequestParam() Long invOrgId) {
+        var list = this.stepSetupService.filterStepSetup(orgId, invOrgId);
+        if (list == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(list);
+    }
 }

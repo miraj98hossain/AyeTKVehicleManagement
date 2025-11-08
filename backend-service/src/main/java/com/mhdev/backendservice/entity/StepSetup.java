@@ -29,9 +29,9 @@ public class StepSetup {
     )
     @Column(name = "STEP_SETUP_ID")
     private Long stepSetupId;
-    @Column(name = "ORG_ID")
+    @Column(name = "ORG_ID", unique = true)
     private Long orgId;
-    @Column(name = "INV_ORG")
+    @Column(name = "INV_ORG", unique = true)
     private Long invOrg;
     @Column(name = "IS_ACTIVE")
     private Integer isActive;

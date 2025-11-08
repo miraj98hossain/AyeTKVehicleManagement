@@ -195,4 +195,34 @@ public class StepSetupServiceImpl implements StepSetupService {
         return response;
 
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ApiRequestResponse filterStepSetup(Long orgId, Long invOrgId) {
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.OK.name());
+        response.setMessage("Successfully found all the step setups");
+
+        var page = this.stepSetupRepository.findAll((root, query, cb) -> {
+            Join<StepSetup, StepSetupDetails> detailsJoin = root.join("stepSetupDetails", JoinType.INNER);
+            ;
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("isActive"), 1));
+            predicates.add(cb.equal(root.get("orgId"), orgId));
+            predicates.add(cb.equal(root.get("invOrg"), invOrgId));
+            return cb.and(predicates.toArray(new Predicate[0]));
+        }).stream().map(stepSetupMapper::toResponseDto);
+
+        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
+        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
+                .objectTag("stepSetupResponseList")
+                .object(page)
+                .mapperClass(StepSetupResponse.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.A)
+                .build();
+        detailsResList.add(details);
+        response.setApiRequestResponseDetails(detailsResList);
+        return response;
+
+    }
 }

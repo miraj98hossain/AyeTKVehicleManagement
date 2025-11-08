@@ -16,6 +16,7 @@ public class StepSetupDetailsResponse {
     private Long stepSetupDetailsId;
     private Long stepSetupId;
     private Long stepId;
+    private String stepName;
     private Integer serialNo;
     private Integer isActive;
     private Long createdBy;
