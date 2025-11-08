@@ -5,6 +5,7 @@ import com.mhdev.commonlib.dto.request.StepSetupRequest;
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class StepSetupService {
@@ -25,6 +26,10 @@ public class StepSetupService {
 
     public ApiRequestResponse getAllStepsSetup() {
         return stepSetupServiceFeignClient.getAllStepsSetup().getBody();
+    }
+
+    public ApiRequestResponse filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId) {
+        return stepSetupServiceFeignClient.filterStepSetup(orgId, invOrgId).getBody();
     }
 }
 

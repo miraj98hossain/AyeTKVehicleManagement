@@ -4,10 +4,7 @@ import com.mhdev.commonlib.dto.request.StepSetupRequest;
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "StepSetupServiceFeignClient", url = "${web.service.url}${web.service.steps.setup.prefix}")
 public interface StepSetupServiceFeignClient {
@@ -22,4 +19,7 @@ public interface StepSetupServiceFeignClient {
 
     @GetMapping()
     ResponseEntity<ApiRequestResponse> getAllStepsSetup();
+
+    @GetMapping("/filterStepSetup")
+    ResponseEntity<ApiRequestResponse> filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId);
 }
