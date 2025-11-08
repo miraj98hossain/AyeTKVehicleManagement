@@ -13,6 +13,7 @@ import com.mhdev.commonlib.dto.request.StepSetupDetailsRequest;
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import com.mhdev.commonlib.dto.response.ApiRequestResponseDetail;
+import com.mhdev.commonlib.dto.response.StepSetupDetailsResponse;
 import com.mhdev.commonlib.dto.response.StepSetupResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Fetch;
@@ -219,8 +220,8 @@ public class StepSetupServiceImpl implements StepSetupService {
         List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
         ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
                 .objectTag("stepSetupResponseList")
-                .object(stepSetupMapper.toResponseDto(stepSetup))
-                .mapperClass(StepSetupResponse.class.getName())
+                .object(stepSetup.getStepSetupDetails().stream().map(stepSetupDetailsMapper::toResponseDto).collect(Collectors.toList()))
+                .mapperClass(StepSetupDetailsResponse.class.getName())
                 .objectType(ApiRequestResponseDetail.ObjectType.A)
                 .build();
         detailsResList.add(details);
