@@ -21,5 +21,5 @@ public interface StepSetupServiceFeignClient {
     ResponseEntity<ApiRequestResponse> getAllStepsSetup();
 
     @GetMapping("/filterStepSetup")
-    ResponseEntity<ApiRequestResponse> filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId);
+    ResponseEntity<ApiRequestResponse> filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId, @RequestParam(required = false) String searchWords);
 }

@@ -47,8 +47,8 @@ public class StepSetupController {
 
     @GetMapping("/filterStepSetup")
     public ResponseEntity<ApiRequestResponse> filterStepSetup(
-            @RequestParam() Long orgId, @RequestParam() Long invOrgId) {
-        var list = this.stepSetupService.filterStepSetup(orgId, invOrgId);
+            @RequestParam Long orgId, @RequestParam Long invOrgId, @RequestParam(required = false) String searchWords) {
+        var list = this.stepSetupService.filterStepSetup(orgId, invOrgId, searchWords);
         if (list == null) {
             return ResponseEntity.noContent().build();
         }

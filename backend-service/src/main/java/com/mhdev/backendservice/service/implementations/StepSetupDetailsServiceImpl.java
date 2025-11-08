@@ -1,6 +1,7 @@
 package com.mhdev.backendservice.service.implementations;
 
 
+import com.mhdev.backendservice.entity.Step;
 import com.mhdev.backendservice.entity.StepSetup;
 import com.mhdev.backendservice.entity.StepSetupDetails;
 import com.mhdev.backendservice.mapper.StepSetupDetailsMapper;
@@ -9,6 +10,8 @@ import com.mhdev.backendservice.service.StepSetupDetailsService;
 import com.mhdev.commonlib.dto.request.StepSetupDetailsRequest;
 import com.mhdev.commonlib.dto.response.StepSetupDetailsResponse;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -81,5 +84,24 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     @Override
     public void saveAll(List<StepSetupDetails> stepSetupDetails) {
         this.stepSetupDetailsRepository.saveAll(stepSetupDetails);
+    }
+
+    @Transactional
+    @Override
+    public List<StepSetupDetails> filterStepSetupDetails(StepSetup stepSetup, Long orgId, Long invOrgId, String searchWords) {
+
+        return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
+            Join<StepSetupDetails, Step> stepJoin = root.join("step", JoinType.INNER);
+
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("stepSetup"), stepSetup));
+            predicates.add(cb.equal(root.get("isActive"), 1));
+
+            if (searchWords != null && !searchWords.isEmpty()) {
+                predicates.add(cb.like(cb.lower(stepJoin.get("stepName")), "%" + searchWords.toLowerCase() + "%"));
+            }
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        });
     }
 }

@@ -24,4 +24,7 @@ public interface StepSetupDetailsService {
 
     //    List<StepSetupDetailsResponse> getDetailsBySetupIds(List<StepSetup> stepSetups);
     void saveAll(List<StepSetupDetails> stepSetupDetails);
+
+    List<StepSetupDetails> filterStepSetupDetails(StepSetup stepSetup, Long orgId, Long invOrgId, String searchWords);
+
 }

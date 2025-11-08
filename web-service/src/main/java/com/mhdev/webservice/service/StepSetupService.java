@@ -29,8 +29,8 @@ public class StepSetupService {
         return stepSetupServiceFeignClient.getAllStepsSetup(pageable).getBody();
     }
 
-    public ApiRequestResponse filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId) {
-        return stepSetupServiceFeignClient.filterStepSetup(orgId, invOrgId).getBody();
+    public ApiRequestResponse filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId, @RequestParam(required = false) String searchWords) {
+        return stepSetupServiceFeignClient.filterStepSetup(orgId, invOrgId, searchWords).getBody();
     }
 }
 

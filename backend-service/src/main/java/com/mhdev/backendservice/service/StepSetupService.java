@@ -19,5 +19,5 @@ public interface StepSetupService {
 
     ApiRequestResponse findAllStepSetup(Pageable pageable);
 
-    ApiRequestResponse filterStepSetup(Long orgId, Long invOrgId);
+    ApiRequestResponse filterStepSetup(Long orgId, Long invOrgId, String searchWords);
 }

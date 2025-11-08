@@ -1,5 +1,6 @@
 package com.mhdev.backendservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +31,9 @@ public class StepSetupDetails {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STEP_SETUP_ID", nullable = false, referencedColumnName = "STEP_SETUP_ID")
+    @JsonIgnoreProperties(ignoreUnknown = true, value = {"stepSetupDetails"})
     private StepSetup stepSetup;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "STEP_ID", nullable = false, referencedColumnName = "STEP_ID")
