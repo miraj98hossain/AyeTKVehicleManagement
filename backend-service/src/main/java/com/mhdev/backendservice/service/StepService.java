@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 
 
 public interface StepService {
-    ApiRequestResponse saveStep(StepRequest stepRequest);
+    ApiRequestResponse saveStep(StepRequest stepRequest, Long currentUserId);
 
     ApiRequestResponse getStep(Long stepId);
 

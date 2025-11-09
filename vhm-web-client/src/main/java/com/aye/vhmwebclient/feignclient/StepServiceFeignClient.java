@@ -12,10 +12,14 @@ import org.springframework.web.bind.annotation.*;
 @FeignClient(name = "StepServiceFeignClient", url = "${web.service.url}${web.service.steps.prefix}")
 public interface StepServiceFeignClient {
     @PostMapping("/save")
-    ResponseEntity<ApiRequestResponse> saveStep(@RequestBody StepRequest stepRequest);
+    ResponseEntity<ApiRequestResponse> saveStep(
+            @RequestParam Long currentUserId,
+            @RequestBody StepRequest stepRequest);
 
     @PutMapping("/save")
-    ResponseEntity<ApiRequestResponse> updateStep(@RequestBody StepRequest stepRequest);
+    ResponseEntity<ApiRequestResponse> updateStep(
+            @RequestParam Long currentUserId,
+            @RequestBody StepRequest stepRequest);
 
     @GetMapping("/{id}")
     ResponseEntity<ApiRequestResponse> getStep(@PathVariable("id") Long id);

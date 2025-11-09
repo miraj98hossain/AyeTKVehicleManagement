@@ -29,7 +29,7 @@ public class StepServiceImpl implements StepService {
     private StepMapper stepMapper;
 
     @Override
-    public ApiRequestResponse saveStep(StepRequest stepRequest) {
+    public ApiRequestResponse saveStep(StepRequest stepRequest, Long currentUserId) {
         Step reqStep = stepMapper.toEntity(stepRequest);
         ApiRequestResponse response = new ApiRequestResponse();
         if (reqStep.getStepId() != null) {
@@ -38,11 +38,11 @@ public class StepServiceImpl implements StepService {
             reqStep.setCreatedAt(extStep.getCreatedAt());
             reqStep.setCreatedBy(extStep.getCreatedBy());
             reqStep.setUpdatedAt(new Date());
-            reqStep.setUpdatedBy(1L);
+            reqStep.setUpdatedBy(currentUserId);
             response.setMessage("Successfully updated the step");
         } else {
             reqStep.setCreatedAt(new Date());
-            reqStep.setCreatedBy(1L);
+            reqStep.setCreatedBy(currentUserId);
             reqStep.setIsActive(1);
             response.setMessage("Successfully created the Step");
         }

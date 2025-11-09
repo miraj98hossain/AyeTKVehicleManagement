@@ -12,7 +12,7 @@
 
     <!-- Create / Update Form -->
     <form class="form-box" method="post"
-          th:action="@{/steps}"
+          th:action="@{/steps/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}"
           th:object="${stepResponse}">
 
         <div class="input-group">
@@ -67,7 +67,7 @@
             </td>
             <td>
                 <a class="btn edit-btn"
-                   th:href="@{'/steps/edit/' + ${s.stepId}(page=${allStepsResponse.number},size=${allStepsResponse.size})}">Edit</a>
+                   th:href="@{'/steps/edit/' + ${s.stepId}+'/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId},page=${allStepsResponse.number},size=${allStepsResponse.size})}">Edit</a>
                 <!--                <a class="btn delete-btn" th:href="@{'/steps/delete/' + ${s.stepId}}">Delete</a>-->
             </td>
         </tr>
@@ -77,7 +77,7 @@
         <ul>
             <!-- Previous -->
             <li th:classappend="${!allStepsResponse.hasPrevious()} ? 'disabled'">
-                <a th:href="@{/steps(page=${allStepsResponse.number - 1}, size=${allStepsResponse.size})}"
+                <a th:href="@{/steps/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId},page=${allStepsResponse.number - 1}, size=${allStepsResponse.size})}"
                    th:if="${allStepsResponse.hasPrevious()}">Previous</a>
                 <a href="javascript:void(0)" th:unless="${allStepsResponse.hasPrevious()}">Previous</a>
             </li>
@@ -86,13 +86,14 @@
             <!-- Page numbers -->
             <li th:classappend="${i == allStepsResponse.number} ? 'active'"
                 th:each="i : ${allStepsResponse.totalPages > 0 ? #numbers.sequence(0, allStepsResponse.totalPages - 1) : 0}">
-                <a th:href="@{/steps(page=${i}, size=${allStepsResponse.size})}" th:text="${i + 1}"></a>
+                <a th:href="@{/steps/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId},page=${i}, size=${allStepsResponse.size})}"
+                   th:text="${i + 1}"></a>
             </li>
 
             <!-- Next -->
 
             <li th:classappend="${!allStepsResponse.hasNext()} ? 'disabled'">
-                <a th:href="@{/steps(page=${allStepsResponse.number + 1}, size=${allStepsResponse.size})}"
+                <a th:href="@{/steps/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId},page=${allStepsResponse.number + 1}, size=${allStepsResponse.size})}"
                    th:if="${allStepsResponse.hasNext()}">Next</a>
                 <a href="javascript:void(0)" th:unless="${allStepsResponse.hasNext()}">Next</a>
             </li>
