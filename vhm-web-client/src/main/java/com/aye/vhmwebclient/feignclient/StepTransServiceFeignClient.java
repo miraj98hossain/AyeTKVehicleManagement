@@ -1,9 +1,9 @@
 package com.aye.vhmwebclient.feignclient;
 
 
-import com.mhdev.commonlib.dto.request.StepTransLinesRequest;
-import com.mhdev.commonlib.dto.request.StepTransRequest;
-import com.mhdev.commonlib.dto.response.ApiRequestResponse;
+import com.aye.commonlib.dto.request.StepTransLinesRequest;
+import com.aye.commonlib.dto.request.StepTransRequest;
+import com.aye.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.data.domain.Pageable;

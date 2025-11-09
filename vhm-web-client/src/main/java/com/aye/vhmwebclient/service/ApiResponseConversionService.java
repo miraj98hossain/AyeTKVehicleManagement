@@ -1,8 +1,8 @@
 package com.aye.vhmwebclient.service;
 
+import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.mhdev.commonlib.dto.response.ApiRequestResponse;
-import com.mhdev.commonlib.dto.response.ApiRequestResponseDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

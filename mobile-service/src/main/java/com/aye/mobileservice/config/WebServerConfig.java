@@ -11,7 +11,7 @@ public class WebServerConfig implements WebServerFactoryCustomizer<TomcatServlet
     @Override
     public void customize(TomcatServletWebServerFactory factory) {
         Connector httpConnector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
-        httpConnector.setPort(8082); // Your desired HTTP port
+        httpConnector.setPort(8084); // Your desired HTTP port
         factory.addAdditionalTomcatConnectors(httpConnector);
     }
 }

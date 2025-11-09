@@ -39,7 +39,7 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mhDev</groupId>
+            <groupId>com.aye</groupId>
             <artifactId>common-lib</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
