@@ -45,6 +45,7 @@
                                 <select class="form-control"
                                         id="vhCtyResList"
                                         required
+                                        th:disabled="${stepSetupDetailsResponse.serialNo != 1}"
                                         th:field="${stepTransReq.vehicleCity}">
                                     <option value="">-- Select --</option>
                                     <option th:each="vhCty : ${vhCtyResList}"
@@ -57,6 +58,7 @@
                                 <select class="form-control"
                                         id="vhCtyClsResList"
                                         required
+                                        th:disabled="${stepSetupDetailsResponse.serialNo != 1}"
                                         th:field="${stepTransReq.vehicleCityClass}">
                                     <option value="">-- Select --</option>
                                     <option th:each="vhCtyCls : ${vhCtyClsResList}"
@@ -71,7 +73,8 @@
                                        placeholder="Enter Vehicle No"
                                        required
                                        th:field="${stepTransReq.vehicleNumber}"
-                                       type="text">
+                                       type="text"
+                                       th:readonly="${stepSetupDetailsResponse.serialNo != 1}" />
                             </div>
                         </div>
 
@@ -87,7 +90,9 @@
                             <div class="col-sm-8">
                                 <input id="transportName" class="form-control"
                                        placeholder="Enter Transport Name" required
-                                       th:field="${stepTransReq.transportName}" type="text">
+                                       th:field="${stepTransReq.transportName}"
+                                       th:readonly="${stepSetupDetailsResponse.serialNo != 1}"
+                                       type="text">
                             </div>
                         </div>
 
@@ -100,7 +105,9 @@
                             <div class="col-sm-8">
                                 <input id="driverName" class="form-control"
                                        placeholder="Enter Driver" required
-                                       th:field="${stepTransReq.driverName}" type="text">
+                                       th:field="${stepTransReq.driverName}"
+                                       th:readonly="${stepSetupDetailsResponse.serialNo != 1}"
+                                       type="text">
                             </div>
                         </div>
 
@@ -113,6 +120,7 @@
                             <div class="col-sm-8">
                                 <input id="driverPhone" class="form-control"
                                        placeholder="Enter Driver Phone" required
+                                       th:readonly="${stepSetupDetailsResponse.serialNo != 1}"
                                        th:field="${stepTransReq.driverPhoneNo}" type="text">
                             </div>
                         </div>
