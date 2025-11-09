@@ -229,4 +229,38 @@ public class StepSetupServiceImpl implements StepSetupService {
         return response;
 
     }
+
+    @Transactional
+    @Override
+    public ApiRequestResponse findSetupByDtlId(Long setupDetailId) {
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.OK.name());
+        response.setMessage("Successfully found");
+        StepSetupDetails details = this.stepSetupDetailsService.findById(setupDetailId);
+        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
+        ApiRequestResponseDetail resDetails = ApiRequestResponseDetail.builder()
+                .objectTag("stepSetupDetailsResponse")
+                .object(stepSetupDetailsMapper.toResponseDto(details))
+                .mapperClass(StepSetupDetailsResponse.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.O)
+                .build();
+        detailsResList.add(resDetails);
+        response.setApiRequestResponseDetails(detailsResList);
+        return response;
+    }
+
+    @Transactional
+    @Override
+    public StepSetupDetailsResponse findStepStpDtlByDtlId(Long stepDetailId) {
+        StepSetupDetails details = this.stepSetupDetailsService.findById(stepDetailId);
+        return this.stepSetupDetailsMapper.toResponseDto(details);
+    }
+
+    @Transactional
+    @Override
+    public List<StepSetupDetailsResponse> findStepStpDtlByDtlIds(List<Long> setupDetailIds) {
+        List<StepSetupDetails> details = this.stepSetupDetailsService.findByIds(setupDetailIds);
+        return details.stream().map(stepSetupDetailsMapper::toResponseDto).collect(Collectors.toList());
+    }
+
 }

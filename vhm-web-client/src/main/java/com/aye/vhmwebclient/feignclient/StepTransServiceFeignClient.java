@@ -8,10 +8,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @FeignClient(name = "StepTransServiceFeignClient", url = "${web.service.url}${web.service.step.trans.prefix}")
 public interface StepTransServiceFeignClient {
@@ -29,4 +28,7 @@ public interface StepTransServiceFeignClient {
 
     @GetMapping("/{id}")
     ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id);
+
+    @GetMapping("/findAllBySetupDtls")
+    ResponseEntity<ApiRequestResponse> findAllBySetupDtls(@RequestParam List<Long> setupDetailIds, Pageable pageable);
 }

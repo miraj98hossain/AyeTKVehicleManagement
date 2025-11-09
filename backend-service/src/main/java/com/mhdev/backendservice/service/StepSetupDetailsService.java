@@ -18,6 +18,8 @@ public interface StepSetupDetailsService {
 
     StepSetupDetails findById(Long stepSetupDetailsId);
 
+    List<StepSetupDetails> findByIds(List<Long> stepSetupDetailsIds);
+
     Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable);
 
     List<StepSetupDetailsResponse> getDetailsBySetupId(StepSetup stepSetup);
@@ -26,5 +28,6 @@ public interface StepSetupDetailsService {
     void saveAll(List<StepSetupDetails> stepSetupDetails);
 
     List<StepSetupDetails> filterStepSetupDetails(StepSetup stepSetup, Long orgId, Long invOrgId, String searchWords);
+
 
 }

@@ -15,7 +15,8 @@
                 <!-- Default panel contents -->
                 <div class="panel-heading">Step Transaction</div>
                 <div class="panel-body">
-                    <form method="post" th:action="@{/step-trans/create}" th:object="${stepTransReq}">
+                    <form method="post" th:action="@{/step-trans/create/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}"
+                          th:object="${stepTransReq}">
 
                         <!-- Template Row -->
                         <div class="form-group col-sm-12">
@@ -29,24 +30,22 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <select class="form-control" id="tempSteps" name="tempSteps">
-                                    <option value="">-- Select Setup --</option>
-                                    <option th:each="step : ${tempSteps}"
-                                            th:text="${step.stepName}"
-                                            th:value="${step.stepId}"></option>
-                                </select>
+
+                                <input id="Setup Id" class="form-control" readonly
+                                       placeholder="Setup Id" required
+                                       th:field="${stepSetupDetailsResponse.stepSetupId}" type="text">
                             </div>
                         </div>
 
-                        <!-- Vehicle City & Class in ONE row -->
                         <div class="form-group col-sm-12">
-                            <label class="col-sm-3 control-label" for="vhCtyResList">Vehicle City</label>
-                            <div class="col-sm-1">
-                                <b>:</b>
-                            </div>
-                            <div class="col-sm-4">
-                                <select class="form-control" id="vhCtyResList"
-                                        required th:field="${stepTransReq.vehicleCity}">
+                            <label class="col-sm-3 control-label" for="vhCtyResList">Vehicle Info</label>
+                            <div class="col-sm-1"><b>:</b></div>
+
+                            <div class="col-sm-3">
+                                <select class="form-control"
+                                        id="vhCtyResList"
+                                        required
+                                        th:field="${stepTransReq.vehicleCity}">
                                     <option value="">-- Select --</option>
                                     <option th:each="vhCty : ${vhCtyResList}"
                                             th:text="${vhCty.vhCtyName}"
@@ -54,29 +53,30 @@
                                 </select>
                             </div>
 
-                            <div class="col-sm-4">
-                                <select class="form-control" id="vhCtyClsResList"
-                                        required th:field="${stepTransReq.vehicleCityClass}">
+                            <div class="col-sm-2">
+                                <select class="form-control"
+                                        id="vhCtyClsResList"
+                                        required
+                                        th:field="${stepTransReq.vehicleCityClass}">
                                     <option value="">-- Select --</option>
                                     <option th:each="vhCtyCls : ${vhCtyClsResList}"
                                             th:text="${vhCtyCls.vhCtyClassName}"
                                             th:value="${vhCtyCls.vhCtyClassName}"></option>
                                 </select>
                             </div>
+
+                            <div class="col-sm-3">
+                                <input id="vehicleNo"
+                                       class="form-control"
+                                       placeholder="Enter Vehicle No"
+                                       required
+                                       th:field="${stepTransReq.vehicleNumber}"
+                                       type="text">
+                            </div>
                         </div>
 
-                        <!-- Vehicle No -->
-                        <div class="form-group col-sm-12">
-                            <label class="col-sm-3 control-label" for="vehicleNo">Vehicle No</label>
-                            <div class="col-sm-1">
-                                <b>:</b>
-                            </div>
-                            <div class="col-sm-8">
-                                <input id="vehicleNo" class="form-control"
-                                       placeholder="Enter Vehicle No" required
-                                       th:field="${stepTransReq.vehicleNumber}" type="text">
-                            </div>
-                        </div>
+
+
 
                         <!-- Transport Name -->
                         <div class="form-group col-sm-12">
@@ -123,7 +123,7 @@
                                     th:text="${stepTransReq.stepTransNo!= null ? 'Update' : 'Create'}"
                                     type="submit"></button>
 
-                            <a class="btn cancel-btn" th:href="@{/step-trans}">Clear</a>
+                            <a class="btn cancel-btn" th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}">Clear</a>
                         </div>
 
                     </form>
@@ -159,22 +159,27 @@
 
                                 <td th:text="${line.stepName}"></td>
                                 <td th:text="${line.stepStatus}"></td>
-
                                 <td class="action-buttons">
                                     <a class="btn view-btn"
-                                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Complete')}"
-                                       th:if="${line.stage} == 2">Approve</a>
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Complete')}"
+                                       th:if="${line.stage == 2}">
+                                        Approve
+                                    </a>
 
                                     <a class="btn edit-btn"
-                                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='WIP')}"
-                                       th:if="${line.stage == 1} and ${line.stepStatus != 'WIP'}">WIP</a>
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='WIP')}"
+                                       th:if="${line.stage == 1 and line.stepStatus != 'WIP'}">
+                                        WIP
+                                    </a>
 
                                     <a class="btn pick-btn"
-                                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Pick')}"
-                                       th:if="${line.stage} == 0 and ${line.stepStatus != 'Pick'}">Pick</a>
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Pick')}"
+                                       th:if="${line.stage == 0 and line.stepStatus != 'Pick'}">
+                                        Pick
+                                    </a>
 
                                     <a class="btn delete-btn"
-                                       th:href="@{'/step-trans/update-lines'(stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject')}">
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject')}">
                                         Reject
                                     </a>
                                 </td>

@@ -6,6 +6,8 @@ import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public interface StepTransService {
@@ -18,4 +20,6 @@ public interface StepTransService {
     ApiRequestResponse findAll(Pageable pageable);
 
     ApiRequestResponse updateTransLines(StepTransLinesRequest stepTransLinesRequest);
+
+    ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, Pageable pageable);
 }

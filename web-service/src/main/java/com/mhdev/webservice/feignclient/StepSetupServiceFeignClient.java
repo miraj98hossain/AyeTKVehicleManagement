@@ -23,5 +23,10 @@ public interface StepSetupServiceFeignClient {
     ResponseEntity<ApiRequestResponse> getAllStepsSetup(Pageable pageable);
 
     @GetMapping("/filterStepSetup")
-    ResponseEntity<ApiRequestResponse> filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId, @RequestParam(required = false) String searchWords);
+    ResponseEntity<ApiRequestResponse> filterStepSetup(@RequestParam Long orgId,
+                                                       @RequestParam Long invOrgId,
+                                                       @RequestParam(required = false) String searchWords);
+
+    @GetMapping("/findSetupByDtlId")
+    ResponseEntity<ApiRequestResponse> findSetupByDtlId(@RequestParam Long detailId);
 }

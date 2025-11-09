@@ -54,4 +54,14 @@ public class StepSetupController {
         }
         return ResponseEntity.ok().body(list);
     }
+
+    @GetMapping("/findSetupByDtlId")
+    public ResponseEntity<ApiRequestResponse> findSetupByDtlId(
+            @RequestParam Long detailId) {
+        var obj = this.stepSetupService.findSetupByDtlId(detailId);
+        if (obj == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(obj);
+    }
 }

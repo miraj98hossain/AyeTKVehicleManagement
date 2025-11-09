@@ -61,6 +61,17 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
 
     @Transactional(readOnly = true)
     @Override
+    public List<StepSetupDetails> findByIds(List<Long> stepSetupDetailsIds) {
+
+        var list = this.stepSetupDetailsRepository.findAllById(stepSetupDetailsIds);
+        if (list.isEmpty()) {
+            throw new EntityNotFoundException("No StepSetupDetails Found With this ids ");
+        }
+        return list;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public List<StepSetupDetailsResponse> getDetailsBySetupId(StepSetup stepSetup) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();

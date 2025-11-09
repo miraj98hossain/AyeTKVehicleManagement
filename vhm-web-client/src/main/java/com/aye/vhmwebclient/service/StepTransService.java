@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class StepTransService {
@@ -32,5 +34,9 @@ public class StepTransService {
 
     public ApiRequestResponse findById(Long id) {
         return stepTransServiceFeignClient.findById(id).getBody();
+    }
+
+    public ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, Pageable pageable) {
+        return stepTransServiceFeignClient.findAllBySetupDtls(setupDetailIds, pageable).getBody();
     }
 }

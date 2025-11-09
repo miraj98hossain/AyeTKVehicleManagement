@@ -1,21 +1,16 @@
 package com.mhdev.backendservice.service.implementations;
 
-import com.mhdev.backendservice.entity.StepSetupDetails;
-import com.mhdev.backendservice.entity.StepTrans;
-import com.mhdev.backendservice.entity.StepTransLines;
-import com.mhdev.backendservice.entity.StepTransTimeline;
+import com.mhdev.backendservice.entity.*;
 import com.mhdev.backendservice.mapper.StepTransLinesMapper;
 import com.mhdev.backendservice.mapper.StepTransMapper;
 import com.mhdev.backendservice.repository.StepTransRepository;
+import com.mhdev.backendservice.service.StepSetupService;
 import com.mhdev.backendservice.service.StepTransLinesService;
 import com.mhdev.backendservice.service.StepTransService;
 import com.mhdev.backendservice.utils.enums.StepStatus;
 import com.mhdev.commonlib.dto.request.StepTransLinesRequest;
 import com.mhdev.commonlib.dto.request.StepTransRequest;
-import com.mhdev.commonlib.dto.response.ApiRequestResponse;
-import com.mhdev.commonlib.dto.response.ApiRequestResponseDetail;
-import com.mhdev.commonlib.dto.response.StepTransLinesResponse;
-import com.mhdev.commonlib.dto.response.StepTransResponse;
+import com.mhdev.commonlib.dto.response.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
@@ -31,6 +26,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -45,7 +42,8 @@ public class StepTransServiceImpl implements StepTransService {
     StepTransLinesService stepTransLinesService;
     @Autowired
     NoGenService noGenService;
-
+    @Autowired
+    StepSetupService stepSetupService;
 
     @Transactional
     @Override
@@ -142,6 +140,65 @@ public class StepTransServiceImpl implements StepTransService {
         response.getApiRequestResponseDetails().add(details);
         return response;
     }
+
+
+    @Transactional(readOnly = true)
+    @Override
+    public ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, Pageable pageable) {
+        List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
+
+        List<Long> setupIds = details.stream()
+                .map(StepSetupDetailsResponse::getStepSetupId)   // or getStepId() depending on the field
+                .toList();
+
+        var list = this.stepTransRepository.findAll((root, query, cb) -> {
+            assert query != null;
+            query.distinct(true);
+
+            Join<StepTrans, StepTransLines> linesJoin = root.join("stepTransLinesList", JoinType.INNER);
+            Join<StepTrans, StepSetup> setupJoin = root.join("stepSetup", JoinType.INNER);
+
+            List<Predicate> predicates = new ArrayList<>();
+
+            // stepStatus not in C,R
+            predicates.add(cb.not(linesJoin.get("stepStatus").in('C', 'R')));
+
+            // setupSetupId IN (...)
+            predicates.add(setupJoin.get("stepSetupId").in(setupIds));
+
+            return cb.and(predicates.toArray(new Predicate[0]));
+        }, pageable).map(stepTransMapper::toResponseDto);
+
+        Set<Long> stepIds = details.stream()
+                .map(StepSetupDetailsResponse::getStepId)
+                .collect(Collectors.toSet());
+
+        list.forEach(stepTransResponse ->
+                stepTransResponse.setStepTransLinesResponseList(
+                        stepTransResponse.getStepTransLinesResponseList()
+                                .stream()
+                                .filter(line ->
+                                        !"Complete".equals(line.getStepStatus()) &&
+                                                !"Reject".equals(line.getStepStatus()) &&
+                                                stepIds.contains(line.getStepId())
+                                )
+                                .toList()
+                )
+        );
+
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.OK.name());
+        response.setMessage("Successfully found all step trans");
+        ApiRequestResponseDetail resdetails = ApiRequestResponseDetail.builder()
+                .objectTag("stepTransResponseList")
+                .object(list)
+                .mapperClass(StepTransResponse.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.PD)
+                .build();
+        response.getApiRequestResponseDetails().add(resdetails);
+        return response;
+    }
+
 
     @Override
     @Transactional()

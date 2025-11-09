@@ -6,7 +6,6 @@ import com.mhdev.webservice.feignclient.StepSetupServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 public class StepSetupService {
@@ -29,8 +28,12 @@ public class StepSetupService {
         return stepSetupServiceFeignClient.getAllStepsSetup(pageable).getBody();
     }
 
-    public ApiRequestResponse filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId, @RequestParam(required = false) String searchWords) {
+    public ApiRequestResponse filterStepSetup(Long orgId, Long invOrgId, String searchWords) {
         return stepSetupServiceFeignClient.filterStepSetup(orgId, invOrgId, searchWords).getBody();
+    }
+
+    public ApiRequestResponse findSetupByDtlId(Long detailId) {
+        return stepSetupServiceFeignClient.findSetupByDtlId(detailId).getBody();
     }
 }
 

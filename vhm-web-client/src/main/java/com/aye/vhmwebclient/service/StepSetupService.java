@@ -31,6 +31,10 @@ public class StepSetupService {
     public ApiRequestResponse filterStepSetup(Long orgId, Long invOrgId, String searchWords) {
         return stepSetupServiceFeignClient.filterStepSetup(orgId, invOrgId, searchWords).getBody();
     }
+
+    public ApiRequestResponse findSetupByDtlId(Long detailId) {
+        return stepSetupServiceFeignClient.findSetupByDtlId(detailId).getBody();
+    }
 }
 
 
