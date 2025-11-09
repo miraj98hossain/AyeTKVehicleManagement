@@ -1,4 +1,4 @@
-package com.mhdev.mobileservice.config;
+package com.aye.mobileservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

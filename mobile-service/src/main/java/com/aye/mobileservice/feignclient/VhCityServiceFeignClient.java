@@ -1,4 +1,4 @@
-package com.mhdev.mobileservice.feignclient;
+package com.aye.mobileservice.feignclient;
 
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;

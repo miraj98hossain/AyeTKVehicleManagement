@@ -1,4 +1,4 @@
-package com.mhdev.mobileservice.config;
+package com.aye.mobileservice.config;
 
 import feign.Feign;
 import feign.Retryer;

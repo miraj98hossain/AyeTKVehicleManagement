@@ -1,4 +1,4 @@
-package com.mhdev.mobileservice.config;
+package com.aye.mobileservice.config;
 
 
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;

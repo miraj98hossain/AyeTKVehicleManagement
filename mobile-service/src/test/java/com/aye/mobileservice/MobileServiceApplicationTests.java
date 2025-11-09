@@ -1,4 +1,4 @@
-package com.mhdev.mobileservice;
+package com.aye.mobileservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

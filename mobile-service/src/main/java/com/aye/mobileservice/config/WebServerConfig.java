@@ -1,4 +1,4 @@
-package com.mhdev.mobileservice.config;
+package com.aye.mobileservice.config;
 
 import org.apache.catalina.connector.Connector;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
