@@ -7,7 +7,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="mobile-service" />
       </profile>
       <profile name="Annotation profile for backend-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -21,7 +20,7 @@
         </processorPath>
         <module name="backend-service" />
       </profile>
-      <profile name="Annotation profile for vhm-web-client" enabled="true">
+      <profile name="Annotation profile for mobile-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
@@ -29,6 +28,7 @@
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
         </processorPath>
         <module name="vhm-web-client" />
+        <module name="mobile-service" />
         <module name="common-lib" />
         <module name="webclient" />
         <module name="web-service" />

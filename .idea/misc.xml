@@ -5,7 +5,6 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/web-service/pom.xml" />
-        <option value="$PROJECT_DIR$/mobile-service/pom.xml" />
         <option value="$PROJECT_DIR$/backend-service/pom.xml" />
         <option value="$PROJECT_DIR$/crud/pom.xml" />
         <option value="$PROJECT_DIR$/webclient/pom.xml" />
@@ -13,6 +12,7 @@
         <option value="$PROJECT_DIR$/backend-service/common-lib/pom.xml" />
         <option value="$PROJECT_DIR$/common-lib/pom.xml" />
         <option value="$PROJECT_DIR$/vhm-web-client/pom.xml" />
+        <option value="$PROJECT_DIR$/mobile-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
