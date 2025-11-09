@@ -25,13 +25,20 @@ public class StepTransController {
     private StepTransService stepTransService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiRequestResponse> create(@Validated({StepTransCreateValidation.class, Default.class}) @RequestBody StepTransRequest stepTransRequest, UriComponentsBuilder uriBuilder) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransService.saveStepTrans(stepTransRequest));
+    public ResponseEntity<ApiRequestResponse> create(
+            @RequestParam Long currentUserId,
+            @Validated({StepTransCreateValidation.class, Default.class})
+            @RequestBody StepTransRequest stepTransRequest,
+            UriComponentsBuilder uriBuilder) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransService.saveStepTrans(stepTransRequest, currentUserId));
     }
 
     @PostMapping("/update-lines")
-    public ResponseEntity<ApiRequestResponse> updateLines(@Validated({StepTransLinesUpdateValidation.class, Default.class}) @RequestBody StepTransLinesRequest stepTransLinesRequest) {
-        return ResponseEntity.ok().body(this.stepTransService.updateTransLines(stepTransLinesRequest));
+    public ResponseEntity<ApiRequestResponse> updateLines(
+            @RequestParam Long currentUserId,
+            @Validated({StepTransLinesUpdateValidation.class, Default.class})
+            @RequestBody StepTransLinesRequest stepTransLinesRequest) {
+        return ResponseEntity.ok().body(this.stepTransService.updateTransLines(stepTransLinesRequest, currentUserId));
     }
 
     @GetMapping

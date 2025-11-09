@@ -47,10 +47,10 @@ public class StepTransServiceImpl implements StepTransService {
 
     @Transactional
     @Override
-    public ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest) {
+    public ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest, Long currentUserId) {
         StepTrans stepTrans = stepTransMapper.toEntity(stepTransRequest);
         stepTrans.setCreatedAt(new Date());
-        stepTrans.setCreatedBy(1L);
+        stepTrans.setCreatedBy(currentUserId);
 
         if (stepTrans.getStepTransLinesList().isEmpty()) {
             StepTransLines line = new StepTransLines();
@@ -60,7 +60,7 @@ public class StepTransServiceImpl implements StepTransService {
             line.setStepTransLinesNo(noGenService.createTransLNo());
             line.setParentLineId(0L);
             line.setStage(0);
-            line.setCreatedBy(1L);
+            line.setCreatedBy(currentUserId);
             line.setCreatedAt(new Date());
             stepTrans.getStepTransLinesList().add(line);
 
@@ -202,7 +202,7 @@ public class StepTransServiceImpl implements StepTransService {
 
     @Override
     @Transactional()
-    public ApiRequestResponse updateTransLines(StepTransLinesRequest linesReq) {
+    public ApiRequestResponse updateTransLines(StepTransLinesRequest linesReq, Long currentUserId) {
         //requestedLine
         StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(linesReq);
         //databaseLine
@@ -222,7 +222,7 @@ public class StepTransServiceImpl implements StepTransService {
                 }
                 dbstepTransLines.setStepStatus(StepStatus.P);
                 dbstepTransLines.setStage(dbstepTransLines.getStage() + 1); //current value should be 1(0->1). Eligible to be at WIP now.
-                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);//updating
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);//updating
 
             } else {
                 dbstepTransLines.setStepStatus(StepStatus.P);
@@ -231,8 +231,8 @@ public class StepTransServiceImpl implements StepTransService {
                     throw new IllegalArgumentException("This Step Trans is already picked");
                 }
                 parentTransLine.setStage(parentTransLine.getStage() + 1); //current value should be 2(1->2). Eligible to be at com now.
-                this.stepTransLinesService.saveStepTransLines(parentTransLine, false);//updating parent
-                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);//updating
+                this.stepTransLinesService.saveStepTransLines(parentTransLine, false, currentUserId);//updating parent
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);//updating
 
             }
         }
@@ -268,14 +268,14 @@ public class StepTransServiceImpl implements StepTransService {
                         newStepTransLines.setParentLineId(dbstepTransLines.getStepTransLinesId());
                         newStepTransLines.setStage(0);
                         //creating new line
-                        this.stepTransLinesService.saveStepTransLines(newStepTransLines, true);
+                        this.stepTransLinesService.saveStepTransLines(newStepTransLines, true, currentUserId);
                         //updating new line
-                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);
+                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);
                     } else {
                         //There is no step left to create also no child left to increase its stage.
                         dbstepTransLines.setStepStatus(reqStepTransLines.getStepStatus());
                         dbstepTransLines.setStage(dbstepTransLines.getStage() + 1);
-                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);
+                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);
                     }
                 }
             }
@@ -285,12 +285,12 @@ public class StepTransServiceImpl implements StepTransService {
                 } else {
                     dbstepTransLines.setStepStatus(StepStatus.C);
                     dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
-                    objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);//Changing Status.
+                    objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);//Changing Status.
                     var childLine = this.stepTransLinesService.getChildStepLine(dbstepTransLines.getStepTransLinesId());
                     if (childLine != null) {
                         childLine.setStage(childLine.getStage() + 1);//current value should be 1(0->1). Eligible to be at wip now.
                         //updating child
-                        this.stepTransLinesService.saveStepTransLines(childLine, false);
+                        this.stepTransLinesService.saveStepTransLines(childLine, false, currentUserId);
                     }
                 }
             }
@@ -298,7 +298,7 @@ public class StepTransServiceImpl implements StepTransService {
             if (reqStepTransLines.getStepStatus().equals(StepStatus.R)) {
                 dbstepTransLines.setStepStatus(StepStatus.R);
                 dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
-                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true);//Changing Status.
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);//Changing Status.
             }
         }
 

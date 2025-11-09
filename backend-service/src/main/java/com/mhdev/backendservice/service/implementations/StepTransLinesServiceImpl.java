@@ -26,7 +26,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     NoGenService noGenService;
 
     @Transactional
-    public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange) {
+    public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId) {
         if (isStatusChange) {
             switch (stepTransLines.getStepStatus()) {
                 case N -> {
@@ -52,11 +52,11 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
         }
         if (stepTransLines.getStepTransLinesId() == null) {
             stepTransLines.setCreatedAt(new Date());
-            stepTransLines.setCreatedBy((long) 1);
+            stepTransLines.setCreatedBy(currentUserId);
             stepTransLines.setStepTransLinesNo(noGenService.createTransLNo());
         } else {
             stepTransLines.setUpdatedAt(new Date());
-            stepTransLines.setUpdatedBy((long) 1);
+            stepTransLines.setUpdatedBy(currentUserId);
         }
 
         return this.stepTransLinesMapper.toResponseDto(this.stepTransLinesRepository.save(stepTransLines));

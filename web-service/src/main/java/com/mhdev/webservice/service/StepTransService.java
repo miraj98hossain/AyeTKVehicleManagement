@@ -17,13 +17,13 @@ public class StepTransService {
     StepTransServiceFeignClient stepTransServiceFeignClient;
 
 
-    public ApiRequestResponse create(StepTransRequest stepTransRequest) {
-        return stepTransServiceFeignClient.create(stepTransRequest).getBody();
+    public ApiRequestResponse create(StepTransRequest stepTransRequest, Long currentUserId) {
+        return stepTransServiceFeignClient.create(currentUserId, stepTransRequest).getBody();
     }
 
 
-    public ApiRequestResponse updateLines(StepTransLinesRequest stepTransLinesRequest) {
-        return stepTransServiceFeignClient.updateLines(stepTransLinesRequest).getBody();
+    public ApiRequestResponse updateLines(StepTransLinesRequest stepTransLinesRequest, Long currentUserId) {
+        return stepTransServiceFeignClient.updateLines(currentUserId, stepTransLinesRequest).getBody();
     }
 
 

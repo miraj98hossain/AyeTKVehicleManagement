@@ -13,13 +13,13 @@ import java.util.List;
 public interface StepTransService {
 
 
-    ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest);
+    ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest, Long currentUserId);
 
     ApiRequestResponse findById(Long stepTransId);
 
     ApiRequestResponse findAll(Pageable pageable);
 
-    ApiRequestResponse updateTransLines(StepTransLinesRequest stepTransLinesRequest);
+    ApiRequestResponse updateTransLines(StepTransLinesRequest stepTransLinesRequest, Long currentUserId);
 
     ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, Pageable pageable);
 }

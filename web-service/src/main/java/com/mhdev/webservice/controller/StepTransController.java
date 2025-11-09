@@ -23,13 +23,17 @@ public class StepTransController {
     private StepTransService stepTransService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiRequestResponse> create(@RequestBody StepTransRequest stepTransRequest, UriComponentsBuilder uriBuilder) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransService.create(stepTransRequest));
+    public ResponseEntity<ApiRequestResponse> create(
+            @RequestParam Long currentUserId,
+            @RequestBody StepTransRequest stepTransRequest, UriComponentsBuilder uriBuilder) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransService.create(stepTransRequest, currentUserId));
     }
 
     @PostMapping("/update-lines")
-    public ResponseEntity<ApiRequestResponse> updateLines(@RequestBody StepTransLinesRequest stepTransLinesRequest) {
-        return ResponseEntity.ok().body(this.stepTransService.updateLines(stepTransLinesRequest));
+    public ResponseEntity<ApiRequestResponse> updateLines(
+            @RequestParam Long currentUserId,
+            @RequestBody StepTransLinesRequest stepTransLinesRequest) {
+        return ResponseEntity.ok().body(this.stepTransService.updateLines(stepTransLinesRequest, currentUserId));
     }
 
     @GetMapping

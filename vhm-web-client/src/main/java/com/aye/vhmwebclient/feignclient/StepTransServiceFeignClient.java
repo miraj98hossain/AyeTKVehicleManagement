@@ -18,10 +18,13 @@ public interface StepTransServiceFeignClient {
 
     @PostMapping("/create")
     ResponseEntity<ApiRequestResponse> create(
+            @RequestParam Long currentUserId,
             @RequestBody StepTransRequest stepTransRequest);
 
     @PostMapping("/update-lines")
-    ResponseEntity<ApiRequestResponse> updateLines(@RequestBody StepTransLinesRequest stepTransLinesRequest);
+    ResponseEntity<ApiRequestResponse> updateLines(
+            @RequestParam Long currentUserId,
+            @RequestBody StepTransLinesRequest stepTransLinesRequest);
 
     @GetMapping
     ResponseEntity<ApiRequestResponse> findAll(@SpringQueryMap Pageable pageable);
