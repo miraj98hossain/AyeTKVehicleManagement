@@ -1,4 +1,4 @@
-package com.mhdev.webservice.feignclient;
+package com.aye.webservice.feignclient;
 
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;

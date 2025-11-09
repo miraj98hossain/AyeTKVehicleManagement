@@ -1,8 +1,7 @@
-package com.mhdev.webservice.dto.responsedto;
+package com.aye.webservice.dto.responsedto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

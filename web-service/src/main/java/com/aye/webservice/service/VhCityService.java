@@ -1,7 +1,7 @@
-package com.mhdev.webservice.service;
+package com.aye.webservice.service;
 
+import com.aye.webservice.feignclient.VhCityServiceFeignClient;
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
-import com.mhdev.webservice.feignclient.VhCityServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

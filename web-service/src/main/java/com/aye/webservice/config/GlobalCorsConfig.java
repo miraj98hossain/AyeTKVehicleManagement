@@ -1,4 +1,4 @@
-package com.mhdev.webservice.config;
+package com.aye.webservice.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

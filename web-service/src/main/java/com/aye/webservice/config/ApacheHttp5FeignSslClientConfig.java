@@ -1,10 +1,9 @@
-package com.mhdev.webservice.config;
+package com.aye.webservice.config;
 
 import feign.Feign;
 import feign.Retryer;
 import feign.hc5.ApacheHttp5Client;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
 import org.apache.hc.client5.http.io.HttpClientConnectionManager;
@@ -40,7 +39,7 @@ public class ApacheHttp5FeignSslClientConfig {
 
     @Bean
     public Feign.Builder feignBuilder() {
-       SSLContext sslContext = getSSLContext();
+        SSLContext sslContext = getSSLContext();
         final SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder.create()
                 .setSslContext(sslContext)
                 .build();
@@ -52,14 +51,14 @@ public class ApacheHttp5FeignSslClientConfig {
         return Feign.builder().retryer(Retryer.NEVER_RETRY).client(new ApacheHttp5Client(HttpClients.custom().setConnectionManager(cm).build()));
     }
 
-    private SSLContext getSSLContext()  {
-        try{
+    private SSLContext getSSLContext() {
+        try {
             return SSLContexts.custom()
                     .loadKeyMaterial(keyStore.getURL(), keyStorePassword.toCharArray(), keyStorePassword.toCharArray())
                     .loadTrustMaterial(trustStore.getURL(), trustStorePassword.toCharArray())
                     .build();
         } catch (IOException | UnrecoverableKeyException | CertificateException | NoSuchAlgorithmException |
-                     KeyStoreException | KeyManagementException e) {
+                 KeyStoreException | KeyManagementException e) {
             log.error("Error while building SSLContext for ApacheHttp5FeignSslClient", e);
             throw new ExceptionInInitializerError("Error while building SSLContext for ApacheHttp5FeignSslClient");
         }
