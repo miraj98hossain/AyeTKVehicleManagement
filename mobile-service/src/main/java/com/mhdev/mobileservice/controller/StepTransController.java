@@ -4,7 +4,7 @@ package com.mhdev.mobileservice.controller;
 import com.mhdev.commonlib.dto.request.StepTransLinesRequest;
 import com.mhdev.commonlib.dto.request.StepTransRequest;
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
-import com.mhdev.webservice.service.StepTransService;
+import com.mhdev.mobileservice.service.StepTransService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

@@ -4,7 +4,7 @@ package com.mhdev.mobileservice.controller;
 import com.mhdev.commonlib.dto.request.StepSetupRequest;
 import com.mhdev.commonlib.dto.response.ApiRequestResponse;
 import com.mhdev.commonlib.dto.validationGroup.StepSetupCreateValidation;
-import com.mhdev.webservice.service.StepSetupService;
+import com.mhdev.mobileservice.service.StepSetupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
