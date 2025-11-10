@@ -36,7 +36,7 @@ public class RestTemplateConfig {
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(sslContext);
 
         CloseableHttpClient httpClient = HttpClients.custom()
-                .setSSLSocketFactory(socketFactory)   // ✅ now works
+                .setSSLSocketFactory(socketFactory)
                 .build();
 
         HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory(httpClient);
