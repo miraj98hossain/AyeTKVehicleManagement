@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/common-lib/pom.xml" />
         <option value="$PROJECT_DIR$/vhm-web-client/pom.xml" />
         <option value="$PROJECT_DIR$/mobile-service/pom.xml" />
+        <option value="$PROJECT_DIR$/../AyeTkMobileApplications/AYERestUser/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
