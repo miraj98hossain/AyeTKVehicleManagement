@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EntityScan({"com.aye.RestfulServer.model"})
 @EnableJpaRepositories(basePackages = {"com.aye.RestfulServer.repo"})
 @EnableTransactionManagement
-@ComponentScan({"com.aye", "com.aye.RestfulServer"})
+@ComponentScan({"com.aye"})
 public class MobileServiceApplication {
 
     public static void main(String[] args) {
