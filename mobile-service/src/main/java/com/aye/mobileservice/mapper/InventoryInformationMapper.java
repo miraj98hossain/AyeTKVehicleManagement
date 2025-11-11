@@ -1,0 +1,16 @@
+package com.aye.mobileservice.mapper;
+
+import com.aye.RestfulServer.model.om.InventoryInformations;
+import com.aye.commonlib.dto.response.InventoryInformationResponse;
+import org.mapstruct.*;
+
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        builder = @Builder(disableBuilder = true))
+public interface InventoryInformationMapper {
+    @Mapping(source = "orgHierarchy.id", target = "orgHierarchyId")
+    @Mapping(source = "orgHierarchy.name", target = "orgHierarchyName")
+    @Mapping(source = "orgHierarchy.code", target = "orgHierarchyCode")
+    @Mapping(source = "itemOrg.id", target = "itemOrg")
+    InventoryInformationResponse toResponseDto(InventoryInformations inventoryInformations);
+}

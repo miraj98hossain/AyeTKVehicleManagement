@@ -1,0 +1,20 @@
+package com.aye.mobileservice.mapper;
+
+import com.aye.RestfulServer.model.UserAccessTemltDtl;
+import com.aye.commonlib.dto.response.UserAccessTemltDtlResponse;
+import org.mapstruct.*;
+
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {UserMenuMapper.class, UserAccessInvOrgMapper.class},
+        builder = @Builder(disableBuilder = true))
+public interface UserAccessTemltDtlMapper {
+    //@Mapping(source = "userAccessTemplt.id", target = "UserAccessTemltId")
+//    @Mapping(source = "userAccessTemplt.tempNumber", target = "UserAccessTemltNumber")
+//    @Mapping(source = "userAccessTemplt.tempDesc", target = "UserAccessTemltDesc")
+    @Mapping(source = "orgHierarchy.id", target = "orgHierarchyId")
+    @Mapping(source = "orgHierarchy.name", target = "orgHierarchyName")
+    @Mapping(source = "orgHierarchy.code", target = "orgHierarchyCode")
+    @Mapping(source = "requestGroupHeader.groupName", target = "reqGrpHdrName")
+    UserAccessTemltDtlResponse toResponseDto(UserAccessTemltDtl userAccessTemltDtl);
+}
