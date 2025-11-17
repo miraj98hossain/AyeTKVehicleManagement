@@ -34,7 +34,17 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>nexus-releases</id>
+            <url>http://172.20.0.17:8089/repository/maven-releases-aye</url>
+        </repository>
+        <snapshotRepository>
+            <id>nexus-snapshots</id>
+            <url>http://172.20.0.17:8089/repository/maven-snapshots-aye</url>
+        </snapshotRepository>
 
+    </distributionManagement>
     <build>
         <plugins>
             <plugin>
