@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .addFilterBefore(customAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .antMatchers("/aye-tk-vhcle-mng/api/auth/login").permitAll()
+                        .requestMatchers("/aye-tk-vhcle-mng/api/auth/login").permitAll()
                         .anyRequest().authenticated()
                 );
 
