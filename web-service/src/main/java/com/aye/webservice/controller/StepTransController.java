@@ -8,6 +8,7 @@ import com.aye.webservice.service.StepTransService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,9 @@ public class StepTransController {
     }
 
     @GetMapping("/findAllBySetupDtls")
-    public ResponseEntity<ApiRequestResponse> findAllBySetupDtls(@RequestParam List<Long> setupDetailIds, Pageable pageable) {
-        return ResponseEntity.ok().body(this.stepTransService.findAllBySetupDtls(setupDetailIds, pageable));
+    public ResponseEntity<ApiRequestResponse> findAllBySetupDtls(@RequestParam List<Long> setupDetailIds,
+                                                                 @RequestParam(required = false) String searchWords,
+                                                                 @PageableDefault(size = 10, page = 0) Pageable pageable) {
+        return ResponseEntity.ok().body(this.stepTransService.findAllBySetupDtls(setupDetailIds, searchWords, pageable));
     }
 }

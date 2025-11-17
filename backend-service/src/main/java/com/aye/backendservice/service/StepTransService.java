@@ -21,5 +21,5 @@ public interface StepTransService {
 
     ApiRequestResponse updateTransLines(StepTransLinesRequest stepTransLinesRequest, Long currentUserId);
 
-    ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, Pageable pageable);
+    ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, String searchWords, Pageable pageable);
 }

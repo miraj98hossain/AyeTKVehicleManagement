@@ -6,6 +6,7 @@ import com.aye.commonlib.dto.request.StepTransRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,5 +36,6 @@ public interface StepTransServiceFeignClient {
     @GetMapping("/findAllBySetupDtls")
     ResponseEntity<ApiRequestResponse> findAllBySetupDtls(@RequestParam
                                                           List<Long> setupDetailIds,
-                                                          Pageable pageable);
+                                                          @RequestParam(required = false) String searchWords,
+                                                          @PageableDefault(size = 10, page = 0) Pageable pageable);
 }

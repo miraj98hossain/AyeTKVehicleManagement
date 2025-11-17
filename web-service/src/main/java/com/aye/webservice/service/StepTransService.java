@@ -37,7 +37,7 @@ public class StepTransService {
     }
 
 
-    public ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, Pageable pageable) {
-        return stepTransServiceFeignClient.findAllBySetupDtls(setupDetailIds, pageable).getBody();
+    public ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, String searchWords, Pageable pageable) {
+        return stepTransServiceFeignClient.findAllBySetupDtls(setupDetailIds, searchWords, pageable).getBody();
     }
 }

@@ -144,7 +144,7 @@ public class StepTransServiceImpl implements StepTransService {
 
     @Transactional(readOnly = true)
     @Override
-    public ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, Pageable pageable) {
+    public ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, String searchWords, Pageable pageable) {
         List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
 
         List<Long> setupIds = details.stream()
@@ -165,6 +165,11 @@ public class StepTransServiceImpl implements StepTransService {
 
             // setupSetupId IN (...)
             predicates.add(setupJoin.get("stepSetupId").in(setupIds));
+
+
+            if (searchWords != null && !searchWords.isEmpty()) {
+                predicates.add(cb.and(cb.like(root.get("vehicleNumber"), "%" + searchWords + "%")));
+            }
 
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable).map(stepTransMapper::toResponseDto);

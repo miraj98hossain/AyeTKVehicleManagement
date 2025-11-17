@@ -1,15 +1,16 @@
 package com.aye.backendservice.controller;
 
 
+import com.aye.backendservice.service.StepTransService;
 import com.aye.commonlib.dto.request.StepTransLinesRequest;
 import com.aye.commonlib.dto.request.StepTransRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.validationGroup.StepTransCreateValidation;
 import com.aye.commonlib.dto.validationGroup.StepTransLinesUpdateValidation;
-import com.aye.backendservice.service.StepTransService;
 import jakarta.validation.groups.Default;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -47,8 +48,10 @@ public class StepTransController {
     }
 
     @GetMapping("/findAllBySetupDtls")
-    public ResponseEntity<ApiRequestResponse> findAllBySetupDtls(@RequestParam List<Long> setupDetailIds, Pageable pageable) {
-        return ResponseEntity.ok().body(this.stepTransService.findAllBySetupDtls(setupDetailIds, pageable));
+    public ResponseEntity<ApiRequestResponse> findAllBySetupDtls(@RequestParam List<Long> setupDetailIds,
+                                                                 @RequestParam(required = false) String searchWords,
+                                                                 @PageableDefault(size = 10, page = 0) Pageable pageable) {
+        return ResponseEntity.ok().body(this.stepTransService.findAllBySetupDtls(setupDetailIds, searchWords, pageable));
     }
 
 
