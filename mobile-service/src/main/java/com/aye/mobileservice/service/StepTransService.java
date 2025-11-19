@@ -1,38 +1,33 @@
 package com.aye.mobileservice.service;
 
-import com.aye.RestfulServer.model.Muser;
-import com.aye.RestfulServer.service.MuserService;
 import com.aye.commonlib.dto.request.StepTransLinesRequest;
 import com.aye.commonlib.dto.request.StepTransRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.mobileservice.feignclient.StepTransServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Service
 public class StepTransService {
     @Autowired
     StepTransServiceFeignClient stepTransServiceFeignClient;
-    @Autowired
-    MuserService muserService;
+
 
     public ApiRequestResponse create(StepTransRequest stepTransRequest) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Muser curMuser = this.muserService.findByUserName(auth.getName());
-        return stepTransServiceFeignClient.create(Long.valueOf(curMuser.getId()), stepTransRequest).getBody();
+        return stepTransServiceFeignClient.create(auth.getName(), stepTransRequest).getBody();
     }
 
 
     public ApiRequestResponse updateLines(StepTransLinesRequest stepTransLinesRequest) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        Muser curMuser = this.muserService.findByUserName(auth.getName());
-        return stepTransServiceFeignClient.updateLines(Long.valueOf(curMuser.getId()), stepTransLinesRequest).getBody();
+        return stepTransServiceFeignClient.updateLines(auth.getName(), stepTransLinesRequest).getBody();
     }
 
 
@@ -45,8 +40,9 @@ public class StepTransService {
         return stepTransServiceFeignClient.findById(id).getBody();
     }
 
-
-    public ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, String searchWords, Pageable pageable) {
-        return stepTransServiceFeignClient.findAllBySetupDtls(setupDetailIds, searchWords, pageable).getBody();
+    public ApiRequestResponse findAllByTempDtlId(@RequestParam Integer tempDtlId,
+                                                 @RequestParam(required = false) String searchWords,
+                                                 @PageableDefault(size = 10, page = 0) Pageable pageable) {
+        return stepTransServiceFeignClient.findAllByTempDtlId(tempDtlId, searchWords, pageable).getBody();
     }
 }

@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequestMapping("/aye-tk-vhcle-mng/api/step-trans")
@@ -44,10 +42,10 @@ public class StepTransController {
         return ResponseEntity.ok().body(this.stepTransService.findById(id));
     }
 
-    @GetMapping("/findAllBySetupDtls")
-    public ResponseEntity<ApiRequestResponse> findAllBySetupDtls(@RequestParam List<Long> setupDetailIds,
+    @GetMapping("/findAllByTempDtlId")
+    public ResponseEntity<ApiRequestResponse> findAllByTempDtlId(@RequestParam Integer tempDtlId,
                                                                  @RequestParam(required = false) String searchWords,
                                                                  @PageableDefault(size = 10, page = 0) Pageable pageable) {
-        return ResponseEntity.ok().body(this.stepTransService.findAllBySetupDtls(setupDetailIds, searchWords, pageable));
+        return ResponseEntity.ok().body(this.stepTransService.findAllByTempDtlId(tempDtlId, searchWords, pageable));
     }
 }
