@@ -1,4 +1,4 @@
-package com.aye.mobileservice.mapper;
+package com.aye.backendservice.mapper;
 
 import com.aye.RestfulServer.model.om.InventoryInformations;
 import com.aye.commonlib.dto.response.InventoryInformationResponse;

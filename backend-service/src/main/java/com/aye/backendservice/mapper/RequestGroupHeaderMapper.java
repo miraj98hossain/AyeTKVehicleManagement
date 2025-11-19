@@ -1,7 +1,7 @@
-package com.aye.mobileservice.mapper;
+package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.UserAccessTemplt;
-import com.aye.commonlib.dto.response.UserAccessTempltResponse;
+import com.aye.RestfulServer.model.RequestGroupHeader;
+import com.aye.commonlib.dto.response.RequestGroupHeaderResponse;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -9,8 +9,8 @@ import org.mapstruct.NullValueCheckStrategy;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {UserAccessTemltDtlMapper.class},
+        uses = {RequestGroupLineMapper.class},
         builder = @Builder(disableBuilder = true))
-public interface UserAccessTempltMapper {
-    UserAccessTempltResponse toResponseDto(UserAccessTemplt userAccessTemplt);
+public interface RequestGroupHeaderMapper {
+    RequestGroupHeaderResponse toResponseDto(RequestGroupHeader requestGroupHeader);
 }

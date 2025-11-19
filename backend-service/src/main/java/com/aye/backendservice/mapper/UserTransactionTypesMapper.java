@@ -1,4 +1,4 @@
-package com.aye.mobileservice.mapper;
+package com.aye.backendservice.mapper;
 
 import com.aye.RestfulServer.model.UserTransactionTypes;
 import com.aye.commonlib.dto.response.UserTransactionTypesResponse;
