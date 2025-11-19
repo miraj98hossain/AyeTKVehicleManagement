@@ -1,8 +1,16 @@
 package com.aye.backendservice.service.implementations;
 
-import com.aye.backendservice.entity.*;
+import com.aye.RestfulServer.model.Muser;
+import com.aye.RestfulServer.model.UserTransactionTypes;
+import com.aye.RestfulServer.service.MuserService;
+import com.aye.RestfulServer.service.UserAccessTempltService;
+import com.aye.backendservice.entity.StepSetupDetails;
+import com.aye.backendservice.entity.StepTrans;
+import com.aye.backendservice.entity.StepTransLines;
+import com.aye.backendservice.entity.StepTransTimeline;
 import com.aye.backendservice.mapper.StepTransLinesMapper;
 import com.aye.backendservice.mapper.StepTransMapper;
+import com.aye.backendservice.mapper.UserAccessTemltDtlMapper;
 import com.aye.backendservice.repository.StepTransRepository;
 import com.aye.backendservice.service.StepSetupService;
 import com.aye.backendservice.service.StepTransLinesService;
@@ -44,13 +52,22 @@ public class StepTransServiceImpl implements StepTransService {
     NoGenService noGenService;
     @Autowired
     StepSetupService stepSetupService;
+    @Autowired
+    MuserService userService;
+    @Autowired
+    private UserAccessTempltService userAccessTempltService;
+    @Autowired
+    private UserAccessTemltDtlMapper userAccessTemltDtlMapper;
 
     @Transactional
     @Override
-    public ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest, Long currentUserId) {
+    public ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest, String userName) {
+        Muser muser = userService.findByUserName(userName);
+
+
         StepTrans stepTrans = stepTransMapper.toEntity(stepTransRequest);
         stepTrans.setCreatedAt(new Date());
-        stepTrans.setCreatedBy(currentUserId);
+        stepTrans.setCreatedBy(Long.valueOf(muser.getId()));
 
         if (stepTrans.getStepTransLinesList().isEmpty()) {
             StepTransLines line = new StepTransLines();
@@ -60,7 +77,7 @@ public class StepTransServiceImpl implements StepTransService {
             line.setStepTransLinesNo(noGenService.createTransLNo());
             line.setParentLineId(0L);
             line.setStage(0);
-            line.setCreatedBy(currentUserId);
+            line.setCreatedBy(Long.valueOf(muser.getId()));
             line.setCreatedAt(new Date());
             stepTrans.getStepTransLinesList().add(line);
 
@@ -141,55 +158,19 @@ public class StepTransServiceImpl implements StepTransService {
         return response;
     }
 
-
     @Transactional(readOnly = true)
-    @Override
-    public ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, String searchWords, Pageable pageable) {
+    protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, String searchWords, Pageable pageable) {
         List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
 
         List<Long> setupIds = details.stream()
                 .map(StepSetupDetailsResponse::getStepSetupId)   // or getStepId() depending on the field
                 .toList();
 
-        var list = this.stepTransRepository.findAll((root, query, cb) -> {
-            assert query != null;
-            query.distinct(true);
-
-            Join<StepTrans, StepTransLines> linesJoin = root.join("stepTransLinesList", JoinType.INNER);
-            Join<StepTrans, StepSetup> setupJoin = root.join("stepSetup", JoinType.INNER);
-
-            List<Predicate> predicates = new ArrayList<>();
-
-            // stepStatus not in C,R
-            predicates.add(cb.not(linesJoin.get("stepStatus").in('C', 'R')));
-
-            // setupSetupId IN (...)
-            predicates.add(setupJoin.get("stepSetupId").in(setupIds));
-
-
-            if (searchWords != null && !searchWords.isEmpty()) {
-                predicates.add(cb.and(cb.like(root.get("vehicleNumber"), "%" + searchWords + "%")));
-            }
-
-            return cb.and(predicates.toArray(new Predicate[0]));
-        }, pageable).map(stepTransMapper::toResponseDto);
-
         Set<Long> stepIds = details.stream()
                 .map(StepSetupDetailsResponse::getStepId)
                 .collect(Collectors.toSet());
 
-        list.forEach(stepTransResponse ->
-                stepTransResponse.setStepTransLinesResponseList(
-                        stepTransResponse.getStepTransLinesResponseList()
-                                .stream()
-                                .filter(line ->
-                                        !"Complete".equals(line.getStepStatus()) &&
-                                                !"Reject".equals(line.getStepStatus()) &&
-                                                stepIds.contains(line.getStepId())
-                                )
-                                .toList()
-                )
-        );
+        var list = this.stepTransLinesService.getAllStepTransLine(stepIds, setupIds, searchWords, pageable);
 
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
@@ -197,7 +178,7 @@ public class StepTransServiceImpl implements StepTransService {
         ApiRequestResponseDetail resdetails = ApiRequestResponseDetail.builder()
                 .objectTag("stepTransResponseList")
                 .object(list)
-                .mapperClass(StepTransResponse.class.getName())
+                .mapperClass(StepTransLinesResponse.class.getName())
                 .objectType(ApiRequestResponseDetail.ObjectType.PD)
                 .build();
         response.getApiRequestResponseDetails().add(resdetails);
@@ -206,8 +187,10 @@ public class StepTransServiceImpl implements StepTransService {
 
 
     @Override
-    @Transactional()
-    public ApiRequestResponse updateTransLines(StepTransLinesRequest linesReq, Long currentUserId) {
+    @Transactional
+    public ApiRequestResponse updateTransLines(StepTransLinesRequest linesReq, String userName) {
+        Muser muser = userService.findByUserName(userName);
+
         //requestedLine
         StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(linesReq);
         //databaseLine
@@ -227,7 +210,7 @@ public class StepTransServiceImpl implements StepTransService {
                 }
                 dbstepTransLines.setStepStatus(StepStatus.P);
                 dbstepTransLines.setStage(dbstepTransLines.getStage() + 1); //current value should be 1(0->1). Eligible to be at WIP now.
-                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);//updating
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//updating
 
             } else {
                 dbstepTransLines.setStepStatus(StepStatus.P);
@@ -236,8 +219,8 @@ public class StepTransServiceImpl implements StepTransService {
                     throw new IllegalArgumentException("This Step Trans is already picked");
                 }
                 parentTransLine.setStage(parentTransLine.getStage() + 1); //current value should be 2(1->2). Eligible to be at com now.
-                this.stepTransLinesService.saveStepTransLines(parentTransLine, false, currentUserId);//updating parent
-                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);//updating
+                this.stepTransLinesService.saveStepTransLines(parentTransLine, false, Long.valueOf(muser.getId()));//updating parent
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//updating
 
             }
         }
@@ -273,14 +256,14 @@ public class StepTransServiceImpl implements StepTransService {
                         newStepTransLines.setParentLineId(dbstepTransLines.getStepTransLinesId());
                         newStepTransLines.setStage(0);
                         //creating new line
-                        this.stepTransLinesService.saveStepTransLines(newStepTransLines, true, currentUserId);
+                        this.stepTransLinesService.saveStepTransLines(newStepTransLines, true, Long.valueOf(muser.getId()));
                         //updating new line
-                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);
+                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));
                     } else {
                         //There is no step left to create also no child left to increase its stage.
                         dbstepTransLines.setStepStatus(reqStepTransLines.getStepStatus());
                         dbstepTransLines.setStage(dbstepTransLines.getStage() + 1);
-                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);
+                        objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));
                     }
                 }
             }
@@ -290,12 +273,12 @@ public class StepTransServiceImpl implements StepTransService {
                 } else {
                     dbstepTransLines.setStepStatus(StepStatus.C);
                     dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
-                    objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);//Changing Status.
+                    objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//Changing Status.
                     var childLine = this.stepTransLinesService.getChildStepLine(dbstepTransLines.getStepTransLinesId());
                     if (childLine != null) {
                         childLine.setStage(childLine.getStage() + 1);//current value should be 1(0->1). Eligible to be at wip now.
                         //updating child
-                        this.stepTransLinesService.saveStepTransLines(childLine, false, currentUserId);
+                        this.stepTransLinesService.saveStepTransLines(childLine, false, Long.valueOf(muser.getId()));
                     }
                 }
             }
@@ -303,7 +286,7 @@ public class StepTransServiceImpl implements StepTransService {
             if (reqStepTransLines.getStepStatus().equals(StepStatus.R)) {
                 dbstepTransLines.setStepStatus(StepStatus.R);
                 dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
-                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, currentUserId);//Changing Status.
+                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//Changing Status.
             }
         }
 
@@ -323,6 +306,19 @@ public class StepTransServiceImpl implements StepTransService {
         response.getApiRequestResponseDetails().add(details);
         return response;
 
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ApiRequestResponse findAllByTempDtlId(Integer tempDtlId, String searchWords, Pageable pageable) {
+        var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
+
+        List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
+                .flatMap(inv -> inv.getUserTransactionTypes().stream())
+                .map(UserTransactionTypes::getTrnsTypeId)
+                .toList();
+
+        return findAllBySetupDtls(setupDetailIds, searchWords, pageable);
     }
 
 }

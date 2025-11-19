@@ -17,8 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/aye-tk-vhcle-mng/api/step-trans")
 public class StepTransController {
@@ -27,19 +25,19 @@ public class StepTransController {
 
     @PostMapping("/create")
     public ResponseEntity<ApiRequestResponse> create(
-            @RequestParam Long currentUserId,
+            @RequestParam String userName,
             @Validated({StepTransCreateValidation.class, Default.class})
             @RequestBody StepTransRequest stepTransRequest,
             UriComponentsBuilder uriBuilder) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransService.saveStepTrans(stepTransRequest, currentUserId));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransService.saveStepTrans(stepTransRequest, userName));
     }
 
     @PostMapping("/update-lines")
     public ResponseEntity<ApiRequestResponse> updateLines(
-            @RequestParam Long currentUserId,
+            @RequestParam String userName,
             @Validated({StepTransLinesUpdateValidation.class, Default.class})
             @RequestBody StepTransLinesRequest stepTransLinesRequest) {
-        return ResponseEntity.ok().body(this.stepTransService.updateTransLines(stepTransLinesRequest, currentUserId));
+        return ResponseEntity.ok().body(this.stepTransService.updateTransLines(stepTransLinesRequest, userName));
     }
 
     @GetMapping
@@ -47,11 +45,11 @@ public class StepTransController {
         return ResponseEntity.ok().body(this.stepTransService.findAll(pageable));
     }
 
-    @GetMapping("/findAllBySetupDtls")
-    public ResponseEntity<ApiRequestResponse> findAllBySetupDtls(@RequestParam List<Long> setupDetailIds,
+    @GetMapping("/findAllByTempDtlId")
+    public ResponseEntity<ApiRequestResponse> findAllByTempDtlId(@RequestParam Integer tempDtlId,
                                                                  @RequestParam(required = false) String searchWords,
                                                                  @PageableDefault(size = 10, page = 0) Pageable pageable) {
-        return ResponseEntity.ok().body(this.stepTransService.findAllBySetupDtls(setupDetailIds, searchWords, pageable));
+        return ResponseEntity.ok().body(this.stepTransService.findAllByTempDtlId(tempDtlId, searchWords, pageable));
     }
 
 
