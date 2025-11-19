@@ -1,14 +1,14 @@
 package com.aye.backendservice.service.implementations;
 
 
-import com.aye.commonlib.dto.request.StepRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.StepResponse;
 import com.aye.backendservice.entity.Step;
 import com.aye.backendservice.mapper.StepMapper;
 import com.aye.backendservice.repository.StepRepository;
 import com.aye.backendservice.service.StepService;
+import com.aye.commonlib.dto.request.StepRequest;
+import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
+import com.aye.commonlib.dto.response.StepResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,5 +140,10 @@ public class StepServiceImpl implements StepService {
         response.setApiRequestResponseDetails(detailsResList);
         return response;
     }
+
+//    public List<Step> getAllSteps() {
+//        var list = this.stepRepository.findAllStep();
+//        return list;
+//    }
 
 }

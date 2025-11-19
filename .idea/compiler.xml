@@ -7,8 +7,10 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="aye-user-data" />
         <module name="aye-userservice" />
         <module name="aye-user-org-managment" />
+        <module name="aye-model-lib" />
       </profile>
       <profile name="Annotation profile for web-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -42,6 +44,8 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="aye-model-lib" options="-parameters" />
+      <module name="aye-user-data" options="-parameters" />
       <module name="aye-user-org-managment" options="-parameters" />
       <module name="aye-userservice" options="-parameters" />
       <module name="backend-service" options="-parameters -Amapstruct.defaultComponentModel=spring" />

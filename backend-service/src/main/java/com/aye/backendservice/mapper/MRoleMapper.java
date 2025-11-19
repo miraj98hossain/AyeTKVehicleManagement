@@ -1,8 +1,7 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.Muser;
-import com.aye.commonlib.dto.request.MUserRequest;
-import com.aye.commonlib.dto.response.MUserResponse;
+import com.aye.RestfulServer.model.Mrole;
+import com.aye.commonlib.dto.response.MRoleResponse;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -10,11 +9,9 @@ import org.mapstruct.NullValueCheckStrategy;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {InventoryInformationMapper.class},
+        uses = {MUserMapper.class},
         builder = @Builder(disableBuilder = true))
-public interface MUserMapper {
+public interface MRoleMapper {
 
-    MUserResponse toResponseDto(Muser muser);
-
-    Muser dtoToEntity(MUserRequest mUserRequest);
+    MRoleResponse toResponseDto(Mrole mrole);
 }

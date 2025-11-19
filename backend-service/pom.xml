@@ -94,6 +94,14 @@
             <artifactId>aye-user-org-managment</artifactId>
             <version>0.0.3-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.aye</groupId>
+            <artifactId>aye-model-lib</artifactId>
+            <version>0.0.3-SNAPSHOT</version>
+            <!--            <groupId>com.aye</groupId>-->
+            <!--            <artifactId>aye-user-data</artifactId>-->
+            <!--            <version>0.0.3-SNAPSHOT</version>-->
+        </dependency>
     </dependencies>
 
     <build>

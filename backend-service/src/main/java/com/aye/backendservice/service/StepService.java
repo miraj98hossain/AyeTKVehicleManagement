@@ -13,5 +13,7 @@ public interface StepService {
 
     ApiRequestResponse getAllSteps(Pageable pageable);
 
+//    List<Step> getAllSteps();
+
     ApiRequestResponse getSearchedSteps(String searchWords);
 }
