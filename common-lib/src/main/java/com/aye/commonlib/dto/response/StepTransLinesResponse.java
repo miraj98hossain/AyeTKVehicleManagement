@@ -14,6 +14,10 @@ import java.util.Date;
 public class StepTransLinesResponse {
     private String stepTransLinesNo;
     private String stepTransNo;
+    private String vehicleNumber;
+    private String transportName;
+    private String driverPhoneNo;
+    private String driverName;
     private Long stepId;
     private String stepName;
     private String stepStatus;
