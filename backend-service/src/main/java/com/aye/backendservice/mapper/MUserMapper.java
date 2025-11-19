@@ -1,0 +1,17 @@
+package com.aye.backendservice.mapper;
+
+import com.aye.RestfulServer.model.Muser;
+import com.aye.commonlib.dto.response.MUserResponse;
+import org.mapstruct.Builder;
+import org.mapstruct.InjectionStrategy;
+import org.mapstruct.Mapper;
+import org.mapstruct.NullValueCheckStrategy;
+
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
+        nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {InventoryInformationMapper.class},
+        builder = @Builder(disableBuilder = true))
+public interface MUserMapper {
+
+    MUserResponse toResponseDto(Muser muser);
+}
