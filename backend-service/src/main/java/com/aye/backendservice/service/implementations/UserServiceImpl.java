@@ -23,11 +23,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
-    MuserService muserService;
+    private MuserService muserService;
     @Autowired
-    MUserMapper mUserMapper;
+    private MUserMapper mUserMapper;
     @Autowired
-    MRoleMapper mRoleMapper;
+    private MRoleMapper mRoleMapper;
 
     @Override
     public ApiRequestResponse findByUserName(String username) {
