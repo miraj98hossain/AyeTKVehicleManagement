@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/aye-tk-vhcle-mng/api/steps")
+@RequestMapping("/api/steps")
 public class StepController {
     @Autowired
     private StepService stepService;

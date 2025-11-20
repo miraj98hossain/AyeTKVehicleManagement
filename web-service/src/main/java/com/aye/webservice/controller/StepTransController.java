@@ -18,7 +18,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/aye-tk-vhcle-mng/api/step-trans")
+@RequestMapping("/api/step-trans")
 public class StepTransController {
     @Autowired
     private StepTransService stepTransService;

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/aye-tk-vhcle-mng/api/vh-cty")
+@RequestMapping("/api/vh-cty")
 public class VhCtyController {
     @Autowired
     private VhCityService vhCityService;

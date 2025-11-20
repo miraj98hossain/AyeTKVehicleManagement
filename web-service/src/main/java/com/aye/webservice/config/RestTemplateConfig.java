@@ -21,30 +21,44 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 @Configuration
+
 public class RestTemplateConfig {
 
+
     @Value("${server.ssl.trust-store}")
+
     private Resource trustStore;
 
+
     @Value("${server.ssl.trust-store-password}")
+
     private String trustStorePassword;
+
     @Value("${server.ssl.key-store}")
+
     private Resource keyStore;
 
+
     @Value("${server.ssl.key-store-password}")
+
     private String keyStorePassword;
+
 
     @Bean
     public CloseableHttpClient customHttpClient() throws IOException, GeneralSecurityException {
 
         SSLContext sslContext = SSLContexts.custom()
+
                 .loadKeyMaterial(keyStore.getURL(), keyStorePassword.toCharArray(), keyStorePassword.toCharArray())
+
                 .loadTrustMaterial(trustStore.getURL(), trustStorePassword.toCharArray())
+
                 .build();
 
         final SSLConnectionSocketFactory sslSocketFactory = SSLConnectionSocketFactoryBuilder.create()
                 .setSslContext(sslContext)
                 .build();
+
 
         final HttpClientConnectionManager cm = PoolingHttpClientConnectionManagerBuilder.create()
                 .setSSLSocketFactory(sslSocketFactory)
@@ -53,6 +67,7 @@ public class RestTemplateConfig {
         return HttpClients.custom()
                 .setConnectionManager(cm)
                 .evictExpiredConnections().build();
+
     }
 
     @Bean
@@ -60,6 +75,7 @@ public class RestTemplateConfig {
         return builder
                 .requestFactory(() -> new HttpComponentsClientHttpRequestFactory(customHttpClient))
                 .build();
-    }
-}
 
+    }
+
+}
