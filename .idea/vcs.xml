@@ -4,5 +4,7 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../AyeTkMobileApplications/AYERestUser" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTKMobUserOrganization" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTkMobModelLib" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTkMobUserData" vcs="Git" />
   </component>
 </project>

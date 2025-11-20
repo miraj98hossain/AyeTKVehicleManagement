@@ -1,9 +1,9 @@
 package com.aye.backendservice.controller;
 
+import com.aye.backendservice.service.StepSetupService;
 import com.aye.commonlib.dto.request.StepSetupRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.validationGroup.StepSetupCreateValidation;
-import com.aye.backendservice.service.StepSetupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @RestController
-@RequestMapping("/aye-tk-vhcle-mng/api/step-setup")
+@RequestMapping("/api/step-setup")
 public class StepSetupController {
     @Autowired
     StepSetupService stepSetupService;

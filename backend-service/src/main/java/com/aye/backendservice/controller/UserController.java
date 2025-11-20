@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/aye-tk-vhcle-mng/api/user")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired

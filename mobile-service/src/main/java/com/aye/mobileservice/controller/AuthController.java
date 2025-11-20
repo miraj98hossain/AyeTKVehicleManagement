@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
-@RequestMapping("/aye-tk-vhcle-mng/api/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
     @Autowired
     private AuthService authService;

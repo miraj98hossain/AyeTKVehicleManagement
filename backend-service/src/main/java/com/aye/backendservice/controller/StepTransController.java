@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/aye-tk-vhcle-mng/api/step-trans")
+@RequestMapping("/api/step-trans")
 public class StepTransController {
     @Autowired
     private StepTransService stepTransService;
