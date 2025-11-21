@@ -1,6 +1,7 @@
 package com.aye.backendservice.mapper;
 
 import com.aye.RestfulServer.model.om.OrgHierarchy;
+import com.aye.commonlib.dto.request.OrgHierarchyRequest;
 import com.aye.commonlib.dto.response.OrgHierarchyResponse;
 import org.mapstruct.*;
 
@@ -11,4 +12,6 @@ import org.mapstruct.*;
 public interface OrgHierarchyMapper {
     @Mapping(source = "orgHierarchy.id", target = "parentId")
     OrgHierarchyResponse toResponseDto(OrgHierarchy orgHierarchy);
+
+    OrgHierarchy dtoToEntity(OrgHierarchyRequest orgHierarchyRequest);
 }
