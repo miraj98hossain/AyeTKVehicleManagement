@@ -42,7 +42,7 @@ public class InvInfoBServiceImpl implements InvInfoBService {
 
 
         OrgHierarchy orgHierarchy = this.orgHierarchyService.findById(invRequest.getOrgHierarchyId());
-        InventoryInformations inventory = this.invMapper.toResponseDto(invRequest);
+        InventoryInformations inventory = this.invMapper.dtoToEntity(invRequest);
         inventory.setOrgHierarchy(orgHierarchy);
 
         if (!(inventory.getIsItemMaster())) {

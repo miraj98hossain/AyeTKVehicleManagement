@@ -1,6 +1,8 @@
 package com.aye.commonlib.dto.response;
 
+import lombok.Data;
 
+@Data
 public class ExecutablesResponse {
     private Long id;
     private String name;

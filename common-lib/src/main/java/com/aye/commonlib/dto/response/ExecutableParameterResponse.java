@@ -17,7 +17,8 @@ public class ExecutableParameterResponse {
     private String dataSetName;
     private String displayField;
     private String isReadOnly;
-    private ExecutablesResponse executables;
+    private Long executablesId;
+    private String executablesName;
     private String javaClass;
     private String paraMetervalue;
     private String paraMeterId;

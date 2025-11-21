@@ -7,6 +7,7 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {ReferenceMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface InventoryInformationMapper {
     @Mapping(source = "orgHierarchy.id", target = "orgHierarchyId")
@@ -15,5 +16,7 @@ public interface InventoryInformationMapper {
     @Mapping(source = "itemOrg.id", target = "itemOrg")
     InventoryInformationResponse toResponseDto(InventoryInformations inventoryInformations);
 
-    InventoryInformations toResponseDto(InventoryInformationRequest request);
+    InventoryInformations toEntity(Long id);
+
+    InventoryInformations dtoToEntity(InventoryInformationRequest request);
 }

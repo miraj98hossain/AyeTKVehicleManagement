@@ -3,16 +3,18 @@ package com.aye.backendservice.mapper;
 import com.aye.RestfulServer.model.ExecutableParameter;
 import com.aye.commonlib.dto.request.ExecutableParameterRequest;
 import com.aye.commonlib.dto.response.ExecutableParameterResponse;
-import org.mapstruct.Builder;
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {ReferenceMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface ExecutableParameterMapper {
-    
+    @Mapping(source = "executables.id", target = "executablesId")
+    @Mapping(source = "executables.name", target = "executablesName")
     ExecutableParameterResponse toResponseDto(ExecutableParameter executableParameter);
+
+    ExecutableParameter toEntity(Long id);
+
     ExecutableParameter dtoToEntity(ExecutableParameterRequest executableParameterRequest);
 }

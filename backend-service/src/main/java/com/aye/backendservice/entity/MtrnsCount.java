@@ -15,7 +15,15 @@ public class MtrnsCount {
 
     @Setter
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "HIBERNATE_SEQUENCE"
+    )
+    @SequenceGenerator(
+            name = "HIBERNATE_SEQUENCE",
+            sequenceName = "HIBERNATE_SEQUENCE",
+            allocationSize = 1
+    )
     @Column(name = "ID")
     private Long id;
 
