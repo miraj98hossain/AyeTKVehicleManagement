@@ -96,7 +96,10 @@ public class ExecutablesBServiceImpl implements ExecutablesBService {
     }
 
     @Override
-    public ApiRequestResponse findByExecName(ExecutablesSearch search) {
+    public ApiRequestResponse findByExecName(String execName, Long moduleCode) {
+        ExecutablesSearch search = new ExecutablesSearch();
+        search.setModuleCode(moduleCode);
+        search.setExecName(execName);
         List<ExecutablesResponse> executablesList = this.executablesService.findByExecName(search)
                 .stream().map(executableMapper::toResponseDto).toList();
 
@@ -108,7 +111,10 @@ public class ExecutablesBServiceImpl implements ExecutablesBService {
     }
 
     @Override
-    public ApiRequestResponse findByModuleCode(ExecutablesSearch search) {
+    public ApiRequestResponse findByModuleCode(String execName, Long moduleCode) {
+        ExecutablesSearch search = new ExecutablesSearch();
+        search.setModuleCode(moduleCode);
+        search.setExecName(execName);
         List<ExecutablesResponse> executablesList = this.executablesService.findByModuleCode(search)
                 .stream().map(executableMapper::toResponseDto).toList();
         return ApiRequestResponseMaker.make(

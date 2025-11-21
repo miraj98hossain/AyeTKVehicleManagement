@@ -1,6 +1,5 @@
 package com.aye.backendservice.controller;
 
-import com.aye.RestfulServer.model.ExecutablesSearch;
 import com.aye.backendservice.service.ExecutablesBService;
 import com.aye.commonlib.dto.request.ExecutableParameterRequest;
 import com.aye.commonlib.dto.request.ExecutablesRequest;
@@ -42,15 +41,13 @@ public class ExecutablesController {
     }
 
     @GetMapping("/findByExecName")
-    ResponseEntity<ApiRequestResponse> findByExecName(@RequestParam ExecutablesSearch search) {
-        return ResponseEntity.ok(executablesBService.findByExecName(search));
+    ResponseEntity<ApiRequestResponse> findByExecName(@RequestParam("execName") String execName, @RequestParam("moduleCode") Long moduleCode) {
+        return ResponseEntity.ok(executablesBService.findByExecName(execName, moduleCode));
     }
 
     @GetMapping("/findByModuleCode")
-    ResponseEntity<ApiRequestResponse> findByModuleCode(@RequestParam ExecutablesSearch search) {
-
-        return ResponseEntity.ok(executablesBService.findByModuleCode(search));
-
+    ResponseEntity<ApiRequestResponse> findByModuleCode(@RequestParam("execName") String execName, @RequestParam("moduleCode") Long moduleCode) {
+        return ResponseEntity.ok(executablesBService.findByModuleCode(execName, moduleCode));
     }
 
     @GetMapping("/findParametersByExecutable/{executableId}/{temltId}")

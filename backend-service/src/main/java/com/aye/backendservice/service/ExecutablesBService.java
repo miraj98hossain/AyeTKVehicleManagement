@@ -1,6 +1,5 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.model.ExecutablesSearch;
 import com.aye.commonlib.dto.request.ExecutableParameterRequest;
 import com.aye.commonlib.dto.request.ExecutablesRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
@@ -17,9 +16,9 @@ public interface ExecutablesBService {
 
     ApiRequestResponse findAll();
 
-    ApiRequestResponse findByExecName(ExecutablesSearch search);
+    ApiRequestResponse findByExecName(String execName, Long moduleCode);
 
-    ApiRequestResponse findByModuleCode(ExecutablesSearch search);
+    ApiRequestResponse findByModuleCode(String execName, Long moduleCode);
 
     ApiRequestResponse findParametersByExecutable(Long executableId, Integer temltId);
 

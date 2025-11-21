@@ -23,8 +23,8 @@ public class AppModuleBServiceImpl implements AppModuleBService {
     private AppModuleMapper appModuleMapper;
 
     @Override
-    public ApiRequestResponse findByCode(AppModuleCode appModuleCode) {
-        AppModule appModule = this.appModuleService.findByCode(appModuleCode);
+    public ApiRequestResponse findByCode(String appModuleCode) {
+        AppModule appModule = this.appModuleService.findByCode(AppModuleCode.valueOf(appModuleCode));
         AppModuleResponse appModuleResponse = appModuleMapper.toResponseDto(appModule);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
