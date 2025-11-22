@@ -12,7 +12,6 @@ import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
 import org.apache.hc.core5.ssl.SSLContexts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 import javax.net.ssl.SSLContext;
@@ -24,7 +23,7 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 
 @Slf4j
-@Configuration
+//@Configuration
 public class ApacheHttp5FeignSslClientConfig {
     @Value("${server.ssl.trust-store}")
     private Resource trustStore;
