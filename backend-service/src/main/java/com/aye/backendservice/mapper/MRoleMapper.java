@@ -9,7 +9,6 @@ import org.mapstruct.NullValueCheckStrategy;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {MUserMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface MRoleMapper {
 
