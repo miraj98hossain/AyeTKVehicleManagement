@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
-@FeignClient(name = "StepServiceFeignClient",
+@FeignClient(name = "InvInfoFeignClient",
         url = "${backend.service.url}/api/invInfo")
 
-public interface InvInfoFeignController {
-    
+public interface InvInfoFeignClient {
+
     @GetMapping("/findOne/{invId}")
     ResponseEntity<ApiRequestResponse> findOne(@PathVariable("invId") Long invId);
 

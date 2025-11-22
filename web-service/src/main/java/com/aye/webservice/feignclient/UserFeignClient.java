@@ -8,8 +8,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "StepServiceFeignClient", url = "${backend.service.url}/api/user")
-public interface UserFeignController {
+@FeignClient(name = "UserFeignClient", url = "${backend.service.url}/api/user")
+public interface UserFeignClient {
 
     @GetMapping("/findAllUser")
     ResponseEntity<ApiRequestResponse> findAllUser();
@@ -25,6 +25,9 @@ public interface UserFeignController {
 
     @GetMapping("/findAllRoles")
     ResponseEntity<ApiRequestResponse> findAllRoles();
+
+    @GetMapping("/findByUserNameLike")
+    ResponseEntity<ApiRequestResponse> findByUserNameLike(@RequestParam("username") String username);
 
     @PostMapping()
     ResponseEntity<ApiRequestResponse> saveUser(@Valid @RequestBody MUserRequest mUserRequest);

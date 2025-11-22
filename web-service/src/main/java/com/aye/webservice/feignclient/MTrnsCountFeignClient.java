@@ -5,10 +5,10 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@FeignClient(name = "StepServiceFeignClient",
+@FeignClient(name = "MTrnsCountFeignClient",
         url = "${backend.service.url}/api/mtrns-count")
-public interface MTrnsCountFeignController {
-    
+public interface MTrnsCountFeignClient {
+
     @GetMapping("/findAll")
     ResponseEntity<ApiRequestResponse> findAll();
 

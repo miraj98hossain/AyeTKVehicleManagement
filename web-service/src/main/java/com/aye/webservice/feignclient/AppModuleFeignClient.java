@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-@FeignClient(name = "StepServiceFeignClient",
+@FeignClient(name = "AppModuleFeignClient",
         url = "${backend.service.url}/api/app-module")
-public interface AppModuleFeignController {
+public interface AppModuleFeignClient {
 
     @GetMapping("/findByCode")
     ResponseEntity<ApiRequestResponse> findByCode(@RequestParam("appModuleCode") String appModuleCode);
 
-    @GetMapping("findAll")
+    @GetMapping("/findAll")
     ResponseEntity<ApiRequestResponse> findAll();
 }

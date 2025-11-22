@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "StepServiceFeignClient",
+@FeignClient(name = "UserAccessFeignClient",
         url = "${backend.service.url}/api/user-access")
-public interface UserAccessFeignController {
-    
+public interface UserAccessFeignClient {
+
     @GetMapping("/getAllTemplet")
     ResponseEntity<ApiRequestResponse> getAllTemplet();
 

@@ -1,4 +1,4 @@
 package com.aye.webservice.feignclient;
 
-public class CommonColumnController {
+public class CommonColumnClient {
 }

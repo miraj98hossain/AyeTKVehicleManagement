@@ -8,9 +8,9 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "StepServiceFeignClient",
+@FeignClient(name = "ExecutablesFeignClient",
         url = "${backend.service.url}/api/executables")
-public interface ExecutablesFeignController {
+public interface ExecutablesFeignClient {
 
     @PostMapping("/save")
     ResponseEntity<ApiRequestResponse> save(@RequestBody ExecutablesRequest executablesRequest);
