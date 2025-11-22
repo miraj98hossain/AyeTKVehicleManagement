@@ -12,6 +12,7 @@ import lombok.Setter;
 public class PagesResponse {
     private String pageName;
     private String pageUrl;
+    private String pageUrlDisplayName;
     private Boolean status;
     private Integer pageGroup;
     private String psysicalName;

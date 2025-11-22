@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "UserMenuFeignClient",
-        url = "${backend.service.url}/api/user-access")
+        url = "${backend.service.url}/api/menus")
 public interface UserMenuFeignClient {
     @GetMapping
-    ResponseEntity<ApiRequestResponse> getUserAccessByUserName(@RequestParam String username);
+    ResponseEntity<ApiRequestResponse> getUserAccessByUserName(@RequestParam String username,
+                                                               @RequestParam String roleType);
 }

@@ -17,7 +17,8 @@ public class UserMenuController {
     UserMenuService userMenuService;
 
     @GetMapping
-    public ResponseEntity<ApiRequestResponse> getUserAccessByUserName(@RequestParam String username) {
-        return ResponseEntity.ok(userMenuService.getUserAccessByUserName(username));
+    public ResponseEntity<ApiRequestResponse> getUserAccessByUserName(@RequestParam String username,
+                                                                      @RequestParam String roleType) {
+        return ResponseEntity.ok(userMenuService.getUserAccessByUserName(username, roleType));
     }
 }

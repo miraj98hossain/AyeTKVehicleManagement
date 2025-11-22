@@ -4,5 +4,5 @@ import com.aye.commonlib.dto.response.ApiRequestResponse;
 
 public interface UserMenuBService {
 
-    ApiRequestResponse getUserAccessByUserName(String username);
+    ApiRequestResponse getUserAccessByUserName(String username, String roleType);
 }

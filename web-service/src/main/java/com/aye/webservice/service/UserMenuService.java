@@ -11,7 +11,7 @@ public class UserMenuService {
     @Autowired
     UserMenuFeignClient controller;
 
-    public ApiRequestResponse getUserAccessByUserName(String username) {
-        return this.controller.getUserAccessByUserName(username).getBody();
+    public ApiRequestResponse getUserAccessByUserName(String username, String roleType) {
+        return this.controller.getUserAccessByUserName(username, roleType).getBody();
     }
 }

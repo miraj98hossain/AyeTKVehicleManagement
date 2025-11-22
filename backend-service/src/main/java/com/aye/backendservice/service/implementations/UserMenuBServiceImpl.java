@@ -26,16 +26,16 @@ public class UserMenuBServiceImpl implements UserMenuBService {
     private UserAccessTemltDtlMapper userAccessTemltDtlMapper;
 
     @Override
-    public ApiRequestResponse getUserAccessByUserName(String username) {
+    public ApiRequestResponse getUserAccessByUserName(String username, String roleType) {
         Muser curUser = this.userService.findByUserName(username.toUpperCase());
-        var list = this.menuService.getUserAccessNew1(curUser, RoleTypes.ANDROID)
+        var list = this.menuService.getUserAccessNew1(curUser, RoleTypes.valueOf(roleType))
                 .stream().map(userAccessTemltDtlMapper::toResponseDto).toList();
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
         response.setMessage("Success");
         List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
         ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("userAccess")
+                .objectTag("manus")
                 .object(list)
                 .mapperClass(UserAccessTemltDtlResponse.class.getName())
                 .objectType(ApiRequestResponseDetail.ObjectType.A)
