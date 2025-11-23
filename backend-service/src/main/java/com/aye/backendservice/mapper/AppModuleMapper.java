@@ -9,7 +9,10 @@ import org.mapstruct.NullValueCheckStrategy;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {ReferenceMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface AppModuleMapper {
     AppModuleResponse toResponseDto(AppModule appModule);
+
+    AppModule toEntity(Long id);
 }

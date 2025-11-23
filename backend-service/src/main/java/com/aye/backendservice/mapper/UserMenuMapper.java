@@ -1,15 +1,47 @@
 package com.aye.backendservice.mapper;
 
+import com.aye.RestfulServer.model.RoleTypes;
 import com.aye.RestfulServer.model.UserMenu;
+import com.aye.RestfulServer.model.common.MenuLevel;
+import com.aye.commonlib.dto.request.UserMenuRequest;
 import com.aye.commonlib.dto.response.UserMenuResponse;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {UserSubMenuMapper.class},
+        uses = {ReferenceMapper.class,
+                UserSubMenuMapper.class,
+                AppModuleMapper.class,
+        },
         builder = @Builder(disableBuilder = true))
 public interface UserMenuMapper {
     @Mapping(source = "appModule.moduleName", target = "moduleName")
     @Mapping(source = "appModule.moduleCode", target = "moduleCode")
     UserMenuResponse toResponseDto(UserMenu userMenu);
+
+    UserMenu toEntity(Integer id);
+
+
+    @Mapping(target = "level", expression = "java(stringToMenuLevel(request.getLevel()))")
+    @Mapping(target = "pageType", expression = "java(stringToPageType(request.getPageType()))")
+    UserMenu dtoToEntity(UserMenuRequest request);
+
+   
+    default MenuLevel stringToMenuLevel(String level) {
+        if (level == null) return null;
+        try {
+            return MenuLevel.valueOf(level);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    default RoleTypes stringToPageType(String type) {
+        if (type == null) return null;
+        try {
+            return RoleTypes.valueOf(type);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

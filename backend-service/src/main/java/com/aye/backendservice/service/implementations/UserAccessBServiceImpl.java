@@ -49,7 +49,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     @Override
     public ApiRequestResponse findByUserId(Integer userId) {
         List<UserAccessResponse> userAccessesRes = this.userAccessService.findByUserId(userId)
-                .stream().map(userAccessMapper::toUserAccessResponse).toList();
+                .stream().map(userAccessMapper::toResponseDto).toList();
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Successfully Fetched All UserAccess",
                 ApiRequestResponseDetail.ObjectType.A, "AllUserAccess",

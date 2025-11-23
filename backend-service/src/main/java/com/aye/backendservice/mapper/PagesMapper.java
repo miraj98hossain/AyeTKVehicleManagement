@@ -6,8 +6,11 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
+        uses = {ReferenceMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface PagesMapper {
     @Mapping(source = "pageUrl.displayName", target = "pageUrlDisplayName")
     PagesResponse toResponseDto(Pages pages);
+
+    Pages toEntity(Long id);
 }

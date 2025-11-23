@@ -11,7 +11,7 @@ import org.mapstruct.*;
         builder = @Builder(disableBuilder = true))
 public interface UserAccessMapper {
     @Mapping(target = "userId", source = "user.id")
-    UserAccessResponse toUserAccessResponse(UserAccess userAccess);
+    UserAccessResponse toResponseDto(UserAccess userAccess);
 
     UserAccess dtoToUserAccess(UserAccessRequest userAccess);
 }
