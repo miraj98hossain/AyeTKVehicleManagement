@@ -43,7 +43,7 @@ public class UserMenuBServiceImpl implements UserMenuBService {
                 .toResponseDto(this.menuService.findByMenuId(id));
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
-                ApiRequestResponseDetail.ObjectType.O, "menuEdit",
+                ApiRequestResponseDetail.ObjectType.O, "userMenu",
                 UserMenuResponse.class.getName(), userMenuRes
         );
     }
