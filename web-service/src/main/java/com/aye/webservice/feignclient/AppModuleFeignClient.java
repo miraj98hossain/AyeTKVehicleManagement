@@ -1,11 +1,12 @@
 package com.aye.webservice.feignclient;
 
 
+import com.aye.commonlib.dto.request.AppModuleRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
+import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @FeignClient(name = "AppModuleFeignClient",
@@ -17,4 +18,10 @@ public interface AppModuleFeignClient {
 
     @GetMapping("/findAll")
     ResponseEntity<ApiRequestResponse> findAll();
+
+    @GetMapping("/findById/{id}")
+    ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id);
+
+    @PostMapping("/saveAppmodule")
+    ResponseEntity<ApiRequestResponse> saveAppmodule(@Valid @RequestBody AppModuleRequest appModuleRequest);
 }
