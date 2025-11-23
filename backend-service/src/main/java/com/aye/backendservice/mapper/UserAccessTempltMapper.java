@@ -1,6 +1,7 @@
 package com.aye.backendservice.mapper;
 
 import com.aye.RestfulServer.model.UserAccessTemplt;
+import com.aye.commonlib.dto.request.UserAccessTempltRequest;
 import com.aye.commonlib.dto.response.UserAccessTempltResponse;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
@@ -13,4 +14,6 @@ import org.mapstruct.NullValueCheckStrategy;
         builder = @Builder(disableBuilder = true))
 public interface UserAccessTempltMapper {
     UserAccessTempltResponse toResponseDto(UserAccessTemplt userAccessTemplt);
+
+    UserAccessTemplt dtoToEntity(UserAccessTempltRequest request);
 }

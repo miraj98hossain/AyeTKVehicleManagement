@@ -7,14 +7,13 @@ import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserAccessService;
 import com.aye.RestfulServer.service.UserAccessTempltService;
 import com.aye.backendservice.mapper.UserAccessMapper;
+import com.aye.backendservice.mapper.UserAccessTemltDtlMapper;
 import com.aye.backendservice.mapper.UserAccessTempltMapper;
 import com.aye.backendservice.service.ApiRequestResponseMaker;
 import com.aye.backendservice.service.UserAccessBService;
 import com.aye.commonlib.dto.request.UserAccessRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.UserAccessResponse;
-import com.aye.commonlib.dto.response.UserAccessTempltResponse;
+import com.aye.commonlib.dto.request.UserAccessTempltRequest;
+import com.aye.commonlib.dto.response.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -29,6 +28,8 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     private MuserService mUserService;
     @Autowired
     private UserAccessTempltMapper userAccessTempltMapper;
+    @Autowired
+    private UserAccessTemltDtlMapper userAccessTemltDtlMapper;
     @Autowired
     private UserAccessMapper userAccessMapper;
     @Autowired
@@ -67,8 +68,42 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         this.userAccessService.saveDtlLine(userAccess);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Successfully Created UserAccess",
-                ApiRequestResponseDetail.ObjectType.O, "",
+                null, "",
                 null, null
+        );
+    }
+
+    @Override
+    public ApiRequestResponse saveUserAccessTemp(UserAccessTempltRequest userAccessTempRequest) throws Exception {
+        UserAccessTemplt userAccessTemplt = this.userAccessTempltMapper.dtoToEntity(userAccessTempRequest);
+        this.userAccessTempltService.save(userAccessTemplt);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                null, "",
+                null, null
+        );
+    }
+
+    @Override
+    public ApiRequestResponse findTempById(Integer id) {
+        UserAccessTempltResponse templtResponse = this.userAccessTempltMapper
+                .toResponseDto(this.userAccessTempltService.findById(id));
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.O, "userAccessTemplt",
+                UserAccessTempltResponse.class.getName(), templtResponse
+        );
+    }
+
+    @Override
+    public ApiRequestResponse findTempDtlByDtlId(Integer id) {
+        UserAccessTemltDtlResponse accessTemltDtlResponse = this.userAccessTemltDtlMapper.toResponseDto(
+                this.userAccessTempltService.findByDtlId(id)
+        );
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.O, "userAccessTempltDtl",
+                UserAccessTemltDtlResponse.class.getName(), accessTemltDtlResponse
         );
     }
 }
