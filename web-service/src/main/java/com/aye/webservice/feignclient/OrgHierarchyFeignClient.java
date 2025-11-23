@@ -21,4 +21,7 @@ public interface OrgHierarchyFeignClient {
 
     @PostMapping("/saveOrg")
     ResponseEntity<ApiRequestResponse> saveOrg(OrgHierarchyRequest orgHierarchyResponse);
+
+    @GetMapping("/getAllOrgHierachy")
+    ResponseEntity<ApiRequestResponse> getAllOrgHierachy();
 }

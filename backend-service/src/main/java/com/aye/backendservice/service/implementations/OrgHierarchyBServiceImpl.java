@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OrgHierarchyBServiceImpl implements OrgHierarchyBService {
     @Autowired
@@ -53,6 +55,17 @@ public class OrgHierarchyBServiceImpl implements OrgHierarchyBService {
                 HttpStatus.OK.name(), "Success",
                 null, null,
                 null, null
+        );
+    }
+
+    @Override
+    public ApiRequestResponse getAllOrgHierachy() {
+        List<OrgHierarchyResponse> orgHResponseList = this.orgHierarchyService.findall()
+                .stream().map(this.orgHierarchyMapper::toResponseDto).toList();
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "orgHierarchyList",
+                OrgHierarchyResponse.class.getName(), orgHResponseList
         );
     }
 }

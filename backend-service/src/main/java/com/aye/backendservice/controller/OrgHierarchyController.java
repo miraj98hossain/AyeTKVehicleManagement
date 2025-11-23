@@ -27,7 +27,12 @@ public class OrgHierarchyController {
     }
 
     @PostMapping("/saveOrg")
-    ResponseEntity<ApiRequestResponse> saveOrg(OrgHierarchyRequest orgHierarchyResponse) {
+    public ResponseEntity<ApiRequestResponse> saveOrg(OrgHierarchyRequest orgHierarchyResponse) {
         return ResponseEntity.ok(orgHierarchyService.saveOrg(orgHierarchyResponse));
+    }
+
+    @GetMapping("/getAllOrgHierachy")
+    public ResponseEntity<ApiRequestResponse> getAllOrgHierachy() {
+        return ResponseEntity.ok(orgHierarchyService.getAllOrgHierachy());
     }
 }

@@ -15,20 +15,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/org-hierarchy")
 public class OrgHierarchyController {
     @Autowired
-    OrgHierarchyService orgHierarchyService;
+    private OrgHierarchyService orgHierarchyService;
 
     @GetMapping("/findById")
     public ResponseEntity<ApiRequestResponse> findById(Long orgId) {
-        return ResponseEntity.ok(orgHierarchyService.findById(orgId));
+        return ResponseEntity.ok(this.orgHierarchyService.findById(orgId));
     }
 
     @GetMapping("/findOrgPrntById")
     public ResponseEntity<ApiRequestResponse> findOrgPrntById(Long orgId) {
-        return ResponseEntity.ok(orgHierarchyService.findOrgPrntById(orgId));
+        return ResponseEntity.ok(this.orgHierarchyService.findOrgPrntById(orgId));
     }
 
     @PostMapping("/saveOrg")
     ResponseEntity<ApiRequestResponse> saveOrg(OrgHierarchyRequest orgHierarchyResponse) {
-        return ResponseEntity.ok(orgHierarchyService.saveOrg(orgHierarchyResponse));
+        return ResponseEntity.ok(this.orgHierarchyService.saveOrg(orgHierarchyResponse));
+    }
+
+    @GetMapping("/getAllOrgHierachy")
+    ResponseEntity<ApiRequestResponse> getAllOrgHierachy() {
+        return ResponseEntity.ok(this.orgHierarchyService.getAllOrgHierachy());
     }
 }

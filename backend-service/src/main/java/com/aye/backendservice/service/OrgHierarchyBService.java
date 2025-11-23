@@ -9,4 +9,6 @@ public interface OrgHierarchyBService {
     ApiRequestResponse findOrgPrntById(Long orgId);
 
     ApiRequestResponse saveOrg(OrgHierarchyRequest orgHierarchyResponse);
+
+    ApiRequestResponse getAllOrgHierachy();
 }

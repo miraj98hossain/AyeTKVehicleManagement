@@ -24,4 +24,8 @@ public class OrgHierarchyService {
     public ApiRequestResponse saveOrg(OrgHierarchyRequest orgHierarchyResponse) {
         return this.controller.saveOrg(orgHierarchyResponse).getBody();
     }
+
+    public ApiRequestResponse getAllOrgHierachy() {
+        return this.controller.getAllOrgHierachy().getBody();
+    }
 }
