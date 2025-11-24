@@ -1,6 +1,7 @@
 package com.aye.backendservice.mapper;
 
 import com.aye.RestfulServer.model.RequestGroupHeader;
+import com.aye.commonlib.dto.request.RequestGroupHeaderRequest;
 import com.aye.commonlib.dto.response.RequestGroupHeaderResponse;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
@@ -13,4 +14,6 @@ import org.mapstruct.NullValueCheckStrategy;
         builder = @Builder(disableBuilder = true))
 public interface RequestGroupHeaderMapper {
     RequestGroupHeaderResponse toResponseDto(RequestGroupHeader requestGroupHeader);
+
+    RequestGroupHeader dtoToEntity(RequestGroupHeaderRequest reqGrpHdrReq);
 }
