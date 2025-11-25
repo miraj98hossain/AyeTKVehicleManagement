@@ -1,8 +1,8 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.UserAccessBService;
-import com.aye.backendservice.service.UserService;
 import com.aye.commonlib.dto.request.UserAccessRequest;
+import com.aye.commonlib.dto.request.UserAccessTemltDtlRequest;
 import com.aye.commonlib.dto.request.UserAccessTempltRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user-access")
 public class UserAccessController {
-    @Autowired
-    UserService userService;
     @Autowired
     private UserAccessBService userAccessBService;
 
@@ -28,6 +26,11 @@ public class UserAccessController {
         return ResponseEntity.ok(this.userAccessBService.findByUserId(userId));
     }
 
+    @GetMapping("/findUserAccessById/{id}")
+    public ResponseEntity<ApiRequestResponse> findUserAccessById(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(this.userAccessBService.findUserAccessById(id));
+    }
+
     @PostMapping("/saveDtlLine")
     ResponseEntity<ApiRequestResponse> saveDtlLine(@Valid @RequestBody UserAccessRequest userAccessRequest) {
         return ResponseEntity.ok(this.userAccessBService.saveDtlLine(userAccessRequest));
@@ -35,9 +38,13 @@ public class UserAccessController {
 
 
     @PostMapping("/saveUserAccessTemp")
-    public ResponseEntity<ApiRequestResponse> saveUserAccessTemp(
-            @RequestBody UserAccessTempltRequest userAccessTempRequest) throws Exception {
+    public ResponseEntity<ApiRequestResponse> saveUserAccessTemp(@Valid @RequestBody UserAccessTempltRequest userAccessTempRequest) throws Exception {
         return ResponseEntity.ok(this.userAccessBService.saveUserAccessTemp(userAccessTempRequest));
+    }
+
+    @PostMapping("/saveUserAccessTempDtl")
+    ResponseEntity<ApiRequestResponse> saveUserAccessTempDtl(@Valid @RequestBody UserAccessTemltDtlRequest userAccessTemltDtlRequest) throws Exception {
+        return ResponseEntity.ok(this.userAccessBService.saveUserAccessTempDtl(userAccessTemltDtlRequest));
     }
 
     @GetMapping("/findTempById/{id}")
@@ -48,6 +55,11 @@ public class UserAccessController {
     @GetMapping("/findTempDtlByDtlId/{id}")
     public ResponseEntity<ApiRequestResponse> findTempDtlByDtlId(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(this.userAccessBService.findTempDtlByDtlId(id));
+    }
+
+    @GetMapping("/findByTempHdrId/{id}")
+    public ResponseEntity<ApiRequestResponse> findByTempHdrId(@PathVariable("id") Integer id) {
+        return ResponseEntity.ok(this.userAccessBService.findByTempHdrId(id));
     }
 
 }

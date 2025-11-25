@@ -16,7 +16,7 @@ public interface UserService {
 
     ApiRequestResponse findAllRoles();
 
-    ApiRequestResponse updateUser(MUserRequest mUserRequest);
+    ApiRequestResponse updateUser(MUserRequest mUserRequest, String username);
 
 
 }

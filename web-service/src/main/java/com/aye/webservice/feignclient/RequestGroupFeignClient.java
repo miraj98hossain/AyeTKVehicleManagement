@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "OrgHierarchyFeignClient",
+@FeignClient(name = "RequestGroupFeignClient",
         url = "${backend.service.url}/api/request-group")
 public interface RequestGroupFeignClient {
     @GetMapping("/findAllRequestGroup")

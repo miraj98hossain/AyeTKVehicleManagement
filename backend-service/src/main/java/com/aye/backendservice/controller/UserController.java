@@ -30,8 +30,8 @@ public class UserController {
         return ResponseEntity.ok(this.userService.findByUserName(name));
     }
 
-    @GetMapping("/{userId}")
-    ResponseEntity<ApiRequestResponse> findAllUser(@PathVariable("userId") Integer userId) {
+    @GetMapping("/findById/{userId}")
+    ResponseEntity<ApiRequestResponse> findById(@PathVariable("userId") Integer userId) {
         return ResponseEntity.ok(this.userService.findById(userId));
     }
 
@@ -40,9 +40,9 @@ public class UserController {
         return ResponseEntity.ok(this.userService.findAllRoles());
     }
 
-    @PostMapping()
-    ResponseEntity<ApiRequestResponse> saveUser(@Valid @RequestBody MUserRequest mUserRequest) {
-        return ResponseEntity.ok(this.userService.updateUser(mUserRequest));
+    @PostMapping("/saveUser")
+    ResponseEntity<ApiRequestResponse> saveUser(@Valid @RequestBody MUserRequest mUserRequest, @RequestParam String username) {
+        return ResponseEntity.ok(this.userService.updateUser(mUserRequest, username));
     }
 
     @GetMapping("/findByUserNameLike")

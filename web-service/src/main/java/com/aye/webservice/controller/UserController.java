@@ -31,9 +31,9 @@ public class UserController {
         return ResponseEntity.ok(this.userService.findByUserName(name));
     }
 
-    @GetMapping("/{userId}")
-    ResponseEntity<ApiRequestResponse> findAllUser(@PathVariable("userId") Integer userId) {
-        return ResponseEntity.ok(this.userService.findAllUser(userId));
+    @GetMapping("/findById/{userId}")
+    ResponseEntity<ApiRequestResponse> findById(@PathVariable("userId") Integer userId) {
+        return ResponseEntity.ok(this.userService.findById(userId));
     }
 
     @GetMapping("/findAllRoles")
@@ -41,8 +41,8 @@ public class UserController {
         return ResponseEntity.ok(this.userService.findAllRoles());
     }
 
-    @PostMapping()
-    ResponseEntity<ApiRequestResponse> saveUser(@Valid @RequestBody MUserRequest mUserRequest) {
-        return ResponseEntity.ok(this.userService.saveUser(mUserRequest));
+    @PostMapping("/saveUser")
+    ResponseEntity<ApiRequestResponse> saveUser(@Valid @RequestBody MUserRequest mUserRequest, @RequestParam String username) {
+        return ResponseEntity.ok(this.userService.saveUser(mUserRequest, username));
     }
 }

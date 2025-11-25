@@ -20,7 +20,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class RequestGroupHeaderServiceImpl implements RequestGroupHeaderBService {
+public class RequestGroupHeaderBServiceImpl implements RequestGroupHeaderBService {
     @Autowired
     RequestGroupHeaderService reqGrpHdrService;
     @Autowired

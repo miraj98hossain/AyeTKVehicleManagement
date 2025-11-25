@@ -4,12 +4,10 @@ package com.aye.webservice.controller;
 import com.aye.commonlib.dto.request.OrgHierarchyRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.OrgHierarchyService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/org-hierarchy")
@@ -17,23 +15,23 @@ public class OrgHierarchyController {
     @Autowired
     private OrgHierarchyService orgHierarchyService;
 
-    @GetMapping("/findById")
-    public ResponseEntity<ApiRequestResponse> findById(Long orgId) {
-        return ResponseEntity.ok(this.orgHierarchyService.findById(orgId));
+    @GetMapping("/findById/{orgId}")
+    public ResponseEntity<ApiRequestResponse> findById(@PathVariable("orgId") Long orgId) {
+        return ResponseEntity.ok(orgHierarchyService.findById(orgId));
     }
 
-    @GetMapping("/findOrgPrntById")
-    public ResponseEntity<ApiRequestResponse> findOrgPrntById(Long orgId) {
-        return ResponseEntity.ok(this.orgHierarchyService.findOrgPrntById(orgId));
+    @GetMapping("/findOrgPrntById/{orgId}")
+    public ResponseEntity<ApiRequestResponse> findOrgPrntById(@PathVariable("orgId") Long orgId) {
+        return ResponseEntity.ok(orgHierarchyService.findOrgPrntById(orgId));
     }
 
     @PostMapping("/saveOrg")
-    ResponseEntity<ApiRequestResponse> saveOrg(OrgHierarchyRequest orgHierarchyResponse) {
-        return ResponseEntity.ok(this.orgHierarchyService.saveOrg(orgHierarchyResponse));
+    public ResponseEntity<ApiRequestResponse> saveOrg(@Valid @RequestBody OrgHierarchyRequest orgHierarchyResponse) {
+        return ResponseEntity.ok(orgHierarchyService.saveOrg(orgHierarchyResponse));
     }
 
     @GetMapping("/getAllOrgHierachy")
-    ResponseEntity<ApiRequestResponse> getAllOrgHierachy() {
-        return ResponseEntity.ok(this.orgHierarchyService.getAllOrgHierachy());
+    public ResponseEntity<ApiRequestResponse> getAllOrgHierachy() {
+        return ResponseEntity.ok(orgHierarchyService.getAllOrgHierachy());
     }
 }

@@ -25,16 +25,16 @@ public class UserService {
         return this.controller.findByUserName(name).getBody();
     }
 
-    public ApiRequestResponse findAllUser(Integer userId) {
-        return this.controller.findAllUser(userId).getBody();
+    public ApiRequestResponse findById(Integer userId) {
+        return this.controller.findById(userId).getBody();
     }
 
     public ApiRequestResponse findAllRoles() {
         return this.controller.findAllRoles().getBody();
     }
 
-    public ApiRequestResponse saveUser(MUserRequest mUserRequest) {
-        return this.controller.saveUser(mUserRequest).getBody();
+    public ApiRequestResponse saveUser(MUserRequest mUserRequest, String username) {
+        return this.controller.saveUser(mUserRequest, username).getBody();
     }
 
     public ResponseEntity<ApiRequestResponse> findByUserNameLike(String username) {

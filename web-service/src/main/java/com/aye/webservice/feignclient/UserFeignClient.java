@@ -20,8 +20,8 @@ public interface UserFeignClient {
     @GetMapping("/findUser")
     ResponseEntity<ApiRequestResponse> findUser(@RequestParam("name") String name);
 
-    @GetMapping("/{userId}")
-    ResponseEntity<ApiRequestResponse> findAllUser(@PathVariable("userId") Integer userId);
+    @GetMapping("/findById/{userId}")
+    ResponseEntity<ApiRequestResponse> findById(@PathVariable("userId") Integer userId);
 
     @GetMapping("/findAllRoles")
     ResponseEntity<ApiRequestResponse> findAllRoles();
@@ -29,6 +29,6 @@ public interface UserFeignClient {
     @GetMapping("/findByUserNameLike")
     ResponseEntity<ApiRequestResponse> findByUserNameLike(@RequestParam("username") String username);
 
-    @PostMapping()
-    ResponseEntity<ApiRequestResponse> saveUser(@Valid @RequestBody MUserRequest mUserRequest);
+    @PostMapping("/saveUser")
+    ResponseEntity<ApiRequestResponse> saveUser(@Valid @RequestBody MUserRequest mUserRequest, @RequestParam String username);
 }

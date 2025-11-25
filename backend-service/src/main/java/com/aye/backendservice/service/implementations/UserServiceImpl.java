@@ -1,8 +1,9 @@
 package com.aye.backendservice.service.implementations;
 
 
+import com.aye.RestfulServer.model.CommonColumn;
+import com.aye.RestfulServer.model.Mrole;
 import com.aye.RestfulServer.model.Muser;
-import com.aye.RestfulServer.model.MuserDto;
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.backendservice.mapper.MRoleMapper;
 import com.aye.backendservice.mapper.MUserMapper;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,7 +40,7 @@ public class UserServiceImpl implements UserService {
         response.setMessage("Success");
         List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
         ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("mUserResponse")
+                .objectTag("mUser")
                 .object(mUserMapper.toResponseDto(curUser))
                 .mapperClass(MUserResponse.class.getName())
                 .objectType(ApiRequestResponseDetail.ObjectType.O)
@@ -60,13 +62,15 @@ public class UserServiceImpl implements UserService {
         );
     }
 
+
     @Override
     public ApiRequestResponse findAllUser() {
-        List<MuserDto> mUserList = this.muserService.findAllUser();
+        List<MUserResponse> mUserList = this.muserService.findAllUsers()
+                .stream().map(mUserMapper::toResponseDto).toList();
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
                 ApiRequestResponseDetail.ObjectType.A, "mUsers",
-                MuserDto.class.getName(), mUserList
+                MUserResponse.class.getName(), mUserList
         );
     }
 
@@ -76,7 +80,7 @@ public class UserServiceImpl implements UserService {
 
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
-                ApiRequestResponseDetail.ObjectType.O, "editUser",
+                ApiRequestResponseDetail.ObjectType.O, "mUser",
                 MUserResponse.class.getName(), nUser
         );
     }
@@ -94,11 +98,42 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ApiRequestResponse updateUser(MUserRequest mUserRequest) {
-        Muser muser = mUserMapper.dtoToEntity(mUserRequest);
-        this.muserService.updateUser(muser);
+    public ApiRequestResponse updateUser(MUserRequest mUserRequest, String username) {
+        Mrole mrole = this.muserService.findRoleById(mUserRequest.getRoleId());
+        Muser currentMuser = this.muserService.findByUserName(username.toUpperCase());
+        if (mUserRequest.getId() != null) {
+            Muser reqUser = this.muserService.findById(mUserRequest.getId());
+            if (!reqUser.getPassword().equals(mUserRequest.getPassword())) {
+                reqUser.setIsPassChange(true);
+            }
+            reqUser.setPassword(mUserRequest.getPassword());
+            reqUser.setName(mUserRequest.getName());
+            reqUser.setUserName(mUserRequest.getUserName().toUpperCase());
+            reqUser.setLastName(mUserRequest.getLastName());
+            reqUser.getRoles().add(mrole);
+            reqUser.setEnabled(mUserRequest.isEnabled());
+            reqUser.setUserType(Muser.UserType.valueOf(mUserRequest.getUserType()));
+            var cc = reqUser.getColumn();
+            cc.setLastUpdateBy(currentMuser.getId());
+            cc.setLastUpdateDate(new Date());
+            reqUser.setColumn(cc);
+            this.muserService.updateUser(reqUser);
+            return ApiRequestResponseMaker.make(
+                    HttpStatus.OK.name(), "Successfully Updated User",
+                    ApiRequestResponseDetail.ObjectType.O, "",
+                    MRoleResponse.class.getName(), null
+            );
+        }
+
+        Muser reqUser = this.mUserMapper.dtoToEntity(mUserRequest);
+        reqUser.getRoles().add(mrole);
+        CommonColumn commonColumn = new CommonColumn();
+        commonColumn.setCreatedBy(currentMuser);
+        commonColumn.setCreationDate(new Date());
+        reqUser.setColumn(commonColumn);
+        this.muserService.updateUser(reqUser);
         return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(), "Successfully Updated User",
+                HttpStatus.OK.name(), "Successfully Created User",
                 ApiRequestResponseDetail.ObjectType.O, "",
                 MRoleResponse.class.getName(), null
         );

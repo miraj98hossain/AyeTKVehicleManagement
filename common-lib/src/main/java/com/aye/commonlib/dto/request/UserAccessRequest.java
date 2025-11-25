@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import org.springframework.lang.Nullable;
 
 @Data
 public class UserAccessRequest {
@@ -23,8 +24,6 @@ public class UserAccessRequest {
     @NotBlank(message = "Start date is required")
     @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "Start date must be in format yyyy-MM-dd")
     private String start_date;
-
-    @NotBlank(message = "End date is required")
-    @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "End date must be in format yyyy-MM-dd")
+    @Nullable
     private String end_date;
 }

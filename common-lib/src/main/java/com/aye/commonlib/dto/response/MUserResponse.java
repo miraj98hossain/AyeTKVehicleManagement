@@ -18,7 +18,7 @@ public class MUserResponse {
     private boolean enabled;
     private String autoNumber;
     private String userType;
-    private Boolean isPassChange;
-    private Boolean chkDeviceId;
+    private boolean isPassChange;
+    private boolean chkDeviceId;
     private List<MRoleResponse> roles;
 }

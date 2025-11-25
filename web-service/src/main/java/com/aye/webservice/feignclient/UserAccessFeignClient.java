@@ -1,6 +1,7 @@
 package com.aye.webservice.feignclient;
 
 import com.aye.commonlib.dto.request.UserAccessRequest;
+import com.aye.commonlib.dto.request.UserAccessTemltDtlRequest;
 import com.aye.commonlib.dto.request.UserAccessTempltRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
@@ -22,11 +23,13 @@ public interface UserAccessFeignClient {
     ResponseEntity<ApiRequestResponse> findByUserId(@PathVariable("userId") Integer userId);
 
     @PostMapping("/saveDtlLine")
-    ResponseEntity<ApiRequestResponse> saveDtlLine(@Valid @RequestBody UserAccessRequest userAccessRequest);
+    ResponseEntity<ApiRequestResponse> saveDtlLine(@RequestBody UserAccessRequest userAccessRequest);
 
     @PostMapping("/saveUserAccessTemp")
-    ResponseEntity<ApiRequestResponse> saveUserAccessTemp(
-            @RequestBody UserAccessTempltRequest userAccessTempRequest);
+    ResponseEntity<ApiRequestResponse> saveUserAccessTemp(@Valid @RequestBody UserAccessTempltRequest userAccessTempRequest);
+
+    @PostMapping("/saveUserAccessTempDtl")
+    ResponseEntity<ApiRequestResponse> saveUserAccessTempDtl(@Valid @RequestBody UserAccessTemltDtlRequest userAccessTemltDtlRequest);
 
     @GetMapping("/findTempById/{id}")
     ResponseEntity<ApiRequestResponse> findTempById(@PathVariable("id") Integer id);
@@ -34,4 +37,9 @@ public interface UserAccessFeignClient {
     @GetMapping("/findTempDtlByDtlId/{id}")
     ResponseEntity<ApiRequestResponse> findTempDtlByDtlId(@PathVariable("id") Integer id);
 
+    @GetMapping("/findByTempHdrId/{id}")
+    ResponseEntity<ApiRequestResponse> findByTempHdrId(@PathVariable("id") Integer id);
+
+    @GetMapping("/findUserAccessById/{id}")
+    ResponseEntity<ApiRequestResponse> findUserAccessById(@PathVariable("id") Integer id);
 }

@@ -4,6 +4,7 @@ package com.aye.webservice.controller;
 import com.aye.commonlib.dto.request.InventoryInformationRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.InvInfoService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class InvInfoController {
     }
 
     @PostMapping("/invInfoSave")
-    ResponseEntity<ApiRequestResponse> save(InventoryInformationRequest invRequest) {
+    ResponseEntity<ApiRequestResponse> save(@Valid @RequestBody InventoryInformationRequest invRequest) {
         return ResponseEntity.ok(invInfoService.save(invRequest));
     }
 

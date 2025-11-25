@@ -2,8 +2,11 @@ package com.aye.commonlib.dto.request;
 
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
+@Data
 public class MUserRequest {
 
     private Integer id;
@@ -35,7 +38,8 @@ public class MUserRequest {
     @NotBlank(message = "User type is required")
     @Size(max = 30, message = "User type must not exceed 30 characters")
     private String userType;
-
+    @NotNull(message = "Role id is required")
+    private Integer roleId;
     private boolean isPassChange;
     private boolean chkDeviceId;
 }

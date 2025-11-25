@@ -4,6 +4,7 @@ import com.aye.commonlib.dto.request.ExecutableParameterRequest;
 import com.aye.commonlib.dto.request.ExecutablesRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.ExecutablesService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class ExecutablesController {
     }
 
     @PostMapping("/saveParameters")
-    ResponseEntity<ApiRequestResponse> saveParameters(@RequestBody ExecutableParameterRequest parameterRequest) {
+    ResponseEntity<ApiRequestResponse> saveParameters(@Valid @RequestBody ExecutableParameterRequest parameterRequest) {
         return ResponseEntity.ok(executablesService.saveParameters(parameterRequest));
     }
 
