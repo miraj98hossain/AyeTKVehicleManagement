@@ -13,12 +13,12 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserTransactionTypesResponse {
-    private Integer id;
+    private Long id;
     private String trnsType;
     private Long trnsTypeId;
     private String name;
     private String description;
-    private Integer userAccessInvOrgId;
+    private Long userAccessInvOrgId;
     private String startDate;
     private String endDate;
     private List<UserSubInvAccessResponse> userSubInvAccesses = new ArrayList<>();

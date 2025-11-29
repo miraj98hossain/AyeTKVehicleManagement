@@ -15,6 +15,7 @@ import org.mapstruct.*;
         },
         builder = @Builder(disableBuilder = true))
 public interface UserMenuMapper {
+    @Mapping(source = "appModule.id", target = "moduleId")
     @Mapping(source = "appModule.moduleName", target = "moduleName")
     @Mapping(source = "appModule.moduleCode", target = "moduleCode")
     UserMenuResponse toResponseDto(UserMenu userMenu);
@@ -24,9 +25,10 @@ public interface UserMenuMapper {
 
     @Mapping(target = "level", expression = "java(stringToMenuLevel(request.getLevel()))")
     @Mapping(target = "pageType", expression = "java(stringToPageType(request.getPageType()))")
+    @Mapping(target = "appModule", source = "moduleId")
     UserMenu dtoToEntity(UserMenuRequest request);
 
-   
+
     default MenuLevel stringToMenuLevel(String level) {
         if (level == null) return null;
         try {

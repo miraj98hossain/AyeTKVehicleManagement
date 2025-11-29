@@ -17,5 +17,5 @@ public class UserSubMenuResponse {
     private Integer userMenuId;
     private String userMenuName;
     private PagesResponse page;
-    private boolean isActive;
+    private Boolean isActive;
 }

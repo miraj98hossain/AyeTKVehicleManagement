@@ -11,6 +11,7 @@ import org.mapstruct.*;
         uses = {ReferenceMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface AppModuleMapper {
+    @Mapping(source = "id", target = "moduleId")
     AppModuleResponse toResponseDto(AppModule appModule);
 
     AppModule toEntity(Long id);
@@ -19,7 +20,7 @@ public interface AppModuleMapper {
     @Mapping(target = "moduleCode", expression = "java(stringToEnum(request.getModuleCode()))")
     AppModule dtoToEntity(AppModuleRequest request);
 
-    
+
     default AppModuleCode stringToEnum(String code) {
         if (code == null) return null;
         try {

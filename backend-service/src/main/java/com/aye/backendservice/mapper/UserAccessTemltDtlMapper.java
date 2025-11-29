@@ -7,14 +7,30 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {UserMenuMapper.class, UserAccessInvOrgMapper.class},
+        uses = {
+                ReferenceMapper.class,
+                UserMenuMapper.class,
+                OrgHierarchyMapper.class,
+                UserAccessInvOrgMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface UserAccessTemltDtlMapper {
     @Mapping(source = "orgHierarchy.id", target = "orgHierarchyId")
     @Mapping(source = "orgHierarchy.name", target = "orgHierarchyName")
     @Mapping(source = "orgHierarchy.code", target = "orgHierarchyCode")
+    @Mapping(source = "userAccessTemplt.id", target = "userAccessTemltId")
+    @Mapping(source = "userAccessTemplt.tempDesc", target = "userAccessTemltDesc")
+    @Mapping(source = "userAccessTemplt.tempNumber", target = "userAccessTemltNumber")
     @Mapping(source = "requestGroupHeader.groupName", target = "reqGrpHdrName")
+    @Mapping(target = "startDate", source = "startDate", dateFormat = "yyyy-MM-dd")
+    @Mapping(target = "endDate", source = "endDate", dateFormat = "yyyy-MM-dd")
     UserAccessTemltDtlResponse toResponseDto(UserAccessTemltDtl userAccessTemltDtl);
 
+    @Mapping(target = "startDate", source = "startDate", dateFormat = "yyyy-MM-dd")
+    @Mapping(target = "endDate", source = "endDate", dateFormat = "yyyy-MM-dd")
+    @Mapping(target = "orgHierarchy", source = "orgHierarchyId")
+    @Mapping(target = "userMenu", source = "userMenuId")
     UserAccessTemltDtl dtoToEntity(UserAccessTemltDtlRequest userAccessTemltDtlRequest);
+
+    UserAccessTemltDtl toEntity(Integer id);
+
 }

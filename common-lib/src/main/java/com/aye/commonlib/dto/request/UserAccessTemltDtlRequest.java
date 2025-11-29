@@ -14,14 +14,16 @@ public class UserAccessTemltDtlRequest {
 
     @NotNull(message = "Organization hierarchy ID must not be null")
     private Long orgHierarchyId;
-
+    private String orgHierarchyCode;
     @NotNull(message = "User access template ID must not be null")
     private Integer userAccessTempltId;
 
     @NotNull(message = "User menu ID must not be null")
     private Integer userMenuId;
+    private String userMenuName;
+    private String userMenuLevel;
 
-    @NotNull(message = "Request group header ID must not be null")
+    //    @NotNull(message = "Request group header ID must not be null")
     private Long requestGroupHeaderId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")

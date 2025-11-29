@@ -99,7 +99,7 @@ public class UserMenuBServiceImpl implements UserMenuBService {
                 .stream().map(userMenuMapper::toResponseDto).toList();
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
-                ApiRequestResponseDetail.ObjectType.A, "manus",
+                ApiRequestResponseDetail.ObjectType.A, "userManus",
                 UserMenuResponse.class.getName(), userMenuResponseList
         );
     }
@@ -118,6 +118,8 @@ public class UserMenuBServiceImpl implements UserMenuBService {
     @Override
     public ApiRequestResponse saveline(UserSubMenuRequest userSubMenuReq) {
         UserSubMenu userSubMenu = this.userSubMenuMapper.dtoToEntity(userSubMenuReq);
+        UserMenu userMenu = this.menuService.findByMenuId(userSubMenuReq.getUserMenuId());
+        userSubMenu.setUserMenu(userMenu);
         this.menuService.saveline(userSubMenu);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",

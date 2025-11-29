@@ -7,12 +7,13 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {PagesMapper.class, UserMenuMapper.class},
+        uses = {PagesMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface UserSubMenuMapper {
     @Mapping(source = "userMenu.id", target = "userMenuId")
     @Mapping(source = "userMenu.menuName", target = "userMenuName")
     UserSubMenuResponse toResponseDto(UserSubMenu userSubMenu);
 
+    @Mapping(target = "page", source = "pageId")
     UserSubMenu dtoToEntity(UserSubMenuRequest request);
 }

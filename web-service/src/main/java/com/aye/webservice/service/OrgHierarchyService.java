@@ -28,4 +28,8 @@ public class OrgHierarchyService {
     public ApiRequestResponse getAllOrgHierachy() {
         return this.controller.getAllOrgHierachy().getBody();
     }
+
+    public ApiRequestResponse findByType(String orgType) {
+        return this.controller.findByType(orgType).getBody();
+    }
 }

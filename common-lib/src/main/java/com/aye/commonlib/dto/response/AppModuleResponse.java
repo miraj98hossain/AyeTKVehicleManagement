@@ -10,6 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppModuleResponse {
+    private Long moduleId;
     private String moduleName;
     private String moduleCode;
 }

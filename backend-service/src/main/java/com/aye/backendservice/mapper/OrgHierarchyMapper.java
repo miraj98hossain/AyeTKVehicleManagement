@@ -7,11 +7,13 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        uses = {InventoryInformationMapper.class},
+        uses = {InventoryInformationMapper.class, ReferenceMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface OrgHierarchyMapper {
     @Mapping(source = "orgHierarchy.id", target = "parentId")
     OrgHierarchyResponse toResponseDto(OrgHierarchy orgHierarchy);
+
+    OrgHierarchy toEntity(Long id);
 
     OrgHierarchy dtoToEntity(OrgHierarchyRequest orgHierarchyRequest);
 }

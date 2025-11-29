@@ -19,7 +19,7 @@ import java.util.List;
 public class PagesBServiceImpl implements PagesBService {
     @Autowired
     private PageService pagesService;
-    @Autowired
+    @Autowired()
     private PagesMapper pagesMapper;
 
     @Override

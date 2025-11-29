@@ -24,7 +24,7 @@ public class PagesRequest {
     private Integer pageGroup;
 
     @NotBlank(message = "Physical name cannot be empty")
-    private String psysicalName;
+    private String physicalName;
 
     @NotBlank(message = "Page type is required")
     private String pageType;

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/request-group")
+@RequestMapping("/api/request-group")
 public class RequestHeaderController {
     @Autowired
     private RequestGroupService requestGroupService;

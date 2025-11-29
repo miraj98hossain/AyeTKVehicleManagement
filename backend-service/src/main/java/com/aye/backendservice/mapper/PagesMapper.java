@@ -13,12 +13,14 @@ import org.mapstruct.*;
         builder = @Builder(disableBuilder = true))
 public interface PagesMapper {
     @Mapping(source = "pageUrl.displayName", target = "pageUrlDisplayName")
+    @Mapping(source = "psysicalName", target = "physicalName")
     PagesResponse toResponseDto(Pages pages);
 
     Pages toEntity(Long id);
 
     @Mapping(target = "pageUrl", expression = "java(stringToPageUrl(request.getPageUrl()))")
     @Mapping(target = "pageType", expression = "java(stringToPageType(request.getPageType()))")
+    @Mapping(target = "psysicalName", source = "physicalName")
 // audit handled in backend
     Pages dtoToEntity(PagesRequest request);
 

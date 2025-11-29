@@ -34,4 +34,9 @@ public class OrgHierarchyController {
     public ResponseEntity<ApiRequestResponse> getAllOrgHierachy() {
         return ResponseEntity.ok(orgHierarchyService.getAllOrgHierachy());
     }
+
+    @GetMapping("/findByType")
+    public ResponseEntity<ApiRequestResponse> findByType(@RequestParam String orgType) {
+        return ResponseEntity.ok().body(this.orgHierarchyService.findByType(orgType));
+    }
 }

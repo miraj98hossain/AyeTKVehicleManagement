@@ -16,7 +16,7 @@ public class InventoryInformationResponse {
     private String address;
     private Integer calendarHeader;
     private String costingMethod;
-    private Integer orgHierarchyId;
+    private Long orgHierarchyId;
     private String orgHierarchyName;
     private String orgHierarchyCode;
     private Integer itemOrg;

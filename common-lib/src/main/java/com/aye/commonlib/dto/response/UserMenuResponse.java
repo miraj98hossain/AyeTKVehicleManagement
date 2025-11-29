@@ -15,6 +15,7 @@ import java.util.List;
 public class UserMenuResponse {
     private Integer id;
     private String menuName;
+    private Long moduleId;
     private String moduleName;
     private String moduleCode;
     private String level;

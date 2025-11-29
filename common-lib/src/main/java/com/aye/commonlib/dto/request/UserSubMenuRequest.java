@@ -13,7 +13,6 @@ public class UserSubMenuRequest {
     @Size(max = 100, message = "Menu name must not exceed 100 characters")
     private String menuName;
 
-    @NotBlank(message = "Page name cannot be empty")
     @Size(max = 150, message = "Page name must not exceed 150 characters")
     private String pageName;
 

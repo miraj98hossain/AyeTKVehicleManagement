@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -14,20 +15,20 @@ import java.util.List;
 public class UserAccessTemltDtlResponse {
     private Integer id;
     //org details
-    private Integer orgHierarchyId;
+    private Long orgHierarchyId;
     private String orgHierarchyName;
     private String orgHierarchyCode;
     //temp details
-    private Integer UserAccessTemltId;
-    private String UserAccessTemltNumber;
-    private String UserAccessTemltDesc;
+    private Integer userAccessTemltId;
+    private String userAccessTemltNumber;
+    private String userAccessTemltDesc;
     private UserMenuResponse userMenu;
     private String menuHeaderName;
     private String menuLevel;
     private String orgHerName;
     private String reqGrpHdrName;
-    private String startDate;
-    private String endDate;
+    private Date startDate;
+    private Date endDate;
     private String detailName;
     private Boolean userSpecefic;
     private List<UserAccessInvOrgResponse> userAccessInvOrgs;

@@ -1,6 +1,6 @@
 package com.aye.backendservice.controller;
 
-import com.aye.backendservice.service.MtrnsCountService;
+import com.aye.backendservice.service.implementations.MtrnsCountService;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

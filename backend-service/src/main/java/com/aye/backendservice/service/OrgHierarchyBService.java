@@ -11,4 +11,6 @@ public interface OrgHierarchyBService {
     ApiRequestResponse saveOrg(OrgHierarchyRequest orgHierarchyResponse);
 
     ApiRequestResponse getAllOrgHierachy();
+
+    ApiRequestResponse findByType(String OrgType);
 }

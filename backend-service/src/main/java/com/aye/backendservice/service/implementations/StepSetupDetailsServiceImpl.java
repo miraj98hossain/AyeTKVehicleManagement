@@ -1,14 +1,14 @@
 package com.aye.backendservice.service.implementations;
 
 
-import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
-import com.aye.commonlib.dto.response.StepSetupDetailsResponse;
 import com.aye.backendservice.entity.Step;
 import com.aye.backendservice.entity.StepSetup;
 import com.aye.backendservice.entity.StepSetupDetails;
 import com.aye.backendservice.mapper.StepSetupDetailsMapper;
 import com.aye.backendservice.repository.StepSetupDetailsRepository;
 import com.aye.backendservice.service.StepSetupDetailsService;
+import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
+import com.aye.commonlib.dto.response.StepSetupDetailsResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
@@ -107,9 +107,9 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("stepSetup"), stepSetup));
             predicates.add(cb.equal(root.get("isActive"), 1));
-
             if (searchWords != null && !searchWords.isEmpty()) {
-                predicates.add(cb.like(cb.lower(stepJoin.get("stepName")), "%" + searchWords.toLowerCase() + "%"));
+                String searchTerm = "%" + searchWords.toLowerCase() + "%";
+                predicates.add(cb.like(cb.lower(stepJoin.get("stepName")), searchTerm));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

@@ -12,8 +12,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserAccessInvOrgResponse {
-    private Integer id;
+    private Long id;
     private Integer invOrgId;
+    private String invOrgName;
     private Integer userAccessTemltDtlId;
+    private Long orgId;
+    private String tempDtlDetailName;
     private List<UserTransactionTypesResponse> userTransactionTypes;
 }

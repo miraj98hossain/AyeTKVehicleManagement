@@ -1,5 +1,6 @@
 package com.aye.backendservice.service.implementations;
 
+import com.aye.RestfulServer.model.common.OrgType;
 import com.aye.RestfulServer.model.om.OrgHierarchy;
 import com.aye.RestfulServer.service.OrgHierarchyService;
 import com.aye.backendservice.mapper.OrgHierarchyMapper;
@@ -61,6 +62,18 @@ public class OrgHierarchyBServiceImpl implements OrgHierarchyBService {
     @Override
     public ApiRequestResponse getAllOrgHierachy() {
         List<OrgHierarchyResponse> orgHResponseList = this.orgHierarchyService.findall()
+                .stream().map(this.orgHierarchyMapper::toResponseDto).toList();
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "orgHierarchyList",
+                OrgHierarchyResponse.class.getName(), orgHResponseList
+        );
+    }
+
+    @Override
+    public ApiRequestResponse findByType(String orgType) {
+
+        List<OrgHierarchyResponse> orgHResponseList = this.orgHierarchyService.findByType(OrgType.valueOf(orgType))
                 .stream().map(this.orgHierarchyMapper::toResponseDto).toList();
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",

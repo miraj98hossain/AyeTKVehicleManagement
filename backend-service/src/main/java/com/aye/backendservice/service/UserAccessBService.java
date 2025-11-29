@@ -1,8 +1,9 @@
 package com.aye.backendservice.service;
 
-import com.aye.commonlib.dto.request.UserAccessRequest;
-import com.aye.commonlib.dto.request.UserAccessTemltDtlRequest;
-import com.aye.commonlib.dto.request.UserAccessTempltRequest;
+import com.aye.RestfulServer.model.UserSubInvAccess;
+import com.aye.RestfulServer.model.UserTransactionTypes;
+import com.aye.RestfulServer.model.om.InvOrgSubInvV;
+import com.aye.commonlib.dto.request.*;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 
 public interface UserAccessBService {
@@ -24,5 +25,42 @@ public interface UserAccessBService {
 
     ApiRequestResponse findUserAccessById(Integer id);
 
+
+    //***********************Inventory Orgs**********************************
+    ApiRequestResponse findAllUsrAccessOrg();
+
+    ApiRequestResponse findByInvOrgs(Long inventoryInformation);
+
+    ApiRequestResponse findUsrAccInvOrgByTempDtlId(Integer tempDtlId);
+
+    ApiRequestResponse findUsrAccessInvOrgById(Long id);
+
+    ApiRequestResponse saveUsrAccessInvOrg(UserAccessInvOrgRequest userAccessInvOrgRequest, String userName);
+
+    ApiRequestResponse deleteUsrAccessInvOrg(Long id);
+
+    //*******************Trans Types***********************************************
+
+    ApiRequestResponse findByInvAccess(Long userAccessInvOrgId);
+
+    ApiRequestResponse findUserTransactionTypesById(Long id);
+
+    ApiRequestResponse saveUserTransactionTypes(UserTransactionTypesRequest ut, String userName);
+
+    ApiRequestResponse DeleteUserTransactionTypes(Long utId);
+
+    //===============UserSubInvAccess======
+
+    ApiRequestResponse findByTransactionTypes(UserTransactionTypes userTransactionTypes);
+
+    ApiRequestResponse findUserSubInvAccessById(Long id);
+
+    ApiRequestResponse saveUserSubInvAccess(UserSubInvAccess us, String userName);
+
+    ApiRequestResponse deleteUserSubInvAccess(UserSubInvAccess us);
+
+    ApiRequestResponse searchOrdTrnsTypesV(Long orgId, Long invOrgId, String typ);
+
+    ApiRequestResponse searchInvOrgSubInv(InvOrgSubInvV v);
 
 }
