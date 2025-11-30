@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html data-layout-decorate="~{fragments/layout}"
-      lang="en"
->
+<html data-layout-decorate="~{fragments/layout}" lang="en">
 <head>
-
+    <link rel="stylesheet" th:href="@{/css/steps-trans.css}">
+    <title></title>
 </head>
+
+
+
 <body>
 <div class="right_col" data-layout-fragment="content" role="main">
     <div class="row">
@@ -154,8 +156,8 @@
 
 
                     <div class="form-group col-sm-12">
-                        <table class="table table-bordered table-hover table-striped">
-                            <thead>
+                        <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
+                        <thead>
                             <tr>
                                 <th>TransNo</th>
                                 <th>LinesNo</th>
@@ -207,9 +209,8 @@
                         </table>
 
                         <!-- Pagination -->
-                        <nav th:if="${stepTransResponseList.totalPages > 1}" aria-label="Page navigation" class="text-center">
+                        <nav th:if="${stepTransResponseList.totalPages > 1}" aria-label="Page navigation" class="text-left">
                             <ul class="pagination">
-
                                 <!-- Previous -->
                                 <li th:classappend="${!stepTransResponseList.hasPrevious()} ? 'disabled'">
                                     <a th:if="${stepTransResponseList.hasPrevious()}"
@@ -260,8 +261,6 @@
 
                             </ul>
                         </nav>
-
-
 
                     </div>
                     <div class="panel-footer"></div>
