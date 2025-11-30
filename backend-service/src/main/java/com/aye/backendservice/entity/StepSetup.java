@@ -35,6 +35,8 @@ public class StepSetup {
     private Long invOrg;
     @Column(name = "IS_ACTIVE")
     private Integer isActive;
+    @Column(name = "description", nullable = false)
+    private String description;
 
     @OneToMany(mappedBy = "stepSetup", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("serialNo ASC")

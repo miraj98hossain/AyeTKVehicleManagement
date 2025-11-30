@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/api/step-trans")
@@ -27,8 +26,8 @@ public class StepTransController {
     public ResponseEntity<ApiRequestResponse> create(
             @RequestParam String userName,
             @Validated({StepTransCreateValidation.class, Default.class})
-            @RequestBody StepTransRequest stepTransRequest,
-            UriComponentsBuilder uriBuilder) {
+            @RequestBody StepTransRequest stepTransRequest
+    ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransService.saveStepTrans(stepTransRequest, userName));
     }
 

@@ -8,8 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 
 @Service
 public class StepTransService {
@@ -17,13 +15,13 @@ public class StepTransService {
     StepTransServiceFeignClient stepTransServiceFeignClient;
 
 
-    public ApiRequestResponse create(StepTransRequest stepTransRequest, Long currentUserId) {
-        return stepTransServiceFeignClient.create(currentUserId, stepTransRequest).getBody();
+    public ApiRequestResponse create(StepTransRequest stepTransRequest, String userName) {
+        return stepTransServiceFeignClient.create(userName, stepTransRequest).getBody();
     }
 
 
-    public ApiRequestResponse updateLines(StepTransLinesRequest stepTransLinesRequest, Long currentUserId) {
-        return stepTransServiceFeignClient.updateLines(currentUserId, stepTransLinesRequest).getBody();
+    public ApiRequestResponse updateLines(StepTransLinesRequest stepTransLinesRequest, String userName) {
+        return stepTransServiceFeignClient.updateLines(userName, stepTransLinesRequest).getBody();
     }
 
 
@@ -36,7 +34,11 @@ public class StepTransService {
         return stepTransServiceFeignClient.findById(id).getBody();
     }
 
-    public ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, Pageable pageable) {
-        return stepTransServiceFeignClient.findAllBySetupDtls(setupDetailIds, pageable).getBody();
+
+    public ApiRequestResponse findAllByTempDtlId(Integer tempDtlId,
+                                                 String searchWords,
+                                                 Pageable pageable) {
+        return this.stepTransServiceFeignClient.findAllByTempDtlId(tempDtlId, searchWords, pageable).getBody();
+
     }
 }

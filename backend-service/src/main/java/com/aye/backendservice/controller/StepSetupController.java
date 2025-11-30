@@ -64,4 +64,13 @@ public class StepSetupController {
         }
         return ResponseEntity.ok().body(obj);
     }
+
+    @GetMapping("/findSetupByTempDtlId/{tempDtlId}")
+    public ResponseEntity<ApiRequestResponse> findSetupByTempDtlId(@PathVariable("tempDtlId") Integer tempDtlId) {
+        var obj = this.stepSetupService.findSetupByTempDtlId(tempDtlId);
+        if (obj == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(obj);
+    }
 }

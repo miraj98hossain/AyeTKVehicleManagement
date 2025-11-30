@@ -3,10 +3,7 @@ package com.aye.commonlib.dto.request;
 
 import com.aye.commonlib.dto.validationGroup.StepSetupCreateValidation;
 import com.aye.commonlib.dto.validationGroup.StepSetupUpdateValidation;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +26,8 @@ public class StepSetupRequest {
     @Min(value = 0, message = "Is Active must be 0 or 1")
     @Max(value = 1, message = "Is Active must be 0 or 1")
     private Integer isActive;
+    @NotBlank(groups = {StepSetupCreateValidation.class, StepSetupUpdateValidation.class}, message = "Description  is required")
+    private String description;
     //@NotNull(groups = {StepSetupCreateValidation.class, StepSetupUpdateValidation.class}, message = "Step setup details information is required")
     @Size(groups = {StepSetupCreateValidation.class}, min = 1, message = "Minimum one Setup Details is required")
     private List<StepSetupDetailsRequest> stepSetupDetailsRequests;

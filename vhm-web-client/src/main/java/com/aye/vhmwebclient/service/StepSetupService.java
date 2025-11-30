@@ -35,6 +35,10 @@ public class StepSetupService {
     public ApiRequestResponse findSetupByDtlId(Long detailId) {
         return stepSetupServiceFeignClient.findSetupByDtlId(detailId).getBody();
     }
+
+    public ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId) {
+        return stepSetupServiceFeignClient.findSetupByTempDtlId(tempDtlId);
+    }
 }
 
 

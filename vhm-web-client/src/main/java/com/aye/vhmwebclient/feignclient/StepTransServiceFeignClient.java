@@ -7,10 +7,9 @@ import com.aye.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @FeignClient(name = "StepTransServiceFeignClient", url = "${web.service.url}${web.service.step.trans.prefix}")
 public interface StepTransServiceFeignClient {
@@ -18,12 +17,12 @@ public interface StepTransServiceFeignClient {
 
     @PostMapping("/create")
     ResponseEntity<ApiRequestResponse> create(
-            @RequestParam Long currentUserId,
+            @RequestParam String userName,
             @RequestBody StepTransRequest stepTransRequest);
 
     @PostMapping("/update-lines")
     ResponseEntity<ApiRequestResponse> updateLines(
-            @RequestParam Long currentUserId,
+            @RequestParam String userName,
             @RequestBody StepTransLinesRequest stepTransLinesRequest);
 
     @GetMapping
@@ -32,6 +31,8 @@ public interface StepTransServiceFeignClient {
     @GetMapping("/{id}")
     ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id);
 
-    @GetMapping("/findAllBySetupDtls")
-    ResponseEntity<ApiRequestResponse> findAllBySetupDtls(@RequestParam List<Long> setupDetailIds, Pageable pageable);
+    @GetMapping("/findAllByTempDtlId")
+    ResponseEntity<ApiRequestResponse> findAllByTempDtlId(@RequestParam Integer tempDtlId,
+                                                          @RequestParam(required = false) String searchWords,
+                                                          @PageableDefault(size = 10, page = 0) Pageable pageable);
 }

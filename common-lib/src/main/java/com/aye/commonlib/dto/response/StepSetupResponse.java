@@ -19,6 +19,7 @@ public class StepSetupResponse {
     private Long orgId;
     private Long invOrg;
     private Integer isActive;
+    private String description;
     private List<StepSetupDetailsResponse> stepSetupDetails;
     private Long createdBy;
     private Date createdAt;

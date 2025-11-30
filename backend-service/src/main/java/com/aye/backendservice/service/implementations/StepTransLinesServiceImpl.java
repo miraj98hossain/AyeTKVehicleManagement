@@ -107,12 +107,9 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             Join<StepTransLines, StepTrans> masterJoin = root.join("stepTrans", JoinType.INNER);
             Join<StepTransLines, Step> stepJoin = root.join("step", JoinType.INNER);
             Join<StepTrans, StepSetup> setupJoin = masterJoin.join("stepSetup", JoinType.INNER);
-
             List<Predicate> predicates = new ArrayList<>();
-
             // stepStatus not in C,R
             predicates.add(cb.not(root.get("stepStatus").in('C', 'R')));
-
             // setupSetupId IN (...)
             predicates.add(setupJoin.get("stepSetupId").in(stepSetupIds));
             predicates.add(stepJoin.get("stepId").in(stepIds));

@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" lang="en"
-      data-layout-decorate="~{fragments/layout}">
+<html data-layout-decorate="~{fragments/layout}"
+      lang="en"
+>
 <head>
 
 </head>
 <body>
-
-<div class="right_col" role="main" data-layout-fragment="content">
+<div class="right_col" data-layout-fragment="content" role="main">
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
+        <div class="col-sm-12">
             <!--<div class="container">-->
             <div class="panel panel-default">
                 <!-- Default panel contents -->
                 <div class="panel-heading">Step Transaction</div>
                 <div class="panel-body">
-                    <form method="post" th:action="@{/step-trans/create/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}"
+                    <form method="post"
+                          th:action="@{/step-trans/create/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}"
                           th:object="${stepTransReq}">
                         <!-- Template Row -->
                         <div class="form-group col-sm-12">
@@ -24,15 +24,28 @@
                                 <b>:</b>
                             </div>
                             <div class="col-sm-4">
-                                <input placeholder="Template Id" id="templateid" readonly class="form-control"
+                                <input class="form-control" id="templateid" placeholder="Template Id" readonly
                                        th:value="${tempDtlId}" type="text"/>
                             </div>
 
                             <div class="col-sm-4">
+                                <!--                                th:disabled="${stepSetupDetailsResponse.serialNo != 1}"-->
+                                <select  class="form-control"
+                                        id="stepSetupList"
+                                        required
+                                        th:field="${stepTransReq.stepSetupId}">
+                                    <div th:if="${#lists.size(stepSetupList) &gt; 1}">
+                                        <option value="">-- Select --</option>
+                                    </div>
+                                    <option th:each="stepSetup : ${stepSetupList}"
+                                            th:text="${stepSetup.description}"
+                                            th:value="${stepSetup.stepSetupId}">
+                                    </option>
+                                </select>
 
-                                <input id="Setup Id" class="form-control" readonly
-                                       placeholder="Setup Id" required
-                                       th:field="${stepSetupDetailsResponse.stepSetupId}" type="text">
+                                <!--                                <input id="Setup Id" class="form-control" readonly-->
+                                <!--                                       placeholder="Setup Id" required-->
+                                <!--                                       th:field="${stepSetupDetailsResponse.stepSetupId}" type="text">-->
                             </div>
                         </div>
 
@@ -41,10 +54,11 @@
                             <div class="col-sm-1"><b>:</b></div>
 
                             <div class="col-sm-3">
+                                <!--                                th:disabled="${stepSetupDetailsResponse.serialNo != 1}"-->
                                 <select class="form-control"
                                         id="vhCtyResList"
                                         required
-                                        th:disabled="${stepSetupDetailsResponse.serialNo != 1}"
+
                                         th:field="${stepTransReq.vehicleCity}">
                                     <option value="">-- Select --</option>
                                     <option th:each="vhCty : ${vhCtyResList}"
@@ -54,10 +68,11 @@
                             </div>
 
                             <div class="col-sm-2">
+                                <!--                                th:disabled="${stepSetupDetailsResponse.serialNo != 1}"-->
                                 <select class="form-control"
                                         id="vhCtyClsResList"
                                         required
-                                        th:disabled="${stepSetupDetailsResponse.serialNo != 1}"
+
                                         th:field="${stepTransReq.vehicleCityClass}">
                                     <option value="">-- Select --</option>
                                     <option th:each="vhCtyCls : ${vhCtyClsResList}"
@@ -67,17 +82,15 @@
                             </div>
 
                             <div class="col-sm-3">
-                                <input id="vehicleNo"
-                                       class="form-control"
+                                <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
+                                <input class="form-control"
+                                       id="vehicleNo"
                                        placeholder="Enter Vehicle No"
                                        required
                                        th:field="${stepTransReq.vehicleNumber}"
-                                       type="text"
-                                       th:readonly="${stepSetupDetailsResponse.serialNo != 1}" />
+                                       type="text"/>
                             </div>
                         </div>
-
-
 
 
                         <!-- Transport Name -->
@@ -87,10 +100,11 @@
                                 <b>:</b>
                             </div>
                             <div class="col-sm-8">
-                                <input id="transportName" class="form-control"
+                                <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
+                                <input class="form-control" id="transportName"
                                        placeholder="Enter Transport Name" required
                                        th:field="${stepTransReq.transportName}"
-                                       th:readonly="${stepSetupDetailsResponse.serialNo != 1}"
+
                                        type="text">
                             </div>
                         </div>
@@ -102,10 +116,11 @@
                                 <b>:</b>
                             </div>
                             <div class="col-sm-8">
-                                <input id="driverName" class="form-control"
+                                <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
+                                <input class="form-control" id="driverName"
                                        placeholder="Enter Driver" required
                                        th:field="${stepTransReq.driverName}"
-                                       th:readonly="${stepSetupDetailsResponse.serialNo != 1}"
+
                                        type="text">
                             </div>
                         </div>
@@ -117,9 +132,10 @@
                                 <b>:</b>
                             </div>
                             <div class="col-sm-8">
-                                <input id="driverPhone" class="form-control"
+                                <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
+                                <input class="form-control" id="driverPhone"
                                        placeholder="Enter Driver Phone" required
-                                       th:readonly="${stepSetupDetailsResponse.serialNo != 1}"
+
                                        th:field="${stepTransReq.driverPhoneNo}" type="text">
                             </div>
                         </div>
@@ -130,7 +146,8 @@
                                     th:text="${stepTransReq.stepTransNo!= null ? 'Update' : 'Create'}"
                                     type="submit"></button>
 
-                            <a class="btn cancel-btn" th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}">Clear</a>
+                            <a class="btn cancel-btn"
+                               th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}">Clear</a>
                         </div>
 
                     </form>
@@ -139,71 +156,120 @@
                     <div class="form-group col-sm-12">
                         <table class="table table-bordered table-hover table-striped">
                             <thead>
-                            <th>TransNo</th>
-                            <th>LinesNo</th>
-                            <th>VehicleNo</th>
-                            <th>Driver Name</th>
-                            <th>Step</th>
-                            <th>Status</th>
-                            <th>Actions</th>
+                            <tr>
+                                <th>TransNo</th>
+                                <th>LinesNo</th>
+                                <th>VehicleNo</th>
+                                <th>Driver Name</th>
+                                <th>Step</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
                             <tbody>
-                        <th:block th:each="s : ${stepTransResponseList.getContent()}">
-                            <!-- Inner loop for each line under a transaction -->
-                            <tr th:each="line, lineStat : ${s.stepTransLinesResponseList}">
-                                <!-- Show these cells only once per transaction -->
-                                <td th:if="${lineStat.index == 0}"
-                                    th:rowspan="${#lists.size(s.stepTransLinesResponseList)}"
-                                    th:text="${s.stepTransNo}"></td>
+                            <tr th:each="line, stat : ${stepTransResponseList.getContent()}">
+                                <td th:text="${line.stepTransNo}"></td>
                                 <td th:text="${line.stepTransLinesNo}"></td>
+                                <td th:text="${line.vehicleNumber}"></td>
+                                <td th:text="${line.driverName}"></td>
+                                <td  th:text="${line.stepName}"></td>
+                                <td class="text-center" th:text="${line.stepStatus}"></td>
+                                <td class="text-center">
 
-                                <td th:if="${lineStat.index == 0}"
-                                    th:rowspan="${#lists.size(s.stepTransLinesResponseList)}"
-                                    th:text="${s.vehicleNumber}"></td>
-
-                                <td th:if="${lineStat.index == 0}"
-                                    th:rowspan="${#lists.size(s.stepTransLinesResponseList)}"
-                                    th:text="${s.driverName}"></td>
-
-                                <td th:text="${line.stepName}"></td>
-                                <td th:text="${line.stepStatus}"></td>
-                                <td class="action-buttons">
-                                    <a class="btn view-btn"
+                                    <a class="btn view-btn btn-success"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Complete')}"
                                        th:if="${line.stage == 2}">
-                                        Approve
+                                        Release
                                     </a>
 
-                                    <a class="btn edit-btn"
+                                    <a class="btn edit-btn btn-warning"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='WIP')}"
                                        th:if="${line.stage == 1 and line.stepStatus != 'WIP'}">
                                         WIP
                                     </a>
 
-                                    <a class="btn pick-btn"
+                                    <a class="btn pick-btn btn-info"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Pick')}"
                                        th:if="${line.stage == 0 and line.stepStatus != 'Pick'}">
                                         Pick
                                     </a>
 
-                                    <a class="btn delete-btn"
+                                    <a class="btn delete-btn btn-danger"
+                                       th:if="${line.stage == 2}"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject')}">
                                         Reject
                                     </a>
+
                                 </td>
                             </tr>
-                        </th:block>
                             </tbody>
-                            </thead>
                         </table>
+
+                        <!-- Pagination -->
+                        <nav th:if="${stepTransResponseList.totalPages > 1}" aria-label="Page navigation" class="text-center">
+                            <ul class="pagination">
+
+                                <!-- Previous -->
+                                <li th:classappend="${!stepTransResponseList.hasPrevious()} ? 'disabled'">
+                                    <a th:if="${stepTransResponseList.hasPrevious()}"
+                                       th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.number - 1}, size=${stepTransResponseList.size})}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                    <span th:unless="${stepTransResponseList.hasPrevious()}">&laquo;</span>
+                                </li>
+
+                                <!-- First page -->
+                                <li th:if="${stepTransResponseList.number > 2}">
+                                    <a th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=0, size=${stepTransResponseList.size})}">1</a>
+                                </li>
+                                <li class="disabled" th:if="${stepTransResponseList.number > 3}">
+                                    <span>...</span>
+                                </li>
+
+                                <!-- Pages around current -->
+                                <li th:each="i : ${#numbers.sequence(
+                        (stepTransResponseList.number > 1 ? stepTransResponseList.number : 0),
+                        (stepTransResponseList.number < stepTransResponseList.totalPages - 2 ? stepTransResponseList.number + 1 : stepTransResponseList.totalPages - 1)
+                    )}"
+                                    th:classappend="${i == stepTransResponseList.number} ? 'active'">
+                                    <a th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${i}, size=${stepTransResponseList.size})}"
+                                       th:text="${i + 1}"></a>
+                                </li>
+
+                                <!-- Last page -->
+                                <li class="disabled" th:if="${stepTransResponseList.number < stepTransResponseList.totalPages - 3}">
+                                    <span>...</span>
+                                </li>
+                                <li th:if="${stepTransResponseList.number < stepTransResponseList.totalPages - 2}">
+                                    <a th:text="${stepTransResponseList.totalPages}"
+                                       th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.totalPages - 1}, size=${stepTransResponseList.size})}">
+                                    </a>
+                                </li>
+
+                                <!-- Next -->
+                                <li th:classappend="${!stepTransResponseList.hasNext()} ? 'disabled'">
+                                    <a th:if="${stepTransResponseList.hasNext()}"
+                                       th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.number + 1}, size=${stepTransResponseList.size})}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                    <span th:unless="${stepTransResponseList.hasNext()}">&raquo;</span>
+                                </li>
+
+                            </ul>
+                        </nav>
+
+
+
                     </div>
-
-
+                    <div class="panel-footer"></div>
                 </div>
-                <div class="panel-footer"></div>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
+
 </body>
 </html>

@@ -1,20 +1,23 @@
 package com.aye.backendservice.service.implementations;
 
-import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
-import com.aye.commonlib.dto.request.StepSetupRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.StepSetupDetailsResponse;
-import com.aye.commonlib.dto.response.StepSetupResponse;
+import com.aye.RestfulServer.model.UserTransactionTypes;
+import com.aye.RestfulServer.service.UserAccessTempltService;
 import com.aye.backendservice.entity.Step;
 import com.aye.backendservice.entity.StepSetup;
 import com.aye.backendservice.entity.StepSetupDetails;
 import com.aye.backendservice.mapper.StepSetupDetailsMapper;
 import com.aye.backendservice.mapper.StepSetupMapper;
 import com.aye.backendservice.repository.StepSetupRepository;
+import com.aye.backendservice.service.ApiRequestResponseMaker;
 import com.aye.backendservice.service.StepService;
 import com.aye.backendservice.service.StepSetupDetailsService;
 import com.aye.backendservice.service.StepSetupService;
+import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
+import com.aye.commonlib.dto.request.StepSetupRequest;
+import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
+import com.aye.commonlib.dto.response.StepSetupDetailsResponse;
+import com.aye.commonlib.dto.response.StepSetupResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Fetch;
 import jakarta.persistence.criteria.Join;
@@ -41,7 +44,8 @@ public class StepSetupServiceImpl implements StepSetupService {
     StepSetupMapper stepSetupMapper;
     @Autowired
     StepSetupDetailsMapper stepSetupDetailsMapper;
-
+    @Autowired
+    private UserAccessTempltService userAccessTempltService;
 
     @Transactional
     @Override
@@ -256,11 +260,36 @@ public class StepSetupServiceImpl implements StepSetupService {
         return this.stepSetupDetailsMapper.toResponseDto(details);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public List<StepSetupDetailsResponse> findStepStpDtlByDtlIds(List<Long> setupDetailIds) {
         List<StepSetupDetails> details = this.stepSetupDetailsService.findByIds(setupDetailIds);
         return details.stream().map(stepSetupDetailsMapper::toResponseDto).collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId) {
+        var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
+
+        List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
+                .flatMap(inv -> inv.getUserTransactionTypes().stream())
+                .map(UserTransactionTypes::getTrnsTypeId)
+                .toList();
+
+        List<StepSetupDetailsResponse> details = findStepStpDtlByDtlIds(setupDetailIds);
+
+        Set<Long> setupIds = details.stream()
+                .map(StepSetupDetailsResponse::getStepSetupId)
+                .collect(Collectors.toSet());
+        List<StepSetupResponse> stepSetupResponseList = this.stepSetupRepository
+                .findAllById(setupIds).stream().map(stepSetupMapper::toResponseDto).toList();
+
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "stepSetupList",
+                StepSetupResponse.class.getName(), stepSetupResponseList
+        );
     }
 
 }

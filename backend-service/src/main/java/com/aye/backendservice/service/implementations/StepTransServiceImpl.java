@@ -31,10 +31,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -162,15 +159,15 @@ public class StepTransServiceImpl implements StepTransService {
     protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, String searchWords, Pageable pageable) {
         List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
 
-        List<Long> setupIds = details.stream()
-                .map(StepSetupDetailsResponse::getStepSetupId)   // or getStepId() depending on the field
-                .toList();
+        Set<Long> setupIds = details.stream()
+                .map(StepSetupDetailsResponse::getStepSetupId)
+                .collect(Collectors.toSet());   // or getStepId() depending on the field;
 
         Set<Long> stepIds = details.stream()
                 .map(StepSetupDetailsResponse::getStepId)
                 .collect(Collectors.toSet());
 
-        var list = this.stepTransLinesService.getAllStepTransLine(stepIds, setupIds, searchWords, pageable);
+        var list = this.stepTransLinesService.getAllStepTransLine(stepIds, setupIds.stream().toList(), searchWords, pageable);
 
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
@@ -286,7 +283,8 @@ public class StepTransServiceImpl implements StepTransService {
             if (reqStepTransLines.getStepStatus().equals(StepStatus.R)) {
                 dbstepTransLines.setStepStatus(StepStatus.R);
                 dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
-                objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//Changing Status.
+                rejectTransLine(dbstepTransLines, Long.valueOf(muser.getId()), null);
+                //objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//Changing Status.
             }
         }
 
@@ -319,6 +317,31 @@ public class StepTransServiceImpl implements StepTransService {
                 .toList();
 
         return findAllBySetupDtls(setupDetailIds, searchWords, pageable);
+    }
+
+
+    @Transactional
+    protected void rejectTransLine(StepTransLines stepTransLines, Long currentUser, Set<Long> visited) {
+
+        if (visited == null) {
+            visited = new HashSet<>();
+        }
+
+        Long stepId = stepTransLines.getStepTransLinesId();
+        if (visited.contains(stepId)) {
+            return; // Already processed this step
+        }
+        visited.add(stepId);
+
+
+        var childLine = this.stepTransLinesService.getChildStepLine(stepId);
+        if (childLine != null) {
+            rejectTransLine(childLine, currentUser, visited);
+        }
+
+        // Reject current step
+        stepTransLines.setStepStatus(StepStatus.R);
+        this.stepTransLinesService.saveStepTransLines(stepTransLines, true, currentUser);
     }
 
 }
