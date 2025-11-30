@@ -2,9 +2,11 @@ package com.aye.mobileservice.feignclient;
 
 import com.aye.commonlib.dto.request.StepSetupRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.commonlib.dto.validationGroup.StepSetupCreateValidation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "StepSetupServiceFeignClient",
@@ -13,8 +15,8 @@ public interface StepSetupServiceFeignClient {
 
 
     @PostMapping("/save")
-    ResponseEntity<ApiRequestResponse> saveStepSetup(@RequestBody StepSetupRequest stepSetupRequest);
-
+    ResponseEntity<ApiRequestResponse> saveStepSetup(@Validated({StepSetupCreateValidation.class})
+                                                     @RequestBody StepSetupRequest stepSetupRequest);
 
     @GetMapping("/{id}")
     ResponseEntity<ApiRequestResponse> getStepSetup(@PathVariable("id") Long id);
@@ -23,10 +25,15 @@ public interface StepSetupServiceFeignClient {
     ResponseEntity<ApiRequestResponse> getAllStepsSetup(Pageable pageable);
 
     @GetMapping("/filterStepSetup")
-    ResponseEntity<ApiRequestResponse> filterStepSetup(@RequestParam Long orgId,
-                                                       @RequestParam Long invOrgId,
-                                                       @RequestParam(required = false) String searchWords);
+    ResponseEntity<ApiRequestResponse> filterStepSetup(
+            @RequestParam Long orgId,
+            @RequestParam Long invOrgId,
+            @RequestParam(required = false) String searchWords);
 
     @GetMapping("/findSetupByDtlId")
-    ResponseEntity<ApiRequestResponse> findSetupByDtlId(@RequestParam Long detailId);
+    ResponseEntity<ApiRequestResponse> findSetupByDtlId(
+            @RequestParam Long detailId);
+
+    @GetMapping("/findSetupByTempDtlId/{tempDtlId}")
+    ResponseEntity<ApiRequestResponse> findSetupByTempDtlId(@PathVariable("tempDtlId") Integer tempDtlId);
 }

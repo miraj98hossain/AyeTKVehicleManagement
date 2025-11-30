@@ -22,44 +22,37 @@ public class StepSetupController {
     StepSetupService stepSetupService;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiRequestResponse> saveStepSetup(@Validated({StepSetupCreateValidation.class}) @RequestBody StepSetupRequest stepSetupRequest) {
-        var savedStepSetup = stepSetupService.saveStepSetup(stepSetupRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(savedStepSetup);
+    public ResponseEntity<ApiRequestResponse> saveStepSetup(@Validated({StepSetupCreateValidation.class})
+                                                            @RequestBody StepSetupRequest stepSetupRequest) {
+
+        ApiRequestResponse response = stepSetupService.saveStepSetup(stepSetupRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiRequestResponse> getStepSetup(@PathVariable("id") Long id) {
-        var list = this.stepSetupService.getStepSetup(id);
-        if (list == null) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(this.stepSetupService.getStepSetup(id));
     }
 
     @GetMapping()
     public ResponseEntity<ApiRequestResponse> getAllStepsSetup(Pageable pageable) {
-        var list = this.stepSetupService.getAllStepsSetup(pageable);
-        if (list == null) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(list);
+        return ResponseEntity.ok().body(this.stepSetupService.getAllStepsSetup(pageable));
     }
 
     @GetMapping("/filterStepSetup")
-    public ResponseEntity<ApiRequestResponse> filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId, @RequestParam(required = false) String searchWords) {
-        var list = this.stepSetupService.filterStepSetup(orgId, invOrgId, searchWords);
-        if (list == null) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(list);
+    public ResponseEntity<ApiRequestResponse> filterStepSetup(
+            @RequestParam Long orgId, @RequestParam Long invOrgId, @RequestParam(required = false) String searchWords) {
+        return ResponseEntity.ok().body(this.stepSetupService.filterStepSetup(orgId, invOrgId, searchWords));
     }
 
     @GetMapping("/findSetupByDtlId")
-    ResponseEntity<ApiRequestResponse> findSetupByDtlId(@RequestParam Long detailId) {
-        var obj = this.stepSetupService.findSetupByDtlId(detailId);
-        if (obj == null) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<ApiRequestResponse> findSetupByDtlId(
+            @RequestParam Long detailId) {
+        return ResponseEntity.ok().body(this.stepSetupService.findSetupByDtlId(detailId));
+    }
+
+    @GetMapping("/findSetupByTempDtlId/{tempDtlId}")
+    public ResponseEntity<ApiRequestResponse> findSetupByTempDtlId(@PathVariable("tempDtlId") Integer tempDtlId) {
+        return ResponseEntity.ok().body(this.stepSetupService.findSetupByTempDtlId(tempDtlId));
     }
 }
