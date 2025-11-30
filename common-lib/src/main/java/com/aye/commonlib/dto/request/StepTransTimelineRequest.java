@@ -17,7 +17,7 @@ public class StepTransTimelineRequest {
     @NotNull(message = "Step Trans Lines id is required")
     private Long stepTransLinesId;
     @NotNull(message = "Step id is required")
-    private Long stepId;
+    private Long stepSetupDetailsId;
     private LocalDateTime ignTimeN;
     private LocalDateTime ignTimeP;
     private LocalDateTime ignTimeW;

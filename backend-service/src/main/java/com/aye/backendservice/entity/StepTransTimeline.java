@@ -35,9 +35,9 @@ public class StepTransTimeline {
     @JoinColumn(name = "STEP_TRANS_LINES_ID", nullable = false, updatable = false, unique = true, referencedColumnName = "STEP_TRANS_LINES_ID")
     private StepTransLines stepTransLines;
 
-    @JoinColumn(name = "STEP_ID", nullable = false, referencedColumnName = "STEP_ID")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Step step;
+//    @JoinColumn(name = "STEP_SETUP_DETAILS_ID", nullable = false, updatable = false, unique = true, referencedColumnName = "STEP_SETUP_DETAILS_ID")
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    private StepSetupDetails stepSetupDetails;
 
     @Column(name = "IGN_TIME_N")
     private LocalDateTime ignTimeN;

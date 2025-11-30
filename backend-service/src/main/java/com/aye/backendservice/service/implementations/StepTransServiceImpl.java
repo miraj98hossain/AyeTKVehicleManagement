@@ -69,7 +69,7 @@ public class StepTransServiceImpl implements StepTransService {
         if (stepTrans.getStepTransLinesList().isEmpty()) {
             StepTransLines line = new StepTransLines();
             line.setStepTrans(stepTrans);
-            line.setStep(stepTrans.getStepSetup().getStepSetupDetails().get(0).getStep());
+            line.setStepSetupDetails(stepTrans.getStepSetup().getStepSetupDetails().get(0));
             line.setStepStatus(StepStatus.N);
             line.setStepTransLinesNo(noGenService.createTransLNo());
             line.setParentLineId(0L);
@@ -78,9 +78,8 @@ public class StepTransServiceImpl implements StepTransService {
             line.setCreatedAt(new Date());
             stepTrans.getStepTransLinesList().add(line);
 
-            //-----------------------Saving StepTransTimeLine----------------------------------
+//            //-----------------------Saving StepTransTimeLine----------------------------------
             StepTransTimeline stepTransTimeline = new StepTransTimeline();
-            stepTransTimeline.setStep(line.getStep());
             stepTransTimeline.setStepTransLines(line);
             stepTransTimeline.setIgnTimeN(LocalDateTime.now());
             //-----------------------Ends StepTransTimeLine----------------------------------
@@ -159,15 +158,15 @@ public class StepTransServiceImpl implements StepTransService {
     protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, String searchWords, Pageable pageable) {
         List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
 
-        Set<Long> setupIds = details.stream()
-                .map(StepSetupDetailsResponse::getStepSetupId)
+        Set<Long> setupDIds = details.stream()
+                .map(StepSetupDetailsResponse::getStepSetupDetailsId)
                 .collect(Collectors.toSet());   // or getStepId() depending on the field;
 
         Set<Long> stepIds = details.stream()
                 .map(StepSetupDetailsResponse::getStepId)
                 .collect(Collectors.toSet());
 
-        var list = this.stepTransLinesService.getAllStepTransLine(stepIds, setupIds.stream().toList(), searchWords, pageable);
+        var list = this.stepTransLinesService.getAllStepTransLine(setupDIds.stream().toList(), searchWords, pageable);
 
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
@@ -245,11 +244,11 @@ public class StepTransServiceImpl implements StepTransService {
                     //if (reqStepTransLines.getStepStatus().equals(StepStatus.C)) {}
 
                     if (!(stepSetup.size() == existingTrans.size())) {
-                        var step = stepSetup.get(existingTrans.size()).getStep();
+                        var setupDetails = stepSetup.get(existingTrans.size());
                         StepTransLines newStepTransLines = new StepTransLines();
                         newStepTransLines.setStepStatus(StepStatus.N);
                         newStepTransLines.setStepTrans(stepTrans);
-                        newStepTransLines.setStep(step);
+                        newStepTransLines.setStepSetupDetails(setupDetails);
                         newStepTransLines.setParentLineId(dbstepTransLines.getStepTransLinesId());
                         newStepTransLines.setStage(0);
                         //creating new line

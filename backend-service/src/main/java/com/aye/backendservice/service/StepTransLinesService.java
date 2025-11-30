@@ -7,7 +7,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
-import java.util.Set;
 
 public interface StepTransLinesService {
 
@@ -22,6 +21,6 @@ public interface StepTransLinesService {
     Page<StepTransLinesResponse> getAllStepTransLine(Pageable pageable);
 
     Page<StepTransLinesResponse> getAllStepTransLine(
-            Set<Long> stepIds, List<Long> stepSetupIds, String searchWords, Pageable pageable);
+            List<Long> stepSetupIds, String searchWords, Pageable pageable);
 }
 

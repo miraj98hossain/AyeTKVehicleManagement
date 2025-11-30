@@ -8,13 +8,11 @@ import org.mapstruct.*;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         uses = {ReferenceMapper.class,
-                StepMapper.class,
-//                StepTransMapper.class,
+                StepSetupDetailsMapper.class,
                 StepTransLinesMapper.class,},
         builder = @Builder(disableBuilder = true))
 public interface StepTransTimelineMapper {
     //    @Mapping(source = "stepTransId",target = "stepTrans")
     @Mapping(source = "stepTransLinesId", target = "stepTransLines")
-    @Mapping(source = "stepId", target = "step")
     StepTransTimeline toEntity(StepTransTimelineRequest stepTransTimelineRequest);
 }

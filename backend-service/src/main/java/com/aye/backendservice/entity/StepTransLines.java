@@ -37,8 +37,8 @@ public class StepTransLines {
     private StepTrans stepTrans;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "STEP_ID", nullable = false, referencedColumnName = "STEP_ID")
-    private Step step;
+    @JoinColumn(name = "STEP_SETUP_DETAILS_ID", nullable = false, referencedColumnName = "STEP_SETUP_DETAILS_ID")
+    private StepSetupDetails stepSetupDetails;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "STEP_STATUS", nullable = false)

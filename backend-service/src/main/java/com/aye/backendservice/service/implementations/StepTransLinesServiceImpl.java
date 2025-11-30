@@ -1,6 +1,9 @@
 package com.aye.backendservice.service.implementations;
 
-import com.aye.backendservice.entity.*;
+import com.aye.backendservice.entity.StepSetupDetails;
+import com.aye.backendservice.entity.StepTrans;
+import com.aye.backendservice.entity.StepTransLines;
+import com.aye.backendservice.entity.StepTransTimeline;
 import com.aye.backendservice.mapper.StepTransLinesMapper;
 import com.aye.backendservice.repository.StepTransLinesRepository;
 import com.aye.backendservice.service.StepTransLinesService;
@@ -19,7 +22,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class StepTransLinesServiceImpl implements StepTransLinesService {
@@ -36,7 +38,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             switch (stepTransLines.getStepStatus()) {
                 case N -> {
                     StepTransTimeline stepTransTimeline = new StepTransTimeline();
-                    stepTransTimeline.setStep(stepTransLines.getStep());
+                    
                     stepTransTimeline.setStepTransLines(stepTransLines);
                     stepTransTimeline.setIgnTimeN(LocalDateTime.now());
                     stepTransLines.setStepTransTimeline(stepTransTimeline);
@@ -96,8 +98,8 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     @Transactional(readOnly = true)
     @Override
     public Page<StepTransLinesResponse> getAllStepTransLine(
-            Set<Long> stepIds,
-            List<Long> stepSetupIds,
+
+            List<Long> stepSetupDIds,
             String searchWords,
             Pageable pageable) {
         return this.stepTransLinesRepository.findAll((root, query, cb) -> {
@@ -105,15 +107,12 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             query.distinct(true);
 
             Join<StepTransLines, StepTrans> masterJoin = root.join("stepTrans", JoinType.INNER);
-            Join<StepTransLines, Step> stepJoin = root.join("step", JoinType.INNER);
-            Join<StepTrans, StepSetup> setupJoin = masterJoin.join("stepSetup", JoinType.INNER);
+            Join<StepTransLines, StepSetupDetails> stepSetupDJoin = root.join("stepSetupDetails", JoinType.INNER);
             List<Predicate> predicates = new ArrayList<>();
             // stepStatus not in C,R
             predicates.add(cb.not(root.get("stepStatus").in('C', 'R')));
             // setupSetupId IN (...)
-            predicates.add(setupJoin.get("stepSetupId").in(stepSetupIds));
-            predicates.add(stepJoin.get("stepId").in(stepIds));
-
+            predicates.add(stepSetupDJoin.get("stepSetupDetailsId").in(stepSetupDIds));
 
             if (searchWords != null && !searchWords.isEmpty()) {
                 predicates.add(cb.and(cb.like(masterJoin.get("vehicleNumber"), "%" + searchWords + "%")));
