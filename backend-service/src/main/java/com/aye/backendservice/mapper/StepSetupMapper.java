@@ -21,4 +21,6 @@ public interface StepSetupMapper {
 
     StepSetupResponse toResponseDto(StepSetup stepSetup);
 
+    @Mapping(target = "stepSetupDetails", ignore = true)
+    StepSetupResponse toResponseDtoWOutDtl(StepSetup stepSetup);
 }

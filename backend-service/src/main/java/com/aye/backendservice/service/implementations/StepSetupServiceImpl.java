@@ -283,7 +283,7 @@ public class StepSetupServiceImpl implements StepSetupService {
                 .map(StepSetupDetailsResponse::getStepSetupId)
                 .collect(Collectors.toSet());
         List<StepSetupResponse> stepSetupResponseList = this.stepSetupRepository
-                .findAllById(setupIds).stream().map(stepSetupMapper::toResponseDto).toList();
+                .findAllById(setupIds).stream().map(stepSetupMapper::toResponseDtoWOutDtl).toList();
 
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
