@@ -1,5 +1,6 @@
 package com.aye.mobileservice.config;
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -21,14 +22,46 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/aye-tk-vhcle-mng/api/auth/login").permitAll()
+                        .requestMatchers("/aye-mob-service/api/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults())
+
+                .logout(logout -> logout
+                        .logoutUrl("/api/logout")
+                        .addLogoutHandler((request, response, auth) -> {
+                            for (Cookie cookie : request.getCookies()) {
+                                String cookieName = cookie.getName();
+                                Cookie cookieToDelete = new Cookie(cookieName, null);
+                                cookieToDelete.setMaxAge(0);
+                                response.addCookie(cookieToDelete);
+                            }
+                        })
+                );
+//                .logout(logout -> logout
+//                        .logoutUrl("/aye-mob-service/api/auth/logout")
+//                        .logoutSuccessHandler((request, response, authentication) -> {
+//                            response.setStatus(HttpServletResponse.SC_OK);
+//                            response.setContentType("application/json");
+//                            String jsonResponse = """
+//                                    {
+//                                        "id": 7782000643434753025,
+//                                        "httpStatus": "OK",
+//                                        "message": "Successfully logged out",
+//                                        "apiRequestResponseDetails": []
+//                                    }
+//                                    """;
+//                            response.getWriter().write(jsonResponse);
+//                        })
+//                        .invalidateHttpSession(true)
+//                        .clearAuthentication(true)
+//                        .deleteCookies("JSESSIONID")
+//                        .permitAll()
+//                );
 
         return http.build();
     }

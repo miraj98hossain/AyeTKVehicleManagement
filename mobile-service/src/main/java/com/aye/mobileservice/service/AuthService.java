@@ -15,6 +15,7 @@ public class AuthService {
     public ApiRequestResponse login() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userName = authentication.getName();
-        return userMenuService.getUserAccessByUserName(userName);
+        var res = userMenuService.getUserAccessByUserName(userName, "ANDROID");
+        return res;
     }
 }

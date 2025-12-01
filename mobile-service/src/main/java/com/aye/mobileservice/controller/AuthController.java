@@ -20,4 +20,13 @@ public class AuthController {
     public ResponseEntity<ApiRequestResponse> login() {
         return ResponseEntity.ok(authService.login());
     }
+
+//    @PostMapping("/logout")
+//    public ResponseEntity<ApiRequestResponse> logout() {
+//        SecurityContextHolder.clearContext();
+//        ApiRequestResponse res = new ApiRequestResponse();
+//        res.setHttpStatus(HttpStatus.OK.name());
+//        res.setMessage("Successfully logged out");
+//        return ResponseEntity.ok(res);
+//    }
 }
