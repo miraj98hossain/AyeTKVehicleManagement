@@ -27,7 +27,9 @@
                             </div>
                             <div class="col-sm-4">
                                 <input class="form-control" id="templateid" placeholder="Template Id" readonly
-                                       th:value="${tempDtlId}" type="text"/>
+                                       th:value="${tempDtlId}" type="hidden"/>
+                                <input class="form-control" id="templateName" placeholder="Template Id" readonly
+                                       th:value="${userAccessTempltDtl.userAccessTemltDesc}" type="text"/>
                             </div>
 
                             <div class="col-sm-4">
