@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     public ApiRequestResponse findByUserName(String username) {
 
         ApiRequestResponse response = new ApiRequestResponse();
-        Muser curUser = this.muserService.findByUserName(username.toUpperCase());
+        Muser curUser = this.muserService.findByUserName(username);
         response.setHttpStatus(HttpStatus.OK.name());
         response.setMessage("Success");
         List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
