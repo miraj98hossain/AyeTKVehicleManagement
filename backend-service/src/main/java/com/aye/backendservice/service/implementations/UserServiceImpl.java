@@ -126,6 +126,7 @@ public class UserServiceImpl implements UserService {
         }
 
         Muser reqUser = this.mUserMapper.dtoToEntity(mUserRequest);
+        reqUser.setUserName(mUserRequest.getUserName().toUpperCase());
         reqUser.getRoles().add(mrole);
         CommonColumn commonColumn = new CommonColumn();
         commonColumn.setCreatedBy(currentMuser);
