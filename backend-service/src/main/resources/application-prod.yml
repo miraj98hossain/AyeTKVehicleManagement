@@ -1,0 +1,62 @@
+spring:
+  #  application:
+  #    name: backend-service
+  datasource:
+    url: jdbc:oracle:thin:@192.168.0.6:1521/PROD
+    username: mapps
+    password: mapps
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    show-sql: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: validate
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        proc:
+          param_null_passing: true
+        enable_lazy_load_no_trans: true
+        hbm2ddl:
+          auto: validate
+        default_schema: mapps
+        id:
+          new_generator_mappings: true
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 200KB
+      max-file-size: 100MB
+      max-request-size: 200MB
+
+
+  Report:
+    dir: F:/Red/Report/
+  jackson:
+    date-format: yyyy-MM-dd
+    serialization:
+      fail-on-empty-beans: false
+  data:
+    jpa:
+      repositories:
+        enabled: true
+server:
+  port: 8443
+  servlet:
+    context-path: /aye-backend-service
+#  ssl:
+#    enabled: true
+#    key-store-type: JKS
+#    key-store: classpath:backend-keystore.jks
+#    key-password: changeit
+#    key-alias: backend-service
+#    trust-store: classpath:backend-truststore.jks
+#    trust-store-password: changeit
+#    trust-store-type: JKS
+#    client-auth: need
+logging:
+  level:
+    com.aye.RestfulServer.controller: INFO
+    org.springframework.data.couchbase.repository.query: DEBUG

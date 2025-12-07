@@ -9,7 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "StepServiceFeignClient", url = "${web.service.url}${web.service.steps.prefix}")
+@FeignClient(name = "StepServiceFeignClient",
+        url = "${web.service.url}/api/steps")
 public interface StepServiceFeignClient {
     @PostMapping("/save")
     ResponseEntity<ApiRequestResponse> saveStep(

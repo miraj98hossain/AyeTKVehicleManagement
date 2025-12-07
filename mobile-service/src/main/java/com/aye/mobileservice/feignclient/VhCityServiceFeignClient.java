@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(name = "VhCityServiceFeignClient"
-        , url = "${backend.service.url}${backend.service.vh.cty.prefix}")
+        , url = "${backend.service.url}/api/vh-cty")
 public interface VhCityServiceFeignClient {
     @GetMapping
     ResponseEntity<ApiRequestResponse> getAllVehicleCity();

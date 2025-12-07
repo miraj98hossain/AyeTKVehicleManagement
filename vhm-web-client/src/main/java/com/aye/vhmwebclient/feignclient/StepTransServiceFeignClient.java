@@ -11,7 +11,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "StepTransServiceFeignClient", url = "${web.service.url}${web.service.step.trans.prefix}")
+@FeignClient(name = "StepTransServiceFeignClient",
+        url = "${web.service.url}/api/step-trans")
 public interface StepTransServiceFeignClient {
 
 

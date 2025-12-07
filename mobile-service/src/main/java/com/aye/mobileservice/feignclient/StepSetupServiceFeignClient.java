@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "StepSetupServiceFeignClient",
-        url = "${backend.service.url}${backend.service.steps.setup.prefix}")
+        url = "${backend.service.url}/api/step-setup")
 public interface StepSetupServiceFeignClient {
 
 

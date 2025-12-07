@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "StepTransServiceFeignClient",
-        url = "${backend.service.url}${backend.service.step.trans.prefix}")
+        url = "${backend.service.url}/api/step-trans")
 public interface StepTransServiceFeignClient {
 
 

@@ -6,7 +6,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@FeignClient(name = "StepSetupServiceFeignClient", url = "${web.service.url}${web.service.steps.setup.prefix}")
+@FeignClient(name = "StepSetupServiceFeignClient",
+        url = "${web.service.url}/api/step-setup")
 public interface StepSetupServiceFeignClient {
 
 

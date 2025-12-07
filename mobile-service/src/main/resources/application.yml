@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: mobile-service
+  profiles:
+    active: local

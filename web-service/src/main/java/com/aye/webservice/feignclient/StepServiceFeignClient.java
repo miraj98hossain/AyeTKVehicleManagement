@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @FeignClient(name = "StepServiceFeignClient",
-        url = "${backend.service.url}${backend.service.steps.prefix}")
+        url = "${backend.service.url}/api/steps")
 public interface StepServiceFeignClient {
     @PostMapping("/save")
     ResponseEntity<ApiRequestResponse> saveStep(

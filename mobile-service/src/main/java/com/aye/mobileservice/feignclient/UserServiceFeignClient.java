@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "UserServiceFeignClient",
-        url = "${backend.service.url}${backend.service.user.prefix}")
+        url = "${backend.service.url}/api/user")
 public interface UserServiceFeignClient {
     @GetMapping("/findByUserName")
     ResponseEntity<ApiRequestResponse> findByUserName(@RequestParam String username);

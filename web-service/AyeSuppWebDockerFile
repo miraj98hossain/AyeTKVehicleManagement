@@ -1,0 +1,4 @@
+FROM eclipse-temurin:17-jdk
+MAINTAINER Toufiq
+COPY web-service-0.0.1-SNAPSHOT.jar web-service-0.0.1-SNAPSHOT.jar
+ENTRYPOINT ["java","-jar","/web-service-0.0.1-SNAPSHOT.jar"]
