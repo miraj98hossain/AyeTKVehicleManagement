@@ -2,6 +2,7 @@ package com.aye.webservice.feignclient;
 
 
 import com.aye.commonlib.dto.request.MUserRequest;
+import com.aye.commonlib.dto.request.UserSearchRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -31,4 +32,8 @@ public interface UserFeignClient {
 
     @PostMapping("/saveUser")
     ResponseEntity<ApiRequestResponse> saveUser(@Valid @RequestBody MUserRequest mUserRequest, @RequestParam String username);
+
+    @GetMapping("/filterUsers")
+    ResponseEntity<ApiRequestResponse> filterUsers(@RequestBody UserSearchRequest searchRequest);
+
 }

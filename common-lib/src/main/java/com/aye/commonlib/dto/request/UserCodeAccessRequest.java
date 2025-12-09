@@ -13,10 +13,11 @@ public class UserCodeAccessRequest {
     private AccessCodeType accessCodeType;
     @NotNull(message = "Access code level is required")
     private AccessCodeLevel accessCodeLevel;
-    @NotNull(message = "orgHierarchy is required")
+
     private Long orgId;
-    @NotNull(message = "inventoryInformations is required")
+
     private Long invInfoId;
+    private String invInfoCode;
 
     public enum AccessCodeType {
         ACCOUNT, BANK, SUPPLIER, CUSTOMER, SUBINVENTORY

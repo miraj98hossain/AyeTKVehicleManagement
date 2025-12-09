@@ -6,6 +6,7 @@ import lombok.Data;
 public class UserCodeAccessResponse {
     private Long id;
     private Integer userId;
+    private String userName;
     private String accessCodeType;
     private String accessCodeLevel;
     private Long orgHierarchyId;

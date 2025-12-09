@@ -2,6 +2,7 @@ package com.aye.webservice.controller;
 
 
 import com.aye.commonlib.dto.request.MUserRequest;
+import com.aye.commonlib.dto.request.UserSearchRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.UserService;
 import jakarta.validation.Valid;
@@ -44,5 +45,10 @@ public class UserController {
     @PostMapping("/saveUser")
     ResponseEntity<ApiRequestResponse> saveUser(@Valid @RequestBody MUserRequest mUserRequest, @RequestParam String username) {
         return ResponseEntity.ok(this.userService.saveUser(mUserRequest, username));
+    }
+
+    @GetMapping("/filterUsers")
+    ResponseEntity<ApiRequestResponse> filterUsers(@RequestBody UserSearchRequest searchRequest) {
+        return ResponseEntity.ok(this.userService.filterUsers(searchRequest));
     }
 }

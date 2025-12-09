@@ -1,7 +1,7 @@
 package com.aye.backendservice.service.implementations;
 
 import com.aye.RestfulServer.model.UserCodeAccess;
-import com.aye.RestfulServer.repo.UserCodeAccessRepo;
+import com.aye.RestfulServer.service.UserCodeAccessService;
 import com.aye.backendservice.mapper.UserCodeAccessMapper;
 import com.aye.backendservice.service.ApiRequestResponseMaker;
 import com.aye.backendservice.service.UserCodeAccessBService;
@@ -9,7 +9,6 @@ import com.aye.commonlib.dto.request.UserCodeAccessRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.UserCodeAccessResponse;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,14 +18,14 @@ import java.util.List;
 @Service
 public class UserCodeAccessBServiceImpl implements UserCodeAccessBService {
     @Autowired
-    UserCodeAccessRepo userCodeAccessRepo;
+    UserCodeAccessService userCodeAccessService;
     @Autowired
     UserCodeAccessMapper userCodeAccessMapper;
 
     @Override
     public ApiRequestResponse save(UserCodeAccessRequest userCodeAccessRequest) {
         UserCodeAccess userCodeAccess = this.userCodeAccessMapper.dtoToEntity(userCodeAccessRequest);
-        userCodeAccess = userCodeAccessRepo.save(userCodeAccess);
+        userCodeAccess = userCodeAccessService.save(userCodeAccess);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
                 "Success",
@@ -39,9 +38,7 @@ public class UserCodeAccessBServiceImpl implements UserCodeAccessBService {
 
     @Override
     public ApiRequestResponse findById(Long userCodeAccessId) {
-        UserCodeAccess userCodeAccess = userCodeAccessRepo.findById(userCodeAccessId).orElseThrow(
-                () -> new EntityNotFoundException("UserCodeAccess with id: " + userCodeAccessId + " not found")
-        );
+        UserCodeAccess userCodeAccess = userCodeAccessService.findById(userCodeAccessId);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
                 "Success",
@@ -54,7 +51,7 @@ public class UserCodeAccessBServiceImpl implements UserCodeAccessBService {
 
     @Override
     public ApiRequestResponse findAllByUser(Integer userId) {
-        List<UserCodeAccess> userCodeAccess = userCodeAccessRepo.findByUser_Id(userId);
+        List<UserCodeAccess> userCodeAccess = userCodeAccessService.findAllByUser(userId);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
                 "Success",

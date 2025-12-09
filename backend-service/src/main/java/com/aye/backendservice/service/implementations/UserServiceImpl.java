@@ -10,6 +10,7 @@ import com.aye.backendservice.mapper.MUserMapper;
 import com.aye.backendservice.service.ApiRequestResponseMaker;
 import com.aye.backendservice.service.UserService;
 import com.aye.commonlib.dto.request.MUserRequest;
+import com.aye.commonlib.dto.request.UserSearchRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.MRoleResponse;
@@ -137,6 +138,17 @@ public class UserServiceImpl implements UserService {
                 HttpStatus.OK.name(), "Successfully Created User",
                 ApiRequestResponseDetail.ObjectType.O, "",
                 MRoleResponse.class.getName(), null
+        );
+    }
+
+    @Override
+    public ApiRequestResponse filterUsers(UserSearchRequest userSearchRequest) {
+        List<MUserResponse> mUserList = this.muserService.filterUsers(userSearchRequest)
+                .stream().map(mUserMapper::toResponseDto).toList();
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "mUsers",
+                MUserResponse.class.getName(), mUserList
         );
     }
 }

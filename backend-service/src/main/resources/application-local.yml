@@ -2,7 +2,7 @@ spring:
   #  application:
   #    name: backend-service
   datasource:
-    url: jdbc:oracle:thin:@192.168.0.66:1521/PROD
+    url: jdbc:oracle:thin:@192.168.0.102:1521/PROD
     username: mapps
     password: mapps
     driver-class-name: oracle.jdbc.OracleDriver

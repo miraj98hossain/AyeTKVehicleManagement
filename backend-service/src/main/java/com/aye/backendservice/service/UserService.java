@@ -2,6 +2,7 @@ package com.aye.backendservice.service;
 
 
 import com.aye.commonlib.dto.request.MUserRequest;
+import com.aye.commonlib.dto.request.UserSearchRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 
 
@@ -18,6 +19,7 @@ public interface UserService {
 
     ApiRequestResponse updateUser(MUserRequest mUserRequest, String username);
 
+    ApiRequestResponse filterUsers(UserSearchRequest userSearchRequest);
 
 }
 

@@ -2,6 +2,7 @@ package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.UserService;
 import com.aye.commonlib.dto.request.MUserRequest;
+import com.aye.commonlib.dto.request.UserSearchRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,10 @@ public class UserController {
     @GetMapping("/findByUserNameLike")
     ResponseEntity<ApiRequestResponse> findByUserNameLike(@RequestParam("username") String username) {
         return ResponseEntity.ok(this.userService.findByUserNameLike(username));
+    }
+
+    @GetMapping("/filterUsers")
+    ResponseEntity<ApiRequestResponse> filterUsers(@RequestBody UserSearchRequest searchRequest) {
+        return ResponseEntity.ok(this.userService.filterUsers(searchRequest));
     }
 }

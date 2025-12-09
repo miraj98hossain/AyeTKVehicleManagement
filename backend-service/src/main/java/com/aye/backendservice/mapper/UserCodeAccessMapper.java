@@ -18,6 +18,7 @@ public interface UserCodeAccessMapper {
     UserCodeAccess toEntity(Long id);
 
     @Mapping(source = "user.id", target = "userId")
+    @Mapping(source = "user.userName", target = "userName")
     @Mapping(source = "orgHierarchy.id", target = "orgHierarchyId")
     @Mapping(source = "orgHierarchy.code", target = "orgHierarchyCode")
     @Mapping(source = "inventoryInformations.id", target = "invInfoId")

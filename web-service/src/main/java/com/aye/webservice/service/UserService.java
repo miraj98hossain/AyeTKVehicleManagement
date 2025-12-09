@@ -2,10 +2,10 @@ package com.aye.webservice.service;
 
 
 import com.aye.commonlib.dto.request.MUserRequest;
+import com.aye.commonlib.dto.request.UserSearchRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.webservice.feignclient.UserFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,7 +37,11 @@ public class UserService {
         return this.controller.saveUser(mUserRequest, username).getBody();
     }
 
-    public ResponseEntity<ApiRequestResponse> findByUserNameLike(String username) {
-        return this.controller.findByUserNameLike(username);
+    public ApiRequestResponse findByUserNameLike(String username) {
+        return this.controller.findByUserNameLike(username).getBody();
+    }
+
+    public ApiRequestResponse filterUsers(UserSearchRequest searchRequest) {
+        return this.controller.filterUsers(searchRequest).getBody();
     }
 }
