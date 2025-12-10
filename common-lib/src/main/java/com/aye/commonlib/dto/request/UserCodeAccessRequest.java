@@ -15,12 +15,13 @@ public class UserCodeAccessRequest {
     private AccessCodeLevel accessCodeLevel;
 
     private Long orgId;
-
+    private Long itemCatCombId;
+    private String itemCatComb;
     private Long invInfoId;
     private String invInfoCode;
 
     public enum AccessCodeType {
-        ACCOUNT, BANK, SUPPLIER, CUSTOMER, SUBINVENTORY
+        ITEM_CATEGORIES //, BANK, SUPPLIER, CUSTOMER, SUBINVENTORY
     }
 
     public enum AccessCodeLevel {

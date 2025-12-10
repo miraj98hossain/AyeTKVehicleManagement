@@ -9,6 +9,7 @@ import org.mapstruct.*;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         uses = {ReferenceMapper.class,
+                MItemCatComVMapper.class,
                 MUserMapper.class,
                 OrgHierarchyMapper.class,
                 InventoryInformationMapper.class,},
@@ -30,5 +31,7 @@ public interface UserCodeAccessMapper {
     @Mapping(source = "orgId", target = "orgHierarchy")
     @Mapping(source = "invInfoId", target = "inventoryInformations")
     UserCodeAccess dtoToEntity(UserCodeAccessRequest userCodeAccessRequest);
+
+    void dtoToEntity(UserCodeAccessRequest userCodeAccessRequest, @MappingTarget UserCodeAccess userCodeAccess);
 
 }

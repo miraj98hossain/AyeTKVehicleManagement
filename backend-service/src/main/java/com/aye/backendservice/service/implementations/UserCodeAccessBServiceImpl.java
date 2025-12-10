@@ -1,6 +1,8 @@
 package com.aye.backendservice.service.implementations;
 
+import com.aye.RestfulServer.model.Muser;
 import com.aye.RestfulServer.model.UserCodeAccess;
+import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserCodeAccessService;
 import com.aye.backendservice.mapper.UserCodeAccessMapper;
 import com.aye.backendservice.service.ApiRequestResponseMaker;
@@ -18,13 +20,32 @@ import java.util.List;
 @Service
 public class UserCodeAccessBServiceImpl implements UserCodeAccessBService {
     @Autowired
+    MuserService userMuserService;
+    @Autowired
     UserCodeAccessService userCodeAccessService;
     @Autowired
     UserCodeAccessMapper userCodeAccessMapper;
 
     @Override
-    public ApiRequestResponse save(UserCodeAccessRequest userCodeAccessRequest) {
+    public ApiRequestResponse save(UserCodeAccessRequest userCodeAccessRequest, String currentUser) {
+        Muser muser = this.userMuserService.findByUserName(currentUser);
+
+        if (userCodeAccessRequest.getId() != null) {
+            var dbUserCodeAccess = userCodeAccessService.findById(userCodeAccessRequest.getId());
+            userCodeAccessMapper.dtoToEntity(userCodeAccessRequest, dbUserCodeAccess);
+            dbUserCodeAccess.setLastUpdateBy(muser.getId());
+            userCodeAccessService.save(dbUserCodeAccess);
+            return ApiRequestResponseMaker.make(
+                    HttpStatus.OK.name(),
+                    "Success",
+                    ApiRequestResponseDetail.ObjectType.O,
+                    "userCodeAccess",
+                    UserCodeAccessResponse.class.getName(),
+                    userCodeAccessMapper.toResponseDto(dbUserCodeAccess)
+            );
+        }
         UserCodeAccess userCodeAccess = this.userCodeAccessMapper.dtoToEntity(userCodeAccessRequest);
+        userCodeAccess.setCreatedBy(muser.getId());
         userCodeAccess = userCodeAccessService.save(userCodeAccess);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),

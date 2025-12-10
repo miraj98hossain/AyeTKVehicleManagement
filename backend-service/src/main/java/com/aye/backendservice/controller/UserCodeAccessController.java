@@ -17,8 +17,10 @@ public class UserCodeAccessController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<ApiRequestResponse> save(@Valid @RequestBody UserCodeAccessRequest userCodeAccess) {
-        return new ResponseEntity<>(userCodeAccessBService.save(userCodeAccess), HttpStatus.OK);
+    public ResponseEntity<ApiRequestResponse> save(@Valid
+                                                   @RequestBody UserCodeAccessRequest userCodeAccess,
+                                                   @RequestParam String currentUser) {
+        return new ResponseEntity<>(userCodeAccessBService.save(userCodeAccess, currentUser), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

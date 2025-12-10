@@ -15,8 +15,8 @@ public class UserCodeAccessService {
     private UserCodeAccessFeignClient userCodeAccessFeignClient;
 
     @PostMapping("/save")
-    public ApiRequestResponse save(UserCodeAccessRequest userCodeAccess) {
-        return userCodeAccessFeignClient.save(userCodeAccess).getBody();
+    public ApiRequestResponse save(UserCodeAccessRequest userCodeAccess, String currentUser) {
+        return userCodeAccessFeignClient.save(userCodeAccess, currentUser).getBody();
     }
 
     @GetMapping("/{id}")

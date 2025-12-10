@@ -14,4 +14,6 @@ public class UserCodeAccessResponse {
     private Long invInfoId;
     private String invInfoCode;
     private String invInfoName;
+    private Long itemCatCombId;
+    private String itemCatComb;
 }
