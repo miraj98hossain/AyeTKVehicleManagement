@@ -32,6 +32,9 @@ public interface UserCodeAccessMapper {
     @Mapping(source = "invInfoId", target = "inventoryInformations")
     UserCodeAccess dtoToEntity(UserCodeAccessRequest userCodeAccessRequest);
 
+    @Mapping(source = "userId", target = "user")
+    @Mapping(source = "orgId", target = "orgHierarchy")
+    @Mapping(source = "invInfoId", target = "inventoryInformations")
     void dtoToEntity(UserCodeAccessRequest userCodeAccessRequest, @MappingTarget UserCodeAccess userCodeAccess);
 
 }
