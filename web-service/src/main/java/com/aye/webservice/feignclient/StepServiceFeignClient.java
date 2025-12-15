@@ -13,12 +13,12 @@ public interface StepServiceFeignClient {
     @PostMapping("/save")
     ResponseEntity<ApiRequestResponse> saveStep(
             @RequestBody StepRequest stepRequest,
-            @RequestParam Long currentUserId);
+            @RequestParam String currentUserName);
 
     @PutMapping("/save")
     ResponseEntity<ApiRequestResponse> updateStep(
             @RequestBody StepRequest stepRequest,
-            @RequestParam Long currentUserId
+            @RequestParam String currentUserName
     );
 
     @GetMapping("/{id}")

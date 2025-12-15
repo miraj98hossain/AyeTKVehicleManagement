@@ -24,19 +24,19 @@ public class StepController {
 
     @PostMapping("/save")
     public ResponseEntity<ApiRequestResponse> saveStep(
-            @RequestParam Long currentUserId,
+            @RequestParam String currentUserName,
             @Validated({StepCreateValidation.class, Default.class})
             @RequestBody StepRequest stepRequest) {
-        return ResponseEntity.ok().body(this.stepService.saveStep(stepRequest, currentUserId));
+        return ResponseEntity.ok().body(this.stepService.saveStep(stepRequest, currentUserName));
     }
 
     @PutMapping("/save")
     public ResponseEntity<ApiRequestResponse> updateStep(
-            @RequestParam Long currentUserId,
+            @RequestParam String currentUserName,
             @Validated({StepUpdateValidation.class})
             @RequestBody StepRequest stepRequest) {
 
-        return ResponseEntity.ok().body(this.stepService.saveStep(stepRequest, currentUserId));
+        return ResponseEntity.ok().body(this.stepService.saveStep(stepRequest, currentUserName));
     }
 
     @GetMapping("/{id}")

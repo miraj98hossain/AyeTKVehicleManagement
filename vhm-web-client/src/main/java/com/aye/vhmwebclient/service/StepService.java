@@ -14,13 +14,13 @@ public class StepService {
     @Autowired
     StepServiceFeignClient stepServiceFeignClient;
 
-    public ApiRequestResponse saveStep(StepRequest stepRequest, Long currentUserId) {
-        return stepServiceFeignClient.saveStep(currentUserId, stepRequest).getBody();
+    public ApiRequestResponse saveStep(StepRequest stepRequest, String currentUserName) {
+        return stepServiceFeignClient.saveStep(currentUserName, stepRequest).getBody();
     }
 
 
-    public ApiRequestResponse updateStep(StepRequest stepRequest, Long currentUserId) {
-        return stepServiceFeignClient.updateStep(currentUserId, stepRequest).getBody();
+    public ApiRequestResponse updateStep(StepRequest stepRequest, String currentUserName) {
+        return stepServiceFeignClient.updateStep(currentUserName, stepRequest).getBody();
     }
 
 

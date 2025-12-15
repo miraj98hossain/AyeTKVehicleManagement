@@ -1,6 +1,8 @@
 package com.aye.backendservice.service.implementations;
 
 
+import com.aye.RestfulServer.model.Muser;
+import com.aye.RestfulServer.service.MuserService;
 import com.aye.backendservice.entity.Step;
 import com.aye.backendservice.mapper.StepMapper;
 import com.aye.backendservice.repository.StepRepository;
@@ -22,14 +24,16 @@ import java.util.List;
 
 @Service
 public class StepServiceImpl implements StepService {
-
+    @Autowired
+    private MuserService muserService;
     @Autowired
     private StepRepository stepRepository;
     @Autowired
     private StepMapper stepMapper;
 
     @Override
-    public ApiRequestResponse saveStep(StepRequest stepRequest, Long currentUserId) {
+    public ApiRequestResponse saveStep(StepRequest stepRequest, String currentUserName) {
+        Muser muser = muserService.findByUserName(currentUserName);
         Step reqStep = stepMapper.toEntity(stepRequest);
         ApiRequestResponse response = new ApiRequestResponse();
         if (reqStep.getStepId() != null) {
@@ -38,11 +42,11 @@ public class StepServiceImpl implements StepService {
             reqStep.setCreatedAt(extStep.getCreatedAt());
             reqStep.setCreatedBy(extStep.getCreatedBy());
             reqStep.setUpdatedAt(new Date());
-            reqStep.setUpdatedBy(currentUserId);
+            reqStep.setUpdatedBy(Long.valueOf(muser.getId()));
             response.setMessage("Successfully updated the step");
         } else {
             reqStep.setCreatedAt(new Date());
-            reqStep.setCreatedBy(currentUserId);
+            reqStep.setCreatedBy(Long.valueOf(muser.getId()));
             reqStep.setIsActive(1);
             response.setMessage("Successfully created the Step");
         }
