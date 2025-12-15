@@ -3,6 +3,22 @@
 <head>
     <link rel="stylesheet" th:href="@{/css/steps-trans.css}">
     <title></title>
+    <style>
+        .step-line {
+            padding: 6px 0;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 14px;
+        }
+        .step-count {
+            font-size: 13px;
+            color: #666;
+            margin-left: 6px;
+        }
+        .step-arrow {
+            margin: 0 8px;
+            color: #999;
+        }
+    </style>
 </head>
 
 
@@ -155,7 +171,29 @@
                         </div>
 
                     </form>
+                    <div class="container mt-3">
+                        <h6 class="mb-2">Step Flow</h6>
 
+                        <div th:each="step : ${stepWiseTransCount}" class="step-line d-flex align-items-center">
+
+                            <span th:text="${step.prevStepName}">Prev</span>
+                            <span class="step-count" th:text="'(' + ${step.prevStepCount} + ')'">(0)</span>
+
+                            <span class="step-arrow">→</span>
+
+                            <strong th:text="${step.curStepName}">Current</strong>
+
+                            <span class="step-arrow">→</span>
+
+                            <span th:text="${step.forwStepName}">Next</span>
+                            <span class="step-count" th:text="'(' + ${step.forwStepCount} + ')'">(0)</span>
+
+                        </div>
+
+                        <div th:if="${#lists.isEmpty(stepWiseTransCount)}" class="text-muted small mt-2">
+                            No data available
+                        </div>
+                    </div>
 
                     <div class="form-group col-sm-12">
                         <table class="table table-hover table-bordered custom-gray-table text-dark text-center">

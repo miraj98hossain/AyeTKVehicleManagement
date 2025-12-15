@@ -27,6 +27,7 @@ import java.util.List;
 public class StepTransLinesServiceImpl implements StepTransLinesService {
     @Autowired
     StepTransLinesRepository stepTransLinesRepository;
+
     @Autowired
     StepTransLinesMapper stepTransLinesMapper;
     @Autowired
@@ -38,7 +39,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             switch (stepTransLines.getStepStatus()) {
                 case N -> {
                     StepTransTimeline stepTransTimeline = new StepTransTimeline();
-                    
+
                     stepTransTimeline.setStepTransLines(stepTransLines);
                     stepTransTimeline.setIgnTimeN(LocalDateTime.now());
                     stepTransLines.setStepTransTimeline(stepTransTimeline);
@@ -98,7 +99,6 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     @Transactional(readOnly = true)
     @Override
     public Page<StepTransLinesResponse> getAllStepTransLine(
-
             List<Long> stepSetupDIds,
             String searchWords,
             Pageable pageable) {

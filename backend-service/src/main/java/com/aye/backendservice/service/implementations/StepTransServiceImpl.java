@@ -10,11 +10,11 @@ import com.aye.backendservice.entity.StepTransLines;
 import com.aye.backendservice.entity.StepTransTimeline;
 import com.aye.backendservice.mapper.StepTransLinesMapper;
 import com.aye.backendservice.mapper.StepTransMapper;
-import com.aye.backendservice.mapper.UserAccessTemltDtlMapper;
 import com.aye.backendservice.repository.StepTransRepository;
 import com.aye.backendservice.service.StepSetupService;
 import com.aye.backendservice.service.StepTransLinesService;
 import com.aye.backendservice.service.StepTransService;
+import com.aye.backendservice.service.StepWiseTransCountVService;
 import com.aye.backendservice.utils.enums.StepStatus;
 import com.aye.commonlib.dto.request.StepTransLinesRequest;
 import com.aye.commonlib.dto.request.StepTransRequest;
@@ -52,9 +52,9 @@ public class StepTransServiceImpl implements StepTransService {
     @Autowired
     MuserService userService;
     @Autowired
-    private UserAccessTempltService userAccessTempltService;
+    StepWiseTransCountVService transCountVService;
     @Autowired
-    private UserAccessTemltDtlMapper userAccessTemltDtlMapper;
+    private UserAccessTempltService userAccessTempltService;
 
     @Transactional
     @Override
@@ -314,8 +314,10 @@ public class StepTransServiceImpl implements StepTransService {
                 .flatMap(inv -> inv.getUserTransactionTypes().stream())
                 .map(UserTransactionTypes::getTrnsTypeId)
                 .toList();
-
-        return findAllBySetupDtls(setupDetailIds, searchWords, pageable);
+        var res = this.transCountVService.getCountByDetailId(setupDetailIds);
+        var response = findAllBySetupDtls(setupDetailIds, searchWords, pageable);
+        response.getApiRequestResponseDetails().addAll(res.getApiRequestResponseDetails());
+        return response;
     }
 
 
