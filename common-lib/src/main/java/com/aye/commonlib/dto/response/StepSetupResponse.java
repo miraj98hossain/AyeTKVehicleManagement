@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -17,10 +16,11 @@ public class StepSetupResponse {
 
     private Long stepSetupId;
     private Long orgId;
+    private String orgCode;
     private Long invOrg;
-    private Integer isActive;
+    private String invOrgCode;
+    private Boolean isActive;
     private String description;
-    private List<StepSetupDetailsResponse> stepSetupDetails;
     private Long createdBy;
     private Date createdAt;
     private Long updatedBy;

@@ -1,5 +1,6 @@
 package com.aye.webservice.service;
 
+import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
 import com.aye.commonlib.dto.request.StepSetupRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.webservice.feignclient.StepSetupServiceFeignClient;
@@ -14,8 +15,8 @@ public class StepSetupService {
     StepSetupServiceFeignClient stepSetupServiceFeignClient;
 
 
-    public ApiRequestResponse saveStepSetup(StepSetupRequest stepSetupRequest) {
-        return stepSetupServiceFeignClient.saveStepSetup(stepSetupRequest).getBody();
+    public ApiRequestResponse saveStepSetup(StepSetupRequest stepSetupRequest, String currentUserName) {
+        return stepSetupServiceFeignClient.saveStepSetup(stepSetupRequest, currentUserName).getBody();
     }
 
 
@@ -39,6 +40,24 @@ public class StepSetupService {
 
     public ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId) {
         return stepSetupServiceFeignClient.findSetupByTempDtlId(tempDtlId).getBody();
+    }
+
+    public ApiRequestResponse findAllSetupDetails(Long setupId) {
+        return stepSetupServiceFeignClient.findAllSetupDetails(setupId).getBody();
+    }
+
+
+    public ApiRequestResponse addOrUpdateDetail(
+            StepSetupDetailsRequest stepSetupDetailsRequest,
+            String currentUserName) {
+
+        return stepSetupServiceFeignClient
+                .addOrUpdateDetail(stepSetupDetailsRequest, currentUserName)
+                .getBody();
+    }
+
+    public ApiRequestResponse findStepStpDtlByDtlId(Long detailId) {
+        return stepSetupServiceFeignClient.findStepStpDtlByDtlId(detailId).getBody();
     }
 }
 

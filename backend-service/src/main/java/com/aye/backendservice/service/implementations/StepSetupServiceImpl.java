@@ -1,6 +1,8 @@
 package com.aye.backendservice.service.implementations;
 
+import com.aye.RestfulServer.model.Muser;
 import com.aye.RestfulServer.model.UserTransactionTypes;
+import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserAccessTempltService;
 import com.aye.backendservice.entity.Step;
 import com.aye.backendservice.entity.StepSetup;
@@ -19,9 +21,6 @@ import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.StepSetupDetailsResponse;
 import com.aye.commonlib.dto.response.StepSetupResponse;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.criteria.Fetch;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -29,13 +28,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class StepSetupServiceImpl implements StepSetupService {
     @Autowired
     StepSetupRepository stepSetupRepository;
+    @Autowired
+    MuserService muserService;
     @Autowired
     StepService stepService;
     @Autowired
@@ -49,59 +53,40 @@ public class StepSetupServiceImpl implements StepSetupService {
 
     @Transactional
     @Override
-    public ApiRequestResponse saveStepSetup(StepSetupRequest request) {
-
-        StepSetup stepSetup = stepSetupMapper.toEntity(request);
-        stepSetup.setCreatedAt(new Date());
-        stepSetup.setCreatedBy(1L);
-        Set<Step> existingSteps = new HashSet<>();
-        int serialNo = 1;
-
-        // Process and validate new details
-        for (StepSetupDetails detail : stepSetup.getStepSetupDetails()) {
-            //Checking Duplicate Step Entry
-            if (!existingSteps.add(detail.getStep())) {
-                throw new IllegalArgumentException("Step cannot be duplicate");
-            }
-            //Checking Valid Step
-            stepService.getStep(detail.getStep().getStepId());
-
-            detail.setSerialNo(serialNo++);
-            detail.setCreatedAt(new Date());
-            detail.setCreatedBy(1L);
-            detail.setIsActive(1);
-            detail.setStepSetup(stepSetup);
+    public ApiRequestResponse saveStepSetup(StepSetupRequest request, String currentUserName) {
+        Muser muser = this.muserService.findByUserName(currentUserName);
+        StepSetup stepSetup;
+        if (request.getStepSetupId() != null) {
+            var dbSetup = this.stepSetupRepository.findById(request.getStepSetupId()).orElseThrow(
+                    () -> new EntityNotFoundException("Step Setup Id not found")
+            );
+            this.stepSetupMapper.dtoToEntity(request, dbSetup);
+            dbSetup.setUpdatedAt(new Date());
+            dbSetup.setUpdatedBy(Long.valueOf(muser.getId()));
+            stepSetup = stepSetupRepository.save(dbSetup);
+        } else {
+            stepSetup = stepSetupMapper.dtoToEntity(request);
+            stepSetup.setCreatedAt(new Date());
+            stepSetup.setCreatedBy(Long.valueOf(muser.getId()));
+            stepSetup = stepSetupRepository.save(stepSetup);
         }
-
-        stepSetup = stepSetupRepository.save(stepSetup);
-
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully created the step setup");
-        List<ApiRequestResponseDetail> details = new ArrayList<>();
-        ApiRequestResponseDetail apiRequestResponseDetail = ApiRequestResponseDetail.builder()
-                .objectTag("stepSetupResponse")
-                .mapperClass(StepSetupResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.O)
-                .object(stepSetupMapper.toResponseDto(stepSetup))
-                .build();
-        details.add(apiRequestResponseDetail);
-        response.setApiRequestResponseDetails(details);
-        return response;
+        return ApiRequestResponseMaker.make(HttpStatus.OK.name(), "Successfully created the step setup",
+                ApiRequestResponseDetail.ObjectType.O, "stepSetupResponse",
+                StepSetupResponse.class.getName(),
+                stepSetupMapper.toResponseDto(stepSetup));
     }
 
 
     @Transactional
     @Override
-    public ApiRequestResponse addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest) {
-        ApiRequestResponse response = new ApiRequestResponse();
+    public ApiRequestResponse addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest, String currentUserName) {
+        Muser muser = this.muserService.findByUserName(currentUserName);
         StepSetupDetails requestDetails = stepSetupDetailsMapper.toEntity(newDetailsRequest);
         Set<Step> existingSteps;
         int serialNo;
         var stepSetup = this.stepSetupRepository.findById(newDetailsRequest.getStepSetupId()).orElseThrow(
                 () -> new EntityNotFoundException("Step Setup Id: " + newDetailsRequest.getStepSetupId())
         );
-
         if (requestDetails.getStepSetupDetailsId() == null) {
             existingSteps = stepSetup.getStepSetupDetails().stream()
                     .map(StepSetupDetails::getStep)
@@ -112,34 +97,24 @@ public class StepSetupServiceImpl implements StepSetupService {
             }
             requestDetails.setSerialNo(serialNo);
             requestDetails.setCreatedAt(new Date());
-            requestDetails.setCreatedBy(1L);
+            requestDetails.setCreatedBy(Long.valueOf(muser.getId()));
             requestDetails.setIsActive(1);
-            stepSetup.getStepSetupDetails().add(requestDetails);
-            response.setMessage("Successfully created the step setup");
+            requestDetails = this.stepSetupDetailsService.save(requestDetails);
+        } else {
+            var dbDetails = this.stepSetupDetailsService.findById(requestDetails.getStepSetupDetailsId());
+            dbDetails.setUpdatedAt(new Date());
+            dbDetails.setUpdatedBy(Long.valueOf(muser.getId()));
+            dbDetails.setIsActive(requestDetails.getIsActive());
+            requestDetails = this.stepSetupDetailsService.save(dbDetails);
         }
-        var dbDetails = this.stepSetupDetailsService.findById(requestDetails.getStepSetupDetailsId());
-        dbDetails.setUpdatedAt(new Date());
-        dbDetails.setUpdatedBy(1L);
-        dbDetails.setIsActive(requestDetails.getIsActive());
-        stepSetup.getStepSetupDetails().stream()
-                .filter(
-                        stepSetupDetails -> stepSetupDetails.
-                                getStepSetupDetailsId().
-                                equals(dbDetails.getStepSetupDetailsId())
-                );
-        stepSetup = stepSetupRepository.save(stepSetup);
 
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully updated the step setup");
-        List<ApiRequestResponseDetail> details = new ArrayList<>();
-        ApiRequestResponseDetail apiRequestResponseDetail = ApiRequestResponseDetail.builder()
-                .objectTag("stepSetupResponse")
-                .mapperClass(StepSetupResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.O)
-                .object(stepSetupMapper.toResponseDto(stepSetup))
-                .build();
-        response.setApiRequestResponseDetails(details);
-        return response;
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.O,
+                "stepSetupDtlResponse",
+                StepSetupDetailsResponse.class.getName(),
+                stepSetupDetailsMapper.toResponseDto(requestDetails)
+        );
     }
 
 
@@ -166,10 +141,16 @@ public class StepSetupServiceImpl implements StepSetupService {
 
     @Transactional(readOnly = true)
     @Override
-    public StepSetup findById(Long id) {
-        return this.stepSetupRepository.findById(id).orElseThrow(
+    public ApiRequestResponse findById(Long id) {
+
+        StepSetup stepSetup = this.stepSetupRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("StepSetup not found with this id " + id)
         );
+        return ApiRequestResponseMaker.make(HttpStatus.OK.name(), "Successfully created the step setup",
+                ApiRequestResponseDetail.ObjectType.O, "stepSetupResponse",
+                StepSetupResponse.class.getName(),
+                stepSetupMapper.toResponseDto(stepSetup));
+
     }
 
     @Transactional(readOnly = true)
@@ -180,17 +161,14 @@ public class StepSetupServiceImpl implements StepSetupService {
         response.setMessage("Successfully found all the step setups");
 
         var page = this.stepSetupRepository.findAll((root, query, cb) -> {
-            Fetch<StepSetup, StepSetupDetails> detailsFetch = root.fetch("stepSetupDetails", JoinType.INNER);
-            Join<StepSetup, StepSetupDetails> detailsJoin = (Join<StepSetup, StepSetupDetails>) detailsFetch;
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("isActive"), 1));
-            predicates.add(cb.equal(detailsJoin.get("isActive"), 1));
             return cb.and(predicates.toArray(new Predicate[0]));
         }, pageable).map(stepSetupMapper::toResponseDto);
 
         List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
         ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("stepSetupResponseList")
+                .objectTag("stepSetupResList")
                 .object(page)
                 .mapperClass(StepSetupResponse.class.getName())
                 .objectType(ApiRequestResponseDetail.ObjectType.PD)
@@ -255,9 +233,14 @@ public class StepSetupServiceImpl implements StepSetupService {
 
     @Transactional
     @Override
-    public StepSetupDetailsResponse findStepStpDtlByDtlId(Long stepDetailId) {
+    public ApiRequestResponse findStepStpDtlByDtlId(Long stepDetailId) {
         StepSetupDetails details = this.stepSetupDetailsService.findById(stepDetailId);
-        return this.stepSetupDetailsMapper.toResponseDto(details);
+
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.O, "stepSetupDtl",
+                StepSetupDetailsResponse.class.getName(), this.stepSetupDetailsMapper.toResponseDto(details)
+        );
     }
 
     @Transactional(readOnly = true)
@@ -283,12 +266,25 @@ public class StepSetupServiceImpl implements StepSetupService {
                 .map(StepSetupDetailsResponse::getStepSetupId)
                 .collect(Collectors.toSet());
         List<StepSetupResponse> stepSetupResponseList = this.stepSetupRepository
-                .findAllById(setupIds).stream().map(stepSetupMapper::toResponseDtoWOutDtl).toList();
+                .findAllById(setupIds).stream().map(stepSetupMapper::toResponseDto).toList();
 
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
                 ApiRequestResponseDetail.ObjectType.A, "stepSetupList",
                 StepSetupResponse.class.getName(), stepSetupResponseList
+        );
+    }
+
+    @Override
+    public ApiRequestResponse getAllDetailsBySetup(Long setupId) {
+        StepSetup stepSetup = this.stepSetupRepository.findById(setupId).orElseThrow(
+                () -> new EntityNotFoundException("No Setup Found!!")
+        );
+        List<StepSetupDetailsResponse> list = this.stepSetupDetailsService.getAllDetailsBySetup(stepSetup);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "stepSetupDtlList",
+                StepSetupDetailsResponse.class.getName(), list
         );
     }
 

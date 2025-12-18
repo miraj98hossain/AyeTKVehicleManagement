@@ -63,7 +63,7 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     @Override
     public List<StepSetupDetails> findByIds(List<Long> stepSetupDetailsIds) {
 
-        var list = this.stepSetupDetailsRepository.findAllById(stepSetupDetailsIds);
+        var list = this.stepSetupDetailsRepository.findAllByStepSetupDetailsIdInAndIsActive(stepSetupDetailsIds, 1);
         if (list.isEmpty()) {
             throw new EntityNotFoundException("No StepSetupDetails Found With this ids ");
         }
@@ -83,6 +83,16 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
 
     @Transactional(readOnly = true)
     @Override
+    public List<StepSetupDetailsResponse> getAllDetailsBySetup(StepSetup stepSetup) {
+        return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("stepSetup"), stepSetup));
+            return cb.and(predicates.toArray(new Predicate[0]));
+        }).stream().map(this.stepSetupDetailsMapper::toResponseDto).toList();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
     public Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
@@ -95,6 +105,12 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     @Override
     public void saveAll(List<StepSetupDetails> stepSetupDetails) {
         this.stepSetupDetailsRepository.saveAll(stepSetupDetails);
+    }
+
+    @Transactional
+    @Override
+    public StepSetupDetails save(StepSetupDetails stepSetupDetails) {
+        return this.stepSetupDetailsRepository.save(stepSetupDetails);
     }
 
     @Transactional

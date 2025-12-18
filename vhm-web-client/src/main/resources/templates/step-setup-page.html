@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html data-layout-decorate="~{fragments/layout}"
+      lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="stylesheet" th:href="@{/css/easyAutocomplete/easy-autocomplete.min.css}"/>
+    <script th:src="@{/js/easyAutocomplete/autocomplete.js}"></script>
+    <script th:src="@{/js/easyAutocomplete/jquery.easy-autocomplete.min.js}"></script>
+    <script th:src="@{/js/sys/stepSetup.js}"></script>
+
+</head>
+<body>
+
+<div class="right_col" data-layout-fragment="content" role="main">
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            <!--<div class="container">-->
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Create Step Setup</div>
+                <div class="panel-body">
+                    <form method="post"
+                          th:action="@{/step-setup/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}"
+                          th:object="${stepSetupRequest}">
+                        <!-- id -->
+                        <div
+                                th:class="${#fields.hasErrors('stepSetupId')} ? 'form-group has-error' : 'form-group col-sm-12'">
+                            <div class="col-sm-4">
+                                <input class="form-control" id="id" placeholder="id" th:field="*{stepSetupId}"
+                                       type="hidden"/>
+                                <p class="help-block" th:errors="*{stepSetupId}"></p>
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+
+                        <div class="col-sm-12">
+                            <div
+                                    th:class="${#fields.hasErrors('description')} ? 'form-group has-error' : 'form-group col-sm-6'">
+                                <label class="col-sm-3 control-label" for="description">Description</label>
+                                <div class="col-sm-1"><b>:</b></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control"
+                                           id="description"
+                                           name="description"
+                                           placeholder="Enter Description"
+                                           required
+                                           th:field="*{description}"
+                                           type="text"/>
+                                    <p class="help-block" th:errors="*{description}"></p>
+                                </div>
+                            </div>
+
+                            <!-- Is Active-->
+                            <div th:class="${#fields.hasErrors('isActive')} ? 'form-group has-error' : 'form-group col-sm-6'"
+                                 th:if="*{stepSetupId!=null}">
+                                <label class="col-sm-3 control-label" for="isActive">Is Active</label>
+                                <div class="col-sm-1"><b>:</b></div>
+                                <div class="col-sm-8">
+                                    <select class="form-control" id="isActive" name="isActive" th:field="*{isActive}">
+                                        <option value="">-- Select --</option>
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                    <p class="help-block" th:errors="*{isActive}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div id="orgId-div"
+                                 th:class="${#fields.hasErrors('orgId')} ? 'form-group has-error' : 'form-group col-sm-6'">
+                                <label class="col-sm-3 control-label" for="orgCode">Organization</label>
+                                <div class="col-sm-1"><b>:</b></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="orgCode" name="orgCode" placeholder="Org Code"
+                                           th:field="*{orgCode}"
+                                           type="text"/>
+                                    <input class="form-control" id="orgId" name="orgId"
+                                           placeholder="Org Id"
+                                           th:field="*{orgId}" type="hidden"/>
+                                    <p class="help-block" th:errors="*{orgId}"></p>
+                                </div>
+                            </div>
+
+                            <div id="inv-info-div"
+                                 style="display:block"
+                                 th:class="${#fields.hasErrors('invOrg')} ? 'form-group has-error' : 'form-group col-sm-6'">
+                                <label class="col-sm-3 control-label" for="invOrg">Inventory</label>
+                                <div class="col-sm-1"><b>:</b></div>
+                                <div class="col-sm-8">
+                                    <input class="form-control" id="invOrgCode" name="invOrgCode"
+                                           placeholder="Inventory"
+                                           th:field="*{invOrgCode}"
+                                           type="text"/>
+                                    <input class="form-control" id="invOrg" name="invOrg"
+                                           placeholder="Inventory Id"
+                                           th:field="*{invOrg}" type="hidden"/>
+
+                                    <p class="help-block" th:errors="*{invOrg}"></p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Buttons -->
+                        <div align="right" class="form-group col-sm-12">
+                            <button class="btn btn-primary" type="submit">Save</button>
+                            <a class="btn btn-default"
+                               th:href="@{'/step-setup/' + ${pageId} + '/' + ${tempDtlId}}">Reset</a>
+                        </div>
+
+                    </form>
+
+
+                    <div class="form-group col-sm-12">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                            <th>Setup Id</th>
+                            <th>Setup Desc</th>
+                            <th>Org Code</th>
+                            <th>Inventory Org</th>
+                            <th>Action</th>
+                            </thead>
+
+                            <tbody>
+                            <div th:if="!${#lists.isEmpty(stepSetupResList)}">
+                                <tr th:each="setup : ${stepSetupResList}">
+                                    <td th:text="*{setup.stepSetupId}"></td>
+                                    <td th:text="*{setup.description}"></td>
+                                    <td th:text="*{setup.orgCode}"></td>
+                                    <td th:text="*{setup.invOrgCode}"></td>
+                                    <td>
+                                        <div aria-label="..." class="btn-group" role="group">
+                                            <a class="btn btn-success"
+                                               th:href="@{/step-setup/edit/{id}/{pageId}/{tempDtlId}(id=${setup.stepSetupId},pageId=${pageId}, tempDtlId=${tempDtlId})}"><span
+                                                    aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
+
+                                        </div>
+
+                                        <div aria-label="..." class="btn-group" role="group">
+
+
+                                            <a class="btn btn-primary"
+                                               th:href="@{/step-setup/dtl/{pageId}/{tempDtlId}/{setupId}(pageId=${pageId}, tempDtlId=${tempDtlId},setupId=${setup.stepSetupId})}"
+                                               title="Add Sub Menu"><span
+                                                    aria-hidden="true" class="glyphicon glyphicon-plus"></span></a>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+                            </div>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="panel-footer"></div>
+            </div>
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

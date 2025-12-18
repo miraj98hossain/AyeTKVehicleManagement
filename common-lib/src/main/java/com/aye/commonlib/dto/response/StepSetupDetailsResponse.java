@@ -12,10 +12,11 @@ import java.util.Date;
 public class StepSetupDetailsResponse {
     private Long stepSetupDetailsId;
     private Long stepSetupId;
+    private String setupDescription;
     private Long stepId;
     private String stepName;
     private Integer serialNo;
-    private Integer isActive;
+    private Boolean isActive;
     private Long createdBy;
     private Date createdAt;
     private Long updatedBy;

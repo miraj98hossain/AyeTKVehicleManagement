@@ -1,5 +1,6 @@
 package com.aye.webservice.feignclient;
 
+import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
 import com.aye.commonlib.dto.request.StepSetupRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -13,7 +14,8 @@ public interface StepSetupServiceFeignClient {
 
 
     @PostMapping("/save")
-    ResponseEntity<ApiRequestResponse> saveStepSetup(@RequestBody StepSetupRequest stepSetupRequest);
+    ResponseEntity<ApiRequestResponse> saveStepSetup(@RequestBody StepSetupRequest stepSetupRequest,
+                                                     @RequestParam String currentUserName);
 
 
     @GetMapping("/{id}")
@@ -32,4 +34,16 @@ public interface StepSetupServiceFeignClient {
 
     @GetMapping("/findSetupByTempDtlId/{tempDtlId}")
     ResponseEntity<ApiRequestResponse> findSetupByTempDtlId(@PathVariable("tempDtlId") Integer tempDtlId);
+
+    @GetMapping("/getAllDetailsBySetup/{setupId}")
+    ResponseEntity<ApiRequestResponse> findAllSetupDetails(@PathVariable("setupId") Long setupId);
+
+    @PostMapping("/save-dtl")
+    ResponseEntity<ApiRequestResponse> addOrUpdateDetail(
+            @RequestBody StepSetupDetailsRequest stepSetupDetailsRequest,
+            @RequestParam String currentUserName);
+
+    @GetMapping("/findStepStpDtlByDtlId/{detailId}")
+    ResponseEntity<ApiRequestResponse> findStepStpDtlByDtlId(@PathVariable("detailId") Long detailId);
+
 }

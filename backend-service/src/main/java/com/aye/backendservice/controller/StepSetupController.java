@@ -1,17 +1,16 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.StepSetupService;
+import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
 import com.aye.commonlib.dto.request.StepSetupRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.validationGroup.StepSetupCreateValidation;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @RestController
@@ -21,9 +20,9 @@ public class StepSetupController {
     StepSetupService stepSetupService;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiRequestResponse> saveStepSetup(@Validated({StepSetupCreateValidation.class}) @RequestBody StepSetupRequest stepSetupRequest, UriComponentsBuilder uriBuilder) {
-
-        ApiRequestResponse response = stepSetupService.saveStepSetup(stepSetupRequest);
+    public ResponseEntity<ApiRequestResponse> saveStepSetup(@Valid @RequestBody StepSetupRequest stepSetupRequest,
+                                                            @RequestParam String currentUserName) {
+        ApiRequestResponse response = stepSetupService.saveStepSetup(stepSetupRequest, currentUserName);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -72,5 +71,28 @@ public class StepSetupController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping("/getAllDetailsBySetup/{setupId}")
+    public ResponseEntity<ApiRequestResponse> getAllDetailsBySetup(
+            @PathVariable("setupId") Long setupId) {
+        var obj = this.stepSetupService.getAllDetailsBySetup(setupId);
+        if (obj == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @PostMapping("/save-dtl")
+    public ResponseEntity<ApiRequestResponse> addOrUpdateDetail(
+            @Valid @RequestBody StepSetupDetailsRequest stepSetupDetailsRequest,
+            @RequestParam String currentUserName) {
+
+        return ResponseEntity.ok().body(stepSetupService.addOrUpdateDetail(stepSetupDetailsRequest, currentUserName));
+    }
+
+    @GetMapping("/findStepStpDtlByDtlId/{detailId}")
+    public ResponseEntity<ApiRequestResponse> findStepStpDtlByDtlId(@PathVariable("detailId") Long detailId) {
+        return ResponseEntity.ok().body(stepSetupService.findStepStpDtlByDtlId(detailId));
     }
 }

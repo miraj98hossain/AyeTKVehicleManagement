@@ -1,6 +1,5 @@
 package com.aye.backendservice.service;
 
-import com.aye.backendservice.entity.StepSetup;
 import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
 import com.aye.commonlib.dto.request.StepSetupRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
@@ -12,13 +11,13 @@ import java.util.List;
 
 public interface StepSetupService {
 
-    ApiRequestResponse saveStepSetup(StepSetupRequest stepSetupRequest);
+    ApiRequestResponse saveStepSetup(StepSetupRequest stepSetupRequest, String currentUserName);
 
     ApiRequestResponse findByIdRes(Long StepSetup);
 
-    StepSetup findById(Long id);
+    ApiRequestResponse findById(Long id);
 
-    ApiRequestResponse addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest);
+    ApiRequestResponse addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest, String currentUserName);
 
     ApiRequestResponse findAllStepSetup(Pageable pageable);
 
@@ -26,11 +25,12 @@ public interface StepSetupService {
 
     ApiRequestResponse findSetupByDtlId(Long setupDetailId);
 
-    StepSetupDetailsResponse findStepStpDtlByDtlId(Long stepDetailId);
+    ApiRequestResponse findStepStpDtlByDtlId(Long stepDetailId);
 
     List<StepSetupDetailsResponse> findStepStpDtlByDtlIds(List<Long> setupDetailIds);
 
 
     ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId);
 
+    ApiRequestResponse getAllDetailsBySetup(Long setupId);
 }

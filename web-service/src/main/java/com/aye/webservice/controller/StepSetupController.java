@@ -1,16 +1,16 @@
 package com.aye.webservice.controller;
 
 
+import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
 import com.aye.commonlib.dto.request.StepSetupRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.validationGroup.StepSetupCreateValidation;
 import com.aye.webservice.service.StepSetupService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -22,8 +22,9 @@ public class StepSetupController {
     StepSetupService stepSetupService;
 
     @PostMapping("/save")
-    public ResponseEntity<ApiRequestResponse> saveStepSetup(@Validated({StepSetupCreateValidation.class}) @RequestBody StepSetupRequest stepSetupRequest) {
-        var savedStepSetup = stepSetupService.saveStepSetup(stepSetupRequest);
+    public ResponseEntity<ApiRequestResponse> saveStepSetup(@Valid @RequestBody StepSetupRequest stepSetupRequest,
+                                                            @RequestParam String currentUserName) {
+        var savedStepSetup = stepSetupService.saveStepSetup(stepSetupRequest, currentUserName);
         return ResponseEntity.status(HttpStatus.OK).body(savedStepSetup);
     }
 
@@ -46,7 +47,9 @@ public class StepSetupController {
     }
 
     @GetMapping("/filterStepSetup")
-    public ResponseEntity<ApiRequestResponse> filterStepSetup(@RequestParam Long orgId, @RequestParam Long invOrgId, @RequestParam(required = false) String searchWords) {
+    public ResponseEntity<ApiRequestResponse> filterStepSetup(@RequestParam Long orgId,
+                                                              @RequestParam Long invOrgId,
+                                                              @RequestParam(required = false) String searchWords) {
         var list = this.stepSetupService.filterStepSetup(orgId, invOrgId, searchWords);
         if (list == null) {
             return ResponseEntity.noContent().build();
@@ -70,5 +73,27 @@ public class StepSetupController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping("/getAllDetailsBySetup/{setupId}")
+    public ResponseEntity<ApiRequestResponse> getAllDetailsBySetup(@PathVariable("setupId") Long setupId) {
+        var obj = this.stepSetupService.findAllSetupDetails(setupId);
+        if (obj == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @PostMapping("/save-dtl")
+    public ResponseEntity<ApiRequestResponse> addOrUpdateDetail(
+            @RequestBody StepSetupDetailsRequest stepSetupDetailsRequest,
+            @RequestParam String currentUserName) {
+
+        return ResponseEntity.ok().body(stepSetupService.addOrUpdateDetail(stepSetupDetailsRequest, currentUserName));
+    }
+
+    @GetMapping("/findStepStpDtlByDtlId/{detailId}")
+    public ResponseEntity<ApiRequestResponse> findStepStpDtlByDtlId(@PathVariable("detailId") Long detailId) {
+        return ResponseEntity.ok().body(stepSetupService.findStepStpDtlByDtlId(detailId));
     }
 }

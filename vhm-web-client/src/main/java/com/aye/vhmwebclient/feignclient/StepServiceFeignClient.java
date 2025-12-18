@@ -4,7 +4,6 @@ package com.aye.vhmwebclient.feignclient;
 import com.aye.commonlib.dto.request.StepRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +25,8 @@ public interface StepServiceFeignClient {
     ResponseEntity<ApiRequestResponse> getStep(@PathVariable("id") Long id);
 
     @GetMapping()
-    ResponseEntity<ApiRequestResponse> getAllSteps(@SpringQueryMap Pageable pageable);
+    ResponseEntity<ApiRequestResponse> getSteps(
+            @RequestParam(required = false) String searchWords,
+            Pageable pageable);
 
 }

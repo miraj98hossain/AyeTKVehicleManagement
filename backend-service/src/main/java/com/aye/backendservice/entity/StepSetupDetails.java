@@ -44,6 +44,11 @@ public class StepSetupDetails {
 
     @Column(name = "SERIAL_NO", nullable = false)
     private Integer serialNo = 0;
+//    @Enumerated(value = EnumType.STRING)
+//    @Column(name = "VALIDATION")
+//    private CommonEnum.ValidationEnum validation;
+
+    //******************Auditing Columns
 
     @Column(name = "CREATED_BY", nullable = false, updatable = false)
     private Long createdBy;

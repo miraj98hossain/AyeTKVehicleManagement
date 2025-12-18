@@ -10,17 +10,32 @@ import org.mapstruct.*;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         uses = {ReferenceMapper.class,
                 StepMapper.class,
-                StepSetupDetailsMapper.class},
+                CommonTypeMapper.class,
+                OrgHierarchyMapper.class,
+                InventoryInformationMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface StepSetupMapper {
-    StepSetup toEntity(Long id);
+    StepSetup dtoToEntity(Long id);
 
     //Long toId(StepDetails value);
-    @Mapping(source = "stepSetupDetailsRequests", target = "stepSetupDetails")
-    StepSetup toEntity(StepSetupRequest stepSetupRequest);
+    @Mapping(source = "orgId", target = "org")
+    @Mapping(source = "invOrg", target = "invOrg")
+    StepSetup dtoToEntity(StepSetupRequest stepSetupRequest);
 
+    @Mapping(source = "org.code", target = "orgCode")
+    @Mapping(source = "invOrg.name", target = "invOrgCode")
+    @Mapping(source = "org.id", target = "orgId")
+    @Mapping(source = "invOrg.id", target = "invOrg")
     StepSetupResponse toResponseDto(StepSetup stepSetup);
 
-    @Mapping(target = "stepSetupDetails", ignore = true)
-    StepSetupResponse toResponseDtoWOutDtl(StepSetup stepSetup);
+    @Mapping(source = "orgId", target = "org")
+    @Mapping(source = "invOrg", target = "invOrg")
+    void dtoToEntity(StepSetupRequest stepSetupRequest, @MappingTarget StepSetup stepSetup);
+
+
+//    @Mapping(source = "org.code", target = "orgCode")
+//    @Mapping(source = "invOrg.name", target = "invOrgCode")
+//    @Mapping(source = "org.id", target = "orgId")
+//    @Mapping(source = "invOrg.id", target = "invOrg")
+//    StepSetupResponse toResponseDtoWOutDtl(StepSetup stepSetup);
 }

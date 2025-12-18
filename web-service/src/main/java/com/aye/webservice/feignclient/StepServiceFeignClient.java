@@ -25,6 +25,8 @@ public interface StepServiceFeignClient {
     ResponseEntity<ApiRequestResponse> getStep(@PathVariable("id") Long id);
 
     @GetMapping()
-    ResponseEntity<ApiRequestResponse> getAllSteps(@RequestParam(required = false) String searchWords, Pageable pageable);
+    ResponseEntity<ApiRequestResponse> getAllSteps(
+            @RequestParam(required = false) String searchWords,
+            Pageable pageable);
 
 }

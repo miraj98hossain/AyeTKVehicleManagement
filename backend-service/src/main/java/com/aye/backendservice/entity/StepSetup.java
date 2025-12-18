@@ -1,5 +1,7 @@
 package com.aye.backendservice.entity;
 
+import com.aye.RestfulServer.model.om.InventoryInformations;
+import com.aye.RestfulServer.model.om.OrgHierarchy;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,16 +31,18 @@ public class StepSetup {
     )
     @Column(name = "STEP_SETUP_ID")
     private Long stepSetupId;
-    @Column(name = "ORG_ID", unique = true)
-    private Long orgId;
-    @Column(name = "INV_ORG", unique = true)
-    private Long invOrg;
+    @ManyToOne
+    @JoinColumn(name = "ORG_ID")
+    private OrgHierarchy org;
+    @ManyToOne
+    @JoinColumn(name = "INV_ORG")
+    private InventoryInformations invOrg;
     @Column(name = "IS_ACTIVE")
     private Integer isActive;
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(mappedBy = "stepSetup", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "stepSetup", fetch = FetchType.EAGER)
     @OrderBy("serialNo ASC")
 //    @SQLRestriction("IS_ACTIVE  = 1")
     private List<StepSetupDetails> stepSetupDetails = new ArrayList<>();

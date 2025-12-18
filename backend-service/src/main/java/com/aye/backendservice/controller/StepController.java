@@ -52,7 +52,6 @@ public class StepController {
             return list == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(list);
         }
     }
-
 //    @GetMapping
 //    public ResponseEntity<List<Step>> getSteps() {
 //        return ResponseEntity.ok(this.stepService.getAllSteps());
