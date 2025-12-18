@@ -11,6 +11,7 @@ public class StepWiseTransCountVResponse {
     private String prevStepName;
     private Integer prevStepCount;
     private String curStepName;
+    private Integer curStepCount;
     private String forwStepName;
     private Integer forwStepCount;
 }

@@ -23,6 +23,7 @@ public class StepWiseTransCountVServiceImpl implements StepWiseTransCountVServic
 
     @Override
     public ApiRequestResponse getCountByDetailId(List<Long> detailId) {
+
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
                 "Success",
