@@ -15,4 +15,5 @@ server:
 
 backend:
   service:
-    url: http://aye-back-end-service:8003/aye-backend-service
+    url: http://aye-back-end-service:8443/aye-backend-service
+#    url: http://192.168.0.69:8003/aye-backend-service
