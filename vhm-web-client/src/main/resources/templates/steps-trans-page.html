@@ -3,22 +3,6 @@
 <head>
     <link rel="stylesheet" th:href="@{/css/steps-trans.css}">
     <title></title>
-    <style>
-        .step-line {
-            padding: 6px 0;
-            border-bottom: 1px solid #e5e5e5;
-            font-size: 14px;
-        }
-        .step-count {
-            font-size: 13px;
-            color: #666;
-            margin-left: 6px;
-        }
-        .step-arrow {
-            margin: 0 8px;
-            color: #999;
-        }
-    </style>
 </head>
 
 
@@ -33,7 +17,8 @@
                 <div class="panel-heading">Step Transaction</div>
                 <div class="panel-body">
                     <form method="post"
-                          th:action="@{/step-trans/create/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}"
+                          th:action="@{/step-trans/create/{pageId}/{tempDtlId}
+                          (pageId=${pageId},tempDtlId=${tempDtlId},page=${page},size=${size})}"
                           th:object="${stepTransReq}">
                         <!-- Template Row -->
                         <div class="form-group col-sm-12">
@@ -167,33 +152,63 @@
                                     type="submit"></button>
 
                             <a class="btn cancel-btn"
-                               th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}">Clear</a>
+                               th:href="@{/step-trans/{pageId}/{tempDtlId}
+                               (pageId=${pageId},tempDtlId=${tempDtlId},page=${page},size=${size})}">Clear</a>
                         </div>
 
                     </form>
-                    <div class="container mt-3">
-                        <h6 class="mb-2">Step Flow</h6>
 
-                        <div th:each="step : ${stepWiseTransCount}" class="step-line d-flex align-items-center">
+                    <div class="steps-container"
+                         th:if="${stepWiseTransCount != null and #lists.size(stepWiseTransCount) > 1}">
 
-                            <span th:text="${step.prevStepName}">Prev</span>
-                            <span class="step-count" th:text="'(' + ${step.prevStepCount} + ')'">(0)</span>
+                        <div class="step-row">
+                            <div th:each="step, iter : ${stepWiseTransCount}" class="step-inline">
 
-                            <span class="step-arrow">→</span>
 
-                            <strong th:text="${step.curStepName}">Current</strong>
+                                <div class="step-card">
+                                    <span class="badge" th:text="${step.curStepCount}">0</span>
+                                    <span class="step-name" th:text="${step.curStepName}">Next</span>
+                                </div>
 
-                            <span class="step-arrow">→</span>
-
-                            <span th:text="${step.forwStepName}">Next</span>
-                            <span class="step-count" th:text="'(' + ${step.forwStepCount} + ')'">(0)</span>
-
-                        </div>
-
-                        <div th:if="${#lists.isEmpty(stepWiseTransCount)}" class="text-muted small mt-2">
-                            No data available
+                                <!-- arrow except last item -->
+                                <span class="step-arrow" th:if="${!iter.last}">→</span>
+                            </div>
                         </div>
                     </div>
+
+                    <div class="steps-container"
+                         th:unless="${stepWiseTransCount != null and #lists.size(stepWiseTransCount) > 1}"
+                         th:each="step : ${stepWiseTransCount}">
+
+                        <div class="step-row">
+                            <!-- PREVIOUS -->
+                            <div class="step-card">
+                                <span class="badge" th:text="${step.prevStepCount}">0</span>
+                                <span class="step-name" th:text="${step.prevStepName}">Prev</span>
+                            </div>
+
+                            <span class="step-arrow">→</span>
+
+                            <!-- CURRENT -->
+                            <div class="step-card">
+                                <span class="step-name" th:text="${step.curStepName}">Current</span>
+                            </div>
+
+                            <span class="step-arrow">→</span>
+
+                            <!-- FORWARD -->
+                            <div class="step-card">
+                                <span class="badge" th:text="${step.forwStepCount}">0</span>
+                                <span class="step-name" th:text="${step.forwStepName}">Next</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+
 
                     <div class="form-group col-sm-12">
                         <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
@@ -220,26 +235,30 @@
                                 <td class="text-center">
 
                                     <a class="btn view-btn btn-success"
-                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Complete')}"
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Complete',page=${page},size=${size})}"
                                        th:if="${line.stage == 2}">
                                         Release
                                     </a>
 
                                     <a class="btn edit-btn btn-warning"
-                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='WIP')}"
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo},stepStatus='WIP',page=${page},size=${size})}"
                                        th:if="${line.stage == 1 and line.stepStatus != 'WIP'}">
                                         WIP
                                     </a>
 
                                     <a class="btn pick-btn btn-info"
-                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Pick')}"
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Pick',page=${page},size=${size})}"
                                        th:if="${line.stage == 0 and line.stepStatus != 'Pick'}">
                                         Pick
                                     </a>
 
                                     <a class="btn delete-btn btn-danger"
                                        th:if="${line.stage == 2}"
-                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'(pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject')}">
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject',page=${page},size=${size})}">
                                         Reject
                                     </a>
 
