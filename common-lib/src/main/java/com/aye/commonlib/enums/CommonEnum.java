@@ -5,7 +5,7 @@ import lombok.Getter;
 public class CommonEnum {
     @Getter
     public enum UserType {
-        CUS, EMP, HOEMP;
+        CUS, EMP, HOEMP
     }
 
     @Getter
@@ -19,7 +19,7 @@ public class CommonEnum {
 
         SYS,
         SETUP,
-        TRNS;
+        TRNS
     }
 
     @Getter
@@ -35,13 +35,15 @@ public class CommonEnum {
             this.displayName = displayName;
         }
 
-        public String getDisplayName() {
-            return displayName;
-        }
     }
 
     @Getter
     public enum TrnsType {
-        OM, PO, HRMS, VHM;
+        OM, PO, HRMS, VHM
+    }
+
+    @Getter
+    public enum ValidationEnum {
+        DO_VALIDATION
     }
 }

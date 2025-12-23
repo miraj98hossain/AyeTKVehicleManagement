@@ -49,6 +49,9 @@ public class StepTransDetails {
     @Column(name = "SCHEDULE_NO")
     private Long scheduleNo;
 
+
+    //**Auditing Columns
+
     @Column(name = "CREATED_BY", nullable = false, updatable = false)
     private Long createdBy;
     @Column(name = "CREATED_AT", nullable = false, updatable = false)
