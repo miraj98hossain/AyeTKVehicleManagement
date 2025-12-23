@@ -6,7 +6,6 @@
 </head>
 
 
-
 <body>
 <div class="right_col" data-layout-fragment="content" role="main">
     <div class="row">
@@ -35,7 +34,7 @@
 
                             <div class="col-sm-4">
                                 <!--                                th:disabled="${stepSetupDetailsResponse.serialNo != 1}"-->
-                                <select  class="form-control"
+                                <select class="form-control"
                                         id="stepSetupList"
                                         required
                                         th:field="${stepTransReq.stepSetupId}">
@@ -162,7 +161,7 @@
                          th:if="${stepWiseTransCount != null and #lists.size(stepWiseTransCount) > 1}">
 
                         <div class="step-row">
-                            <div th:each="step, iter : ${stepWiseTransCount}" class="step-inline">
+                            <div class="step-inline" th:each="step, iter : ${stepWiseTransCount}">
 
 
                                 <div class="step-card">
@@ -177,8 +176,8 @@
                     </div>
 
                     <div class="steps-container"
-                         th:unless="${stepWiseTransCount != null and #lists.size(stepWiseTransCount) > 1}"
-                         th:each="step : ${stepWiseTransCount}">
+                         th:each="step : ${stepWiseTransCount}"
+                         th:unless="${stepWiseTransCount != null and #lists.size(stepWiseTransCount) > 1}">
 
                         <div class="step-row">
                             <!-- PREVIOUS -->
@@ -205,14 +204,9 @@
                     </div>
 
 
-
-
-
-
-
                     <div class="form-group col-sm-12">
                         <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
-                        <thead>
+                            <thead>
                             <tr>
                                 <th>TransNo</th>
                                 <th>LinesNo</th>
@@ -230,7 +224,7 @@
                                 <td th:text="${line.stepTransLinesNo}"></td>
                                 <td th:text="${line.vehicleNumber}"></td>
                                 <td th:text="${line.driverName}"></td>
-                                <td  th:text="${line.stepName}"></td>
+                                <td th:text="${line.stepName}"></td>
                                 <td class="text-center" th:text="${line.stepStatus}"></td>
                                 <td class="text-center">
 
@@ -256,9 +250,9 @@
                                     </a>
 
                                     <a class="btn delete-btn btn-danger"
-                                       th:if="${line.stage == 2}"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject',page=${page},size=${size})}">
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject',page=${page},size=${size})}"
+                                       th:if="${line.stage == 2}">
                                         Reject
                                     </a>
 
@@ -268,13 +262,14 @@
                         </table>
 
                         <!-- Pagination -->
-                        <nav th:if="${stepTransResponseList.totalPages > 1}" aria-label="Page navigation" class="text-left">
+                        <nav aria-label="Page navigation" class="text-left"
+                             th:if="${stepTransResponseList.totalPages > 1}">
                             <ul class="pagination">
                                 <!-- Previous -->
                                 <li th:classappend="${!stepTransResponseList.hasPrevious()} ? 'disabled'">
-                                    <a th:if="${stepTransResponseList.hasPrevious()}"
+                                    <a aria-label="Previous"
                                        th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.number - 1}, size=${stepTransResponseList.size})}"
-                                       aria-label="Previous">
+                                       th:if="${stepTransResponseList.hasPrevious()}">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                     <span th:unless="${stepTransResponseList.hasPrevious()}">&laquo;</span>
@@ -289,30 +284,31 @@
                                 </li>
 
                                 <!-- Pages around current -->
-                                <li th:each="i : ${#numbers.sequence(
+                                <li th:classappend="${i == stepTransResponseList.number} ? 'active'"
+                                    th:each="i : ${#numbers.sequence(
                         (stepTransResponseList.number > 1 ? stepTransResponseList.number : 0),
                         (stepTransResponseList.number < stepTransResponseList.totalPages - 2 ? stepTransResponseList.number + 1 : stepTransResponseList.totalPages - 1)
-                    )}"
-                                    th:classappend="${i == stepTransResponseList.number} ? 'active'">
+                    )}">
                                     <a th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${i}, size=${stepTransResponseList.size})}"
                                        th:text="${i + 1}"></a>
                                 </li>
 
                                 <!-- Last page -->
-                                <li class="disabled" th:if="${stepTransResponseList.number < stepTransResponseList.totalPages - 3}">
+                                <li class="disabled"
+                                    th:if="${stepTransResponseList.number < stepTransResponseList.totalPages - 3}">
                                     <span>...</span>
                                 </li>
                                 <li th:if="${stepTransResponseList.number < stepTransResponseList.totalPages - 2}">
-                                    <a th:text="${stepTransResponseList.totalPages}"
-                                       th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.totalPages - 1}, size=${stepTransResponseList.size})}">
+                                    <a th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.totalPages - 1}, size=${stepTransResponseList.size})}"
+                                       th:text="${stepTransResponseList.totalPages}">
                                     </a>
                                 </li>
 
                                 <!-- Next -->
                                 <li th:classappend="${!stepTransResponseList.hasNext()} ? 'disabled'">
-                                    <a th:if="${stepTransResponseList.hasNext()}"
+                                    <a aria-label="Next"
                                        th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.number + 1}, size=${stepTransResponseList.size})}"
-                                       aria-label="Next">
+                                       th:if="${stepTransResponseList.hasNext()}">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                     <span th:unless="${stepTransResponseList.hasNext()}">&raquo;</span>
@@ -328,6 +324,6 @@
             </div>
         </div>
     </div>
-
+</div>
 </body>
 </html>
