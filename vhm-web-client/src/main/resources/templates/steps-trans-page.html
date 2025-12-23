@@ -62,7 +62,6 @@
                                 <select class="form-control"
                                         id="vhCtyResList"
                                         required
-
                                         th:field="${stepTransReq.vehicleCity}">
                                     <option value="">-- Select --</option>
                                     <option th:each="vhCty : ${vhCtyResList}"
@@ -76,7 +75,6 @@
                                 <select class="form-control"
                                         id="vhCtyClsResList"
                                         required
-
                                         th:field="${stepTransReq.vehicleCityClass}">
                                     <option value="">-- Select --</option>
                                     <option th:each="vhCtyCls : ${vhCtyClsResList}"
@@ -89,6 +87,9 @@
                                 <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
                                 <input class="form-control"
                                        id="vehicleNo"
+                                       inputmode="numeric"
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                       pattern="[0-9]+"
                                        placeholder="Enter Vehicle No"
                                        required
                                        th:field="${stepTransReq.vehicleNumber}"
@@ -108,7 +109,6 @@
                                 <input class="form-control" id="transportName"
                                        placeholder="Enter Transport Name" required
                                        th:field="${stepTransReq.transportName}"
-
                                        type="text">
                             </div>
                         </div>
@@ -122,7 +122,7 @@
                             <div class="col-sm-8">
                                 <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
                                 <input class="form-control" id="driverName"
-                                       placeholder="Enter Driver" required
+                                       placeholder="Enter Driver Name" required
                                        th:field="${stepTransReq.driverName}"
 
                                        type="text">
@@ -137,10 +137,18 @@
                             </div>
                             <div class="col-sm-8">
                                 <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
-                                <input class="form-control" id="driverPhone"
-                                       placeholder="Enter Driver Phone" required
+                                <input class="form-control"
+                                       id="driverPhone"
+                                       inputmode="numeric"
+                                       maxlength="11"
+                                       minlength="11"
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11);"
+                                       pattern="[0-9]{11}"
+                                       placeholder="Enter Driver Phone"
+                                       required
+                                       th:field="${stepTransReq.driverPhoneNo}"
+                                       type="text">
 
-                                       th:field="${stepTransReq.driverPhoneNo}" type="text">
                             </div>
                         </div>
 
