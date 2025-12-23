@@ -189,8 +189,8 @@ public class StepSetupServiceImpl implements StepSetupService {
                 ((root, query, cb) -> {
                     List<Predicate> predicates = new ArrayList<>();
                     predicates.add(cb.equal(root.get("isActive"), 1));
-                    predicates.add(cb.equal(root.get("orgId"), orgId));
-                    predicates.add(cb.equal(root.get("invOrg"), invOrgId));
+                    predicates.add(cb.equal(root.get("org").get("id"), orgId));
+                    predicates.add(cb.equal(root.get("invOrg").get("id"), invOrgId));
                     return cb.and(predicates.toArray(new Predicate[0]));
                 })
         ).orElseThrow(
