@@ -31,7 +31,7 @@ public interface StepSetupDetailsService {
 
     StepSetupDetails save(StepSetupDetails stepSetupDetails);
 
-    List<StepSetupDetails> filterStepSetupDetails(StepSetup stepSetup, Long orgId, Long invOrgId, String searchWords);
+    List<StepSetupDetails> filterStepSetupDetails(List<StepSetup> stepSetups, Long orgId, Long invOrgId, String searchWords);
 
 
 }

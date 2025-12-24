@@ -115,13 +115,13 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
 
     @Transactional
     @Override
-    public List<StepSetupDetails> filterStepSetupDetails(StepSetup stepSetup, Long orgId, Long invOrgId, String searchWords) {
+    public List<StepSetupDetails> filterStepSetupDetails(List<StepSetup> stepSetups, Long orgId, Long invOrgId, String searchWords) {
 
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             Join<StepSetupDetails, Step> stepJoin = root.join("step", JoinType.INNER);
 
             List<Predicate> predicates = new ArrayList<>();
-            predicates.add(cb.equal(root.get("stepSetup"), stepSetup));
+            predicates.add(cb.in(root.get("stepSetup")).value(stepSetups));
             predicates.add(cb.equal(root.get("isActive"), 1));
             if (searchWords != null && !searchWords.isEmpty()) {
                 String searchTerm = "%" + searchWords.toLowerCase() + "%";

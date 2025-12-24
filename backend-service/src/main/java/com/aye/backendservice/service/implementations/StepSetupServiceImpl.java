@@ -182,10 +182,7 @@ public class StepSetupServiceImpl implements StepSetupService {
     @Transactional(readOnly = true)
     @Override
     public ApiRequestResponse filterStepSetup(Long orgId, Long invOrgId, String searchWords) {
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully found all the step setups");
-        StepSetup stepSetup = this.stepSetupRepository.findOne(
+        List<StepSetup> stepSetups = this.stepSetupRepository.findAll(
                 ((root, query, cb) -> {
                     List<Predicate> predicates = new ArrayList<>();
                     predicates.add(cb.equal(root.get("isActive"), 1));
@@ -193,23 +190,16 @@ public class StepSetupServiceImpl implements StepSetupService {
                     predicates.add(cb.equal(root.get("invOrg").get("id"), invOrgId));
                     return cb.and(predicates.toArray(new Predicate[0]));
                 })
-        ).orElseThrow(
-                () -> new EntityNotFoundException("No Setup Found!!")
         );
-
-        var dtls = this.stepSetupDetailsService.filterStepSetupDetails(stepSetup, orgId, invOrgId, searchWords);
-        stepSetup.setStepSetupDetails(dtls);
-        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
-        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("stepSetupResponseList")
-                .object(stepSetup.getStepSetupDetails().stream().map(stepSetupDetailsMapper::toResponseDto).collect(Collectors.toList()))
-                .mapperClass(StepSetupDetailsResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.A)
-                .build();
-        detailsResList.add(details);
-        response.setApiRequestResponseDetails(detailsResList);
-        return response;
-
+        var dtls = this.stepSetupDetailsService.filterStepSetupDetails(stepSetups, orgId, invOrgId, searchWords);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(),
+                "Successfully found all the step setups",
+                ApiRequestResponseDetail.ObjectType.A,
+                "stepSetupResponseList",
+                StepSetupDetailsResponse.class.getName(),
+                dtls.stream().map(stepSetupDetailsMapper::toResponseDto).collect(Collectors.toList())
+        );
     }
 
     @Transactional
