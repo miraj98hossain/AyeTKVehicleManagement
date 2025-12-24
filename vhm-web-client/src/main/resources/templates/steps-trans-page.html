@@ -38,7 +38,10 @@
                                         id="stepSetupList"
                                         required
                                         th:field="${stepTransReq.stepSetupId}">
-                                    <div th:if="${#lists.size(stepSetupList) &gt; 1}">
+                                    <!--                                    <div th:if="${#lists.size(stepSetupList) &gt; 1}">-->
+                                    <!--                                        <option value="">&#45;&#45; Select &#45;&#45;</option>-->
+                                    <!--                                    </div>-->
+                                    <div th:if="${stepSetupList != null and #lists.size(stepSetupList) > 1}">
                                         <option value="">-- Select --</option>
                                     </div>
                                     <option th:each="stepSetup : ${stepSetupList}"

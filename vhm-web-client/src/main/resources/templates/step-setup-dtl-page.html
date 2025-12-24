@@ -79,9 +79,11 @@
                         </div>
                         <!-- Buttons -->
                         <div align="right" class="form-group col-sm-12">
-                            <button class="btn btn-primary" type="submit">Save</button>
-                            <a class="btn btn-default"
-                               th:href="@{'/step-setup/' + ${pageId} + '/' + ${tempDtlId}}">Reset</a>
+                            <button class="btn btn-primary"
+                                    th:text="${stepSetupDtlRequest.stepSetupDetailsId != null ? 'Update' : 'Create'}"
+                                    type="submit"></button>
+                            <!--                            <a class="btn btn-default"-->
+                            <!--                               th:href="@{'/step-setup/' + ${pageId} + '/' + ${tempDtlId}}">Reset</a>-->
                         </div>
 
                     </form>

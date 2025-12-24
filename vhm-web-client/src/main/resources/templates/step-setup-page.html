@@ -76,27 +76,31 @@
                                 <div class="col-sm-1"><b>:</b></div>
                                 <div class="col-sm-8">
                                     <input class="form-control" id="orgCode" name="orgCode" placeholder="Org Code"
+                                           required
                                            th:field="*{orgCode}"
                                            type="text"/>
                                     <input class="form-control" id="orgId" name="orgId"
                                            placeholder="Org Id"
+                                           required
                                            th:field="*{orgId}" type="hidden"/>
                                     <p class="help-block" th:errors="*{orgId}"></p>
                                 </div>
                             </div>
 
                             <div id="inv-info-div"
-                                 style="display:block"
+                                 style="display:none"
                                  th:class="${#fields.hasErrors('invOrg')} ? 'form-group has-error' : 'form-group col-sm-6'">
                                 <label class="col-sm-3 control-label" for="invOrg">Inventory</label>
                                 <div class="col-sm-1"><b>:</b></div>
                                 <div class="col-sm-8">
                                     <input class="form-control" id="invOrgCode" name="invOrgCode"
                                            placeholder="Inventory"
+                                           required
                                            th:field="*{invOrgCode}"
                                            type="text"/>
                                     <input class="form-control" id="invOrg" name="invOrg"
                                            placeholder="Inventory Id"
+                                           required
                                            th:field="*{invOrg}" type="hidden"/>
 
                                     <p class="help-block" th:errors="*{invOrg}"></p>
@@ -107,9 +111,11 @@
 
                         <!-- Buttons -->
                         <div align="right" class="form-group col-sm-12">
-                            <button class="btn btn-primary" type="submit">Save</button>
-                            <a class="btn btn-default"
-                               th:href="@{'/step-setup/' + ${pageId} + '/' + ${tempDtlId}}">Reset</a>
+                            <button class="btn btn-primary"
+                                    th:text="${stepSetupRequest.stepSetupId != null ? 'Update' : 'Create'}"
+                                    type="submit"></button>
+                            <!--                            <a class="btn btn-default"-->
+                            <!--                               th:href="@{'/step-setup/' + ${pageId} + '/' + ${tempDtlId}}">Reset</a>-->
                         </div>
 
                     </form>
