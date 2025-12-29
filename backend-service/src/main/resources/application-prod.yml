@@ -1,6 +1,6 @@
 spring:
-  #  application:
-  #    name: backend-service
+  application:
+    name: backend-service
   datasource:
     url: jdbc:oracle:thin:@192.168.0.6:1521/PROD
     username: mapps
