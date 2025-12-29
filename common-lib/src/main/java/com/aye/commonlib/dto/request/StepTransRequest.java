@@ -17,7 +17,7 @@ import lombok.Setter;
 
 public class StepTransRequest {
     @NotNull(groups = {StepTransUpdateValidation.class}, message = "Step trans id is required to update")
-    private String stepTransNo;
+    private Long stepTransId;
     @NotBlank(groups = {StepTransCreateValidation.class, StepTransUpdateValidation.class}, message = "Vehicle City is required")
     private String vehicleCity;
 

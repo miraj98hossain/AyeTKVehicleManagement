@@ -39,4 +39,8 @@ public class NoGenService {
     public String createTransDNo() {
         return "TRND" + getNextVal("STP_TRANSD_NO");
     }
+
+    public String createTransDtlLNo() {
+        return "TRNDL" + getNextVal("STP_TRANSDL_NO");
+    }
 }

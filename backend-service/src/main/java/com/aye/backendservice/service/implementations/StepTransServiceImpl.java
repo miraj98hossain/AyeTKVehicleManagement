@@ -190,7 +190,7 @@ public class StepTransServiceImpl implements StepTransService {
         //requestedLine
         StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(linesReq);
         //databaseLine
-        StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesNo());
+        StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesId());
         //for storing response
         StepTransLinesResponse objResponse = new StepTransLinesResponse();
 

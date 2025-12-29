@@ -52,8 +52,8 @@ public class StepTrans {
     @OrderBy("createdAt asc ")
     private List<StepTransLines> stepTransLinesList = new ArrayList<>();
 
-    @OneToOne(mappedBy = "stepTrans")
-    private StepTransDetails stepTransDetails;
+    @OneToMany(mappedBy = "stepTrans")
+    private List<StepTransDetails> stepTransDetails;
 
 
     @Column(name = "CREATED_BY", nullable = false, updatable = false)

@@ -26,7 +26,7 @@
         <module name="webclient" />
         <module name="mobile-service" />
       </profile>
-      <profile name="Annotation profile for vhm-web-client" enabled="true">
+      <profile name="Annotation profile for web-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />

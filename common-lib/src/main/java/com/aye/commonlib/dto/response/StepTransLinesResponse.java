@@ -12,7 +12,9 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StepTransLinesResponse {
+    private Long stepTransLinesId;
     private String stepTransLinesNo;
+    private Long stepTransId;
     private String stepTransNo;
     private String vehicleNumber;
     private String transportName;

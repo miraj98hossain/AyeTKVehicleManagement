@@ -158,7 +158,7 @@
                         <!-- Buttons -->
                         <div class="form-group col-sm-12 Padding10px">
                             <button class="btn btn-primary"
-                                    th:text="${stepTransReq.stepTransNo!= null ? 'Update' : 'Create'}"
+                                    th:text="${stepTransReq.stepTransId!= null ? 'Update' : 'Create'}"
                                     type="submit"></button>
 
                             <a class="btn cancel-btn"
@@ -241,31 +241,34 @@
 
                                     <a class="btn view-btn btn-success"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Complete',page=${page},size=${size})}"
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Complete',page=${page},size=${size})}"
                                        th:if="${line.stage == 2}">
                                         Release
                                     </a>
 
                                     <a class="btn edit-btn btn-warning"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo},stepStatus='WIP',page=${page},size=${size})}"
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId},stepStatus='WIP',page=${page},size=${size})}"
                                        th:if="${line.stage == 1 and line.stepStatus != 'WIP'}">
                                         WIP
                                     </a>
 
                                     <a class="btn pick-btn btn-info"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Pick',page=${page},size=${size})}"
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Pick',page=${page},size=${size})}"
                                        th:if="${line.stage == 0 and line.stepStatus != 'Pick'}">
                                         Pick
                                     </a>
 
                                     <a class="btn delete-btn btn-danger"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesNo=${line.stepTransLinesNo}, stepStatus='Reject',page=${page},size=${size})}"
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Reject',page=${page},size=${size})}"
                                        th:if="${line.stage == 2}">
                                         Reject
                                     </a>
+                                    <a class="btn btn-success"
+                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},stepTransId=${line.stepTransId})}"><span
+                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>
 
                                 </td>
                             </tr>

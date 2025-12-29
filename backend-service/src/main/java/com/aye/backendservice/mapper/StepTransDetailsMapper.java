@@ -9,14 +9,16 @@ import org.mapstruct.*;
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         uses = {ReferenceMapper.class,
-                StepMapper.class,
-                StepTransMapper.class,
-                StepStatusTypeMapper.class},
+                StepTransMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface StepTransDetailsMapper {
     @Mapping(source = "stepTransId", target = "stepTrans")
-    StepTransDetails toEntity(StepTransDetailsRequest stepTransDetailsRequest);
+    StepTransDetails dtoToEntity(StepTransDetailsRequest stepTransDetailsRequest);
+
+    @Mapping(source = "stepTransId", target = "stepTrans")
+    void dtoToEntity(StepTransDetailsRequest stepTransDetailsRequest, @MappingTarget StepTransDetails stepTransDetails);
 
     @Mapping(source = "stepTrans.stepTransId", target = "stepTransId")
+    @Mapping(source = "stepTrans.stepTransNo", target = "stepTransNo")
     StepTransDetailsResponse toResponseDto(StepTransDetails stepTransDetails);
 }

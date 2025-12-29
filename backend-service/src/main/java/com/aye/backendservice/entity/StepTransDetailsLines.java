@@ -54,4 +54,17 @@ public class StepTransDetailsLines {
     private Long updatedBy;
     @Column(name = "UPDATED_AT", insertable = false)
     private Date updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        Date now = new Date();
+        this.createdAt = now;
+        this.updatedAt = now;
+
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
 }

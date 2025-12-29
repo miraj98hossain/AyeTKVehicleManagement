@@ -32,20 +32,16 @@ public class StepTransDetails {
     @Column(name = "STEP_TRANS_DTL_NO", unique = true, nullable = false)
     private String stepTransDtlNo;
 
-    @JoinColumn(name = "STEP_TRANS_ID", nullable = false, referencedColumnName = "STEP_TRANS_ID")
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "STEP_TRANS_ID", nullable = true, referencedColumnName = "STEP_TRANS_ID")
+    @ManyToOne(fetch = FetchType.EAGER, optional = true)
     private StepTrans stepTrans;
+//    @Column(name = "STEP_TRANS_ID")
+//    private Long stepTransId;
 
     @Column(name = "CUST_NAME", nullable = false)
     private String custName;
-
-    @Column(name = "ITEM", nullable = false)
-    private String item;
-
-    @Column(name = "QUANTITY", nullable = false)
-    private Double quantity;
-    @Column(name = "TRIP_NO")
-    private Long tripNo;
+    @Column(name = "DELIVERY_NO")
+    private Long deliveryNo;
     @Column(name = "SCHEDULE_NO")
     private Long scheduleNo;
 
@@ -60,4 +56,17 @@ public class StepTransDetails {
     private Long updatedBy;
     @Column(name = "UPDATED_AT", insertable = false)
     private Date updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        Date now = new Date();
+        this.createdAt = now;
+        this.updatedAt = now;
+
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = new Date();
+    }
 }

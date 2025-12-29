@@ -15,6 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 
 public class StepTransResponse {
+    private String stepTransId;
     private String stepTransNo;
     private Long stepSetupId;
     private String vehicleNumber;

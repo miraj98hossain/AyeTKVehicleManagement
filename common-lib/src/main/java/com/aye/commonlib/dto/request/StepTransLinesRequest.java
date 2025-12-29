@@ -17,7 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class StepTransLinesRequest {
     @NotNull(groups = {StepTransLinesUpdateValidation.class}, message = "Step trans lines Id is required")
-    private String stepTransLinesNo;
+    private Long stepTransLinesId;
     @NotBlank(groups = {StepTransLinesCreateValidation.class, StepTransLinesUpdateValidation.class}, message = "Step Status is required")
     private String stepStatus;
     private String remarks;
