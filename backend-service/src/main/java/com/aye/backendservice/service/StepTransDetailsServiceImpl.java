@@ -1,4 +1,4 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.model.Muser;
 import com.aye.RestfulServer.service.MuserService;
@@ -8,8 +8,6 @@ import com.aye.backendservice.mapper.StepTransDetailsLinesMapper;
 import com.aye.backendservice.mapper.StepTransDetailsMapper;
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
-import com.aye.backendservice.service.ApiRequestResponseMaker;
-import com.aye.backendservice.service.StepTransDetailsService;
 import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;

@@ -1,13 +1,11 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 
+import com.aye.backendservice.mapper.VehicleCityMapper;
+import com.aye.backendservice.repository.VehicleCityRepository;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.VehicleCityResponse;
-import com.aye.backendservice.mapper.VehicleCityMapper;
-import com.aye.backendservice.repository.VehicleCityRepository;
-import com.aye.backendservice.service.VehicleCityClassService;
-import com.aye.backendservice.service.VehicleCityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

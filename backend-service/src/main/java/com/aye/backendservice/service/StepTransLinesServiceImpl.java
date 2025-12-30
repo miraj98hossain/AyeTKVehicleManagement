@@ -1,4 +1,4 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 import com.aye.backendservice.entity.StepSetupDetails;
 import com.aye.backendservice.entity.StepTrans;
@@ -6,7 +6,6 @@ import com.aye.backendservice.entity.StepTransLines;
 import com.aye.backendservice.entity.StepTransTimeline;
 import com.aye.backendservice.mapper.StepTransLinesMapper;
 import com.aye.backendservice.repository.StepTransLinesRepository;
-import com.aye.backendservice.service.StepTransLinesService;
 import com.aye.commonlib.dto.response.StepTransLinesResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;

@@ -1,11 +1,9 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.model.common.AppModuleCode;
 import com.aye.RestfulServer.model.om.AppModule;
 import com.aye.RestfulServer.service.AppModuleService;
 import com.aye.backendservice.mapper.AppModuleMapper;
-import com.aye.backendservice.service.ApiRequestResponseMaker;
-import com.aye.backendservice.service.AppModuleBService;
 import com.aye.commonlib.dto.request.AppModuleRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;

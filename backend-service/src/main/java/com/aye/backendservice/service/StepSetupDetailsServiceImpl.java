@@ -1,4 +1,4 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 
 import com.aye.backendservice.entity.Step;
@@ -6,7 +6,6 @@ import com.aye.backendservice.entity.StepSetup;
 import com.aye.backendservice.entity.StepSetupDetails;
 import com.aye.backendservice.mapper.StepSetupDetailsMapper;
 import com.aye.backendservice.repository.StepSetupDetailsRepository;
-import com.aye.backendservice.service.StepSetupDetailsService;
 import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
 import com.aye.commonlib.dto.response.StepSetupDetailsResponse;
 import jakarta.persistence.EntityNotFoundException;

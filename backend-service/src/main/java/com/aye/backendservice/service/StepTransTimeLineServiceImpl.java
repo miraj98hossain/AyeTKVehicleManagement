@@ -1,8 +1,7 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 import com.aye.backendservice.mapper.StepTransTimelineMapper;
 import com.aye.backendservice.repository.StepTransTimeLineRepository;
-import com.aye.backendservice.service.StepTransTimeLineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

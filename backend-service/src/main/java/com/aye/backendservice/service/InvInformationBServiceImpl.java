@@ -1,10 +1,8 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.model.om.InventoryInformations;
 import com.aye.RestfulServer.service.InvInformationsService;
 import com.aye.backendservice.mapper.InventoryInformationMapper;
-import com.aye.backendservice.service.ApiRequestResponseMaker;
-import com.aye.backendservice.service.InvInformationBService;
 import com.aye.commonlib.dto.request.InventoryInformationRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;

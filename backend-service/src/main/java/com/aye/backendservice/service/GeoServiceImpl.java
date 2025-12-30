@@ -1,10 +1,9 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.model.geo.Geo;
 import com.aye.RestfulServer.repo.GeoRepo;
 import com.aye.backendservice.entity.GeoSerach;
-import com.aye.backendservice.service.GeoService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;

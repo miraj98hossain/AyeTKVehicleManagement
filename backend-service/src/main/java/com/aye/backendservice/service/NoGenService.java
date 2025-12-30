@@ -1,4 +1,4 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

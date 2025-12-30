@@ -1,10 +1,8 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.model.Pages;
 import com.aye.RestfulServer.service.PageService;
 import com.aye.backendservice.mapper.PagesMapper;
-import com.aye.backendservice.service.ApiRequestResponseMaker;
-import com.aye.backendservice.service.PagesBService;
 import com.aye.commonlib.dto.request.PagesRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;

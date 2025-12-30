@@ -1,9 +1,7 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 import com.aye.backendservice.mapper.StepWiseTransCountVMapper;
 import com.aye.backendservice.repository.StepWiseTransCountVRepo;
-import com.aye.backendservice.service.ApiRequestResponseMaker;
-import com.aye.backendservice.service.StepWiseTransCountVService;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.StepWiseTransCountVResponse;

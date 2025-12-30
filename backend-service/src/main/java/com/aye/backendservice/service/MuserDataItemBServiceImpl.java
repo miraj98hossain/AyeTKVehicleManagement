@@ -1,9 +1,7 @@
-package com.aye.backendservice.service.implementations;
+package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.model.userData.MuserDataItem;
 import com.aye.RestfulServer.service.MuserDataItemService;
-import com.aye.backendservice.service.ApiRequestResponseMaker;
-import com.aye.backendservice.service.MuserDataItemBService;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import org.springframework.beans.factory.annotation.Autowired;
