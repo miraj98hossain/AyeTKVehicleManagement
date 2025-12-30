@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @time: 12:52
  * @project: AyeTKVehicleManagement
  */
-@FeignClient(name = "BeforeTripVFeignClient",
+@FeignClient(name = "BeforeTripWDsVFeignClient",
         url = "${backend.service.url}/api/before-trip-wds-V")
 public interface BeforeTripWDsVFeignClient {
 
