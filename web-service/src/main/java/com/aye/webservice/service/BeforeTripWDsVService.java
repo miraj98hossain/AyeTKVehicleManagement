@@ -1,7 +1,7 @@
 package com.aye.webservice.service;
 
 import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.webservice.feignclient.BeforeTripVFeignClient;
+import com.aye.webservice.feignclient.BeforeTripWDsVFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +14,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class BeforeTripWDsVService {
     @Autowired
-    BeforeTripVFeignClient beforeTripVFeignClient;
+    BeforeTripWDsVFeignClient beforeTripVFeignClient;
 
     public ApiRequestResponse findScheduleId(Long orgId, Long invOrgId) {
-        return this.beforeTripVFeignClient.getDeliveryNumbers(orgId, invOrgId).getBody();
+        return this.beforeTripVFeignClient.findScheduleId(orgId, invOrgId).getBody();
     }
 }

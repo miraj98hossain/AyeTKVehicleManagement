@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class BeforeTripVService {
     @Autowired
-    private BeforeTripVFeignClient BeforeTripVFeignClient;
+    private BeforeTripVFeignClient beforeTripVFeignClient;
 
     public ApiRequestResponse getDeliveryNumbers(Long orgId,
                                                  Long invOrgId) {
-        return BeforeTripVFeignClient.getDeliveryNumbers(orgId, invOrgId).getBody();
+        return beforeTripVFeignClient.getDeliveryNumbers(orgId, invOrgId).getBody();
     }
 }
