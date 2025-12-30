@@ -1,5 +1,6 @@
 package com.aye.vhmwebclient.feignclient;
 
+import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -26,4 +27,15 @@ public interface StepTransDetailsFeignClient {
 
     @GetMapping("/{id}")
     ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id);
+
+    //***Line Section*********************
+    @PostMapping("/create-dtl")
+    ResponseEntity<ApiRequestResponse> saveStDtlLine(@RequestBody StepTransDetailsLinesRequest stepTrnsDtlLnsReq,
+                                                     @RequestParam String userName);
+
+    @GetMapping("/findStDtlLineById")
+    ResponseEntity<ApiRequestResponse> findStDtlLineById(@RequestParam Long stepTransDtlLnId);
+
+    @GetMapping("/findAllByStTrnDtlId")
+    ResponseEntity<ApiRequestResponse> findAllByStTrnDtlId(@RequestParam Long stepTransDtlId);
 }

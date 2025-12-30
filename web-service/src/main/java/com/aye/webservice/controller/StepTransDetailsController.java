@@ -1,9 +1,11 @@
 package com.aye.webservice.controller;
 
 
+import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.StepTransDetailsService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,5 +34,22 @@ public class StepTransDetailsController {
     public ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(this.stepTransDetailsService.findById(id));
     }
-    
+
+    //***Line Section*********************
+    @PostMapping("/create-dtl")
+    public ResponseEntity<ApiRequestResponse> saveStDtlLine(@Valid @RequestBody StepTransDetailsLinesRequest stepTrnsDtlLnsReq,
+                                                            @RequestParam String userName) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransDetailsService
+                .saveStDtlLine(stepTrnsDtlLnsReq, userName));
+    }
+
+    @GetMapping("/findStDtlLineById")
+    public ResponseEntity<ApiRequestResponse> findStDtlLineById(@RequestParam Long stepTransDtlLnId) {
+        return ResponseEntity.ok().body(this.stepTransDetailsService.findStDtlLineById(stepTransDtlLnId));
+    }
+
+    @GetMapping("/findAllByStTrnDtlId")
+    public ResponseEntity<ApiRequestResponse> findAllByStTrnDtlId(@RequestParam Long stepTransDtlId) {
+        return ResponseEntity.ok().body(this.stepTransDetailsService.findAllByStTrnDtlId(stepTransDtlId));
+    }
 }

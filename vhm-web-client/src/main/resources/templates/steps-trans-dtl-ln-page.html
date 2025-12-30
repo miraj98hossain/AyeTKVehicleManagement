@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html data-layout-decorate="~{fragments/layout}" lang="en">
+<head>
+    <link rel="stylesheet" th:href="@{/css/steps-trans-dtl-ln.css}">
+    <title></title>
+</head>
+
+
+<!--private Long invItemId;-->
+<!--private String orderedItem;-->
+<!--private Double orderedQuantity;-->
+<!--private Long scheduleNo;-->
+<body>
+<div class="right_col" data-layout-fragment="content" role="main">
+    <div class="row">
+        <div class="col-sm-12">
+            <!--<div class="container">-->
+            <div class="panel panel-default">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Step Transaction Details</div>
+                <div class="panel-body">
+                    <form method="post"
+                          th:action="@{/step-trans-dtl/create-ln/{pageId}/{tempDtlId}/{stepTransDtlId}
+      (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransDtlId=${stepTransDtlId})}"
+                          th:object="${stepTransDtlLnReq}">
+
+                        <!-- Line ID -->
+                        <input type="hidden" th:field="*{stepTransDtlLnId}"/>
+
+                        <!-- Parent Detail ID -->
+                        <input type="hidden" th:field="*{stepTransDtlId}"/>
+
+                        <!-- Inventory Item ID (numeric only, unlimited) -->
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-3 control-label">Inventory Item ID</label>
+                            <div class="col-sm-1"><b>:</b></div>
+                            <div class="col-sm-8">
+                                <input class="form-control"
+                                       type="text"
+                                       inputmode="numeric"
+                                       placeholder="Enter Inventory Item ID"
+                                       oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                                       th:field="*{invItemId}">
+                            </div>
+                        </div>
+
+                        <!-- Ordered Item -->
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-3 control-label">Ordered Item</label>
+                            <div class="col-sm-1"><b>:</b></div>
+                            <div class="col-sm-8">
+                                <input class="form-control"
+                                       type="text"
+                                       placeholder="Enter Ordered Item"
+                                       th:field="*{orderedItem}">
+                            </div>
+                        </div>
+
+                        <!-- Ordered Quantity (numeric, unlimited, decimals allowed) -->
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-3 control-label">Ordered Quantity</label>
+                            <div class="col-sm-1"><b>:</b></div>
+                            <div class="col-sm-8">
+                                <input class="form-control"
+                                       type="text"
+                                       inputmode="decimal"
+                                       placeholder="Enter Quantity"
+                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
+                                       th:field="*{orderedQuantity}">
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="form-group col-sm-12 Padding10px">
+                            <button class="btn btn-primary"
+                                    th:text="${stepTransDtlLnReq.stepTransDtlLnId != null ? 'Update' : 'Create'}"
+                                    type="submit">
+                            </button>
+
+                            <a class="btn cancel-btn"
+                               th:href="@{/step-trans-dtl/{pageId}/{tempDtlId}/{stepTransId}
+           (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransId=${stepTransId})}">
+                                Clear
+                            </a>
+                        </div>
+
+                    </form>
+
+
+
+                    <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
+                        <thead>
+                        <tr>
+                            <th>Line No</th>
+                            <th>Inventory Item ID</th>
+                            <th>Ordered Item</th>
+                            <th>Ordered Quantity</th>
+                            <th>Created At</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="line : ${stepTransDtlLnList}">
+                            <td th:text="${line.stepTransDtlLnNo}"></td>
+                            <td th:text="${line.invItemId}"></td>
+                            <td th:text="${line.orderedItem}"></td>
+                            <td th:text="${line.orderedQuantity}"></td>
+                            <td th:text="${#dates.format(line.createdAt, 'dd-MM-yyyy')}"></td>
+                            <td>
+                                <a class="btn btn-success"
+                                   th:href="@{/step-trans-dtl/update-dtl-ln/{pageId}/{tempDtlId}/{stepTransDtlId}/{stepTransDtlLnId}
+               (pageId=${pageId}, tempDtlId=${tempDtlId},stepTransDtlId=${line.stepTransDtlId} ,stepTransDtlLnId=${line.stepTransDtlLnId})}">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

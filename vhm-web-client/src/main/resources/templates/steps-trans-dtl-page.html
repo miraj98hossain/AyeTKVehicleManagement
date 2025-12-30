@@ -114,6 +114,10 @@
                                        th:href="@{'/step-trans-dtl/update-dtl/{pageId}/{tempDtlId}/{stepTransId}/{stepTransDId}'
                                        (pageId=${pageId}, tempDtlId=${tempDtlId},stepTransId=${line.stepTransId},stepTransDId=${line.stepTransDtlId})}"><span
                                             aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
+                                    <a class="btn btn-success"
+                                       th:href="@{'/step-trans-dtl/stepTransDtlLns/{pageId}/{tempDtlId}/{stepTransDtlId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId},stepTransDtlId=${line.stepTransDtlId})}"><span
+                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>
 
                                 </td>
                             </tr>

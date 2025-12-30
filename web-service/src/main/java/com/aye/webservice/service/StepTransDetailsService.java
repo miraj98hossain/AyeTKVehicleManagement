@@ -1,5 +1,6 @@
 package com.aye.webservice.service;
 
+import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.webservice.feignclient.StepTransDetailsFeignClient;
@@ -31,5 +32,20 @@ public class StepTransDetailsService {
 
     public ApiRequestResponse findById(Long id) {
         return this.stepTransDetailsFeignClient.findById(id).getBody();
+    }
+
+    //***Line Section*********************
+    public ApiRequestResponse saveStDtlLine(StepTransDetailsLinesRequest stepTrnsDtlLnsReq,
+                                            String userName) {
+        return this.stepTransDetailsFeignClient.saveStDtlLine(stepTrnsDtlLnsReq, userName).getBody();
+    }
+
+
+    public ApiRequestResponse findStDtlLineById(Long stepTransDtlLnId) {
+        return this.stepTransDetailsFeignClient.findStDtlLineById(stepTransDtlLnId).getBody();
+    }
+
+    public ApiRequestResponse findAllByStTrnDtlId(Long stepTransDtlId) {
+        return this.stepTransDetailsFeignClient.findAllByStTrnDtlId(stepTransDtlId).getBody();
     }
 }

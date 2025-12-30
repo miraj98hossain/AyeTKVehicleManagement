@@ -1,0 +1,95 @@
+.pagination {
+    margin: 0 !important;
+    padding-left: 0 !important;
+}
+
+.pagination > li > a,
+.pagination > li > span {
+    padding: 4px 8px; /* adjust as you want */
+}
+
+/* Default row background */
+.custom-gray-table tbody tr {
+    background-color: #f2f2f2; /* Light gray */
+    color: #000; /* Black text */
+    transition: background-color 0.2s ease;
+}
+
+/* Alternating row effect */
+.custom-gray-table tbody tr:nth-child(even) {
+    background-color: #e3e3e3; /* Slightly darker gray */
+}
+
+/* Hover effect */
+.custom-gray-table tbody tr:hover {
+    background-color: #d1d1d1; /* Darker hover */
+}
+
+/* Header styling for consistency */
+.custom-gray-table thead th {
+    background-color: #dcdcdc;
+    color: #000;
+    font-weight: bold;
+    text-align: center;
+}
+
+.steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.step-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.step-inline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.step-card {
+    position: relative;
+    padding: 10px 15px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.step-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+}
+
+.badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* arrows */
+.step-arrow {
+    color: #9ca3af;
+    font-size: 16px;
+}

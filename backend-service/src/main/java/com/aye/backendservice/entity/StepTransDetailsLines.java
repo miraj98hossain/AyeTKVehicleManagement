@@ -12,8 +12,8 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//@Entity
-//@Table(name = "STEP_TRANS_DETAILS_LINES", schema = "MAPPS")
+@Entity
+@Table(name = "STEP_TRANS_DETAILS_LINES", schema = "MAPPS")
 public class StepTransDetailsLines {
     @Id
     @GeneratedValue(
@@ -35,13 +35,13 @@ public class StepTransDetailsLines {
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private StepTransDetails stepTransDetails;
 
-    @Column(name = "INVENTORY_ITEM_ID", nullable = false)
+    @Column(name = "INVENTORY_ITEM_ID")
     private Long invItemId;
 
-    @Column(name = "ORDERED_ITEM", nullable = false)
+    @Column(name = "ORDERED_ITEM")
     private String orderedItem;
 
-    @Column(name = "ORDERED_QUANTITY", nullable = false)
+    @Column(name = "ORDERED_QUANTITY")
     private Double orderedQuantity;
 
 

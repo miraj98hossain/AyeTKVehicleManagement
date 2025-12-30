@@ -12,6 +12,9 @@ import org.mapstruct.*;
                 StepTransMapper.class},
         builder = @Builder(disableBuilder = true))
 public interface StepTransDetailsMapper {
+
+    StepTransDetails toEntity(Long id);
+
     @Mapping(source = "stepTransId", target = "stepTrans")
     StepTransDetails dtoToEntity(StepTransDetailsRequest stepTransDetailsRequest);
 
