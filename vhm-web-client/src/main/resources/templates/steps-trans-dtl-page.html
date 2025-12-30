@@ -2,6 +2,9 @@
 <html data-layout-decorate="~{fragments/layout}" lang="en">
 <head>
     <link rel="stylesheet" th:href="@{/css/steps-trans-dtl.css}">
+    <script th:src="@{/js/easyAutocomplete/autocomplete.js}"></script>
+    <script th:src="@{/js/easyAutocomplete/jquery.easy-autocomplete.min.js}"></script>
+    <script th:src="@{/js/stepTrans/step-trans-dtl.js}"></script>
     <title></title>
 </head>
 
@@ -49,12 +52,10 @@
                             <div class="col-sm-8">
                                 <input class="form-control"
                                        id="deliveryNo"
-
                                        placeholder="Enter Delivery No"
                                        required
                                        th:field="*{deliveryNo}"
                                        type="text">
-
                             </div>
                         </div>
 
