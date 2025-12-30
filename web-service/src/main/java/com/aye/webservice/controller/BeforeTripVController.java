@@ -1,7 +1,8 @@
-package com.aye.backendservice.controller;
+package com.aye.webservice.controller;
 
-import com.aye.backendservice.service.BeforeTripWDsVBService;
+
 import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.webservice.service.BeforeTripVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,13 +17,13 @@ import org.springframework.web.bind.annotation.RestController;
  * @project: AyeTKVehicleManagement
  */
 @RestController
-@RequestMapping("/api/before-trip-wds-V")
-public class BeforeTripWDsVController {
+@RequestMapping("/api/before-trip-V")
+public class BeforeTripVController {
     @Autowired
-    private BeforeTripWDsVBService beforeTripWDsVBService;
+    private BeforeTripVService beforeTripVService;
 
-    @GetMapping("/findScheduleId")
-    public ResponseEntity<ApiRequestResponse> findScheduleId(@RequestParam Long orgId, @RequestParam Long invOrgId) {
-        return ResponseEntity.ok().body(beforeTripWDsVBService.findScheduleId(orgId, invOrgId));
+    @GetMapping("/getDeliveryNumbers")
+    public ResponseEntity<ApiRequestResponse> getDeliveryNumbers(@RequestParam Long orgId, @RequestParam Long invOrgId) {
+        return ResponseEntity.ok().body(beforeTripVService.getDeliveryNumbers(orgId, invOrgId));
     }
 }

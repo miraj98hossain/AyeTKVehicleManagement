@@ -2,11 +2,12 @@ package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.BeforeTripWDsVService;
 import com.aye.backendservice.mapper.BeforeTripWDsVMapper;
+import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.BeforeTripWDsVResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author: Miraj
@@ -22,8 +23,16 @@ public class BeforeTripWDsVBServiceImpl implements BeforeTripWDsVBService {
     private BeforeTripWDsVMapper beforeTripWDsVMapper;
 
     @Override
-    public List<BeforeTripWDsVResponse> findScheduleId(Long orgId, Long invOrgId) {
-        return beforeTripWDsVService.findScheduleId(orgId, invOrgId).stream()
-                .map(beforeTripWDsVMapper::toResponseDto).toList();
+    public ApiRequestResponse findScheduleId(Long orgId, Long invOrgId) {
+        
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(),
+                "Success",
+                ApiRequestResponseDetail.ObjectType.A,
+                "dsList",
+                BeforeTripWDsVResponse.class.getName(),
+                this.beforeTripWDsVService.findScheduleId(orgId, invOrgId).stream()
+                        .map(beforeTripWDsVMapper::toResponseDto).toList()
+        );
     }
 }

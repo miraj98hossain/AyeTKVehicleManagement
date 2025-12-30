@@ -1,7 +1,7 @@
-package com.aye.backendservice.controller;
+package com.aye.webservice.controller;
 
-import com.aye.backendservice.service.BeforeTripWDsVBService;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.webservice.service.BeforeTripWDsVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/before-trip-wds-V")
 public class BeforeTripWDsVController {
     @Autowired
-    private BeforeTripWDsVBService beforeTripWDsVBService;
+    private BeforeTripWDsVService beforeTripWDsVService;
 
     @GetMapping("/findScheduleId")
     public ResponseEntity<ApiRequestResponse> findScheduleId(@RequestParam Long orgId, @RequestParam Long invOrgId) {
-        return ResponseEntity.ok().body(beforeTripWDsVBService.findScheduleId(orgId, invOrgId));
+        return ResponseEntity.ok().body(beforeTripWDsVService.findScheduleId(orgId, invOrgId));
     }
 }

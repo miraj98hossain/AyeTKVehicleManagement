@@ -1,8 +1,6 @@
 package com.aye.backendservice.service;
 
-import com.aye.commonlib.dto.response.BeforeTripVResponse;
-
-import java.util.List;
+import com.aye.commonlib.dto.response.ApiRequestResponse;
 
 /**
  * @author: Miraj
@@ -11,5 +9,5 @@ import java.util.List;
  * @project: AyeTKVehicleManagement
  */
 public interface BeforeTripVBService {
-    List<BeforeTripVResponse> findOnHandOrders(Long orgId, Long invOrgId);
+    ApiRequestResponse getDeliveryNumbers(Long orgId, Long invOrgId);
 }

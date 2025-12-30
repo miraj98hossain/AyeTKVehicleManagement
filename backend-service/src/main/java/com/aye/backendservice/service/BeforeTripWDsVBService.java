@@ -1,8 +1,6 @@
 package com.aye.backendservice.service;
 
-import com.aye.commonlib.dto.response.BeforeTripWDsVResponse;
-
-import java.util.List;
+import com.aye.commonlib.dto.response.ApiRequestResponse;
 
 /**
  * @author: Miraj
@@ -12,5 +10,5 @@ import java.util.List;
  */
 public interface BeforeTripWDsVBService {
 
-    List<BeforeTripWDsVResponse> findScheduleId(Long orgId, Long invOrgId);
+    ApiRequestResponse findScheduleId(Long orgId, Long invOrgId);
 }
