@@ -21,7 +21,7 @@
                 <div class="panel-body">
                     <form method="post"
                           th:action="@{/step-trans-dtl/create-ln/{pageId}/{tempDtlId}/{stepTransDtlId}
-      (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransDtlId=${stepTransDtlId})}"
+                           (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransDtlId=${stepTransDtlId})}"
                           th:object="${stepTransDtlLnReq}">
 
                         <!-- Line ID -->
@@ -78,8 +78,8 @@
                             </button>
 
                             <a class="btn cancel-btn"
-                               th:href="@{/step-trans-dtl/{pageId}/{tempDtlId}/{stepTransId}
-           (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransId=${stepTransId})}">
+                               th:href="@{/step-trans-dtl/stepTransDtlLns/{pageId}/{tempDtlId}/{stepTransDtlId}
+                                        (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransDtlId=${stepTransDtlId})}">
                                 Clear
                             </a>
                         </div>

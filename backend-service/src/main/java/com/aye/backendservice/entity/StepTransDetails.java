@@ -38,12 +38,12 @@ public class StepTransDetails {
 //    @Column(name = "STEP_TRANS_ID")
 //    private Long stepTransId;
 
-    @Column(name = "CUST_NAME", nullable = false)
+    @Column(name = "CUST_NAME")
     private String custName;
     @Column(name = "DELIVERY_NO")
     private Long deliveryNo;
     @Column(name = "SCHEDULE_NO")
-    private Long scheduleNo;
+    private String scheduleNo;
 
 
     //**Auditing Columns

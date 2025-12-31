@@ -17,5 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface BeforeTripWDsVFeignClient {
 
     @GetMapping("/findScheduleId")
-    ResponseEntity<ApiRequestResponse> findScheduleId(@RequestParam Long orgId, @RequestParam Long invOrgId);
+    ResponseEntity<ApiRequestResponse> findScheduleId(@RequestParam Long orgId,
+                                                      @RequestParam Long invOrgId,
+                                                      @RequestParam String searchWords);
 }

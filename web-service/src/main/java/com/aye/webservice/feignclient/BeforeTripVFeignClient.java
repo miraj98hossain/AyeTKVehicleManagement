@@ -20,5 +20,6 @@ public interface BeforeTripVFeignClient {
 
     @GetMapping("/getDeliveryNumbers")
     ResponseEntity<ApiRequestResponse> getDeliveryNumbers(@RequestParam Long orgId,
-                                                          @RequestParam Long invOrgId);
+                                                          @RequestParam Long invOrgId,
+                                                          @RequestParam Long searchWords);
 }

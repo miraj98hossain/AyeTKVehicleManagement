@@ -10,5 +10,5 @@ import com.aye.commonlib.dto.response.ApiRequestResponse;
  */
 public interface BeforeTripWDsVBService {
 
-    ApiRequestResponse findScheduleId(Long orgId, Long invOrgId);
+    ApiRequestResponse findScheduleId(Long orgId, Long invOrgId, String searchWords);
 }

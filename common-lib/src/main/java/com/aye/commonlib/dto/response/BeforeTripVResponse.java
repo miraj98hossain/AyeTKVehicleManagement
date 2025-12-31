@@ -12,10 +12,7 @@ import java.util.Date;
  */
 @Data
 public class BeforeTripVResponse {
-    //    private Long orgId;
-//    private Long invOrgId;
     private Long orderNumber;
-    //    private String name;
     private Date orderedDate;
     private String partyName;
 }

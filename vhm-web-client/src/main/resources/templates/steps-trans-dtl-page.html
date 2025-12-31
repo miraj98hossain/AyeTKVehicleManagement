@@ -2,6 +2,7 @@
 <html data-layout-decorate="~{fragments/layout}" lang="en">
 <head>
     <link rel="stylesheet" th:href="@{/css/steps-trans-dtl.css}">
+    <link rel="stylesheet" th:href="@{/css/easyAutocomplete/easy-autocomplete.min.css}"/>
     <script th:src="@{/js/easyAutocomplete/autocomplete.js}"></script>
     <script th:src="@{/js/easyAutocomplete/jquery.easy-autocomplete.min.js}"></script>
     <script th:src="@{/js/stepTrans/step-trans-dtl.js}"></script>
@@ -20,14 +21,20 @@
                 <div class="panel-heading">Step Transaction Details</div>
                 <div class="panel-body">
                     <form method="post"
-                          th:action="@{/step-trans-dtl/create/{pageId}/{tempDtlId}/{stepTransId}
-                          (pageId=${pageId},tempDtlId=${tempDtlId},stepTransId=${stepTransId})}"
+                          th:action="@{/step-trans-dtl/create/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}
+                          (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${stepTransId})}"
                           th:object="${stepTransDtlReq}">
                         <input class="form-control" id="stepTransDtlId" placeholder="StepTransDtl Id" readonly
                                th:field="*{stepTransDtlId}" type="hidden"/>
 
                         <input class="form-control" id="stepTransId" placeholder="StepTrans Id" readonly
                                th:field="*{stepTransId}" type="hidden"/>
+
+                        <input class="form-control" id="orgId" readonly
+                               th:value="${orgId}" type="hidden"/>
+                        <input class="form-control" id="invOrgId" readonly
+                               th:value="${invOrgId}" type="hidden"/>
+
                         <!-- CustName Name -->
                         <div class="form-group col-sm-12">
                             <label class="col-sm-3 control-label" for="custName">Customer Name</label>
@@ -37,7 +44,7 @@
                             <div class="col-sm-8">
                                 <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
                                 <input class="form-control" id="custName"
-                                       placeholder="Enter Customer Name" required
+                                       placeholder="Enter Customer Name"
                                        th:field="*{custName}"
                                        type="text">
                             </div>
@@ -53,9 +60,9 @@
                                 <input class="form-control"
                                        id="deliveryNo"
                                        placeholder="Enter Delivery No"
-                                       required
                                        th:field="*{deliveryNo}"
                                        type="text">
+
                             </div>
                         </div>
 
@@ -68,9 +75,7 @@
                             <div class="col-sm-8">
                                 <input class="form-control"
                                        id="scheduleNo"
-
                                        placeholder="Enter Schedule No"
-                                       required
                                        th:field="*{scheduleNo}"
                                        type="text">
                             </div>
@@ -83,8 +88,8 @@
                                     type="submit"></button>
 
                             <a class="btn cancel-btn"
-                               th:href="@{/step-trans-dtl/{pageId}/{tempDtlId}/{stepTransId}
-                               (pageId=${pageId},tempDtlId=${tempDtlId},stepTransId=${stepTransId})}">Clear</a>
+                               th:href="@{/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}
+                               (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${stepTransId})}">Clear</a>
                         </div>
 
                     </form>
@@ -112,8 +117,8 @@
                                 <td class="text-center">
 
                                     <a class="btn btn-success"
-                                       th:href="@{'/step-trans-dtl/update-dtl/{pageId}/{tempDtlId}/{stepTransId}/{stepTransDId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId},stepTransId=${line.stepTransId},stepTransDId=${line.stepTransDtlId})}"><span
+                                       th:href="@{'/step-trans-dtl/update-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}/{stepTransDId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId},stepTransDId=${line.stepTransDtlId})}"><span
                                             aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
                                     <a class="btn btn-success"
                                        th:href="@{'/step-trans-dtl/stepTransDtlLns/{pageId}/{tempDtlId}/{stepTransDtlId}'

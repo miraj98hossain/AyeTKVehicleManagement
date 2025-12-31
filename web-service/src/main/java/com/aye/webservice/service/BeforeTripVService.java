@@ -19,7 +19,8 @@ public class BeforeTripVService {
     private BeforeTripVFeignClient beforeTripVFeignClient;
 
     public ApiRequestResponse getDeliveryNumbers(Long orgId,
-                                                 Long invOrgId) {
-        return beforeTripVFeignClient.getDeliveryNumbers(orgId, invOrgId).getBody();
+                                                 Long invOrgId,
+                                                 Long searchWords) {
+        return beforeTripVFeignClient.getDeliveryNumbers(orgId, invOrgId, searchWords).getBody();
     }
 }

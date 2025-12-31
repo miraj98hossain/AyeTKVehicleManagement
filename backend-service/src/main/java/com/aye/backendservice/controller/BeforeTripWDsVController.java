@@ -22,7 +22,9 @@ public class BeforeTripWDsVController {
     private BeforeTripWDsVBService beforeTripWDsVBService;
 
     @GetMapping("/findScheduleId")
-    public ResponseEntity<ApiRequestResponse> findScheduleId(@RequestParam Long orgId, @RequestParam Long invOrgId) {
-        return ResponseEntity.ok().body(beforeTripWDsVBService.findScheduleId(orgId, invOrgId));
+    public ResponseEntity<ApiRequestResponse> findScheduleId(@RequestParam Long orgId,
+                                                             @RequestParam Long invOrgId,
+                                                             @RequestParam String searchWords) {
+        return ResponseEntity.ok().body(beforeTripWDsVBService.findScheduleId(orgId, invOrgId, searchWords));
     }
 }

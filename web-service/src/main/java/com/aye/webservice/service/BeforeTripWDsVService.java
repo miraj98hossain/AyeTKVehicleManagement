@@ -16,7 +16,7 @@ public class BeforeTripWDsVService {
     @Autowired
     BeforeTripWDsVFeignClient beforeTripVFeignClient;
 
-    public ApiRequestResponse findScheduleId(Long orgId, Long invOrgId) {
-        return this.beforeTripVFeignClient.findScheduleId(orgId, invOrgId).getBody();
+    public ApiRequestResponse findScheduleId(Long orgId, Long invOrgId, String searchWords) {
+        return this.beforeTripVFeignClient.findScheduleId(orgId, invOrgId, searchWords).getBody();
     }
 }

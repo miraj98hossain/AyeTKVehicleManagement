@@ -9,5 +9,5 @@ import com.aye.commonlib.dto.response.ApiRequestResponse;
  * @project: AyeTKVehicleManagement
  */
 public interface BeforeTripVBService {
-    ApiRequestResponse getDeliveryNumbers(Long orgId, Long invOrgId);
+    ApiRequestResponse getDeliveryNumbers(Long orgId, Long invOrgId, Long searchWords);
 }

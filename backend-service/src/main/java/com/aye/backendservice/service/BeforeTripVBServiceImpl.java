@@ -23,7 +23,7 @@ public class BeforeTripVBServiceImpl implements BeforeTripVBService {
     private BeforeTripVMapper beforeTripVMapper;
 
     @Override
-    public ApiRequestResponse getDeliveryNumbers(Long orgId, Long invOrgId) {
+    public ApiRequestResponse getDeliveryNumbers(Long orgId, Long invOrgId, Long searchWords) {
 
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
@@ -31,7 +31,7 @@ public class BeforeTripVBServiceImpl implements BeforeTripVBService {
                 ApiRequestResponseDetail.ObjectType.A,
                 "doList",
                 BeforeTripVResponse.class.getName(),
-                this.beforeTripVService.getDeliveryNumbers(orgId, invOrgId, "On Hand").stream().map(
+                this.beforeTripVService.getDeliveryNumbers(orgId, invOrgId, "On Hand", searchWords).stream().map(
                         beforeTripVMapper::toResponseDto
                 ).toList()
         );

@@ -22,7 +22,9 @@ public class BeforeTripVController {
     private BeforeTripVBService beforeTripVBService;
 
     @GetMapping("/getDeliveryNumbers")
-    public ResponseEntity<ApiRequestResponse> getDeliveryNumbers(@RequestParam Long orgId, @RequestParam Long invOrgId) {
-        return ResponseEntity.ok().body(beforeTripVBService.getDeliveryNumbers(orgId, invOrgId));
+    public ResponseEntity<ApiRequestResponse> getDeliveryNumbers(@RequestParam Long orgId,
+                                                                 @RequestParam Long invOrgId,
+                                                                 @RequestParam Long searchWords) {
+        return ResponseEntity.ok().body(beforeTripVBService.getDeliveryNumbers(orgId, invOrgId, searchWords));
     }
 }

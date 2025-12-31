@@ -31,8 +31,8 @@ public class StepTransDetailsLines {
     @Column(name = "STEP_TRANS_DTL_LN_NO", unique = true, nullable = false)
     private String stepTransDtlLnNo;
 
-    @JoinColumn(name = "STEP_TRANS_DTL_ID", nullable = false, referencedColumnName = "STEP_TRANS_DTL_ID")
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "STEP_TRANS_DTL_ID", referencedColumnName = "STEP_TRANS_DTL_ID")
+    @OneToOne(fetch = FetchType.EAGER)
     private StepTransDetails stepTransDetails;
 
     @Column(name = "INVENTORY_ITEM_ID")
