@@ -1,5 +1,6 @@
 package com.aye.backendservice.entity;
 
+import com.aye.backendservice.utils.enums.StepStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,28 +31,15 @@ public class StepTransTimeline {
     @Column(name = "STEP_TRANS_TL_ID")
     private Long stepTransTLId;
 
-
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "STEP_TRANS_LINES_ID", nullable = false, updatable = false, unique = true, referencedColumnName = "STEP_TRANS_LINES_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "STEP_TRANS_LINES_ID", nullable = false, updatable = false, referencedColumnName = "STEP_TRANS_LINES_ID")
     private StepTransLines stepTransLines;
 
-//    @JoinColumn(name = "STEP_SETUP_DETAILS_ID", nullable = false, updatable = false, unique = true, referencedColumnName = "STEP_SETUP_DETAILS_ID")
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    private StepSetupDetails stepSetupDetails;
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "STEP_STATUS", nullable = false)
+    private StepStatus stepStatus;
 
-    @Column(name = "IGN_TIME_N")
-    private LocalDateTime ignTimeN;
-
-    @Column(name = "IGN_TIME_P")
-    private LocalDateTime ignTimeP;
-
-    @Column(name = "IGN_TIME_W")
-    private LocalDateTime ignTimeW;
-
-    @Column(name = "IGN_TIME_C")
-    private LocalDateTime ignTimeC;
-
-    @Column(name = "IGN_TIME_R")
-    private LocalDateTime ignTimeR;
+    @Column(name = "IGNITION_TIME")
+    private LocalDateTime ignitionTime;
 
 }

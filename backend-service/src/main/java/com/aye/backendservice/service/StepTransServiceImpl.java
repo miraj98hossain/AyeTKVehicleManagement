@@ -77,9 +77,10 @@ public class StepTransServiceImpl implements StepTransService {
 //            //-----------------------Saving StepTransTimeLine----------------------------------
             StepTransTimeline stepTransTimeline = new StepTransTimeline();
             stepTransTimeline.setStepTransLines(line);
-            stepTransTimeline.setIgnTimeN(LocalDateTime.now());
+            stepTransTimeline.setStepStatus(StepStatus.N);
+            stepTransTimeline.setIgnitionTime(LocalDateTime.now());
             //-----------------------Ends StepTransTimeLine----------------------------------
-            line.setStepTransTimeline(stepTransTimeline);
+            line.getStepTransTimeline().add(stepTransTimeline);
         }
         stepTrans.setStepTransNo(noGenService.createTransNo());
         stepTrans = stepTransRepository.save(stepTrans);

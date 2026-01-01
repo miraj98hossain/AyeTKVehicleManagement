@@ -34,29 +34,6 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
 
     @Transactional
     public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId) {
-        if (isStatusChange) {
-            switch (stepTransLines.getStepStatus()) {
-                case N -> {
-                    StepTransTimeline stepTransTimeline = new StepTransTimeline();
-
-                    stepTransTimeline.setStepTransLines(stepTransLines);
-                    stepTransTimeline.setIgnTimeN(LocalDateTime.now());
-                    stepTransLines.setStepTransTimeline(stepTransTimeline);
-                }
-                case P -> {
-                    stepTransLines.getStepTransTimeline().setIgnTimeP(LocalDateTime.now());
-                }
-                case W -> {
-                    stepTransLines.getStepTransTimeline().setIgnTimeW(LocalDateTime.now());
-                }
-                case C -> {
-                    stepTransLines.getStepTransTimeline().setIgnTimeC(LocalDateTime.now());
-                }
-                case R -> {
-                    stepTransLines.getStepTransTimeline().setIgnTimeR(LocalDateTime.now());
-                }
-            }
-        }
         if (stepTransLines.getStepTransLinesId() == null) {
             stepTransLines.setCreatedAt(new Date());
             stepTransLines.setCreatedBy(currentUserId);
@@ -64,6 +41,13 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
         } else {
             stepTransLines.setUpdatedAt(new Date());
             stepTransLines.setUpdatedBy(currentUserId);
+        }
+        if (isStatusChange) {
+            StepTransTimeline stepTransTimeline = new StepTransTimeline();
+            stepTransTimeline.setStepTransLines(stepTransLines);
+            stepTransTimeline.setIgnitionTime(LocalDateTime.now());
+            stepTransTimeline.setStepStatus(stepTransLines.getStepStatus());
+            stepTransLines.getStepTransTimeline().add(stepTransTimeline);
         }
 
         return this.stepTransLinesMapper.toResponseDto(this.stepTransLinesRepository.save(stepTransLines));
