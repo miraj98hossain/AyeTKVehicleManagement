@@ -41,7 +41,7 @@ public class StepController {
 
     @GetMapping
     public ResponseEntity<ApiRequestResponse> getSteps(
-            @RequestParam Pageable pageable,
+            Pageable pageable,
             @RequestParam(required = false) String searchWords) {
 
         if (searchWords != null && !searchWords.isBlank()) {
