@@ -200,22 +200,27 @@
 
                         <div class="step-row">
                             <!-- PREVIOUS -->
-                            <div class="step-card">
+                            <div class="step-card" onclick="openStepModal(this)"
+                                 th:data-setup-Dtl-Id="${step.pStepSetupDetailsId}"
+                                 th:if="${step.pStepSetupDetailsId!=null}">
                                 <span class="badge" th:text="${step.prevStepCount}">0</span>
                                 <span class="step-name" th:text="${step.prevStepName}">Prev</span>
                             </div>
 
-                            <span class="step-arrow">→</span>
+                            <span class="step-arrow" th:if="${step.pStepSetupDetailsId!=null}">→</span>
 
                             <!-- CURRENT -->
-                            <div class="step-card">
+                            <div class="step-card" onclick="openStepModal(this)"
+                                 th:data-setup-Dtl-Id="${step.stepSetupDetailsId}">
                                 <span class="step-name" th:text="${step.curStepName}">Current</span>
                             </div>
 
-                            <span class="step-arrow">→</span>
+                            <span class="step-arrow" th:if="${step.fStepSetupDetailsId!=null}">→</span>
 
                             <!-- FORWARD -->
-                            <div class="step-card">
+                            <div class="step-card" onclick="openStepModal(this)"
+                                 th:data-setup-Dtl-Id="${step.fStepSetupDetailsId}"
+                                 th:if="${step.fStepSetupDetailsId!=null}">
                                 <span class="badge" th:text="${step.forwStepCount}">0</span>
                                 <span class="step-name" th:text="${step.forwStepName}">Next</span>
                             </div>
