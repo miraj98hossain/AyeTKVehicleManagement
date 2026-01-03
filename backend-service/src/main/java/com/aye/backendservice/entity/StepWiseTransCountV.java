@@ -19,6 +19,10 @@ public class StepWiseTransCountV {
     private Long stepSetupId;
     @Column(name = "STEP_SETUP_DETAILS_ID")
     private Long stepSetupDetailsId;
+    @Column(name = "P_STEP_SETUP_DETAILS_ID")
+    private Long pStepSetupDetailsId;
+    @Column(name = "F_STEP_SETUP_DETAILS_ID")
+    private Long fStepSetupDetailsId;
     @Column(name = "SERIAL_NO")
     private Integer serialNo;
     @Column(name = "PREV_STEP_NAME")

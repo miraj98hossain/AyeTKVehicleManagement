@@ -7,6 +7,8 @@ public class StepWiseTransCountVResponse {
     private Long id;
     private Long stepSetupId;
     private Long stepSetupDetailsId;
+    private Long pStepSetupDetailsId;
+    private Long fStepSetupDetailsId;
     private Integer serialNo;
     private String prevStepName;
     private Integer prevStepCount;
