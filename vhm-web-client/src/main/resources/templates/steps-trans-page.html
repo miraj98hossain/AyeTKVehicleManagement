@@ -183,7 +183,8 @@
 
                                 <div class="step-card"
                                      onclick="openStepModal(this)"
-                                     th:data-setup-Dtl-Id="${step.stepSetupDetailsId}">
+                                     th:data-setup-Dtl-Id="${step.stepSetupDetailsId}"
+                                     th:data-step-Name="${step.curStepName}">
                                     <span class="badge" th:text="${step.curStepCount}">0</span>
                                     <span class="step-name" th:text="${step.curStepName}">Next</span>
                                 </div>
@@ -202,6 +203,7 @@
                             <!-- PREVIOUS -->
                             <div class="step-card" onclick="openStepModal(this)"
                                  th:data-setup-Dtl-Id="${step.pStepSetupDetailsId}"
+                                 th:data-step-Name="${step.prevStepName}"
                                  th:if="${step.pStepSetupDetailsId!=null}">
                                 <span class="badge" th:text="${step.prevStepCount}">0</span>
                                 <span class="step-name" th:text="${step.prevStepName}">Prev</span>
@@ -211,7 +213,8 @@
 
                             <!-- CURRENT -->
                             <div class="step-card" onclick="openStepModal(this)"
-                                 th:data-setup-Dtl-Id="${step.stepSetupDetailsId}">
+                                 th:data-setup-Dtl-Id="${step.stepSetupDetailsId}"
+                                 th:data-step-Name="${step.curStepName}">
                                 <span class="step-name" th:text="${step.curStepName}">Current</span>
                             </div>
 
@@ -220,6 +223,7 @@
                             <!-- FORWARD -->
                             <div class="step-card" onclick="openStepModal(this)"
                                  th:data-setup-Dtl-Id="${step.fStepSetupDetailsId}"
+                                 th:data-step-Name="${step.forwStepName}"
                                  th:if="${step.fStepSetupDetailsId!=null}">
                                 <span class="badge" th:text="${step.forwStepCount}">0</span>
                                 <span class="step-name" th:text="${step.forwStepName}">Next</span>
@@ -235,23 +239,23 @@
                                     <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
-                                    <h4 class="modal-title">Step Timeline</h4>
+                                    <h4 class="modal-title" id="modalTitle">Step Timestamp</h4>
                                 </div>
                                 <div class="modal-body">
-                                    <table class="table table-bordered table-condensed">
+                                    <table class="table table-bordered table-condensed table-hover timeline-table">
                                         <thead>
-                                        <tr>
-                                            <th>Vehicle</th>
-                                            <th>New</th>
-                                            <th>Picked</th>
-                                            <th>WIP</th>
-                                            <!--                                            <th>Ignition Time</th>-->
+                                        <tr class="active">
+                                            <th><span class="text-center text-info"></span> Vehicle</th>
+                                            <th class="text-center text-info">New</th>
+                                            <th class="text-center text-warning">Picked</th>
+                                            <th class="text-center text-success">WIP</th>
                                         </tr>
                                         </thead>
                                         <tbody id="timelineTableBody">
-                                        <!-- Data will be inserted here -->
+                                        <!-- rows -->
                                         </tbody>
                                     </table>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
