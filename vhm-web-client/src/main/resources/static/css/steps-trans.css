@@ -54,6 +54,7 @@
 }
 
 .step-card {
+    cursor: pointer;
     position: relative;
     padding: 10px 15px;
     background: #ffffff;

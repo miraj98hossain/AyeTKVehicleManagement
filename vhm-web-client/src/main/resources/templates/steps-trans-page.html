@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html data-layout-decorate="~{fragments/layout}" lang="en">
 <head>
+    <!-- jQuery is REQUIRED for Bootstrap 3 -->
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <!-- Bootstrap JS -->
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
     <link rel="stylesheet" th:href="@{/css/steps-trans.css}">
+    <script th:src="@{/js/stepTrans/stepTrans.js}"></script>
     <title></title>
 </head>
 
@@ -175,7 +181,9 @@
                             <div class="step-inline" th:each="step, iter : ${stepWiseTransCount}">
 
 
-                                <div class="step-card">
+                                <div class="step-card"
+                                     onclick="openStepModal(this)"
+                                     th:data-setup-Dtl-Id="${step.stepSetupDetailsId}">
                                     <span class="badge" th:text="${step.curStepCount}">0</span>
                                     <span class="step-name" th:text="${step.curStepName}">Next</span>
                                 </div>
@@ -214,7 +222,39 @@
                         </div>
                     </div>
 
-
+                    <!-- MODAL START-->
+                    <div class="modal fade" id="stepTimelineModal" role="dialog" tabindex="-1">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">Step Timeline</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table table-bordered table-condensed">
+                                        <thead>
+                                        <tr>
+                                            <th>Vehicle</th>
+                                            <th>New</th>
+                                            <th>Picked</th>
+                                            <th>WIP</th>
+                                            <!--                                            <th>Ignition Time</th>-->
+                                        </tr>
+                                        </thead>
+                                        <tbody id="timelineTableBody">
+                                        <!-- Data will be inserted here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END MODAL -->
                     <div class="form-group col-sm-12">
                         <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
                             <thead>
