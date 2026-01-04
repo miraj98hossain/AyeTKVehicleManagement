@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/app-module")
 public class AppModuleController {
@@ -28,6 +30,11 @@ public class AppModuleController {
     @GetMapping("/findById/{id}")
     ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(this.appModuleService.findById(id));
+    }
+
+    @GetMapping("/findByIds")
+    public ResponseEntity<ApiRequestResponse> findByIds(@RequestBody List<Long> ids) {
+        return ResponseEntity.ok(this.appModuleService.findByIds(ids));
     }
 
     @PostMapping("/saveAppmodule")

@@ -56,6 +56,17 @@ public class AppModuleBServiceImpl implements AppModuleBService {
     }
 
     @Override
+    public ApiRequestResponse findByIds(List<Long> ids) {
+        List<AppModule> appModule = this.appModuleService.findByIds(ids);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "modules",
+                AppModuleResponse.class.getName(), appModule.stream()
+                        .map(appModuleMapper::toResponseDto).toList()
+        );
+    }
+
+    @Override
     public ApiRequestResponse saveAppmodule(AppModuleRequest appModuleRequest) {
         AppModule appModule = appModuleMapper.dtoToEntity(appModuleRequest);
         this.appModuleService.saveAppmodule(appModule);

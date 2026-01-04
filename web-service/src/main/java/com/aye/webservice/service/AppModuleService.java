@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 
 @Service
 public class AppModuleService {
@@ -30,6 +32,9 @@ public class AppModuleService {
         return this.appModuleFeignService.findById(id).getBody();
     }
 
+    public ApiRequestResponse findByIds(@RequestBody List<Long> ids) {
+        return this.appModuleFeignService.findByIds(ids).getBody();
+    }
 
     public ApiRequestResponse saveAppmodule(@Valid @RequestBody AppModuleRequest appModuleRequest) {
         return this.appModuleFeignService.saveAppmodule(appModuleRequest).getBody();
