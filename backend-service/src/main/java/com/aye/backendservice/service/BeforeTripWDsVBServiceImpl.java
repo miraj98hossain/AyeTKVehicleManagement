@@ -24,14 +24,14 @@ public class BeforeTripWDsVBServiceImpl implements BeforeTripWDsVBService {
 
     @Override
     public ApiRequestResponse findScheduleId(Long orgId, Long invOrgId, String searchWords) {
-
+        var list = beforeTripWDsVService.findScheduleId(orgId, invOrgId, searchWords);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
                 "Success",
                 ApiRequestResponseDetail.ObjectType.A,
                 "dsList",
                 BeforeTripWDsVResponse.class.getName(),
-                this.beforeTripWDsVService.findScheduleId(orgId, invOrgId, searchWords).stream()
+                list.stream()
                         .map(beforeTripWDsVMapper::toResponseDto).toList()
         );
     }
