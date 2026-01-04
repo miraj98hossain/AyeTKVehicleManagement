@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrgHierarchyResponse {
-    private Integer id;
+    private Long id;
     private String type;
     private String name;
     private String code;
@@ -22,7 +22,7 @@ public class OrgHierarchyResponse {
     private Integer invCstGrp;
     private Boolean undoLog;
     private String canChangePrice;
-    private Integer orgId;
+    private Long orgId;
     private String approveThrugh;
     private String hierarchyPath;
     private String orgCode;
