@@ -35,9 +35,10 @@ public class StepTransDetails {
     @JoinColumn(name = "STEP_TRANS_ID", nullable = true, referencedColumnName = "STEP_TRANS_ID")
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     private StepTrans stepTrans;
-//    @Column(name = "STEP_TRANS_ID")
+    //    @Column(name = "STEP_TRANS_ID")
 //    private Long stepTransId;
-
+    @Column(name = "CUST_ACCOUNT_ID")
+    private Long custAccountId;
     @Column(name = "CUST_NAME")
     private String custName;
     @Column(name = "DELIVERY_NO")

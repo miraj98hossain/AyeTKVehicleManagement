@@ -14,6 +14,7 @@ public class StepTransDetailsResponse {
     private String stepTransDtlNo;
     private Long stepTransId;
     private String stepTransNo;
+    private Long custAccountId;
     private String custName;
     private String scheduleNo;
     private Long deliveryNo;

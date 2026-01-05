@@ -14,6 +14,7 @@ public class StepTransDetailsRequest {
     private Long stepTransDtlId;
     @NotNull(message = "Step Trans Id is Required")
     private Long stepTransId;
+    private Long custAccountId;
     private String custName;
     private Long deliveryNo;
     private String scheduleNo;
