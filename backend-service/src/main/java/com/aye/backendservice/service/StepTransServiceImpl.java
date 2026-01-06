@@ -51,6 +51,8 @@ public class StepTransServiceImpl implements StepTransService {
     StepWiseTransCountVService transCountVService;
     @Autowired
     private UserAccessTempltService userAccessTempltService;
+    @Autowired
+    private IPInfoService ipInfoService;
 
     @Transactional
     @Override
@@ -311,9 +313,11 @@ public class StepTransServiceImpl implements StepTransService {
                 .flatMap(inv -> inv.getUserTransactionTypes().stream())
                 .map(UserTransactionTypes::getTrnsTypeId)
                 .toList();
+        var ipRes = this.ipInfoService.findAllIPInfo();
         var res = this.transCountVService.getCountByDetailId(setupDetailIds);
         var response = findAllBySetupDtls(setupDetailIds, searchWords, pageable);
         response.getApiRequestResponseDetails().addAll(res.getApiRequestResponseDetails());
+        response.getApiRequestResponseDetails().addAll(ipRes.getApiRequestResponseDetails());
         return response;
     }
 

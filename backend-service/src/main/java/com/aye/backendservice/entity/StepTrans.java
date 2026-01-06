@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -55,7 +56,12 @@ public class StepTrans {
     @OneToMany(mappedBy = "stepTrans")
     private List<StepTransDetails> stepTransDetails;
 
+    @Column(name = "start_num", nullable = false)
+    private BigDecimal startNum;
+    @Column(name = "end_num", nullable = false)
+    private BigDecimal endNum;
 
+    //*** Auditing Col
     @Column(name = "CREATED_BY", nullable = false, updatable = false)
     private Long createdBy;
     @Column(name = "CREATED_AT", nullable = false, updatable = false)

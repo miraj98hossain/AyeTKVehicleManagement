@@ -1,0 +1,36 @@
+package com.aye.backendservice.service;
+
+import com.aye.backendservice.mapper.IPInfoMapper;
+import com.aye.backendservice.repository.IPInfoRepo;
+import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
+import com.aye.commonlib.dto.response.IPInfoResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+/**
+ * @author: Miraj
+ * @date: 05/01/2026
+ * @time: 16:04
+ */
+@Service
+public class IPInfoServiceImpl implements IPInfoService {
+    @Autowired
+    private IPInfoRepo ipInfoRepo;
+    @Autowired
+    private IPInfoMapper ipInfoMapper;
+
+    @Override
+    public ApiRequestResponse findAllIPInfo() {
+        var list = ipInfoRepo.findAll().stream().map(ipInfoMapper::toIPInfoResponse).toList();
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(),
+                "Success",
+                ApiRequestResponseDetail.ObjectType.A,
+                "ipList",
+                IPInfoResponse.class.getName(),
+                list
+        );
+    }
+}
