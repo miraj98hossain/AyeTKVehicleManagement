@@ -21,8 +21,12 @@
                 <div class="panel-heading">Step Transaction Details</div>
                 <div class="panel-body">
                     <form method="post"
-                          th:action="@{/step-trans-dtl/create/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}
-                          (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${stepTransId})}"
+                          th:action="@{'/step-trans-dtl/create/'
+                                        + ${pageId} + '/'
+                                        + ${tempDtlId} + '/'
+                                        + ${orgId} + '/'
+                                        + ${invOrgId} + '/'
+                                        + ${stepTransId}}"
                           th:object="${stepTransDtlReq}">
                         <input class="form-control" id="stepTransDtlId" placeholder="StepTransDtl Id" readonly
                                th:field="*{stepTransDtlId}" type="hidden"/>
@@ -92,8 +96,15 @@
                                     type="submit"></button>
 
                             <a class="btn cancel-btn"
-                               th:href="@{/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}
-                               (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${stepTransId})}">Clear</a>
+                               th:href="@{'/step-trans-dtl/'
+                                        + ${pageId} + '/'
+                                        + ${tempDtlId} + '/'
+                                        + ${orgId} + '/'
+                                        + ${invOrgId} + '/'
+                                        + ${stepTransId}}">
+                                Clear
+                            </a>
+
                         </div>
 
                     </form>
@@ -121,13 +132,25 @@
                                 <td class="text-center">
 
                                     <a class="btn btn-success"
-                                       th:href="@{'/step-trans-dtl/update-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}/{stepTransDId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId},stepTransDId=${line.stepTransDtlId})}"><span
-                                            aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
+                                       th:href="@{'/step-trans-dtl/update-dtl/'
+                                                + ${pageId} + '/'
+                                                + ${tempDtlId} + '/'
+                                                + ${orgId} + '/'
+                                                + ${invOrgId} + '/'
+                                                + ${line.stepTransId} + '/'
+                                                + ${line.stepTransDtlId}}">
+                                        <span aria-hidden="true" class="glyphicon glyphicon-edit"></span>
+                                    </a>
                                     <a class="btn btn-success"
-                                       th:href="@{'/step-trans-dtl/stepTransDtlLns/{pageId}/{tempDtlId}/{stepTransDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId},stepTransDtlId=${line.stepTransDtlId})}"><span
-                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>
+                                       th:href="@{'/step-trans-dtl/stepTransDtlLns/'
+                                                + ${pageId} + '/'
+                                                + ${tempDtlId} + '/'
+                                                + ${orgId} + '/'
+                                                + ${invOrgId} + '/'
+                                                + ${line.stepTransDtlId}}">
+                                        <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
+
 
                                 </td>
                             </tr>
