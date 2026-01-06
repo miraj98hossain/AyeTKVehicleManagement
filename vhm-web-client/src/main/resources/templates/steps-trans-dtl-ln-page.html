@@ -24,6 +24,7 @@
                                     + ${tempDtlId} + '/'
                                     + ${orgId} + '/'
                                     + ${invOrgId} + '/'
+                                    +${stepTransId}+'/'
                                     + ${stepTransDtlId}}"
                           th:object="${stepTransDtlLnReq}">
 
@@ -88,16 +89,17 @@
                                     type="submit">
                             </button>
 
-                            <a class="btn cancel-btn"
-                               th:href="@{'/step-trans-dtl/stepTransDtlLns/'
-                                        + ${pageId} + '/'
-                                        + ${tempDtlId} + '/'
-                                        + ${orgId} + '/'
-                                        + ${invOrgId} + '/'
-                                        + ${stepTransDtlId}}">
-                                Clear
-                            </a>
-
+<!--                            <a class="btn cancel-btn"-->
+<!--                               th:href="@{'/step-trans-dtl/stepTransDtlLns/'-->
+<!--                                        + ${pageId} + '/'-->
+<!--                                        + ${tempDtlId} + '/'-->
+<!--                                        + ${orgId} + '/'-->
+<!--                                        + ${invOrgId} + '/'-->
+<!--                                        + ${stepTransDtlId}}">-->
+<!--                                Clear-->
+<!--                            </a>-->
+                            <a class="btn btn-default"
+                               th:href="@{'/step-trans-dtl/'+${pageId}+'/'+${tempDtlId}+'/'+${orgId}+'/'+${invOrgId}+'/'+${stepTransId}}">Back</a>
                         </div>
 
                     </form>
@@ -129,6 +131,7 @@
                                             + ${tempDtlId} + '/'
                                             + ${orgId} + '/'
                                             + ${invOrgId} + '/'
+                                            +${stepTransId}+'/'
                                             + ${line.stepTransDtlId} + '/'
                                             + ${line.stepTransDtlLnId}}">
                                     <span class="glyphicon glyphicon-edit"></span>

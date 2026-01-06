@@ -95,16 +95,17 @@
                                     th:text="${stepTransDtlReq.stepTransDtlId!= null ? 'Update' : 'Create'}"
                                     type="submit"></button>
 
-                            <a class="btn cancel-btn"
-                               th:href="@{'/step-trans-dtl/'
-                                        + ${pageId} + '/'
-                                        + ${tempDtlId} + '/'
-                                        + ${orgId} + '/'
-                                        + ${invOrgId} + '/'
-                                        + ${stepTransId}}">
-                                Clear
-                            </a>
-
+                            <!--                            <a class="btn cancel-btn"-->
+                            <!--                               th:href="@{'/step-trans-dtl/'-->
+                            <!--                                        + ${pageId} + '/'-->
+                            <!--                                        + ${tempDtlId} + '/'-->
+                            <!--                                        + ${orgId} + '/'-->
+                            <!--                                        + ${invOrgId} + '/'-->
+                            <!--                                        + ${stepTransId}}">-->
+                            <!--                                Clear-->
+                            <!--                            </a>-->
+                            <a class="btn btn-default"
+                               th:href="@{'/step-trans/'+${pageId}+'/'+${tempDtlId}}">Back</a>
                         </div>
 
                     </form>
@@ -147,6 +148,7 @@
                                                 + ${tempDtlId} + '/'
                                                 + ${orgId} + '/'
                                                 + ${invOrgId} + '/'
+                                                +${stepTransId}+'/'
                                                 + ${line.stepTransDtlId}}">
                                         <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span>
                                     </a>
