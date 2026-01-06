@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class OrderedItemVResponse {
 
-    private Long inventoryItemIdId;
+    private Long inventoryItemId;
     private String orderedItem;
     private Long orgId;
     private Long invOrgId;
