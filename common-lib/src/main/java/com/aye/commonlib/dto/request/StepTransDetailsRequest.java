@@ -16,6 +16,6 @@ public class StepTransDetailsRequest {
     private Long stepTransId;
     private Long custAccountId;
     private String custName;
-    private Long deliveryNo;
+    private Long orderNumber;
     private String scheduleNo;
 }

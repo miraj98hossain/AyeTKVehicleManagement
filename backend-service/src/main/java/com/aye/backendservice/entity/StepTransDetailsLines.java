@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Getter
@@ -32,7 +33,7 @@ public class StepTransDetailsLines {
     private String stepTransDtlLnNo;
 
     @JoinColumn(name = "STEP_TRANS_DTL_ID", referencedColumnName = "STEP_TRANS_DTL_ID")
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
     private StepTransDetails stepTransDetails;
 
     @Column(name = "INVENTORY_ITEM_ID")
@@ -42,7 +43,7 @@ public class StepTransDetailsLines {
     private String orderedItem;
 
     @Column(name = "ORDERED_QUANTITY")
-    private Double orderedQuantity;
+    private BigDecimal orderedQuantity;
 
 
     //**Auditing Columns

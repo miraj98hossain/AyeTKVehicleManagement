@@ -3,6 +3,8 @@ package com.aye.commonlib.dto.request;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 /**
  * @author: Miraj
  * @date: 29/12/2025
@@ -16,5 +18,5 @@ public class StepTransDetailsLinesRequest {
     private Long stepTransDtlId;
     private Long invItemId;
     private String orderedItem;
-    private Double orderedQuantity;
+    private BigDecimal orderedQuantity;
 }

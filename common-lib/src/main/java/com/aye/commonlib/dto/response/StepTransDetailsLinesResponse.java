@@ -2,6 +2,7 @@ package com.aye.commonlib.dto.response;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -17,7 +18,7 @@ public class StepTransDetailsLinesResponse {
     private Long stepTransDtlId;
     private Long invItemId;
     private String orderedItem;
-    private Double orderedQuantity;
+    private BigDecimal orderedQuantity;
     private Long createdBy;
     private Date createdAt;
     private Long updatedBy;

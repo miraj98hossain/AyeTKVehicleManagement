@@ -6,7 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,17 +34,18 @@ public class StepTransDetails {
     @Column(name = "STEP_TRANS_DTL_NO", unique = true, nullable = false)
     private String stepTransDtlNo;
 
-    @JoinColumn(name = "STEP_TRANS_ID", nullable = true, referencedColumnName = "STEP_TRANS_ID")
-    @ManyToOne(fetch = FetchType.EAGER, optional = true)
+    @JoinColumn(name = "STEP_TRANS_ID", referencedColumnName = "STEP_TRANS_ID")
+    @ManyToOne(fetch = FetchType.EAGER)
     private StepTrans stepTrans;
-    //    @Column(name = "STEP_TRANS_ID")
-//    private Long stepTransId;
+
+    @OneToMany(mappedBy = "stepTransDetails", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    private List<StepTransDetailsLines> stepTransDetailsLines = new ArrayList<>();
     @Column(name = "CUST_ACCOUNT_ID")
     private Long custAccountId;
     @Column(name = "CUST_NAME")
     private String custName;
-    @Column(name = "DELIVERY_NO")
-    private Long deliveryNo;
+    @Column(name = "ORDER_NUMBER")
+    private Long orderNumber;
     @Column(name = "SCHEDULE_NO")
     private String scheduleNo;
 

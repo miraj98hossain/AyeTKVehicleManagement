@@ -17,5 +17,5 @@ public class StepTransDetailsResponse {
     private Long custAccountId;
     private String custName;
     private String scheduleNo;
-    private Long deliveryNo;
+    private Long orderNumber;
 }

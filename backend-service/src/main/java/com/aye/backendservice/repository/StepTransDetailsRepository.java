@@ -9,4 +9,8 @@ public interface StepTransDetailsRepository extends JpaRepository<StepTransDetai
     StepTransDetails findByStepTrans_StepTransId(Long stepTransStepTransId);
 
     List<StepTransDetails> findAllByStepTrans_StepTransId(Long stepTransStepTransId);
+
+    List<StepTransDetails> findAllByScheduleNo(String scheduleNo);
+
+    List<StepTransDetails> findAllByOrderNumber(Long orderNumber);
 }

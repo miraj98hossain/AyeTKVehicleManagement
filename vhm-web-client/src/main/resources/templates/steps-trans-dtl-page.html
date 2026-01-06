@@ -68,7 +68,7 @@
                                 <input class="form-control"
                                        id="deliveryNo"
                                        placeholder="Enter Delivery No"
-                                       th:field="*{deliveryNo}"
+                                       th:field="*{orderNumber}"
                                        type="text">
 
                             </div>
@@ -117,7 +117,7 @@
                                 <th>Trans No</th>
                                 <th>Customer Name</th>
                                 <th>Schedule No</th>
-                                <th>Delivery No</th>
+                                <th>Order Number</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -128,7 +128,7 @@
                                 <td th:text="${line.stepTransNo}"></td>
                                 <td th:text="${line.custName}"></td>
                                 <td th:text="${line.scheduleNo}"></td>
-                                <td class="text-center" th:text="${line.deliveryNo}"></td>
+                                <td class="text-center" th:text="${line.orderNumber}"></td>
                                 <td class="text-center">
 
                                     <a class="btn btn-success"

@@ -1,7 +1,12 @@
 package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.model.Muser;
+import com.aye.RestfulServer.model.om.BeforeTripV;
+import com.aye.RestfulServer.model.om.BeforeTripWDsV;
+import com.aye.RestfulServer.service.BeforeTripVService;
+import com.aye.RestfulServer.service.BeforeTripWDsVService;
 import com.aye.RestfulServer.service.MuserService;
+import com.aye.backendservice.entity.StepTrans;
 import com.aye.backendservice.entity.StepTransDetails;
 import com.aye.backendservice.entity.StepTransDetailsLines;
 import com.aye.backendservice.mapper.StepTransDetailsLinesMapper;
@@ -18,8 +23,15 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.groupingBy;
 
 
 @Service
@@ -36,10 +48,16 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     private StepTransDetailsLinesMapper stepTrnsDtlLnMapper;
     @Autowired
     private MuserService muserService;
+    @Autowired
+    private BeforeTripVService beforeTripVService;
+    @Autowired
+    private BeforeTripWDsVService beforeTripWDsVService;
 
     @Override
+    @Transactional
     public ApiRequestResponse save(StepTransDetailsRequest stepTransDRequest, String userName) {
         Muser muser = muserService.findByUserName(userName);
+        //*********** Update Section
         if (stepTransDRequest.getStepTransDtlId() != null) {
             var dbTransDtl = stepTrnsDtlRepo.findById(stepTransDRequest.getStepTransDtlId()).orElseThrow(
                     () -> new EntityNotFoundException("StepTransDtl Not Found with id: " + stepTransDRequest.getStepTransDtlId())
@@ -56,21 +74,179 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
                     stepTransDetailsMapper.toResponseDto(dbTransDtl)
             );
         }
-        StepTransDetails stepTransDetails = stepTransDetailsMapper.dtoToEntity(stepTransDRequest);
+        final StepTransDetails stepTransDetails = stepTransDetailsMapper.dtoToEntity(stepTransDRequest);
+        //***************** Checking Schedule no
+        if (stepTransDRequest.getScheduleNo() != null && !stepTransDRequest.getScheduleNo().isEmpty()) {
+            // fetch existing records
+            List<StepTransDetails> dbExistList =
+                    stepTrnsDtlRepo.findAllByScheduleNo(stepTransDRequest.getScheduleNo());
+            // extract existing delivery numbers
+            Set<Long> existingDeliveryNos = dbExistList.stream()
+                    .map(StepTransDetails::getOrderNumber)
+                    .collect(Collectors.toSet());
+            List<StepTransDetails> stDtls = new ArrayList<>();
+            var list = beforeTripWDsVService
+                    .findAllByScheduleNumber(stepTransDRequest.getScheduleNo());
+
+            Map<Long, List<BeforeTripWDsV>> groupedOrderNumber = list.stream()
+                    .collect(groupingBy(BeforeTripWDsV::getOrderNumber));
+            list.forEach(element -> {
+                // skip if delivery already exists
+                if (existingDeliveryNos.contains(element.getOrderNumber())) {
+                    return;
+                }
+                //adding to check duplicate entry.
+                existingDeliveryNos.add(element.getOrderNumber());
+
+                StepTransDetails steptrnDtl = bfrTrpWDSToStpTrnDtl(element, stepTransDetails.getStepTrans(), muser);
+                //getting the item data from grouped map
+                List<StepTransDetailsLines> sdls =
+                        groupedOrderNumber.get(steptrnDtl.getOrderNumber())
+                                .stream()
+                                .map(beforeTripWDsV -> {
+                                    return bfrTrpWDSToStpTrnDtlLn(beforeTripWDsV, steptrnDtl, muser);
+                                })
+                                .collect(Collectors.toCollection(ArrayList::new));
+
+                steptrnDtl.getStepTransDetailsLines().addAll(sdls);
+                stDtls.add(steptrnDtl);
+                sdls.clear();
+            });
+            var res = stepTrnsDtlRepo.saveAll(stDtls);
+            return ApiRequestResponseMaker.make(
+                    HttpStatus.OK.name(),
+                    "Success",
+                    ApiRequestResponseDetail.ObjectType.A,
+                    "stepTransDtl",
+                    StepTransDetailsResponse.class.getName(),
+                    res.stream().map(this.stepTransDetailsMapper::toResponseDto)
+                            .collect(Collectors.toList())
+            );
+        }
+        //***************** Checking Delivery no
+        if (stepTransDRequest.getOrderNumber() != null) {
+
+            List<StepTransDetails> dbExistList =
+                    stepTrnsDtlRepo.findAllByOrderNumber(stepTransDRequest.getOrderNumber());
+            // extract existing delivery numbers
+            Set<Long> existingDeliveryNos = dbExistList.stream()
+                    .map(StepTransDetails::getOrderNumber)
+                    .collect(Collectors.toSet());
+            List<StepTransDetails> stDtls = new ArrayList<>();
+            var list = beforeTripVService.findAllByOrderNumber(stepTransDRequest.getOrderNumber());
+            Map<Long, List<BeforeTripV>> groupedOrderNumber = list.stream()
+                    .collect(groupingBy(BeforeTripV::getOrderNumber));
+            list.forEach(element -> {
+
+                // skip if delivery already exists
+                if (existingDeliveryNos.contains(element.getOrderNumber())) {
+                    return;
+                }
+                //adding to check duplicate entry.
+                existingDeliveryNos.add(element.getOrderNumber());
+                StepTransDetails steptrnDtl = bfrTrpToStpTrnDtl(element, stepTransDetails.getStepTrans(), muser);
+//                steptrnDtl.setStepTrans(stepTransDetails.getStepTrans());
+//                steptrnDtl.setCreatedBy(Long.valueOf(muser.getId()));
+//                steptrnDtl.setStepTransDtlNo(noGenService.createTransDNo());
+//                steptrnDtl.setCustAccountId(element.getCustAccountId());
+//                steptrnDtl.setCustName(element.getPartyName());
+//                steptrnDtl.setDeliveryNo(element.getOrderNumber());
+
+                //getting the item data from grouped map
+                List<StepTransDetailsLines> sdls =
+                        groupedOrderNumber.get(steptrnDtl.getOrderNumber())
+                                .stream()
+                                .map(beforeTripV -> {
+//                                    StepTransDetailsLines sdl = new StepTransDetailsLines();
+//                                    sdl.setStepTransDetails(steptrnDtl);
+//                                    sdl.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
+//                                    sdl.setInvItemId(beforeTripV.getInventoryItemId());
+//                                    sdl.setOrderedItem(beforeTripV.getOrderedItem());
+//                                    sdl.setOrderedQuantity(beforeTripV.getOrderedQuantity());
+//                                    sdl.setCreatedBy(Long.valueOf(muser.getId()));
+//                                    return sdl;
+                                    return bfrTrpToStpTrnDtlLn(beforeTripV, steptrnDtl, muser);
+                                })
+                                .collect(Collectors.toCollection(ArrayList::new));
+                steptrnDtl.getStepTransDetailsLines().addAll(sdls);
+                stDtls.add(steptrnDtl);
+                sdls.clear();
+            });
+            var res = stepTrnsDtlRepo.saveAll(stDtls);
+            return ApiRequestResponseMaker.make(
+                    HttpStatus.OK.name(),
+                    "Success",
+                    ApiRequestResponseDetail.ObjectType.A,
+                    "stepTransDtl",
+                    StepTransDetailsResponse.class.getName(),
+                    res.stream().map(this.stepTransDetailsMapper::toResponseDto)
+                            .collect(Collectors.toList())
+            );
+
+        }
         stepTransDetails.setCreatedBy(Long.valueOf(muser.getId()));
         stepTransDetails.setStepTransDtlNo(noGenService.createTransDNo());
-        stepTransDetails = stepTrnsDtlRepo.save(stepTransDetails);
+        var res = stepTrnsDtlRepo.save(stepTransDetails);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
                 "Success",
                 ApiRequestResponseDetail.ObjectType.O,
                 "stepTransDtl",
                 StepTransDetailsResponse.class.getName(),
-                stepTransDetailsMapper.toResponseDto(stepTransDetails)
+                stepTransDetailsMapper.toResponseDto(res)
         );
     }
 
+
+    private StepTransDetailsLines bfrTrpWDSToStpTrnDtlLn(BeforeTripWDsV beforeTripWDsV, StepTransDetails stpTrnDtl, Muser muser) {
+        StepTransDetailsLines sdl = new StepTransDetailsLines();
+        sdl.setStepTransDetails(stpTrnDtl);
+        sdl.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
+        sdl.setInvItemId(beforeTripWDsV.getInventoryItemId());
+        sdl.setOrderedItem(beforeTripWDsV.getOrderedItem());
+        sdl.setOrderedQuantity(beforeTripWDsV.getOrderedQuantity());
+        sdl.setCreatedBy(Long.valueOf(muser.getId()));
+        return sdl;
+    }
+
+    private StepTransDetails bfrTrpWDSToStpTrnDtl(BeforeTripWDsV beforeTripWDsV, StepTrans stepTrans, Muser muser) {
+        StepTransDetails steptrnDtl = new StepTransDetails();
+        steptrnDtl.setStepTrans(stepTrans);
+        steptrnDtl.setCreatedBy(Long.valueOf(muser.getId()));
+        steptrnDtl.setStepTransDtlNo(noGenService.createTransDNo());
+        steptrnDtl.setCustAccountId(beforeTripWDsV.getCustAccountId());
+        steptrnDtl.setCustName(beforeTripWDsV.getPartyName());
+        steptrnDtl.setScheduleNo(beforeTripWDsV.getScheduleNumber());
+        steptrnDtl.setOrderNumber(beforeTripWDsV.getOrderNumber());
+        return steptrnDtl;
+    }
+
+
+    private StepTransDetailsLines bfrTrpToStpTrnDtlLn(BeforeTripV beforeTripV, StepTransDetails stpTrnDtl, Muser muser) {
+        StepTransDetailsLines sdl = new StepTransDetailsLines();
+        sdl.setStepTransDetails(stpTrnDtl);
+        sdl.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
+        sdl.setInvItemId(beforeTripV.getInventoryItemId());
+        sdl.setOrderedItem(beforeTripV.getOrderedItem());
+        sdl.setOrderedQuantity(beforeTripV.getOrderedQuantity());
+        sdl.setCreatedBy(Long.valueOf(muser.getId()));
+        return sdl;
+    }
+
+    private StepTransDetails bfrTrpToStpTrnDtl(BeforeTripV beforeTripV, StepTrans stepTrans, Muser muser) {
+        StepTransDetails steptrnDtl = new StepTransDetails();
+        steptrnDtl.setStepTrans(stepTrans);
+        steptrnDtl.setCreatedBy(Long.valueOf(muser.getId()));
+        steptrnDtl.setStepTransDtlNo(noGenService.createTransDNo());
+        steptrnDtl.setCustAccountId(beforeTripV.getCustAccountId());
+        steptrnDtl.setCustName(beforeTripV.getPartyName());
+        steptrnDtl.setOrderNumber(beforeTripV.getOrderNumber());
+        return steptrnDtl;
+    }
+
+
     @Override
+    @Transactional(readOnly = true)
     public ApiRequestResponse findById(Long stepTransDtlId) {
         StepTransDetails stepTransDetails = stepTrnsDtlRepo.findById(stepTransDtlId).orElseThrow(
                 () -> new EntityNotFoundException("StepTransDtl Not Found with id: " + stepTransDtlId)
@@ -86,6 +262,7 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ApiRequestResponse findAllByStepTransId(Long stepTransId) {
         List<StepTransDetails> stepTransDetails = stepTrnsDtlRepo.findAllByStepTrans_StepTransId(stepTransId);
         return ApiRequestResponseMaker.make(
@@ -100,6 +277,7 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
 
     //***Line Section*********************
     @Override
+    @Transactional
     public ApiRequestResponse saveStDtlLine(StepTransDetailsLinesRequest stepTrnsDtlLnsReq, String userName) {
         Muser muser = muserService.findByUserName(userName);
         if (stepTrnsDtlLnsReq.getStepTransDtlLnId() != null) {
@@ -134,6 +312,7 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ApiRequestResponse findStDtlLineById(Long stepTransDtlLnId) {
         StepTransDetailsLines stepTransDetailsLines = stepTrnsDtlLnRepo.findById(stepTransDtlLnId).orElseThrow(
                 () -> new EntityNotFoundException("Step Trans Details Line Not Found with id: " + stepTransDtlLnId)
@@ -149,6 +328,7 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ApiRequestResponse findAllByStTrnDtlId(Long stepTransDtlId) {
         List<StepTransDetailsLines> stepTransDetailsLines = stepTrnsDtlLnRepo
                 .findAllByStepTransDetails_StepTransDtlId(stepTransDtlId);

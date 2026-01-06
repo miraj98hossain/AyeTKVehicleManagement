@@ -108,7 +108,7 @@
                         <thead>
                         <tr>
                             <th>Line No</th>
-                            <th>Inventory Item ID</th>
+
                             <th>Ordered Item</th>
                             <th>Ordered Quantity</th>
                             <th>Created At</th>
@@ -119,7 +119,6 @@
                         <tbody>
                         <tr th:each="line : ${stepTransDtlLnList}">
                             <td th:text="${line.stepTransDtlLnNo}"></td>
-                            <td th:text="${line.invItemId}"></td>
                             <td th:text="${line.orderedItem}"></td>
                             <td th:text="${line.orderedQuantity}"></td>
                             <td th:text="${#dates.format(line.createdAt, 'dd-MM-yyyy')}"></td>
