@@ -57,12 +57,13 @@
                                     th:text="${stepResponse.stepId != null ? 'Update Step' : 'Add Step'}"
                                     type="submit"></button>
 
-                            <a class="btn cancel-btn"
-                               th:href="@{/steps/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}">
-                                Clear
-                            </a>
+                            <!--                            <a class="btn cancel-btn"-->
+                            <!--                               th:href="@{/steps/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId})}">-->
+                            <!--                                Clear-->
+                            <!--                            </a>-->
+                            <a class="btn btn-default"
+                               th:href="@{'/main'}">Back</a>
                         </div>
-
                     </form>
 
                     <!-- Table -->
