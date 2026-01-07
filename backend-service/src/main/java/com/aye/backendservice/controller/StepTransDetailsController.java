@@ -35,6 +35,11 @@ public class StepTransDetailsController {
         return ResponseEntity.ok().body(this.stepTransDetailsService.findById(id));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiRequestResponse> deleteById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(this.stepTransDetailsService.deleteById(id));
+    }
+
 
     //***** Line Section ********
 
@@ -53,5 +58,10 @@ public class StepTransDetailsController {
     @GetMapping("/findAllByStTrnDtlId")
     public ResponseEntity<ApiRequestResponse> findAllByStTrnDtlId(@RequestParam Long stepTransDtlId) {
         return ResponseEntity.ok().body(this.stepTransDetailsService.findAllByStTrnDtlId(stepTransDtlId));
+    }
+
+    @DeleteMapping("/deleteLineById/{id}")
+    public ResponseEntity<ApiRequestResponse> deleteLineById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body(this.stepTransDetailsService.deleteLineById(id));
     }
 }

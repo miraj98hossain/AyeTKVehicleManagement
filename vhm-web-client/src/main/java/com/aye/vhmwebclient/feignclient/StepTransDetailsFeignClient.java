@@ -28,6 +28,9 @@ public interface StepTransDetailsFeignClient {
     @GetMapping("/{id}")
     ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id);
 
+    @DeleteMapping("/{id}")
+    ResponseEntity<ApiRequestResponse> deleteById(@PathVariable("id") Long id);
+
     //***Line Section*********************
     @PostMapping("/create-dtl")
     ResponseEntity<ApiRequestResponse> saveStDtlLine(@RequestBody StepTransDetailsLinesRequest stepTrnsDtlLnsReq,
@@ -38,4 +41,7 @@ public interface StepTransDetailsFeignClient {
 
     @GetMapping("/findAllByStTrnDtlId")
     ResponseEntity<ApiRequestResponse> findAllByStTrnDtlId(@RequestParam Long stepTransDtlId);
+
+    @DeleteMapping("/deleteLineById/{id}")
+    ResponseEntity<ApiRequestResponse> deleteLineById(@PathVariable("id") Long id);
 }

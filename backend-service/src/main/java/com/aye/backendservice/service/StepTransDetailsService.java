@@ -16,6 +16,7 @@ public interface StepTransDetailsService {
 
     ApiRequestResponse findAllByStepTransId(Long stepTransId);
 
+    ApiRequestResponse deleteById(Long stepTransDtlId);
     //***Line Section*********************
 
     ApiRequestResponse saveStDtlLine(StepTransDetailsLinesRequest stepTransDetailsLinesRequest, String userName);
@@ -24,4 +25,5 @@ public interface StepTransDetailsService {
 
     ApiRequestResponse findAllByStTrnDtlId(Long stepTransDtlId);
 
+    ApiRequestResponse deleteLineById(Long stepTransDtlLnId);
 }

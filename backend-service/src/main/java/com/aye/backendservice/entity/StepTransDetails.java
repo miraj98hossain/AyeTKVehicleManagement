@@ -38,7 +38,7 @@ public class StepTransDetails {
     @ManyToOne(fetch = FetchType.EAGER)
     private StepTrans stepTrans;
 
-    @OneToMany(mappedBy = "stepTransDetails", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @OneToMany(mappedBy = "stepTransDetails", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<StepTransDetailsLines> stepTransDetailsLines = new ArrayList<>();
     @Column(name = "CUST_ACCOUNT_ID")
     private Long custAccountId;

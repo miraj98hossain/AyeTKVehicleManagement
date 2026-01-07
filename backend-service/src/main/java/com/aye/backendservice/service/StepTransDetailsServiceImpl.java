@@ -275,6 +275,17 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
         );
     }
 
+    @Transactional
+    @Override
+    public ApiRequestResponse deleteById(Long stepTransDtlId) {
+        this.stepTrnsDtlRepo.deleteById(stepTransDtlId);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(),
+                "Successfully Deleted",
+                null, null, null, null
+        );
+    }
+
     //***Line Section*********************
     @Override
     @Transactional
@@ -341,4 +352,16 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
                 stepTransDetailsLines.stream().map(stepTrnsDtlLnMapper::toResponseDto).toList()
         );
     }
+
+    @Transactional
+    @Override
+    public ApiRequestResponse deleteLineById(Long stepTransDtlLnId) {
+        this.stepTrnsDtlLnRepo.deleteById(stepTransDtlLnId);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(),
+                "Successfully Deleted",
+                null, null, null, null
+        );
+    }
+
 }
