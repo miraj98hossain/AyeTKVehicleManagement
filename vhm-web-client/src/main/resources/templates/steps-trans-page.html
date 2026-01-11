@@ -335,30 +335,37 @@
 
                                     <div class="modal-body">
                                         <!-- line id (comes from row scope) -->
-                                        <input id="udtTrnLnId" name="stepTransLinesId"
+                                        <input id="udtTrnLnId"
                                                readonly
                                                th:field="*{stepTransLinesId}"
                                                type="hidden"/>
+
                                         <div class="form-group">
+                                            <div class="row">
 
-                                            <label>
-                                                Remarks
-                                                <input class="form-control"
-                                                       id="updateRemarks"
-                                                       placeholder="Enter remarks"
-                                                       th:field="*{remarks}"
-                                                >
-                                            </label>
-                                            <label>
-                                                Status
-                                                <input class="form-control"
-                                                       id="updateStatus"
-                                                       readonly
-                                                       th:field="*{stepStatus}">
-                                            </label>
+                                                <!-- Remarks: MORE SPACE -->
+                                                <div class="col-md-9">
+                                                    <label for="updateRemarks">Remarks</label>
+                                                    <input class="form-control"
+                                                           id="updateRemarks"
+                                                           placeholder="Enter remarks"
+                                                           th:field="*{remarks}">
+
+                                                </div>
+
+                                                <!-- Status: LESS SPACE -->
+                                                <div class="col-md-3">
+                                                    <label for="updateStatus">Status</label>
+                                                    <input class="form-control"
+                                                           id="updateStatus"
+                                                           readonly
+                                                           th:field="*{stepStatus}">
+                                                </div>
+
+                                            </div>
                                         </div>
-
                                     </div>
+
 
                                     <div class="modal-footer">
                                         <button class="btn btn-default"
