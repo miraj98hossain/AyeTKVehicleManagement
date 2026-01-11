@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html data-layout-decorate="~{fragments/layout}" lang="en">
 <head>
-    <!-- jQuery is REQUIRED for Bootstrap 3 -->
-    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
-    <!-- Bootstrap JS -->
-    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
 
+    <link rel="stylesheet" th:href="@{/css/easyAutocomplete/easy-autocomplete.min.css}"/>
+
+    <script th:src="@{/js/easyAutocomplete/autocomplete.js}"></script>
+    <script th:src="@{/js/easyAutocomplete/jquery.easy-autocomplete.min.js}"></script>
     <link rel="stylesheet" th:href="@{/css/steps-trans.css}">
     <script th:src="@{/js/stepTrans/stepTrans.js}"></script>
     <title></title>
@@ -25,6 +25,18 @@
                           th:action="@{/step-trans/create/{pageId}/{tempDtlId}
                           (pageId=${pageId},tempDtlId=${tempDtlId},page=${page},size=${size})}"
                           th:object="${stepTransReq}">
+                        <input class="form-control"
+                               id="orgId"
+                               th:value="${orgId}"
+                               type="hidden">
+                        <input class="form-control"
+                               id="invOrgId"
+                               th:value="${invOrgId}"
+                               type="hidden">
+                        <input class="form-control"
+                               id="stepTransId"
+                               th:field="${stepTransReq.stepTransId}"
+                               type="hidden">
                         <!-- Template Row -->
                         <div class="form-group col-sm-12">
                             <label class="col-sm-3 control-label" for="templateid">Template Id</label>
@@ -161,6 +173,23 @@
                             </div>
                         </div>
 
+                        <!-- Challan Number -->
+                        <div class="form-group col-sm-12" th:if="${stepTransReq.stepTransId!=null}">
+                            <label class="col-sm-3 control-label" for="challanNumber">Challan Number</label>
+                            <div class="col-sm-1">
+                                <b>:</b>
+                            </div>
+                            <div class="col-sm-8">
+                                <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
+                                <input class="form-control"
+                                       id="challanNumber"
+                                       placeholder="Enter Challan Number"
+                                       required
+                                       th:field="${stepTransReq.challanNumber}"
+                                       type="text">
+                            </div>
+                        </div>
+
 
                         <div class="form-group col-sm-12" th:if="${isIpAllowed}">
                             <label class="col-sm-3 control-label" for="startNum"></label>
@@ -288,6 +317,72 @@
                     <!-- END MODAL -->
 
 
+                    <!-- MODAL START -->
+                    <div class="modal fade" id="updateLineModal" role="dialog" tabindex="-1">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+
+                                <form method="post"
+                                      th:action="@{'/step-trans/update-lines-frm-modal/'+${pageId}+'/'+${tempDtlId}+'?page='+${page}+'&size='+${size}}"
+                                      th:object="${stepTransLineReq}">
+
+                                    <div class="modal-header">
+                                        <button class="close" data-dismiss="modal" type="button">
+                                            <span>&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" id="UpdateModalTitle">Update Line</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <!-- line id (comes from row scope) -->
+                                        <input id="udtTrnLnId" name="stepTransLinesId"
+                                               readonly
+                                               th:field="*{stepTransLinesId}"
+                                               type="hidden"/>
+                                        <div class="form-group">
+
+                                            <label>
+                                                Remarks
+                                                <input class="form-control"
+                                                       id="updateRemarks"
+                                                       placeholder="Enter remarks"
+                                                       th:field="*{remarks}"
+                                                >
+                                            </label>
+                                            <label>
+                                                Status
+                                                <input class="form-control"
+                                                       id="updateStatus"
+                                                       readonly
+                                                       th:field="*{stepStatus}">
+                                            </label>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button class="btn btn-default"
+                                                data-dismiss="modal"
+                                                type="button">
+                                            Close
+                                        </button>
+
+                                        <!-- STATUS = Complete -->
+                                        <button class="btn btn-success"
+                                                type="submit">
+                                            Submit
+                                        </button>
+
+                                    </div>
+
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- MODAL END -->
+
+
                     <div class="form-group col-sm-12">
                         <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
                             <thead>
@@ -299,6 +394,7 @@
                                 <th>Step</th>
                                 <th>Status</th>
                                 <th>Actions</th>
+                                <th>Update Status</th>
                             </tr>
                             </thead>
 
@@ -311,13 +407,21 @@
                                 <td th:text="${line.stepName}"></td>
                                 <td class="text-center" th:text="${line.stepStatus}"></td>
                                 <td class="text-center">
+                                    <a class="btn btn-success"
+                                       th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/'+${line.stepTransId}}"><span
+                                            aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
+                                    <a class="btn btn-success"
+                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span
+                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>
+                                </td>
+                                <td class="text-center">
 
-                                    <a class="btn view-btn btn-success"
-                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Complete',page=${page},size=${size})}"
-                                       th:if="${line.stage == 2}">
-                                        Release
-                                    </a>
+                                    <!--                                    <a class="btn view-btn btn-success"-->
+                                    <!--                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'-->
+                                    <!--                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Complete',page=${page},size=${size})}"-->
+                                    <!--                                       th:if="${line.stage == 2}">-->
+                                    <!--                                        Release-->
+                                    <!--                                    </a>-->
 
                                     <a class="btn edit-btn btn-warning"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
@@ -333,16 +437,32 @@
                                         Pick
                                     </a>
 
-                                    <a class="btn delete-btn btn-danger"
-                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Reject',page=${page},size=${size})}"
+                                    <!--                                    <a class="btn delete-btn btn-danger"-->
+                                    <!--                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'-->
+                                    <!--                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Reject',page=${page},size=${size})}"-->
+                                    <!--                                       th:if="${line.stage == 2}">-->
+                                    <!--                                        Reject-->
+                                    <!--                                    </a>-->
+
+                                    <a class="btn view-btn btn-success" onclick="openStatusModal(this)"
+                                       th:data-is-reject="false"
+                                       th:data-page="${page}"
+                                       th:data-size="${size}"
+                                       th:data-status="Complete"
+                                       th:data-step-Trans-Lines-Id="${line.stepTransLinesId}"
+                                       th:if="${line.stage == 2}">
+                                        Release
+                                    </a>
+
+                                    <a class="btn view-btn btn-danger" onclick="openStatusModal(this)"
+                                       th:data-is-reject="true"
+                                       th:data-page="${page}"
+                                       th:data-size="${size}"
+                                       th:data-status="Reject"
+                                       th:data-step-Trans-Lines-Id="${line.stepTransLinesId}"
                                        th:if="${line.stage == 2}">
                                         Reject
                                     </a>
-                                    <a class="btn btn-success"
-                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span
-                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>
-
                                 </td>
                             </tr>
                             </tbody>

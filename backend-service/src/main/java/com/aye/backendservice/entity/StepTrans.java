@@ -56,11 +56,12 @@ public class StepTrans {
     @OneToMany(mappedBy = "stepTrans")
     private List<StepTransDetails> stepTransDetails;
 
-    @Column(name = "start_num", nullable = false)
+    @Column(name = "start_num", nullable = true)
     private BigDecimal startNum;
-    @Column(name = "end_num", nullable = false)
+    @Column(name = "end_num", nullable = true)
     private BigDecimal endNum;
-
+    @Column(name = "CHALLAN_NUMBER", nullable = true)
+    private String challanNumber;
     //*** Auditing Col
     @Column(name = "CREATED_BY", nullable = false, updatable = false)
     private Long createdBy;

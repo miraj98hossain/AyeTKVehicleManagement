@@ -58,8 +58,6 @@ public class StepTransServiceImpl implements StepTransService {
     @Override
     public ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest, String userName) {
         Muser muser = userService.findByUserName(userName);
-
-
         StepTrans stepTrans = stepTransMapper.toEntity(stepTransRequest);
         stepTrans.setCreatedAt(new Date());
         stepTrans.setCreatedBy(Long.valueOf(muser.getId()));
@@ -99,6 +97,27 @@ public class StepTransServiceImpl implements StepTransService {
         return response;
     }
 
+    @Transactional
+    @Override
+    public ApiRequestResponse updateStepTrans(StepTransRequest stepTransRequest, String userName) {
+        Muser muser = userService.findByUserName(userName);
+
+        StepTrans stepTrans = stepTransRepository.findById(stepTransRequest.getStepTransId()).orElseThrow(
+                () -> new EntityNotFoundException("Step Trans with id " + stepTransRequest.getStepTransId() + " not found")
+        );
+        stepTransMapper.toEntity(stepTransRequest, stepTrans);
+        stepTrans.setUpdatedAt(new Date());
+        stepTrans.setUpdatedBy(Long.valueOf(muser.getId()));
+        stepTrans = stepTransRepository.save(stepTrans);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(),
+                "Successfully Updated",
+                ApiRequestResponseDetail.ObjectType.O,
+                "stepTransResponse",
+                StepTransResponse.class.getName(),
+                stepTransMapper.toResponseDto(stepTrans)
+        );
+    }
 
     @Transactional
     @Override

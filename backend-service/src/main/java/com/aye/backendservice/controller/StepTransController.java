@@ -5,8 +5,8 @@ import com.aye.backendservice.service.StepTransService;
 import com.aye.commonlib.dto.request.StepTransLinesRequest;
 import com.aye.commonlib.dto.request.StepTransRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.validationGroup.StepTransCreateValidation;
 import com.aye.commonlib.dto.validationGroup.StepTransLinesUpdateValidation;
+import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -25,10 +25,13 @@ public class StepTransController {
     @PostMapping("/create")
     public ResponseEntity<ApiRequestResponse> create(
             @RequestParam String userName,
-            @Validated({StepTransCreateValidation.class, Default.class})
+            @Valid
             @RequestBody StepTransRequest stepTransRequest
     ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransService.saveStepTrans(stepTransRequest, userName));
+        if (stepTransRequest.getStepTransId() == null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransService.saveStepTrans(stepTransRequest, userName));
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(this.stepTransService.updateStepTrans(stepTransRequest, userName));
     }
 
     @PostMapping("/update-lines")

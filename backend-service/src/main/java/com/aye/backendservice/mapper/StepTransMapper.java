@@ -19,6 +19,10 @@ public interface StepTransMapper {
     @Mapping(target = "vehicleNumber", expression = "java(combineVehicleInfo(stepTransRequest))")
     StepTrans toEntity(StepTransRequest stepTransRequest);
 
+    @Mapping(source = "stepSetupId", target = "stepSetup")
+    @Mapping(target = "vehicleNumber", expression = "java(combineVehicleInfo(stepTransRequest))")
+    void toEntity(StepTransRequest stepTransRequest, @MappingTarget StepTrans stepTrans);
+
     @Mapping(source = "stepSetup.stepSetupId", target = "stepSetupId")
     @Mapping(source = "stepTransLinesList", target = "stepTransLinesResponseList")
     StepTransResponse toResponseDto(StepTrans stepTrans);

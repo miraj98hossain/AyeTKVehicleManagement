@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 
 public class StepTransResponse {
-    private String stepTransId;
+    private Long stepTransId;
     private String stepTransNo;
     private Long stepSetupId;
     private String vehicleNumber;
@@ -25,6 +25,7 @@ public class StepTransResponse {
     private String driverName;
     private BigDecimal startNum;
     private BigDecimal endNum;
+    private String challanNumber;
     private List<StepTransLinesResponse> stepTransLinesResponseList = new ArrayList<>();
     private Long createdBy;
     private Date createdAt;

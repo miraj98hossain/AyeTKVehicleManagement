@@ -5,6 +5,7 @@ import com.aye.commonlib.dto.request.StepTransRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -12,6 +13,9 @@ public interface StepTransService {
 
 
     ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest, String userName);
+
+    @Transactional
+    ApiRequestResponse updateStepTrans(StepTransRequest stepTransRequest, String userName);
 
     ApiRequestResponse findById(Long stepTransId);
 

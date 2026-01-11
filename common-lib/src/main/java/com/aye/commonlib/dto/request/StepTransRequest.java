@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 
 public class StepTransRequest {
-    @NotNull(groups = {StepTransUpdateValidation.class}, message = "Step trans id is required to update")
+    
     private Long stepTransId;
     @NotBlank(groups = {StepTransCreateValidation.class, StepTransUpdateValidation.class}, message = "Vehicle City is required")
     private String vehicleCity;
@@ -43,6 +43,6 @@ public class StepTransRequest {
     private String driverPhoneNo;
     private BigDecimal startNum;
     private BigDecimal endNum;
-
+    private String challanNumber;
 
 }
