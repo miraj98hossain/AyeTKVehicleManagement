@@ -33,7 +33,7 @@ public class StepTransDetailsLines {
     private String stepTransDtlLnNo;
 
     @JoinColumn(name = "STEP_TRANS_DTL_ID", referencedColumnName = "STEP_TRANS_DTL_ID")
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST})
+    @ManyToOne(fetch = FetchType.EAGER)
     private StepTransDetails stepTransDetails;
 
     @Column(name = "INVENTORY_ITEM_ID")
@@ -67,5 +67,12 @@ public class StepTransDetailsLines {
     @PreUpdate
     protected void onUpdate() {
         this.updatedAt = new Date();
+    }
+
+    @PreRemove
+    protected void onRemove() {
+        if (stepTransDetails != null) {
+            stepTransDetails.getStepTransDetailsLines().remove(this);
+        }
     }
 }
