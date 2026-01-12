@@ -18,4 +18,5 @@ public class StepTransDetailsRequest {
     private String custName;
     private Long orderNumber;
     private String scheduleNo;
+    private String challanNumber;
 }

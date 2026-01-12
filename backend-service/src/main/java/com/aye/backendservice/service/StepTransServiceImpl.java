@@ -12,6 +12,7 @@ import com.aye.backendservice.mapper.StepTransLinesMapper;
 import com.aye.backendservice.mapper.StepTransMapper;
 import com.aye.backendservice.repository.StepTransRepository;
 import com.aye.backendservice.utils.enums.StepStatus;
+import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import com.aye.commonlib.dto.request.StepTransLinesRequest;
 import com.aye.commonlib.dto.request.StepTransRequest;
 import com.aye.commonlib.dto.response.*;
@@ -53,6 +54,8 @@ public class StepTransServiceImpl implements StepTransService {
     private UserAccessTempltService userAccessTempltService;
     @Autowired
     private IPInfoService ipInfoService;
+    @Autowired
+    private StepTransDetailsCreationService stepTransDetailsCreationService;
 
     @Transactional
     @Override
@@ -108,6 +111,10 @@ public class StepTransServiceImpl implements StepTransService {
         stepTransMapper.toEntity(stepTransRequest, stepTrans);
         stepTrans.setUpdatedAt(new Date());
         stepTrans.setUpdatedBy(Long.valueOf(muser.getId()));
+        StepTransDetailsRequest dtlRequest = new StepTransDetailsRequest();
+        dtlRequest.setStepTransId(stepTransRequest.getStepTransId());
+        dtlRequest.setChallanNumber(stepTransRequest.getChallanNumber());
+        stepTransDetailsCreationService.save(dtlRequest, userName);
         stepTrans = stepTransRepository.save(stepTrans);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),

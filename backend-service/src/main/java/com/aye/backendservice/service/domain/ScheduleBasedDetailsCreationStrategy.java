@@ -1,4 +1,4 @@
-package com.aye.backendservice.DDD.domain;
+package com.aye.backendservice.service.domain;
 
 /**
  * @author: Miraj
@@ -10,10 +10,10 @@ package com.aye.backendservice.DDD.domain;
 import com.aye.RestfulServer.model.Muser;
 import com.aye.RestfulServer.model.om.BeforeTripWDsV;
 import com.aye.RestfulServer.service.BeforeTripWDsVService;
-import com.aye.backendservice.DDD.factory.StepTransDetailsFactory;
 import com.aye.backendservice.entity.StepTransDetails;
 import com.aye.backendservice.entity.StepTransDetailsLines;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
+import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import org.springframework.stereotype.Service;
 
@@ -24,15 +24,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class ScheduleBasedCreationStrategy implements StepTransCreationStrategy {
+public class ScheduleBasedDetailsCreationStrategy implements StepTransDetailsCreationStrategy {
 
     private final BeforeTripWDsVService beforeTripWDsVService;
     private final StepTransDetailsRepository repository;
     private final StepTransDetailsFactory factory;
 
-    public ScheduleBasedCreationStrategy(BeforeTripWDsVService beforeTripWDsVService,
-                                         StepTransDetailsRepository repository,
-                                         StepTransDetailsFactory factory) {
+    public ScheduleBasedDetailsCreationStrategy(BeforeTripWDsVService beforeTripWDsVService,
+                                                StepTransDetailsRepository repository,
+                                                StepTransDetailsFactory factory) {
         this.beforeTripWDsVService = beforeTripWDsVService;
         this.repository = repository;
         this.factory = factory;

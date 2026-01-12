@@ -1,12 +1,12 @@
-package com.aye.backendservice.DDD.domain;
+package com.aye.backendservice.service.domain;
 
 import com.aye.RestfulServer.model.Muser;
 import com.aye.RestfulServer.model.om.BeforeTripV;
 import com.aye.RestfulServer.service.BeforeTripVService;
-import com.aye.backendservice.DDD.factory.StepTransDetailsFactory;
 import com.aye.backendservice.entity.StepTransDetails;
 import com.aye.backendservice.entity.StepTransDetailsLines;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
+import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @time: 15:31
  */
 @Component
-public class OrderBasedCreationStrategy implements StepTransCreationStrategy {
+public class OrderBasedDetailsCreationStrategy implements StepTransDetailsCreationStrategy {
     @Autowired
     private BeforeTripVService beforeTripVService;
     @Autowired
@@ -34,8 +34,10 @@ public class OrderBasedCreationStrategy implements StepTransCreationStrategy {
 
     @Override
     public boolean supports(StepTransDetailsRequest req) {
-        return req.getOrderNumber() != null;
+        return req.getOrderNumber() != null
+                && (req.getScheduleNo() == null || req.getScheduleNo().isEmpty());
     }
+
 
     @Override
     public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {

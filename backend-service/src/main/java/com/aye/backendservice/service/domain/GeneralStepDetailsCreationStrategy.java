@@ -1,9 +1,9 @@
-package com.aye.backendservice.DDD.domain;
+package com.aye.backendservice.service.domain;
 
 import com.aye.RestfulServer.model.Muser;
-import com.aye.backendservice.DDD.factory.StepTransDetailsFactory;
 import com.aye.backendservice.entity.StepTransDetails;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
+import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ import java.util.List;
  * @time: 15:31
  */
 @Component
-public class GeneralStepDetailsCreationStrategy implements StepTransCreationStrategy {
+public class GeneralStepDetailsCreationStrategy implements StepTransDetailsCreationStrategy {
 
     @Autowired
     private StepTransDetailsRepository repository;
@@ -27,7 +27,7 @@ public class GeneralStepDetailsCreationStrategy implements StepTransCreationStra
 
     @Override
     public boolean supports(StepTransDetailsRequest req) {
-        return req.getOrderNumber() == null && (req.getScheduleNo() == null);
+        return (req.getOrderNumber() == null) && (req.getScheduleNo() == null || req.getScheduleNo().isEmpty()) && (req.getChallanNumber() == null || req.getChallanNumber().isEmpty());
     }
 
     @Override

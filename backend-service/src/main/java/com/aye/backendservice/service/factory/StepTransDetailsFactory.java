@@ -1,4 +1,4 @@
-package com.aye.backendservice.DDD.factory;
+package com.aye.backendservice.service.factory;
 
 /**
  * @author: Miraj
@@ -10,11 +10,14 @@ package com.aye.backendservice.DDD.factory;
 import com.aye.RestfulServer.model.Muser;
 import com.aye.RestfulServer.model.om.BeforeTripV;
 import com.aye.RestfulServer.model.om.BeforeTripWDsV;
+import com.aye.RestfulServer.model.om.XxtkgTripDelvDtlV;
 import com.aye.backendservice.entity.StepTrans;
 import com.aye.backendservice.entity.StepTransDetails;
 import com.aye.backendservice.entity.StepTransDetailsLines;
+import com.aye.backendservice.mapper.StepTransDetailsLinesMapper;
 import com.aye.backendservice.mapper.StepTransDetailsMapper;
 import com.aye.backendservice.service.NoGenService;
+import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +28,8 @@ public class StepTransDetailsFactory {
     private NoGenService noGenService;
     @Autowired
     private StepTransDetailsMapper stepTransDetailsMapper;
+    @Autowired
+    private StepTransDetailsLinesMapper stepTransDetailsLinesMapper;
 
     public StepTransDetails fromBeforeTripV(BeforeTripV src, StepTrans stepTrans, Muser user) {
         StepTransDetails dtl = new StepTransDetails();
@@ -37,8 +42,37 @@ public class StepTransDetailsFactory {
         return dtl;
     }
 
+    public StepTransDetails fromTripDtlView(XxtkgTripDelvDtlV src, StepTrans stepTrans, Muser user) {
+        StepTransDetails dtl = new StepTransDetails();
+        dtl.setStepTrans(stepTrans);
+        dtl.setCreatedBy(Long.valueOf(user.getId()));
+        dtl.setStepTransDtlNo(noGenService.createTransDNo());
+        dtl.setCustAccountId(src.getCustAccountId());
+        dtl.setCustName(src.getPartyName());
+        dtl.setOrderNumber(src.getOrderNumber());
+        dtl.setScheduleNo(src.getScheduleNumber());
+
+        StepTransDetailsLines ln = new StepTransDetailsLines();
+        ln.setStepTransDetails(dtl);
+        ln.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
+        ln.setInvItemId(src.getInventoryItemId());
+        ln.setOrderedItem(src.getOrderedItem());
+        ln.setOrderedQuantity(src.getOrderedQuantity());
+        ln.setCreatedBy(Long.valueOf(user.getId()));
+        dtl.getStepTransDetailsLines().add(ln);
+        return dtl;
+    }
+
     public StepTransDetails fromStepDetailsReq(StepTransDetailsRequest request, Muser user) {
         var obj = stepTransDetailsMapper.dtoToEntity(request);
+        obj.setStepTransDtlNo(noGenService.createTransDNo());
+        obj.setCreatedBy(Long.valueOf(user.getId()));
+        return obj;
+    }
+
+    public StepTransDetailsLines fromStepDetailsLineReq(StepTransDetailsLinesRequest request, Muser user) {
+        var obj = stepTransDetailsLinesMapper.dtoToEntity(request);
+        obj.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
         obj.setCreatedBy(Long.valueOf(user.getId()));
         return obj;
     }

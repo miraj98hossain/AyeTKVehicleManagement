@@ -1,4 +1,4 @@
-package com.aye.backendservice.DDD.domain;
+package com.aye.backendservice.service.domain;
 
 /**
  * @author: Miraj
@@ -13,7 +13,7 @@ import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 
 import java.util.List;
 
-public interface StepTransCreationStrategy {
+public interface StepTransDetailsCreationStrategy {
     boolean supports(StepTransDetailsRequest req);
 
     List<StepTransDetails> create(StepTransDetailsRequest req, Muser user);

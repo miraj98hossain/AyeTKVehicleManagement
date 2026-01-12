@@ -68,11 +68,5 @@ public class StepTransDetailsLines {
     protected void onUpdate() {
         this.updatedAt = new Date();
     }
-
-    @PreRemove
-    protected void onRemove() {
-        if (stepTransDetails != null) {
-            stepTransDetails.getStepTransDetailsLines().remove(this);
-        }
-    }
+    
 }

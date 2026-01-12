@@ -36,4 +36,6 @@ public class XxtkgTripDelvDtlVResponse {
     private String transportDetails;
     private Long transactionTypeId;
     private String transactionTypeName;
+    private Long scheduleId;
+    private String scheduleNumber;
 }
