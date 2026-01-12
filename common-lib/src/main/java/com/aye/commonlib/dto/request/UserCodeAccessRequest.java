@@ -21,7 +21,7 @@ public class UserCodeAccessRequest {
     private String invInfoCode;
 
     public enum AccessCodeType {
-        ITEM_CATEGORIES //, BANK, SUPPLIER, CUSTOMER, SUBINVENTORY
+        ITEM_CATEGORIES, VEHICLE_SCALE //, BANK, SUPPLIER, CUSTOMER, SUBINVENTORY
     }
 
     public enum AccessCodeLevel {
