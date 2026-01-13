@@ -8,7 +8,7 @@ import lombok.Data;
  * @time: 16:19
  */
 @Data
-public class IPInfoResponse {
+public class ScaleSetupResponse {
     private Long id;
     private String ipAddress;
     private String name;

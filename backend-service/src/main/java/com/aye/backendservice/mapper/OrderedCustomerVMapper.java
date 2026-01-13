@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.om.OrderedCustomerV;
+
 import com.aye.commonlib.dto.response.OrderedCustomerVResponse;
+import com.aye.entitylib.entity.OrderedCustomerV;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -16,6 +17,6 @@ import org.mapstruct.NullValueCheckStrategy;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         builder = @Builder(disableBuilder = true))
 public interface OrderedCustomerVMapper {
-    
+
     OrderedCustomerVResponse toResponseDto(OrderedCustomerV orderedCustomerV);
 }

@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.UserTransactionTypes;
+
 import com.aye.commonlib.dto.request.UserTransactionTypesRequest;
 import com.aye.commonlib.dto.response.UserTransactionTypesResponse;
+import com.aye.entitylib.entity.UserTransactionTypes;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.om.OrdTrnsTypesV;
+
 import com.aye.commonlib.dto.response.OrdTrnsTypesVResponse;
+import com.aye.entitylib.entity.OrdTrnsTypesV;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

@@ -7,9 +7,9 @@ package com.aye.backendservice.service.domain;
  */
 
 
-import com.aye.RestfulServer.model.Muser;
-import com.aye.backendservice.entity.StepTransDetailsLines;
 import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
+import com.aye.entitylib.entity.Muser;
+import com.aye.entitylib.entity.StepTransDetailsLines;
 
 import java.util.List;
 

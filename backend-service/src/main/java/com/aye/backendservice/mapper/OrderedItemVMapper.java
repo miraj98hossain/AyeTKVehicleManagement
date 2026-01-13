@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.om.OrderedItemV;
+
 import com.aye.commonlib.dto.response.OrderedItemVResponse;
+import com.aye.entitylib.entity.OrderedItemV;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.projection.BeforeTripWDsVProjection;
+
 import com.aye.commonlib.dto.response.BeforeTripWDsVResponse;
+import com.aye.entitylib.entity.projection.BeforeTripWDsVProjection;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

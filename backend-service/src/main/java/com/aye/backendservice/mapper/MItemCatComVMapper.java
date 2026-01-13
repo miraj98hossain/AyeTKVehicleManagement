@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.userData.MItemCatComV;
+
 import com.aye.commonlib.dto.response.MItemCatComVResponse;
+import com.aye.entitylib.entity.MItemCatComV;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

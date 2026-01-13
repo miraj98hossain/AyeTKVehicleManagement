@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.Muser;
+
 import com.aye.commonlib.dto.request.MUserRequest;
 import com.aye.commonlib.dto.response.MUserResponse;
+import com.aye.entitylib.entity.Muser;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

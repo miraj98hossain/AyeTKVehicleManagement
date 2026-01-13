@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.userData.MuserDataCust;
+
 import com.aye.commonlib.dto.response.MuserDataCustResponse;
+import com.aye.entitylib.entity.MuserDataCust;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

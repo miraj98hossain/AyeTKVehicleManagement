@@ -1,7 +1,7 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.backendservice.entity.IPInfo;
-import com.aye.commonlib.dto.response.IPInfoResponse;
+import com.aye.commonlib.dto.response.ScaleSetupResponse;
+import com.aye.entitylib.entity.ScaleSetup;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -16,6 +16,9 @@ import org.mapstruct.NullValueCheckStrategy;
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
         uses = {ReferenceMapper.class},
         builder = @Builder(disableBuilder = true))
-public interface IPInfoMapper {
-    IPInfoResponse toIPInfoResponse(IPInfo ipInfo);
+public interface ScaleSetupMapper {
+    ScaleSetupResponse toIPInfoResponse(ScaleSetup scaleSetup);
+
+    ScaleSetup toEntity(Long scaleSetupId);
+
 }

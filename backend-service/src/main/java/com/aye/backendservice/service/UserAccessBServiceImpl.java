@@ -1,15 +1,12 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.model.*;
-import com.aye.RestfulServer.model.common.TrnsType;
-import com.aye.RestfulServer.model.om.InvOrgSubInvV;
-import com.aye.RestfulServer.model.om.InventoryInformations;
-import com.aye.RestfulServer.model.om.OrdTrnsTypesV;
-import com.aye.RestfulServer.model.om.OrgHierarchy;
+
 import com.aye.RestfulServer.service.*;
 import com.aye.backendservice.mapper.*;
 import com.aye.commonlib.dto.request.*;
 import com.aye.commonlib.dto.response.*;
+import com.aye.entitylib.entity.*;
+import com.aye.entitylib.entity.enums.TrnsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

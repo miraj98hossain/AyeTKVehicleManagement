@@ -1,10 +1,10 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.backendservice.entity.MtrnsCount;
 import com.aye.backendservice.repository.MtrnsCountRepo;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
+import com.aye.entitylib.entity.MtrnsCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

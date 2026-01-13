@@ -1,9 +1,6 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.model.Muser;
-import com.aye.RestfulServer.model.RoleTypes;
-import com.aye.RestfulServer.model.UserMenu;
-import com.aye.RestfulServer.model.UserSubMenu;
+
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserMenuService;
 import com.aye.backendservice.mapper.UserAccessMapper;
@@ -13,6 +10,10 @@ import com.aye.backendservice.mapper.UserSubMenuMapper;
 import com.aye.commonlib.dto.request.UserMenuRequest;
 import com.aye.commonlib.dto.request.UserSubMenuRequest;
 import com.aye.commonlib.dto.response.*;
+import com.aye.entitylib.entity.Muser;
+import com.aye.entitylib.entity.UserMenu;
+import com.aye.entitylib.entity.UserSubMenu;
+import com.aye.entitylib.entity.enums.RoleTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

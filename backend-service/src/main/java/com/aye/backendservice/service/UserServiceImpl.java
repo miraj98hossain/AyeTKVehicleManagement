@@ -1,9 +1,6 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.model.CommonColumn;
-import com.aye.RestfulServer.model.Mrole;
-import com.aye.RestfulServer.model.Muser;
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.backendservice.mapper.MRoleMapper;
 import com.aye.backendservice.mapper.MUserMapper;
@@ -13,6 +10,9 @@ import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.MRoleResponse;
 import com.aye.commonlib.dto.response.MUserResponse;
+import com.aye.entitylib.entity.CommonColumn;
+import com.aye.entitylib.entity.Mrole;
+import com.aye.entitylib.entity.Muser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

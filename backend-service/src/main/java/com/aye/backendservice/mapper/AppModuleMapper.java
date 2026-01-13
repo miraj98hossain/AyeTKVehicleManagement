@@ -1,9 +1,10 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.common.AppModuleCode;
-import com.aye.RestfulServer.model.om.AppModule;
+
 import com.aye.commonlib.dto.request.AppModuleRequest;
 import com.aye.commonlib.dto.response.AppModuleResponse;
+import com.aye.entitylib.entity.AppModule;
+import com.aye.entitylib.entity.enums.AppModuleCode;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

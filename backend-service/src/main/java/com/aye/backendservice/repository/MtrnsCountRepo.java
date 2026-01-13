@@ -1,8 +1,8 @@
 package com.aye.backendservice.repository;
 
 
-import com.aye.RestfulServer.model.geo.Geo;
-import com.aye.backendservice.entity.MtrnsCount;
+import com.aye.entitylib.entity.Geo;
+import com.aye.entitylib.entity.MtrnsCount;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

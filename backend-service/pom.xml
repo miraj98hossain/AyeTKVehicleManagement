@@ -79,12 +79,16 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>com.aye</groupId>
-            <artifactId>common-lib</artifactId>
+            <artifactId>entity-lib</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>com.aye</groupId>-->
+        <!--            <artifactId>common-lib</artifactId>-->
+        <!--            <version>0.0.1-SNAPSHOT</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>com.aye</groupId>
             <artifactId>aye-userservice</artifactId>
@@ -102,6 +106,12 @@
             <!--            <groupId>com.aye</groupId>-->
             <!--            <artifactId>aye-user-data</artifactId>-->
             <!--            <version>0.0.3-SNAPSHOT</version>-->
+        </dependency>
+        <dependency>
+            <groupId>com.aye</groupId>
+            <artifactId>aye-user-data</artifactId>
+            <version>0.0.3-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

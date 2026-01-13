@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.backendservice.entity.StepTransTimeStampV;
+
 import com.aye.commonlib.dto.response.StepTransTimeStampVResponse;
+import com.aye.entitylib.entity.StepTransTimeStampV;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

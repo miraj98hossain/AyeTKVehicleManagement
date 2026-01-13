@@ -6,9 +6,14 @@
  */
 package com.aye.backendservice.config;
 
-import com.aye.RestfulServer.model.*;
+
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.PageService;
+import com.aye.entitylib.entity.CommonColumn;
+import com.aye.entitylib.entity.Muser;
+import com.aye.entitylib.entity.Pages;
+import com.aye.entitylib.entity.enums.PageUrl;
+import com.aye.entitylib.entity.enums.RoleTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;

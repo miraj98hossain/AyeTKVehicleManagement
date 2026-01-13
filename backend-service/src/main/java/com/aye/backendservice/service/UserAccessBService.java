@@ -1,10 +1,11 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.model.UserSubInvAccess;
-import com.aye.RestfulServer.model.UserTransactionTypes;
-import com.aye.RestfulServer.model.om.InvOrgSubInvV;
+
 import com.aye.commonlib.dto.request.*;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.entitylib.entity.InvOrgSubInvV;
+import com.aye.entitylib.entity.UserSubInvAccess;
+import com.aye.entitylib.entity.UserTransactionTypes;
 
 public interface UserAccessBService {
     ApiRequestResponse getAllTemplet();

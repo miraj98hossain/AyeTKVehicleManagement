@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.backendservice.entity.StepTransDetails;
+
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import com.aye.commonlib.dto.response.StepTransDetailsResponse;
+import com.aye.entitylib.entity.StepTransDetails;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",

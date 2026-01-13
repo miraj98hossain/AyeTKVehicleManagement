@@ -1,7 +1,5 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.model.Muser;
-import com.aye.RestfulServer.model.UserCodeAccess;
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserCodeAccessService;
 import com.aye.backendservice.mapper.UserCodeAccessMapper;
@@ -9,6 +7,8 @@ import com.aye.commonlib.dto.request.UserCodeAccessRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.UserCodeAccessResponse;
+import com.aye.entitylib.entity.Muser;
+import com.aye.entitylib.entity.UserCodeAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

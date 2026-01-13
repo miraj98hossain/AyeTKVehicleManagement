@@ -1,10 +1,11 @@
 package com.aye.backendservice.service.domain;
 
-import com.aye.RestfulServer.model.Muser;
-import com.aye.backendservice.entity.StepTransDetailsLines;
+
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
+import com.aye.entitylib.entity.Muser;
+import com.aye.entitylib.entity.StepTransDetailsLines;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

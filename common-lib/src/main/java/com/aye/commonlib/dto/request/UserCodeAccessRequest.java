@@ -19,6 +19,8 @@ public class UserCodeAccessRequest {
     private String itemCatComb;
     private Long invInfoId;
     private String invInfoCode;
+    private Long scaleSetupId;
+    private String scaleSetupName;
 
     public enum AccessCodeType {
         ITEM_CATEGORIES, VEHICLE_SCALE //, BANK, SUPPLIER, CUSTOMER, SUBINVENTORY

@@ -7,10 +7,7 @@ package com.aye.backendservice.service;
  */
 
 
-import com.aye.RestfulServer.model.Muser;
 import com.aye.RestfulServer.service.MuserService;
-import com.aye.backendservice.entity.StepTransDetails;
-import com.aye.backendservice.entity.StepTransDetailsLines;
 import com.aye.backendservice.mapper.StepTransDetailsLinesMapper;
 import com.aye.backendservice.mapper.StepTransDetailsMapper;
 import com.aye.backendservice.service.domain.StepTransDetailsCreationStrategy;
@@ -19,6 +16,9 @@ import com.aye.backendservice.utils.ApiResponseFactory;
 import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.entitylib.entity.Muser;
+import com.aye.entitylib.entity.StepTransDetails;
+import com.aye.entitylib.entity.StepTransDetailsLines;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

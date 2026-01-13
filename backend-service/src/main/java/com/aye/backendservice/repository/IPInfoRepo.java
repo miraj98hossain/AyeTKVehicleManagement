@@ -1,6 +1,7 @@
 package com.aye.backendservice.repository;
 
-import com.aye.backendservice.entity.IPInfo;
+
+import com.aye.entitylib.entity.ScaleSetup;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -8,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @date: 05/01/2026
  * @time: 16:04
  */
-public interface IPInfoRepo extends JpaRepository<IPInfo, Long> {
+public interface IPInfoRepo extends JpaRepository<ScaleSetup, Long> {
 }

@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.om.XxtkgTripDelvDtlV;
+
 import com.aye.commonlib.dto.response.XxtkgTripDelvDtlVResponse;
+import com.aye.entitylib.entity.XxtkgTripDelvDtlV;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

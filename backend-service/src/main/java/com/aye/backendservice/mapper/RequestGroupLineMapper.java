@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.RequestGroupLine;
+
 import com.aye.commonlib.dto.request.RequestGroupLineRequest;
 import com.aye.commonlib.dto.response.RequestGroupLineResponse;
+import com.aye.entitylib.entity.RequestGroupLine;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

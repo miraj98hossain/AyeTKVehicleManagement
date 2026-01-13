@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.backendservice.entity.StepTransDetailsLines;
+
 import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.response.StepTransDetailsLinesResponse;
+import com.aye.entitylib.entity.StepTransDetailsLines;
 import org.mapstruct.*;
 
 /**

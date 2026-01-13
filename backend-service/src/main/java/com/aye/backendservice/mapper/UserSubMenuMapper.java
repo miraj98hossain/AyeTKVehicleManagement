@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.UserSubMenu;
+
 import com.aye.commonlib.dto.request.UserSubMenuRequest;
 import com.aye.commonlib.dto.response.UserSubMenuResponse;
+import com.aye.entitylib.entity.UserSubMenu;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

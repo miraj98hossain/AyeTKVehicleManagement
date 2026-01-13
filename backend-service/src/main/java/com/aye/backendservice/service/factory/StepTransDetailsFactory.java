@@ -7,18 +7,12 @@ package com.aye.backendservice.service.factory;
  */
 
 
-import com.aye.RestfulServer.model.Muser;
-import com.aye.RestfulServer.model.om.BeforeTripV;
-import com.aye.RestfulServer.model.om.BeforeTripWDsV;
-import com.aye.RestfulServer.model.om.XxtkgTripDelvDtlV;
-import com.aye.backendservice.entity.StepTrans;
-import com.aye.backendservice.entity.StepTransDetails;
-import com.aye.backendservice.entity.StepTransDetailsLines;
 import com.aye.backendservice.mapper.StepTransDetailsLinesMapper;
 import com.aye.backendservice.mapper.StepTransDetailsMapper;
 import com.aye.backendservice.service.NoGenService;
 import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
+import com.aye.entitylib.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

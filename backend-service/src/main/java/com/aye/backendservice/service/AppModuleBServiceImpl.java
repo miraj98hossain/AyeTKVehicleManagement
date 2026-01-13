@@ -1,13 +1,14 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.model.common.AppModuleCode;
-import com.aye.RestfulServer.model.om.AppModule;
+
 import com.aye.RestfulServer.service.AppModuleService;
 import com.aye.backendservice.mapper.AppModuleMapper;
 import com.aye.commonlib.dto.request.AppModuleRequest;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.AppModuleResponse;
+import com.aye.entitylib.entity.AppModule;
+import com.aye.entitylib.entity.enums.AppModuleCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

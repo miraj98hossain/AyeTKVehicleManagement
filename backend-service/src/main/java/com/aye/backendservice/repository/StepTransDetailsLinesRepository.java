@@ -1,6 +1,7 @@
 package com.aye.backendservice.repository;
 
-import com.aye.backendservice.entity.StepTransDetailsLines;
+
+import com.aye.entitylib.entity.StepTransDetailsLines;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

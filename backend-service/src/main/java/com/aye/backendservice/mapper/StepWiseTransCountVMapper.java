@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.backendservice.entity.StepWiseTransCountV;
+
 import com.aye.commonlib.dto.response.StepWiseTransCountVResponse;
+import com.aye.entitylib.entity.StepWiseTransCountV;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

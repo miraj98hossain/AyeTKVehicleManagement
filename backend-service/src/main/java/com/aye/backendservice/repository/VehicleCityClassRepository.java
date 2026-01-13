@@ -1,7 +1,7 @@
 package com.aye.backendservice.repository;
 
 
-import com.aye.backendservice.entity.VehicleCityClass;
+import com.aye.entitylib.entity.VehicleCityClass;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

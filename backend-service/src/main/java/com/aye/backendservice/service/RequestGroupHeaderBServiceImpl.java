@@ -1,7 +1,6 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.model.RequestGroupHeader;
-import com.aye.RestfulServer.model.RequestGroupLine;
+
 import com.aye.RestfulServer.service.RequestGroupHeaderService;
 import com.aye.backendservice.mapper.RequestGroupHeaderMapper;
 import com.aye.backendservice.mapper.RequestGroupLineMapper;
@@ -11,6 +10,8 @@ import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.RequestGroupHeaderResponse;
 import com.aye.commonlib.dto.response.RequestGroupLineResponse;
+import com.aye.entitylib.entity.RequestGroupHeader;
+import com.aye.entitylib.entity.RequestGroupLine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

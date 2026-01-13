@@ -1,10 +1,11 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.PageUrl;
-import com.aye.RestfulServer.model.Pages;
-import com.aye.RestfulServer.model.RoleTypes;
+
 import com.aye.commonlib.dto.request.PagesRequest;
 import com.aye.commonlib.dto.response.PagesResponse;
+import com.aye.entitylib.entity.Pages;
+import com.aye.entitylib.entity.enums.PageUrl;
+import com.aye.entitylib.entity.enums.RoleTypes;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

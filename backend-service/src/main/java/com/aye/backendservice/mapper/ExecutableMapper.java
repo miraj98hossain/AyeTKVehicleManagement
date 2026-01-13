@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.Executables;
+
 import com.aye.commonlib.dto.request.ExecutablesRequest;
 import com.aye.commonlib.dto.response.ExecutablesResponse;
+import com.aye.entitylib.entity.Executables;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

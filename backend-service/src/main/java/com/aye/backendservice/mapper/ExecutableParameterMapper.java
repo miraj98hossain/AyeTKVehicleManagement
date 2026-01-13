@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.ExecutableParameter;
+
 import com.aye.commonlib.dto.request.ExecutableParameterRequest;
 import com.aye.commonlib.dto.response.ExecutableParameterResponse;
+import com.aye.entitylib.entity.ExecutableParameter;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

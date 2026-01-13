@@ -17,6 +17,7 @@
         <option value="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTKMobUserOrganization/pom.xml" />
         <option value="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTkMobUserData/pom.xml" />
         <option value="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTkMobModelLib/pom.xml" />
+        <option value="$PROJECT_DIR$/../entity-lib/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

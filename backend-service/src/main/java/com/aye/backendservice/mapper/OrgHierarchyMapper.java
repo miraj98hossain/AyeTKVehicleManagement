@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.om.OrgHierarchy;
+
 import com.aye.commonlib.dto.request.OrgHierarchyRequest;
 import com.aye.commonlib.dto.response.OrgHierarchyResponse;
+import com.aye.entitylib.entity.OrgHierarchy;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

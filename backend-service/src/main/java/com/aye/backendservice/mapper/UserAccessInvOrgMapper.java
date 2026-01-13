@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.UserAccessInvOrg;
+
 import com.aye.commonlib.dto.request.UserAccessInvOrgRequest;
 import com.aye.commonlib.dto.response.UserAccessInvOrgResponse;
+import com.aye.entitylib.entity.UserAccessInvOrg;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

@@ -1,7 +1,7 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.user.EmpResource;
 import com.aye.commonlib.dto.response.EmpResourceResponse;
+import com.aye.entitylib.entity.EmpResource;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

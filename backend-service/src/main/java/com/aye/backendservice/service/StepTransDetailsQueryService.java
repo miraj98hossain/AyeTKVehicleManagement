@@ -6,8 +6,7 @@ package com.aye.backendservice.service;
  * @time: 09:52
  */
 
-import com.aye.backendservice.entity.StepTransDetails;
-import com.aye.backendservice.entity.StepTransDetailsLines;
+
 import com.aye.backendservice.mapper.StepTransDetailsLinesMapper;
 import com.aye.backendservice.mapper.StepTransDetailsMapper;
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
@@ -16,6 +15,8 @@ import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.StepTransDetailsLinesResponse;
 import com.aye.commonlib.dto.response.StepTransDetailsResponse;
+import com.aye.entitylib.entity.StepTransDetails;
+import com.aye.entitylib.entity.StepTransDetailsLines;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

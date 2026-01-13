@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.backendservice.entity.VehicleCityClass;
+
 import com.aye.commonlib.dto.response.VehicleCityClassResponse;
+import com.aye.entitylib.entity.VehicleCityClass;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

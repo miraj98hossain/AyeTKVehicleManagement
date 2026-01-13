@@ -1,21 +1,17 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.model.Muser;
-import com.aye.RestfulServer.model.UserTransactionTypes;
+
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserAccessTempltService;
-import com.aye.backendservice.entity.StepSetupDetails;
-import com.aye.backendservice.entity.StepTrans;
-import com.aye.backendservice.entity.StepTransLines;
-import com.aye.backendservice.entity.StepTransTimeline;
 import com.aye.backendservice.mapper.StepTransLinesMapper;
 import com.aye.backendservice.mapper.StepTransMapper;
 import com.aye.backendservice.repository.StepTransRepository;
-import com.aye.backendservice.utils.enums.StepStatus;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import com.aye.commonlib.dto.request.StepTransLinesRequest;
 import com.aye.commonlib.dto.request.StepTransRequest;
 import com.aye.commonlib.dto.response.*;
+import com.aye.entitylib.entity.*;
+import com.aye.entitylib.entity.enums.StepStatus;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;

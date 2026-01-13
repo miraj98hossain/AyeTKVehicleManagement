@@ -1,12 +1,8 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.model.Muser;
-import com.aye.RestfulServer.model.UserTransactionTypes;
+
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserAccessTempltService;
-import com.aye.backendservice.entity.Step;
-import com.aye.backendservice.entity.StepSetup;
-import com.aye.backendservice.entity.StepSetupDetails;
 import com.aye.backendservice.mapper.StepSetupDetailsMapper;
 import com.aye.backendservice.mapper.StepSetupMapper;
 import com.aye.backendservice.repository.StepSetupRepository;
@@ -16,6 +12,7 @@ import com.aye.commonlib.dto.response.ApiRequestResponse;
 import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.StepSetupDetailsResponse;
 import com.aye.commonlib.dto.response.StepSetupResponse;
+import com.aye.entitylib.entity.*;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;

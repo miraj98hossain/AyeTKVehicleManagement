@@ -1,7 +1,8 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.UserSubInvAccess;
+
 import com.aye.commonlib.dto.response.UserSubInvAccessResponse;
+import com.aye.entitylib.entity.UserSubInvAccess;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

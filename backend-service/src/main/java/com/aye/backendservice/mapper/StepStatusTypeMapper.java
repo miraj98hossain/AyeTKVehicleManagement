@@ -1,7 +1,7 @@
 package com.aye.backendservice.mapper;
 
 
-import com.aye.backendservice.utils.enums.StepStatus;
+import com.aye.entitylib.entity.enums.StepStatus;
 import org.mapstruct.Mapper;
 import org.mapstruct.Named;
 

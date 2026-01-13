@@ -12,6 +12,27 @@
         <module name="aye-user-org-managment" />
         <module name="aye-model-lib" />
       </profile>
+      <profile name="Annotation profile for common-lib" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
+        </processorPath>
+        <module name="common-lib" />
+      </profile>
+      <profile name="Annotation profile for entity-lib" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
+        </processorPath>
+        <module name="vhm-web-client" />
+        <module name="entity-lib" />
+        <module name="web-service" />
+      </profile>
       <profile name="Annotation profile for backend-service" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -25,17 +46,6 @@
         <module name="backend-service" />
         <module name="webclient" />
         <module name="mobile-service" />
-      </profile>
-      <profile name="Annotation profile for web-service" enabled="true">
-        <sourceOutputDir name="target/generated-sources/annotations" />
-        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
-        <outputRelativeToContentRoot value="true" />
-        <processorPath useClasspath="false">
-          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.34/lombok-1.18.34.jar" />
-        </processorPath>
-        <module name="vhm-web-client" />
-        <module name="web-service" />
-        <module name="common-lib" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -51,6 +61,7 @@
       <module name="backend-service" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="common-lib" options="-parameters" />
       <module name="crud" options="-parameters" />
+      <module name="entity-lib" options="-parameters" />
       <module name="mobile-service" options="-parameters -Amapstruct.defaultComponentModel=spring" />
       <module name="vhm-web-client" options="-parameters" />
       <module name="web-service" options="-parameters" />

@@ -6,5 +6,6 @@
     <mapping directory="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTKMobUserOrganization" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTkMobModelLib" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTkMobUserData" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../entity-lib" vcs="Git" />
   </component>
 </project>

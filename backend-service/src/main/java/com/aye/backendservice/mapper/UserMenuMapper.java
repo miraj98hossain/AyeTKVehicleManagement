@@ -1,10 +1,10 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.RoleTypes;
-import com.aye.RestfulServer.model.UserMenu;
-import com.aye.RestfulServer.model.common.MenuLevel;
 import com.aye.commonlib.dto.request.UserMenuRequest;
 import com.aye.commonlib.dto.response.UserMenuResponse;
+import com.aye.entitylib.entity.UserMenu;
+import com.aye.entitylib.entity.enums.MenuLevel;
+import com.aye.entitylib.entity.enums.RoleTypes;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

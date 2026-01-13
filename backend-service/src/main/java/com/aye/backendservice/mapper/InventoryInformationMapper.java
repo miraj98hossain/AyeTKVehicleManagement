@@ -1,8 +1,9 @@
 package com.aye.backendservice.mapper;
 
-import com.aye.RestfulServer.model.om.InventoryInformations;
+
 import com.aye.commonlib.dto.request.InventoryInformationRequest;
 import com.aye.commonlib.dto.response.InventoryInformationResponse;
+import com.aye.entitylib.entity.InventoryInformations;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
