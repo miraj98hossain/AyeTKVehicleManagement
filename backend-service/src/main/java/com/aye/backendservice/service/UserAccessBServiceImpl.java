@@ -283,6 +283,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
             db.setEndDate(ut.getEndDate());
             db.setStartDate(ut.getStartDate());
             db.setDescription(ut.getDescription());
+            db.setIsMandatory(ut.getIsMandatory());
             this.transSubInvAcService.saveUserTransactionTypes(db, userName);
             return ApiRequestResponseMaker.make(
                     HttpStatus.OK.name(), "Successfully",

@@ -36,5 +36,7 @@ public class UserTransactionTypesRequest {
 
     private Date endDate;
 
+    private Boolean isMandatory;
+
 }
 

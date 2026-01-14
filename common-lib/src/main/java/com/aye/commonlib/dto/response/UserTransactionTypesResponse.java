@@ -21,5 +21,6 @@ public class UserTransactionTypesResponse {
     private Long userAccessInvOrgId;
     private String startDate;
     private String endDate;
+    private Boolean isMandatory;
     private List<UserSubInvAccessResponse> userSubInvAccesses = new ArrayList<>();
 }
