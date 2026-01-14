@@ -7,6 +7,8 @@ import com.aye.commonlib.dto.response.ApiRequestResponse;
  * @date: 05/01/2026
  * @time: 16:04
  */
-public interface IPInfoService {
-    ApiRequestResponse findAllIPInfo();
+public interface ScaleSetupService {
+    ApiRequestResponse findAllScaleSetup();
+
+    ApiRequestResponse filterScaleSetup(Long orgId);
 }

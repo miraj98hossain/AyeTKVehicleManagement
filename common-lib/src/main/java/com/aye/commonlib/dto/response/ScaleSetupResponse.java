@@ -10,6 +10,8 @@ import lombok.Data;
 @Data
 public class ScaleSetupResponse {
     private Long id;
-    private String ipAddress;
     private String name;
+    private String ipAddress;
+    private String orgCode;
+    private String orgId;
 }

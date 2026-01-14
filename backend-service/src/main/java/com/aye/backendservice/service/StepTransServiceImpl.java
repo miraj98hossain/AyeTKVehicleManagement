@@ -49,7 +49,7 @@ public class StepTransServiceImpl implements StepTransService {
     @Autowired
     private UserAccessTempltService userAccessTempltService;
     @Autowired
-    private IPInfoService ipInfoService;
+    private ScaleSetupService scaleSetupService;
     @Autowired
     private StepTransDetailsCreationService stepTransDetailsCreationService;
 
@@ -335,7 +335,7 @@ public class StepTransServiceImpl implements StepTransService {
                 .flatMap(inv -> inv.getUserTransactionTypes().stream())
                 .map(UserTransactionTypes::getTrnsTypeId)
                 .toList();
-        var ipRes = this.ipInfoService.findAllIPInfo();
+        var ipRes = this.scaleSetupService.findAllScaleSetup();
         var res = this.transCountVService.getCountByDetailId(setupDetailIds);
         var response = findAllBySetupDtls(setupDetailIds, searchWords, pageable);
         response.getApiRequestResponseDetails().addAll(res.getApiRequestResponseDetails());
