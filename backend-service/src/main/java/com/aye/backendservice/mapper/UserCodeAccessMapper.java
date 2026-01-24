@@ -29,6 +29,7 @@ public interface UserCodeAccessMapper {
     @Mapping(source = "inventoryInformations.name", target = "invInfoName")
     @Mapping(source = "scaleSetup.id", target = "scaleSetupId")
     @Mapping(source = "scaleSetup.name", target = "scaleSetupName")
+    @Mapping(source = "scaleSetup.ipAddress", target = "scaleSetupIp")
     UserCodeAccessResponse toResponseDto(UserCodeAccess userCodeAccess);
 
     @Mapping(source = "userId", target = "user")

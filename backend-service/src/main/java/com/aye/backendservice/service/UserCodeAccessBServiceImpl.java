@@ -80,4 +80,17 @@ public class UserCodeAccessBServiceImpl implements UserCodeAccessBService {
                 userCodeAccess.stream().map(this.userCodeAccessMapper::toResponseDto).toList()
         );
     }
+
+    @Override
+    public ApiRequestResponse findAllByUser(String userName) {
+        List<UserCodeAccess> userCodeAccess = userCodeAccessService.findAllByUser(userName);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(),
+                "Success",
+                ApiRequestResponseDetail.ObjectType.A,
+                "userCodeAccess",
+                UserCodeAccessResponse.class.getName(),
+                userCodeAccess.stream().map(this.userCodeAccessMapper::toResponseDto).toList()
+        );
+    }
 }

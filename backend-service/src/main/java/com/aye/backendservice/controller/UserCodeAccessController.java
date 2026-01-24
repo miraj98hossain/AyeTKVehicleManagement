@@ -33,4 +33,9 @@ public class UserCodeAccessController {
         return new ResponseEntity<>(userCodeAccessBService.findAllByUser(userId), HttpStatus.OK);
     }
 
+    @GetMapping("/findAllByUserName/{userName}")
+    public ResponseEntity<ApiRequestResponse> findAllByUserName(@PathVariable("userName") String userName) {
+        return new ResponseEntity<>(userCodeAccessBService.findAllByUser(userName), HttpStatus.OK);
+    }
+
 }

@@ -9,4 +9,6 @@ public interface UserCodeAccessBService {
     ApiRequestResponse findById(Long userCodeAccessId);
 
     ApiRequestResponse findAllByUser(Integer userId);
+
+    ApiRequestResponse findAllByUser(String userName);
 }

@@ -18,4 +18,7 @@ public interface UserCodeAccessFeignClient {
 
     @GetMapping("/findAllByUser/{id}")
     ResponseEntity<ApiRequestResponse> findAllByUser(@PathVariable("id") Integer userId);
+
+    @GetMapping("/findAllByUserName/{userName}")
+    ResponseEntity<ApiRequestResponse> findAllByUserName(@PathVariable("userName") String userName);
 }

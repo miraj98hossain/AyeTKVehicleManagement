@@ -18,4 +18,5 @@ public class UserCodeAccessResponse {
     private String itemCatComb;
     private Long scaleSetupId;
     private String scaleSetupName;
+    private String scaleSetupIp;
 }
