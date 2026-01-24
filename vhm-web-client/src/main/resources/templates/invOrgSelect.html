@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html data-layout-decorate="~{fragments/layout}" lang="en">
+<head>
+    <title></title>
+</head>
+
+
+<body>
+
+<div class="right_col" data-layout-fragment="content" role="main">
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="panel panel-default">
+                <div class="panel-heading">Select Inventory Organization</div>
+                <div class="panel-body">
+
+                    <div class="form-group col-sm-12">
+                        <table class="table table-bordered table-hover table-striped">
+                            <thead>
+                            <th>SL</th>
+                            <th>Inv Org Code</th>
+                            <th>Action</th>
+                            </thead>
+
+                            <tbody>
+                            <div th:if="!${#lists.isEmpty(invOrgAccessList)}">
+                                <tr th:each="item,indx : ${invOrgAccessList}">
+                                    <td th:text="*{indx.count}"></td>
+                                    <td th:text="*{item.invOrgName}"></td>
+                                    <td>
+                                        <div aria-label="..." class="btn-group" role="group">
+                                            <a class="btn btn-success"
+                                               th:href="@{'/step-trans/list'+'/'+${pageId}+'/'+${tempDtlId}+'/'+${item.invOrgId}+'/'+${item.orgId}+'?page=0&size=10'}"><span
+                                                    aria-hidden="true"
+                                                    class="glyphicon glyphicon-menu-right"></span></a>
+
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            </div>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+                <div class="panel-footer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
