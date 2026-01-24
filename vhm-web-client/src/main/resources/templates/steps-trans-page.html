@@ -191,23 +191,39 @@
                         </div>
 
 
-                        <div class="form-group col-sm-12" th:if="${isIpAllowed}">
-                            <label class="col-sm-3 control-label" for="startNum"></label>
+                        <div class="form-group col-sm-12">
+                            <label class="col-sm-3 control-label" for="startNum">Scale</label>
+
                             <div class="col-sm-1">
-                                <b></b>
+                                <b>:</b>
                             </div>
-                            <div class="col-sm-4">
-                                <input class="form-control" id="startNum" placeholder="Start Number"
-                                       th:field="${stepTransReq.startNum}" type="text"/>
+
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-sm-3">
+                                        <input class="form-control"
+                                               id="startNum"
+                                               placeholder="Start Number"
+                                               th:field="${stepTransReq.startNum}"
+                                               type="text"/>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <input class="form-control"
+                                               id="endNum"
+                                               placeholder="End Number"
+                                               th:field="${stepTransReq.endNum}"
+                                               type="text"/>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <a class="btn btn-success btn-block"
+                                           th:href="@{'/api/strans-time-stamp/callApi'}">
+                                            Get
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-sm-4">
-                                <input class="form-control" id="endNum" placeholder="End Number"
-                                       th:field="${stepTransReq.endNum}" type="text"/>
-                            </div>
-                            <a class="btn view-btn btn-success"
-                               th:href="@{'/api/strans-time-stamp/callApi'}">
-                                Release
-                            </a>
                         </div>
 
                         <!-- Buttons -->
