@@ -19,6 +19,7 @@ public class UserTransactionTypesResponse {
     private String name;
     private String description;
     private Long userAccessInvOrgId;
+    private Long invOrgId;
     private String startDate;
     private String endDate;
     private Boolean isMandatory;

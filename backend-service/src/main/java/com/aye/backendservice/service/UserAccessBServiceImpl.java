@@ -46,6 +46,8 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     private UserAccessInvOrgMapper userAccessInvOrgMapper;
     @Autowired
     private UserAccessService userAccessService;
+    @Autowired
+    private UserTrnsAndSubinvAccessBService userTrnsAndSubinvAccessBService;
 
 
     @Override
@@ -318,10 +320,6 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         return null;
     }
 
-    @Override
-    public ApiRequestResponse findUserSubInvAccessById(Long id) {
-        return null;
-    }
 
     @Override
     public ApiRequestResponse saveUserSubInvAccess(UserSubInvAccess us, String userName) {
@@ -351,8 +349,23 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     }
 
     @Override
-    public ApiRequestResponse searchInvOrgSubInv(InvOrgSubInvV v) {
-        return null;
+    public ApiRequestResponse searchInvOrgSubInv(Long orgId, Long invOrgId, String subInvName) {
+        return this.userTrnsAndSubinvAccessBService.searchInvOrgSubInv(orgId, invOrgId, subInvName);
+    }
+
+    @Override
+    public ApiRequestResponse findByTransactionTypes(Long userTranTypeId) {
+        return this.userTrnsAndSubinvAccessBService.findByTransactionTypes(userTranTypeId);
+    }
+
+    @Override
+    public ApiRequestResponse saveUserSubInvAccess(UserSubInvAccessRequest us, String userName) {
+        return this.userTrnsAndSubinvAccessBService.saveUserSubInvAccess(us, userName);
+    }
+
+    @Override
+    public ApiRequestResponse findUserSubInvAccessById(Long id) {
+        return this.userTrnsAndSubinvAccessBService.findUserSubInvAccessById(id);
     }
 
 }

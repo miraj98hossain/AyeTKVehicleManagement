@@ -8,12 +8,11 @@ import lombok.Data;
 @Data
 public class UserSubInvAccessRequest {
 
-    private Integer id;
-    @NotBlank(message = "Name is required")
-    @Size(max = 100, message = "Name must be up to 100 characters")
+    private Long id;
     private String name;
     @NotNull(message = "User transaction type ID is required")
-    private Integer userTransactionTypeId;
+    private Long userTransactionTypeId;
+    private Long invOrgId;
     @NotBlank(message = "Sub-inventory is required")
     @Size(max = 50, message = "Sub-inventory must be up to 50 characters")
     private String subInv;

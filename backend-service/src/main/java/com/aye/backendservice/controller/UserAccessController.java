@@ -120,8 +120,29 @@ public class UserAccessController {
     }
 
     @GetMapping("/getOrgHierarchyInvOrgOrderTrnsType/{orgId}/{invOrgId}/{type}")
-    public ApiRequestResponse searchOrdTrnsTypesV(@PathVariable("orgId") Long orgId, @PathVariable("invOrgId") Long invOrgId,
-                                                  @PathVariable("type") String type) {
-        return this.userAccessBService.searchOrdTrnsTypesV(orgId, invOrgId, type);
+    public ResponseEntity<ApiRequestResponse> searchOrdTrnsTypesV(@PathVariable("orgId") Long orgId, @PathVariable("invOrgId") Long invOrgId,
+                                                                  @PathVariable("type") String type) {
+        return ResponseEntity.ok(this.userAccessBService.searchOrdTrnsTypesV(orgId, invOrgId, type));
+
+    }
+
+    @GetMapping("/searchInvOrgSubInv")
+    public ResponseEntity<ApiRequestResponse> searchInvOrgSubInv(@RequestParam("orgId") Long orgId, @RequestParam("invOrgId") Long invOrgId, @RequestParam(value = "subInvName", required = false) String subInvName) {
+        return ResponseEntity.ok(this.userAccessBService.searchInvOrgSubInv(orgId, invOrgId, subInvName));
+    }
+
+    @GetMapping("/findByTransactionTypes")
+    public ResponseEntity<ApiRequestResponse> findByTransactionTypes(@RequestParam("userTranTypeId") Long userTranTypeId) {
+        return ResponseEntity.ok(this.userAccessBService.findByTransactionTypes(userTranTypeId));
+    }
+
+    @PostMapping("/saveUserSubInvAccess")
+    public ResponseEntity<ApiRequestResponse> saveUserSubInvAccess(@Valid @RequestBody UserSubInvAccessRequest us, @RequestParam("userName") String userName) {
+        return ResponseEntity.ok(this.userAccessBService.saveUserSubInvAccess(us, userName));
+    }
+
+    @GetMapping("/findUserSubInvAccessById/{id}")
+    public ResponseEntity<ApiRequestResponse> findUserSubInvAccessById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(this.userAccessBService.findUserSubInvAccessById(id));
     }
 }

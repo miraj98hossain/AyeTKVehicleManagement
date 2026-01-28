@@ -10,8 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserSubInvAccessResponse {
-    private Integer id;
+    private Long id;
     private String name;
-    private Integer userTransactionTypeId;
+    private Long userTransactionTypeId;
     private String subInv;
 }

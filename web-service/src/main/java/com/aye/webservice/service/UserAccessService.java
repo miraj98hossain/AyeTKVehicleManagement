@@ -105,4 +105,22 @@ public class UserAccessService {
         return this.controller.searchOrdTrnsTypesV(orgId, invOrgId, type).getBody();
     }
 
+
+    public ApiRequestResponse searchInvOrgSubInv(Long orgId, Long invOrgId, String subInvName) {
+        return this.controller.searchInvOrgSubInv(orgId, invOrgId, subInvName).getBody();
+    }
+
+
+    public ApiRequestResponse findByTransactionTypes(Long userTranTypeId) {
+        return this.controller.findByTransactionTypes(userTranTypeId).getBody();
+    }
+
+    public ApiRequestResponse saveUserSubInvAccess(UserSubInvAccessRequest us, String userName) {
+        return this.controller.saveUserSubInvAccess(us, userName).getBody();
+    }
+
+    public ApiRequestResponse findUserSubInvAccessById(Long id) {
+        return this.controller.findUserSubInvAccessById(id).getBody();
+    }
+
 }

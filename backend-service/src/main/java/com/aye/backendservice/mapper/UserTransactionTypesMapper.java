@@ -12,6 +12,7 @@ import org.mapstruct.*;
         builder = @Builder(disableBuilder = true))
 public interface UserTransactionTypesMapper {
     @Mapping(source = "userAccessInvOrg.id", target = "userAccessInvOrgId")
+    @Mapping(source = "userAccessInvOrg.invOrgs.id", target = "invOrgId")
     @Mapping(target = "startDate", source = "startDate", dateFormat = "yyyy-MM-dd")
     @Mapping(target = "endDate", source = "endDate", dateFormat = "yyyy-MM-dd")
     UserTransactionTypesResponse toResponseDto(UserTransactionTypes userTransactionTypes);

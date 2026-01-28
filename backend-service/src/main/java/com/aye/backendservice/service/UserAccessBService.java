@@ -3,7 +3,6 @@ package com.aye.backendservice.service;
 
 import com.aye.commonlib.dto.request.*;
 import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.entitylib.entity.InvOrgSubInvV;
 import com.aye.entitylib.entity.UserSubInvAccess;
 import com.aye.entitylib.entity.UserTransactionTypes;
 
@@ -62,6 +61,10 @@ public interface UserAccessBService {
 
     ApiRequestResponse searchOrdTrnsTypesV(Long orgId, Long invOrgId, String typ);
 
-    ApiRequestResponse searchInvOrgSubInv(InvOrgSubInvV v);
 
+    ApiRequestResponse searchInvOrgSubInv(Long orgId, Long invOrgId, String subInvName);
+
+    ApiRequestResponse findByTransactionTypes(Long userTranTypeId);
+
+    ApiRequestResponse saveUserSubInvAccess(UserSubInvAccessRequest us, String userName);
 }

@@ -74,7 +74,18 @@ public interface UserAccessFeignClient {
     ResponseEntity<ApiRequestResponse> DeleteUserTransactionTypes(@PathVariable("id") Long utId);
 
     @GetMapping("/getOrgHierarchyInvOrgOrderTrnsType/{orgId}/{invOrgId}/{type}")
-    ResponseEntity<ApiRequestResponse> searchOrdTrnsTypesV(@PathVariable("orgId") Long orgId,
-                                                           @PathVariable("invOrgId") Long invOrgId,
+    ResponseEntity<ApiRequestResponse> searchOrdTrnsTypesV(@PathVariable("orgId") Long orgId, @PathVariable("invOrgId") Long invOrgId,
                                                            @PathVariable("type") String type);
+
+    @GetMapping("/searchInvOrgSubInv")
+    ResponseEntity<ApiRequestResponse> searchInvOrgSubInv(@RequestParam("orgId") Long orgId, @RequestParam("invOrgId") Long invOrgId, @RequestParam(value = "subInvName", required = false) String subInvName);
+
+    @GetMapping("/findByTransactionTypes")
+    ResponseEntity<ApiRequestResponse> findByTransactionTypes(@RequestParam("userTranTypeId") Long userTranTypeId);
+
+    @PostMapping("/saveUserSubInvAccess")
+    ResponseEntity<ApiRequestResponse> saveUserSubInvAccess(@Valid @RequestBody UserSubInvAccessRequest us, @RequestParam("userName") String userName);
+
+    @GetMapping("/findUserSubInvAccessById/{id}")
+    ResponseEntity<ApiRequestResponse> findUserSubInvAccessById(@PathVariable("id") Long id);
 }
