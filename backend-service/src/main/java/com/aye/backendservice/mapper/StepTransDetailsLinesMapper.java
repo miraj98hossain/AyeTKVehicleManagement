@@ -3,7 +3,7 @@ package com.aye.backendservice.mapper;
 
 import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.response.StepTransDetailsLinesResponse;
-import com.aye.entitylib.entity.StepTransDetailsLines;
+import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 import org.mapstruct.*;
 
 /**

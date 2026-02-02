@@ -2,7 +2,7 @@ package com.aye.backendservice.service;
 
 
 import com.aye.commonlib.dto.response.StepTransLinesResponse;
-import com.aye.entitylib.entity.StepTransLines;
+import com.aye.entitylib.entity.vehicleproject.StepTransLines;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

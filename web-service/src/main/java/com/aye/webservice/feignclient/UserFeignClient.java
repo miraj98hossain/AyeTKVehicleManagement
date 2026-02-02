@@ -35,5 +35,4 @@ public interface UserFeignClient {
 
     @GetMapping("/filterUsers")
     ResponseEntity<ApiRequestResponse> filterUsers(@RequestBody UserSearchRequest searchRequest);
-
 }

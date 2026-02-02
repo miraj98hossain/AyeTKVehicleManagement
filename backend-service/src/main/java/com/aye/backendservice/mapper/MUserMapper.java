@@ -3,11 +3,8 @@ package com.aye.backendservice.mapper;
 
 import com.aye.commonlib.dto.request.MUserRequest;
 import com.aye.commonlib.dto.response.MUserResponse;
-import com.aye.entitylib.entity.Muser;
-import org.mapstruct.Builder;
-import org.mapstruct.InjectionStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValueCheckStrategy;
+import com.aye.entitylib.entity.user.Muser;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
@@ -18,6 +15,11 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface MUserMapper {
 
     MUserResponse toResponseDto(Muser muser);
+
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "autoNumber", ignore = true)
+    @Mapping(target = "roles", ignore = true)
+    MUserResponse toResponseDtoWithLessInfo(Muser muser);
 
     Muser toEntity(Integer id);
 

@@ -3,7 +3,7 @@ package com.aye.backendservice.mapper;
 
 import com.aye.commonlib.dto.request.StepRequest;
 import com.aye.commonlib.dto.response.StepResponse;
-import com.aye.entitylib.entity.Step;
+import com.aye.entitylib.entity.vehicleproject.Step;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

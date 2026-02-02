@@ -8,8 +8,8 @@ package com.aye.backendservice.service.domain;
 
 
 import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.entitylib.entity.Muser;
-import com.aye.entitylib.entity.StepTransDetailsLines;
+import com.aye.entitylib.entity.user.Muser;
+import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 
 import java.util.List;
 

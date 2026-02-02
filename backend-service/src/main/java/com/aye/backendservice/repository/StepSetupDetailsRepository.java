@@ -1,7 +1,7 @@
 package com.aye.backendservice.repository;
 
 
-import com.aye.entitylib.entity.StepSetupDetails;
+import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

@@ -2,7 +2,7 @@ package com.aye.backendservice.mapper;
 
 
 import com.aye.commonlib.dto.response.ScaleSetupResponse;
-import com.aye.entitylib.entity.ScaleSetup;
+import com.aye.entitylib.entity.vehicleproject.ScaleSetup;
 import org.mapstruct.*;
 
 /**

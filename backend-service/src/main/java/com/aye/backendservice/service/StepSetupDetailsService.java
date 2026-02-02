@@ -3,8 +3,8 @@ package com.aye.backendservice.service;
 
 import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
 import com.aye.commonlib.dto.response.StepSetupDetailsResponse;
-import com.aye.entitylib.entity.StepSetup;
-import com.aye.entitylib.entity.StepSetupDetails;
+import com.aye.entitylib.entity.vehicleproject.StepSetup;
+import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

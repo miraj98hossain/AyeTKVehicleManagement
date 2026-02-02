@@ -1,7 +1,7 @@
 package com.aye.backendservice.mapper;
 
 import com.aye.commonlib.dto.response.OrderCollectionRefResponse;
-import com.aye.entitylib.entity.OrderCollection;
+import com.aye.entitylib.entity.order.OrderCollection;
 import org.mapstruct.*;
 
 /**

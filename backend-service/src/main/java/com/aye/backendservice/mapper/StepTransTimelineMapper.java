@@ -2,7 +2,7 @@ package com.aye.backendservice.mapper;
 
 
 import com.aye.commonlib.dto.request.StepTransTimelineRequest;
-import com.aye.entitylib.entity.StepTransTimeline;
+import com.aye.entitylib.entity.vehicleproject.StepTransTimeline;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",

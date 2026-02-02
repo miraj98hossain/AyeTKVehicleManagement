@@ -3,7 +3,7 @@ package com.aye.backendservice.mapper;
 
 import com.aye.commonlib.dto.request.StepTransRequest;
 import com.aye.commonlib.dto.response.StepTransResponse;
-import com.aye.entitylib.entity.StepTrans;
+import com.aye.entitylib.entity.vehicleproject.StepTrans;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR,

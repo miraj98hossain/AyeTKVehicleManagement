@@ -2,7 +2,7 @@ package com.aye.backendservice.mapper;
 
 
 import com.aye.commonlib.dto.response.OrderedCustomerVResponse;
-import com.aye.entitylib.entity.OrderedCustomerV;
+import com.aye.entitylib.entity.order.OrderedCustomerV;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

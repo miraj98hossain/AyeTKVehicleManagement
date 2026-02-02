@@ -1,7 +1,7 @@
 package com.aye.backendservice.mapper;
 
 import com.aye.commonlib.dto.response.OnlineCollectionResponse;
-import com.aye.entitylib.entity.OnlineCollection;
+import com.aye.entitylib.entity.order.OnlineCollection;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

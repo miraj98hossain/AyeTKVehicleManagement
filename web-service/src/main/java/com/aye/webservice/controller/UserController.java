@@ -51,4 +51,9 @@ public class UserController {
     ResponseEntity<ApiRequestResponse> filterUsers(@RequestBody UserSearchRequest searchRequest) {
         return ResponseEntity.ok(this.userService.filterUsers(searchRequest));
     }
+
+    @GetMapping("/findByUserNameLike")
+    ResponseEntity<ApiRequestResponse> findByUserNameLike(@RequestParam("username") String username) {
+        return ResponseEntity.ok(this.userService.findByUserNameLike(username));
+    }
 }

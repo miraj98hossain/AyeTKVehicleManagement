@@ -1,7 +1,7 @@
 package com.aye.backendservice.repository;
 
 
-import com.aye.entitylib.entity.StepTransLines;
+import com.aye.entitylib.entity.vehicleproject.StepTransLines;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

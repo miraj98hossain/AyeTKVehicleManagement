@@ -5,9 +5,9 @@ import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
 import com.aye.entitylib.entity.BeforeTripV;
-import com.aye.entitylib.entity.Muser;
-import com.aye.entitylib.entity.StepTransDetails;
-import com.aye.entitylib.entity.StepTransDetailsLines;
+import com.aye.entitylib.entity.user.Muser;
+import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
+import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

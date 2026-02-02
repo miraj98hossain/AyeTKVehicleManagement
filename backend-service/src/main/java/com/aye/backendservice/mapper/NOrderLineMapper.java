@@ -1,7 +1,7 @@
 package com.aye.backendservice.mapper;
 
 import com.aye.commonlib.dto.response.NOrderLineResponse;
-import com.aye.entitylib.entity.NorderLine;
+import com.aye.entitylib.entity.order.NorderLine;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;

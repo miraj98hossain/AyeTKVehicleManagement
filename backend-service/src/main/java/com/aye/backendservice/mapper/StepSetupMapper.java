@@ -3,7 +3,7 @@ package com.aye.backendservice.mapper;
 
 import com.aye.commonlib.dto.request.StepSetupRequest;
 import com.aye.commonlib.dto.response.StepSetupResponse;
-import com.aye.entitylib.entity.StepSetup;
+import com.aye.entitylib.entity.vehicleproject.StepSetup;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring",

@@ -12,7 +12,13 @@ import com.aye.backendservice.mapper.StepTransDetailsMapper;
 import com.aye.backendservice.service.NoGenService;
 import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.commonlib.dto.request.StepTransDetailsRequest;
-import com.aye.entitylib.entity.*;
+import com.aye.entitylib.entity.BeforeTripV;
+import com.aye.entitylib.entity.BeforeTripWDsV;
+import com.aye.entitylib.entity.XxtkgTripDelvDtlV;
+import com.aye.entitylib.entity.user.Muser;
+import com.aye.entitylib.entity.vehicleproject.StepTrans;
+import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
+import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

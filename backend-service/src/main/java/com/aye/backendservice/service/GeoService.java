@@ -1,8 +1,8 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.entitylib.entity.Geo;
-import com.aye.entitylib.entity.GeoSerach;
+import com.aye.entitylib.entity.geo.Geo;
+import com.aye.entitylib.entity.geo.GeoSerach;
 
 import java.util.List;
 

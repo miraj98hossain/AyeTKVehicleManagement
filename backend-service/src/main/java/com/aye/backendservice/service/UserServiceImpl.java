@@ -11,8 +11,8 @@ import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
 import com.aye.commonlib.dto.response.MRoleResponse;
 import com.aye.commonlib.dto.response.MUserResponse;
 import com.aye.entitylib.entity.CommonColumn;
-import com.aye.entitylib.entity.Mrole;
-import com.aye.entitylib.entity.Muser;
+import com.aye.entitylib.entity.user.Mrole;
+import com.aye.entitylib.entity.user.Muser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public ApiRequestResponse findByUserNameLike(String username) {
         List<MUserResponse> mUserList = this.muserService.findByUserNameLike(username)
-                .stream().map(mUser -> mUserMapper.toResponseDto(mUser)).toList();
+                .stream().map(mUser -> mUserMapper.toResponseDtoWithLessInfo(mUser)).toList();
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
                 ApiRequestResponseDetail.ObjectType.A, "mUsers",

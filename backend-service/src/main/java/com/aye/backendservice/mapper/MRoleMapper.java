@@ -2,7 +2,7 @@ package com.aye.backendservice.mapper;
 
 
 import com.aye.commonlib.dto.response.MRoleResponse;
-import com.aye.entitylib.entity.Mrole;
+import com.aye.entitylib.entity.user.Mrole;
 import org.mapstruct.Builder;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
