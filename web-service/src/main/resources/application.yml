@@ -2,4 +2,4 @@ spring:
   application:
     name: web-service
   profiles:
-    active: prod
+    active: local
