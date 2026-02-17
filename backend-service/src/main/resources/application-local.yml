@@ -15,11 +15,11 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
+        hbm2ddl:
+          schema_filter_provider: com.aye.backendservice.config.MySchemaFilterProvider
         proc:
           param_null_passing: true
         enable_lazy_load_no_trans: true
-        hbm2ddl:
-          auto: validate
         default_schema: mapps
         id:
           new_generator_mappings: true
