@@ -19,6 +19,7 @@ spring:
           param_null_passing: true
         enable_lazy_load_no_trans: true
         hbm2ddl:
+          schema_filter_provider: com.aye.backendservice.config.MySchemaFilterProvider
           auto: validate
         default_schema: mapps
         id:
