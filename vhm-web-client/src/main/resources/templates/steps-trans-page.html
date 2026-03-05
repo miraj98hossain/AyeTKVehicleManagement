@@ -191,7 +191,7 @@
                         </div>
 
 
-                        <div class="form-group col-sm-12">
+                        <div class="form-group col-sm-12" th:if="${isIpAllowed}">
                             <label class="col-sm-3 control-label" for="startNum">Scale</label>
 
                             <div class="col-sm-1">
@@ -339,7 +339,7 @@
                             <div class="modal-content">
 
                                 <form method="post"
-                                      th:action="@{'/step-trans/update-lines-frm-modal/'+${pageId}+'/'+${tempDtlId}+'?page='+${page}+'&size='+${size}}"
+                                      th:action="@{'/step-trans/update-lines-frm-modal/'+${pageId}+'/'+${tempDtlId}+'/'+${invOrgId}+'/'+${orgId}+'?page='+${page}+'&size='+${size}}"
                                       th:object="${stepTransLineReq}">
 
                                     <div class="modal-header">
@@ -447,15 +447,15 @@
                                     <!--                                    </a>-->
 
                                     <a class="btn edit-btn btn-warning"
-                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId},stepStatus='WIP',page=${page},size=${size})}"
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId},stepStatus='WIP',page=${page},size=${size})}"
                                        th:if="${line.stage == 1 and line.stepStatus != 'WIP'}">
                                         WIP
                                     </a>
 
                                     <a class="btn pick-btn btn-info"
-                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'
-                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Pick',page=${page},size=${size})}"
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Pick',page=${page},size=${size})}"
                                        th:if="${line.stage == 0 and line.stepStatus != 'Pick'}">
                                         Pick
                                     </a>
@@ -498,7 +498,7 @@
                                 <!-- Previous -->
                                 <li th:classappend="${!stepTransResponseList.hasPrevious()} ? 'disabled'">
                                     <a aria-label="Previous"
-                                       th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.number - 1}, size=${stepTransResponseList.size})}"
+                                       th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.number - 1}, size=${stepTransResponseList.size})}"
                                        th:if="${stepTransResponseList.hasPrevious()}">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
@@ -507,7 +507,7 @@
 
                                 <!-- First page -->
                                 <li th:if="${stepTransResponseList.number > 2}">
-                                    <a th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=0, size=${stepTransResponseList.size})}">1</a>
+                                    <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=0, size=${stepTransResponseList.size})}">1</a>
                                 </li>
                                 <li class="disabled" th:if="${stepTransResponseList.number > 3}">
                                     <span>...</span>
@@ -519,7 +519,7 @@
                         (stepTransResponseList.number > 1 ? stepTransResponseList.number : 0),
                         (stepTransResponseList.number < stepTransResponseList.totalPages - 2 ? stepTransResponseList.number + 1 : stepTransResponseList.totalPages - 1)
                     )}">
-                                    <a th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${i}, size=${stepTransResponseList.size})}"
+                                    <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${i}, size=${stepTransResponseList.size})}"
                                        th:text="${i + 1}"></a>
                                 </li>
 
@@ -529,7 +529,7 @@
                                     <span>...</span>
                                 </li>
                                 <li th:if="${stepTransResponseList.number < stepTransResponseList.totalPages - 2}">
-                                    <a th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.totalPages - 1}, size=${stepTransResponseList.size})}"
+                                    <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.totalPages - 1}, size=${stepTransResponseList.size})}"
                                        th:text="${stepTransResponseList.totalPages}">
                                     </a>
                                 </li>
@@ -537,7 +537,7 @@
                                 <!-- Next -->
                                 <li th:classappend="${!stepTransResponseList.hasNext()} ? 'disabled'">
                                     <a aria-label="Next"
-                                       th:href="@{/step-trans/{pageId}/{tempDtlId}(pageId=${pageId}, tempDtlId=${tempDtlId}, page=${stepTransResponseList.number + 1}, size=${stepTransResponseList.size})}"
+                                       th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.number + 1}, size=${stepTransResponseList.size})}"
                                        th:if="${stepTransResponseList.hasNext()}">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
