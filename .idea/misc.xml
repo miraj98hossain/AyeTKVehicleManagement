@@ -10,13 +10,6 @@
         <option value="$PROJECT_DIR$/webclient/pom.xml" />
         <option value="$PROJECT_DIR$/web-client/pom.xml" />
         <option value="$PROJECT_DIR$/backend-service/common-lib/pom.xml" />
-        <option value="$PROJECT_DIR$/common-lib/pom.xml" />
-        <option value="$PROJECT_DIR$/vhm-web-client/pom.xml" />
-        <option value="$PROJECT_DIR$/../AyeTkMobileApplications/AYERestUser/pom.xml" />
-        <option value="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTKMobUserOrganization/pom.xml" />
-        <option value="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTkMobUserData/pom.xml" />
-        <option value="$PROJECT_DIR$/../AyeTkMobileApplications/AyeTkMobModelLib/pom.xml" />
-        <option value="$PROJECT_DIR$/../entity-lib/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

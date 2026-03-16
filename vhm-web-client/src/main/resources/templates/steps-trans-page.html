@@ -411,9 +411,9 @@
                             <thead>
                             <tr>
                                 <th>TransNo</th>
-                                <th>LinesNo</th>
+                                <th>Entry Date</th>
                                 <th>VehicleNo</th>
-                                <th>Driver Name</th>
+                                <th>Driver Phone</th>
                                 <th>Step</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -424,9 +424,9 @@
                             <tbody>
                             <tr th:each="line, stat : ${stepTransResponseList.getContent()}">
                                 <td th:text="${line.stepTransNo}"></td>
-                                <td th:text="${line.stepTransLinesNo}"></td>
+                                <td th:text="${#dates.format(line.createdAt, 'dd-MMM-yyyy')}"></td>
                                 <td th:text="${line.vehicleNumber}"></td>
-                                <td th:text="${line.driverName}"></td>
+                                <td th:text="${line.driverPhoneNo}"></td>
                                 <td th:text="${line.stepName}"></td>
                                 <td class="text-center" th:text="${line.stepStatus}"></td>
                                 <td class="text-center">

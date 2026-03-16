@@ -32,6 +32,7 @@ public class OrgHierarchyResponse {
     private String colorSchema;
     private String colorSchemaApp;
     private String colorSchemaButton;
+    private String dimOrderEnabled;
     private List<InventoryInformationResponse> inventoryInformationses;
 }
 
