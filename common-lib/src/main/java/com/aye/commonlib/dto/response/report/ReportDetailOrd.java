@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportDetailOrd {
- 
+
 
     private String orderNum;
 
@@ -28,5 +28,15 @@ public class ReportDetailOrd {
 
     private BigDecimal appAmount;
 
+    public ReportDetailOrd(String OrderNum, Date OrderDate, String Status, BigDecimal Qty, BigDecimal Amount,
+                           BigDecimal AppAmount) {
 
+        setAmount(Amount);
+        setAppAmount(AppAmount);
+        setOrderDate(OrderDate);
+        setOrderNum(OrderNum);
+        setQty(Qty);
+        setStatus(Status);
+
+    }
 }
