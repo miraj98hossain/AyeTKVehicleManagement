@@ -1,8 +1,6 @@
 package com.aye.commonlib.dto.response.schedule;
 
 
-import com.aye.commonlib.dto.request.schedule.ScheduleHeaderReqDto;
-import com.aye.commonlib.dto.request.schedule.ScheduleLineReqDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +15,9 @@ import java.util.List;
 public class ScheduleCustResDto {
 
 
-    private final List<ScheduleLineReqDto> scheduleLineReqDtos = new ArrayList();
+    private List<ScheduleLineResDto> scheduleLineReqDtos = new ArrayList();
     private Integer id;
-    private ScheduleHeaderReqDto scheduleHeader;
+    private ScheduleHeaderResDto scheduleHeader;
     private Integer createdBy;
     private Date creationDate;
     private Integer lastUpdateBy;

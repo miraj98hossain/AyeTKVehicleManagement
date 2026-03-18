@@ -1,0 +1,22 @@
+package com.aye.commonlib.dto.response.userOrg;
+
+import lombok.Data;
+
+@Data
+public class UserCodeAccessResponse {
+    private Long id;
+    private Integer userId;
+    private String userName;
+    private String accessCodeType;
+    private String accessCodeLevel;
+    private Long orgHierarchyId;
+    private String orgHierarchyCode;
+    private Long invInfoId;
+    private String invInfoCode;
+    private String invInfoName;
+    private Long itemCatCombId;
+    private String itemCatComb;
+    private Long scaleSetupId;
+    private String scaleSetupName;
+    private String scaleSetupIp;
+}

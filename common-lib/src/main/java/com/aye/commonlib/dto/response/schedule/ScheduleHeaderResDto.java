@@ -1,6 +1,5 @@
 package com.aye.commonlib.dto.response.schedule;
 
-import com.aye.commonlib.dto.request.schedule.ScheduleCustReqDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ScheduleHeaderResDto {
 
-    private List<ScheduleCustReqDto> scheduleCusts = new ArrayList();
+    private List<ScheduleCustResDto> scheduleCusts = new ArrayList();
     private Integer id;
     private Integer createdBy;
     private Date creationDate;

@@ -1,0 +1,25 @@
+package com.aye.commonlib.dto.response.userOrg;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class PagesResponse {
+    private Long id;
+    private String pageName;
+    private String pageUrl;
+    private String pageUrlDisplayName;
+    private Boolean status;
+    private Integer pageGroup;
+    private String physicalName;
+    private String pageType;
+    private Integer appPageId;
+    private Integer appId;
+    private Integer shortOrder;
+    private String function;
+}

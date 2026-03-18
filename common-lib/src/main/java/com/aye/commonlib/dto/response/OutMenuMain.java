@@ -1,6 +1,8 @@
 package com.aye.commonlib.dto.response;
 
 
+import com.aye.commonlib.dto.response.userOrg.UserAccessTemltDtlResponse;
+import com.aye.commonlib.dto.response.userOrg.UserMenuResponse;
 import lombok.Getter;
 import lombok.Setter;
 
