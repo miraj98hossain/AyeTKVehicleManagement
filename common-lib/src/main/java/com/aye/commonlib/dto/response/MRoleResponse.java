@@ -1,8 +1,13 @@
 package com.aye.commonlib.dto.response;
 
+import com.aye.enums.RoleTypes;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class MRoleResponse {
     private int id;
     private String role;
@@ -11,5 +16,5 @@ public class MRoleResponse {
     private String creationDate;
     private String lastUpdateDate;
     private Integer lastUpdateLogin;
-    private String roleTypes;
+    private RoleTypes roleTypes;
 }

@@ -1,8 +1,8 @@
 package com.aye.commonlib.dto.response.order;
 
+import com.aye.enums.contPaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -87,15 +87,5 @@ public class BulkContractPaymentResDto {
 
     private Date LastUpdateDate;
 
-    @Getter
-    public enum contPaymentStatus {
-        N("New"), P("Posted"), C("Cancel");
-        private final String displayName;
-
-        contPaymentStatus(String displayName) {
-            this.displayName = displayName;
-        }
-
-    }
 
 }

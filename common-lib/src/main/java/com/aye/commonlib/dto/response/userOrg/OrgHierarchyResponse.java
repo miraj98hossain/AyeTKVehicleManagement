@@ -1,5 +1,6 @@
 package com.aye.commonlib.dto.response.userOrg;
 
+import com.aye.enums.OrgType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 public class OrgHierarchyResponse {
     private Long id;
-    private String type;
+    private OrgType type;
     private String name;
     private String code;
     private String address;

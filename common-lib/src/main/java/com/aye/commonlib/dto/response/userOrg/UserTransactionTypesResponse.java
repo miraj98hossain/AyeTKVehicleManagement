@@ -1,5 +1,6 @@
 package com.aye.commonlib.dto.response.userOrg;
 
+import com.aye.enums.TrnsType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class UserTransactionTypesResponse {
     private Long id;
-    private String trnsType;
+    private TrnsType trnsType;
     private Long trnsTypeId;
     private String name;
     private String description;

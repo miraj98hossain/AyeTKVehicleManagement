@@ -1,6 +1,6 @@
 package com.aye.commonlib.dto.response.schedule;
 
-import com.aye.commonlib.dto.RegularData;
+import com.aye.enums.RegularData;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;

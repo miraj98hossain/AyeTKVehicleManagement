@@ -1,5 +1,7 @@
 package com.aye.commonlib.dto.response.userOrg;
 
+import com.aye.enums.AccessCodeLevel;
+import com.aye.enums.AccessCodeType;
 import lombok.Data;
 
 @Data
@@ -7,8 +9,8 @@ public class UserCodeAccessResponse {
     private Long id;
     private Integer userId;
     private String userName;
-    private String accessCodeType;
-    private String accessCodeLevel;
+    private AccessCodeType accessCodeType;
+    private AccessCodeLevel accessCodeLevel;
     private Long orgHierarchyId;
     private String orgHierarchyCode;
     private Long invInfoId;

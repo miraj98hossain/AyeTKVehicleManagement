@@ -1,5 +1,6 @@
 package com.aye.commonlib.dto.response;
 
+import com.aye.enums.DataType;
 import lombok.Data;
 
 @Data
@@ -8,9 +9,9 @@ public class DataSetResponse {
     private String dataSetName;
     private String tableName;
     private String columnName;
-    private String columnNameDataType;
+    private DataType columnNameDataType;
     private String columnId;
-    private String columnIdDataType;
+    private DataType columnIdDataType;
     private String wherClause;
     private String orderBy;
 }

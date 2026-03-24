@@ -1,6 +1,7 @@
 package com.aye.commonlib.dto.response.userData;
 
 
+import com.aye.enums.PaymentType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,5 +17,5 @@ public class MuserBankResDto {
 
     private Integer bankId;
 
-    private String refType;
+    private PaymentType refType;
 }

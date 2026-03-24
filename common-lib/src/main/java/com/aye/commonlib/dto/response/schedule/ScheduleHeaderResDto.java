@@ -1,5 +1,6 @@
 package com.aye.commonlib.dto.response.schedule;
 
+import com.aye.enums.RegularData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,7 @@ public class ScheduleHeaderResDto {
     private Date lastUpdateDate;
     private Long orgId;
     private String scheduleNumber;
-    private String status;
+    private RegularData.ScheduleStstus status;
     private Long invOrgId;
     @DateTimeFormat(
             pattern = "yyyy-MM-dd"

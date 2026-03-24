@@ -1,5 +1,6 @@
 package com.aye.commonlib.dto.request;
 
+import com.aye.enums.DataType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -24,7 +25,7 @@ public class DataSetRequest {
 
     @NotBlank(message = "Column data type is required")
     @Size(max = 50, message = "Column data type must be up to 50 characters")
-    private String columnNameDataType;
+    private DataType columnNameDataType;
 
     @NotBlank(message = "Column ID is required")
     @Size(max = 100, message = "Column ID must be up to 100 characters")
@@ -32,7 +33,7 @@ public class DataSetRequest {
 
     @NotBlank(message = "Column ID data type is required")
     @Size(max = 50, message = "Column ID data type must be up to 50 characters")
-    private String columnIdDataType;
+    private DataType columnIdDataType;
 
     @Size(max = 300, message = "Where clause must be up to 300 characters")
     private String wherClause;

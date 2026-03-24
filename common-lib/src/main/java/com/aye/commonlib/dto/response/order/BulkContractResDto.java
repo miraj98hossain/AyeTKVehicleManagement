@@ -1,6 +1,8 @@
 package com.aye.commonlib.dto.response.order;
 
 
+import com.aye.enums.contractStatus;
+import com.aye.enums.mot;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -125,30 +127,7 @@ public class BulkContractResDto {
 
 
     private List<BulkContractPaymentResDto> bulkContractPayments = new ArrayList<>();
-
-
-    public enum contractStatus {
-        N, P, A, C, F, FC, R
-    }
-
-    public enum ControllerAction {
-        C, U, D, P
-    }
-
-    @Getter
-    public enum mot {
-        COT("Company Transport"),
-        CUT("Customer Transport");
-
-
-        private final String displayName;
-
-        mot(String displayName) {
-            this.displayName = displayName;
-        }
-
-    }
-
+    
     public interface ContractList {
         Long getOrgId();
 

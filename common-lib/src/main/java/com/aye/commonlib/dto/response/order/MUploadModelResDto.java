@@ -1,5 +1,6 @@
 package com.aye.commonlib.dto.response.order;
 
+import com.aye.enums.MuploadTrnsSource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -46,7 +47,4 @@ public class MUploadModelResDto {
     private MuploadTrnsSource trnsSource;
 
 
-    public enum MuploadTrnsSource {
-        BULK, OTHER
-    }
 }

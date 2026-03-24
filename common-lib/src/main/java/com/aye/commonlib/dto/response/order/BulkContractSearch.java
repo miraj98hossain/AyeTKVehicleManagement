@@ -1,5 +1,4 @@
-package com.aye.commonlib.dto.response.schedule;
-
+package com.aye.commonlib.dto.response.order;
 
 import com.aye.enums.RegularData;
 import lombok.AllArgsConstructor;
@@ -15,25 +14,36 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScheduleSearchResDto {
+public class BulkContractSearch {
 
-    RegularData.ScheduleStstus status;
+
     private Long orgId;
     private Long invOrgId;
     private Integer custAcctId;
     private String customerName;
-    private Integer custSiteId;
-    private Integer shipToId;
-    private Integer userId;
-    private Integer scdHeaderId;
-    private String scheduleNumber;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
 
+    private Integer custSiteId;
+
+    private Integer shipToId;
+
+    private Integer userId;
+
+    private Integer contractId;
+
+    private Long contNumber;
+
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fromrDate;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
 
     private Date toDate;
-    private String itemClass;
-    private String subInventory;
+
+    private Integer inventoryItemId;
+
+
+    private RegularData.ContractStstus status;
+
 
 }

@@ -1,6 +1,7 @@
 package com.aye.commonlib.dto.response.order;
 
-import com.aye.commonlib.dto.RegularData;
+import com.aye.enums.PaymentType;
+import com.aye.enums.RegularData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -40,8 +41,7 @@ public class OnlineCollectionResDto {
 
     private String customerAddress;
 
-
-    private String refType;
+    private PaymentType refType;
 
 
     private String refNumber;

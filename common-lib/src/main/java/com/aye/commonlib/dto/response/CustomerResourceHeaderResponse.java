@@ -1,11 +1,16 @@
 package com.aye.commonlib.dto.response;
 
+import com.aye.enums.RegularData;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class CustomerResourceHeaderResponse {
     private Integer id;
     private Integer custAccountId;
@@ -14,7 +19,7 @@ public class CustomerResourceHeaderResponse {
     private Long orgId;
     private Date start_date;
     private Date end_date;
-    private String resourceStatus;
+    private RegularData.ResourceStatus resourceStatus;
     private Integer createdBy;
     private Integer lastUpdateBy;
     private String creationDate;

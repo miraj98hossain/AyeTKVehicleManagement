@@ -1,5 +1,6 @@
 package com.aye.commonlib.dto.response;
 
+import com.aye.enums.RptType;
 import lombok.Data;
 
 @Data
@@ -11,9 +12,8 @@ public class ExecutablesResponse {
     private String moduleCode;
     private String execPath;
     private String execType;
-    private String outpuType;
     private Boolean onReqPrint;
     private String printerName;
-
+    private RptType outpuType;
 
 }
