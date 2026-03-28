@@ -1,8 +1,9 @@
 package com.aye.vhmwebclient.service;
 
-import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
-import com.aye.commonlib.dto.request.StepSetupRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+
+import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
+import com.aye.dtoLib.dto.request.StepSetupRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.vhmwebclient.feignclient.StepSetupServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

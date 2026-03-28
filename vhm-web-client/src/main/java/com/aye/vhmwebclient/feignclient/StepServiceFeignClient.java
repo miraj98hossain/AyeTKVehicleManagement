@@ -1,8 +1,8 @@
 package com.aye.vhmwebclient.feignclient;
 
 
-import com.aye.commonlib.dto.request.StepRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.StepRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

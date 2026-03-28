@@ -1,6 +1,7 @@
 package com.aye.vhmwebclient.feignclient;
 
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
