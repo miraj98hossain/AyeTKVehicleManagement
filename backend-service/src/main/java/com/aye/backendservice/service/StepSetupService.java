@@ -1,9 +1,9 @@
 package com.aye.backendservice.service;
 
-import com.aye.commonlib.dto.request.StepSetupDetailsRequest;
-import com.aye.commonlib.dto.request.StepSetupRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.StepSetupDetailsResponse;
+import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
+import com.aye.dtoLib.dto.request.StepSetupRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.StepSetupDetailsResponse;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;

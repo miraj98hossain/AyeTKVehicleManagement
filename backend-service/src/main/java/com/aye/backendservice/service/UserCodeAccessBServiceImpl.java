@@ -2,13 +2,15 @@ package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserCodeAccessService;
-import com.aye.backendservice.mapper.UserCodeAccessMapper;
-import com.aye.commonlib.dto.request.UserCodeAccessRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.UserCodeAccessResponse;
+
+import com.aye.dtoLib.dto.request.UserCodeAccessRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+
+import com.aye.dtoLib.dto.response.userOrg.UserCodeAccessResponse;
 import com.aye.entitylib.entity.UserCodeAccess;
 import com.aye.entitylib.entity.user.Muser;
+import com.aye.mapper.userOrg.UserCodeAccessMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

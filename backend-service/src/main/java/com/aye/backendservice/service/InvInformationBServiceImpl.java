@@ -2,12 +2,14 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.InvInformationsService;
-import com.aye.backendservice.mapper.InventoryInformationMapper;
-import com.aye.commonlib.dto.request.InventoryInformationRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.InventoryInformationResponse;
+
+import com.aye.dtoLib.dto.request.InventoryInformationRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+
+import com.aye.dtoLib.dto.response.userOrg.InventoryInformationResponse;
 import com.aye.entitylib.entity.InventoryInformations;
+import com.aye.mapper.userOrg.InventoryInformationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

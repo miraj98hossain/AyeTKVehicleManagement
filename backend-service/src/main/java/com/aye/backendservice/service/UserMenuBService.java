@@ -1,8 +1,8 @@
 package com.aye.backendservice.service;
 
-import com.aye.commonlib.dto.request.UserMenuRequest;
-import com.aye.commonlib.dto.request.UserSubMenuRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.UserMenuRequest;
+import com.aye.dtoLib.dto.request.UserSubMenuRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 
 
 public interface UserMenuBService {

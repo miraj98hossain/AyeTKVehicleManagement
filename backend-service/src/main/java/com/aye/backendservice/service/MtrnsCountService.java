@@ -2,8 +2,8 @@ package com.aye.backendservice.service;
 
 
 import com.aye.backendservice.repository.MtrnsCountRepo;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
 import com.aye.entitylib.entity.MtrnsCount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

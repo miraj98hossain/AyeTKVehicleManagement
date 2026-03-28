@@ -7,16 +7,17 @@ package com.aye.backendservice.service;
  */
 
 
-import com.aye.backendservice.mapper.StepTransDetailsLinesMapper;
-import com.aye.backendservice.mapper.StepTransDetailsMapper;
+
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.StepTransDetailsLinesResponse;
-import com.aye.commonlib.dto.response.StepTransDetailsResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+import com.aye.dtoLib.dto.response.StepTransDetailsLinesResponse;
+import com.aye.dtoLib.dto.response.StepTransDetailsResponse;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
+import com.aye.mapper.StepTransDetailsLinesMapper;
+import com.aye.mapper.StepTransDetailsMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -40,7 +40,7 @@
         </dependency>
         <dependency>
             <groupId>com.aye</groupId>
-            <artifactId>common-lib</artifactId>
+            <artifactId>aye-dto-lib</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>

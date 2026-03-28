@@ -1,8 +1,8 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.commonlib.dto.request.*;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.*;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.entitylib.entity.UserSubInvAccess;
 import com.aye.entitylib.entity.UserTransactionTypes;
 

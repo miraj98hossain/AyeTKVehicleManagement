@@ -3,7 +3,7 @@ package com.aye.backendservice.service.domain;
 
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
-import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
+import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.entitylib.entity.user.Muser;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 import org.springframework.beans.factory.annotation.Autowired;

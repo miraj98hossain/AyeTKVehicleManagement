@@ -1,8 +1,8 @@
 package com.aye.backendservice.service;
 
-import com.aye.commonlib.dto.request.ExecutableParameterRequest;
-import com.aye.commonlib.dto.request.ExecutablesRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.ExecutableParameterRequest;
+import com.aye.dtoLib.dto.request.ExecutablesRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 
 public interface ExecutablesBService {
 

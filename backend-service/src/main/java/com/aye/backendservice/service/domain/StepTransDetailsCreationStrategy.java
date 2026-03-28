@@ -7,7 +7,7 @@ package com.aye.backendservice.service.domain;
  */
 
 
-import com.aye.commonlib.dto.request.StepTransDetailsRequest;
+import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
 import com.aye.entitylib.entity.user.Muser;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
 

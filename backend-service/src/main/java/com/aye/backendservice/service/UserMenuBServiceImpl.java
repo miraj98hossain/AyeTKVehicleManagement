@@ -3,17 +3,23 @@ package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserMenuService;
-import com.aye.backendservice.mapper.UserAccessMapper;
-import com.aye.backendservice.mapper.UserAccessTemltDtlMapper;
-import com.aye.backendservice.mapper.UserMenuMapper;
-import com.aye.backendservice.mapper.UserSubMenuMapper;
-import com.aye.commonlib.dto.request.UserMenuRequest;
-import com.aye.commonlib.dto.request.UserSubMenuRequest;
-import com.aye.commonlib.dto.response.*;
+
+import com.aye.dtoLib.dto.request.UserMenuRequest;
+import com.aye.dtoLib.dto.request.UserSubMenuRequest;
+import com.aye.dtoLib.dto.response.*;
+import com.aye.dtoLib.dto.response.userOrg.UserAccessResponse;
+import com.aye.dtoLib.dto.response.userOrg.UserAccessTemltDtlResponse;
+import com.aye.dtoLib.dto.response.userOrg.UserMenuResponse;
+import com.aye.dtoLib.dto.response.userOrg.UserSubMenuResponse;
 import com.aye.entitylib.entity.UserMenu;
 import com.aye.entitylib.entity.UserSubMenu;
-import com.aye.entitylib.entity.enums.RoleTypes;
+
 import com.aye.entitylib.entity.user.Muser;
+import com.aye.enums.RoleTypes;
+import com.aye.mapper.userOrg.UserAccessMapper;
+import com.aye.mapper.userOrg.UserAccessTemltDtlMapper;
+import com.aye.mapper.userOrg.UserMenuMapper;
+import com.aye.mapper.userOrg.UserSubMenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

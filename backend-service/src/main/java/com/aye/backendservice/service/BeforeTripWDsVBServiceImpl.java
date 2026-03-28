@@ -1,10 +1,12 @@
 package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.BeforeTripWDsVService;
-import com.aye.backendservice.mapper.BeforeTripWDsVMapper;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.BeforeTripWDsVResponse;
+
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+
+import com.aye.dtoLib.dto.response.userOrg.BeforeTripWDsVResDto;
+import com.aye.mapper.schedule.BeforeTripWDsVMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,7 @@ public class BeforeTripWDsVBServiceImpl implements BeforeTripWDsVBService {
                 "Success",
                 ApiRequestResponseDetail.ObjectType.A,
                 "dsList",
-                BeforeTripWDsVResponse.class.getName(),
+                BeforeTripWDsVResDto.class.getName(),
                 list.stream()
                         .map(beforeTripWDsVMapper::toResponseDto).toList()
         );

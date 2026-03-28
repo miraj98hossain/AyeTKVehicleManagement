@@ -1,10 +1,12 @@
 package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.BeforeTripVService;
-import com.aye.backendservice.mapper.BeforeTripVMapper;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.BeforeTripVResponse;
+
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+
+import com.aye.dtoLib.dto.response.userOrg.BeforeTripVResDto;
+import com.aye.mapper.schedule.BeforeTripVMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,7 +32,7 @@ public class BeforeTripVBServiceImpl implements BeforeTripVBService {
                 "Success",
                 ApiRequestResponseDetail.ObjectType.A,
                 "doList",
-                BeforeTripVResponse.class.getName(),
+                BeforeTripVResDto.class.getName(),
                 this.beforeTripVService.getDeliveryNumbers(orgId, invOrgId, "On Hand", searchWords).stream().map(
                         beforeTripVMapper::toResponseDto
                 ).toList()

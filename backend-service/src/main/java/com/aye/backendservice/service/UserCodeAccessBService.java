@@ -1,7 +1,7 @@
 package com.aye.backendservice.service;
 
-import com.aye.commonlib.dto.request.UserCodeAccessRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.UserCodeAccessRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 
 public interface UserCodeAccessBService {
     ApiRequestResponse save(UserCodeAccessRequest userCodeAccess, String currentUser);

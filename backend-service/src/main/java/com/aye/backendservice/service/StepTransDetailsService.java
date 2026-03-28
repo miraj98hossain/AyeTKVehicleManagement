@@ -1,7 +1,7 @@
 package com.aye.backendservice.service;
 
-import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import org.springframework.stereotype.Service;
 
 

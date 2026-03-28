@@ -2,13 +2,18 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.*;
-import com.aye.backendservice.mapper.*;
-import com.aye.commonlib.dto.request.*;
-import com.aye.commonlib.dto.response.*;
+
+import com.aye.dtoLib.dto.request.*;
+import com.aye.dtoLib.dto.response.*;
+import com.aye.dtoLib.dto.response.order.OrdTrnsTypesVResDto;
+import com.aye.dtoLib.dto.response.userOrg.*;
 import com.aye.entitylib.entity.*;
-import com.aye.entitylib.entity.enums.TrnsType;
+
 import com.aye.entitylib.entity.order.OrdTrnsTypesV;
 import com.aye.entitylib.entity.user.Muser;
+import com.aye.enums.TrnsType;
+import com.aye.mapper.order.OrdTrnsTypesVMapper;
+import com.aye.mapper.userOrg.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -282,7 +287,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
             var db = this.transSubInvAcService.findUserTransactionTypesById(ut.getId());
             db.setName(ut.getName());
             db.setUserAccessInvOrg(userAccessInvOrg);
-            db.setTrnsType(TrnsType.valueOf(ut.getTrnsType()));
+            db.setTrnsType(ut.getTrnsType());
             db.setTrnsTypeId(ut.getTrnsTypeId());
             db.setEndDate(ut.getEndDate());
             db.setStartDate(ut.getStartDate());
@@ -341,12 +346,12 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         ordTrnsTypesV.setOrgHierarchy(orgHierarchy);
         ordTrnsTypesV.setInvOrgs(inv);
         ordTrnsTypesV.setTypeName(type);
-        List<OrdTrnsTypesVResponse> ordTrnsTypesVs = this.transSubInvAcService.searchOrdTrnsTypesV(ordTrnsTypesV)
+        List<OrdTrnsTypesVResDto> ordTrnsTypesVs = this.transSubInvAcService.searchOrdTrnsTypesV(ordTrnsTypesV)
                 .stream().map(this.ordTrnsTypesVMapper::toResponseDto).toList();
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Successfully Fetched Types",
                 ApiRequestResponseDetail.ObjectType.A, "transTypesList",
-                OrdTrnsTypesVResponse.class.getName(), ordTrnsTypesVs
+                OrdTrnsTypesVResDto.class.getName(), ordTrnsTypesVs
         );
     }
 

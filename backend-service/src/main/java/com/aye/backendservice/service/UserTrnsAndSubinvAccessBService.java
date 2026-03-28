@@ -4,17 +4,19 @@ import com.aye.RestfulServer.repo.InvOrgSubInvVRepo;
 import com.aye.RestfulServer.repo.UserSubInvAccessRepo;
 import com.aye.RestfulServer.repo.UserTransactionTypesRepo;
 import com.aye.RestfulServer.service.MuserService;
-import com.aye.backendservice.mapper.InvOrgSubInvVMapper;
-import com.aye.backendservice.mapper.UserSubInvAccessMapper;
-import com.aye.commonlib.dto.request.UserSubInvAccessRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.InvOrgSubInvVResponseDto;
-import com.aye.commonlib.dto.response.UserSubInvAccessResponse;
+
+import com.aye.dtoLib.dto.request.UserSubInvAccessRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+
+import com.aye.dtoLib.dto.response.userOrg.InvOrgSubInvVResponseDto;
+import com.aye.dtoLib.dto.response.userOrg.UserSubInvAccessResponse;
 import com.aye.entitylib.entity.CommonColumn;
 import com.aye.entitylib.entity.InvOrgSubInvV;
 import com.aye.entitylib.entity.UserSubInvAccess;
 import com.aye.entitylib.entity.UserTransactionTypes;
+import com.aye.mapper.userOrg.InvOrgSubInvVMapper;
+import com.aye.mapper.userOrg.UserSubInvAccessMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;

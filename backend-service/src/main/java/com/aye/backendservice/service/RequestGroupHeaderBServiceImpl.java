@@ -2,16 +2,18 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.RequestGroupHeaderService;
-import com.aye.backendservice.mapper.RequestGroupHeaderMapper;
-import com.aye.backendservice.mapper.RequestGroupLineMapper;
-import com.aye.commonlib.dto.request.RequestGroupHeaderRequest;
-import com.aye.commonlib.dto.request.RequestGroupLineRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.RequestGroupHeaderResponse;
-import com.aye.commonlib.dto.response.RequestGroupLineResponse;
+
+import com.aye.dtoLib.dto.request.RequestGroupHeaderRequest;
+import com.aye.dtoLib.dto.request.RequestGroupLineRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+
+import com.aye.dtoLib.dto.response.userOrg.RequestGroupHeaderResponse;
+import com.aye.dtoLib.dto.response.userOrg.RequestGroupLineResponse;
 import com.aye.entitylib.entity.RequestGroupHeader;
 import com.aye.entitylib.entity.RequestGroupLine;
+import com.aye.mapper.userOrg.RequestGroupHeaderMapper;
+import com.aye.mapper.userOrg.RequestGroupLineMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 //import static org.springframework.data.web.config.EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO;
 
 @SpringBootApplication
-@EnableFeignClients
+@EnableFeignClients(value = " com.aye.vhmwebclient.feignclient")
 //@EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO)
 public class VhmWebClientApplication {
 

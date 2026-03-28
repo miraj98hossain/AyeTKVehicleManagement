@@ -2,10 +2,10 @@ package com.aye.backendservice.controller;
 
 
 import com.aye.backendservice.service.StepTransService;
-import com.aye.commonlib.dto.request.StepTransLinesRequest;
-import com.aye.commonlib.dto.request.StepTransRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.validationGroup.StepTransLinesUpdateValidation;
+import com.aye.dtoLib.dto.request.StepTransLinesRequest;
+import com.aye.dtoLib.dto.request.StepTransRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.validationGroup.StepTransLinesUpdateValidation;
 import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
 import org.springframework.beans.factory.annotation.Autowired;

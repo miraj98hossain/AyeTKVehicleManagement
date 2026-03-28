@@ -3,6 +3,7 @@ package com.aye.backendservice.repository;
 
 import com.aye.entitylib.entity.MtrnsCount;
 import com.aye.entitylib.entity.geo.Geo;
+import com.aye.enums.GeoRefTrnsSource;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface MtrnsCountRepo extends JpaRepository<MtrnsCount, Long> {
 
-    List<MtrnsCount> findByTrnsSourceNot(Geo.GeoRefTrnsSource trnsSource);
+    List<MtrnsCount> findByTrnsSourceNot(GeoRefTrnsSource trnsSource);
 
-    List<MtrnsCount> findByTrnsSource(Geo.GeoRefTrnsSource trnsSource);
+    List<MtrnsCount> findByTrnsSource(GeoRefTrnsSource trnsSource);
 }

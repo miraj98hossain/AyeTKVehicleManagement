@@ -1,8 +1,8 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.InvInformationBService;
-import com.aye.commonlib.dto.request.InventoryInformationRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.InventoryInformationRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

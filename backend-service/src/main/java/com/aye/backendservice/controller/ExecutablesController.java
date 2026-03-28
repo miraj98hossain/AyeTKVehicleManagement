@@ -1,9 +1,9 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.ExecutablesBService;
-import com.aye.commonlib.dto.request.ExecutableParameterRequest;
-import com.aye.commonlib.dto.request.ExecutablesRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.ExecutableParameterRequest;
+import com.aye.dtoLib.dto.request.ExecutablesRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

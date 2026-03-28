@@ -1,9 +1,9 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.UserMenuBService;
-import com.aye.commonlib.dto.request.UserMenuRequest;
-import com.aye.commonlib.dto.request.UserSubMenuRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.UserMenuRequest;
+import com.aye.dtoLib.dto.request.UserSubMenuRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

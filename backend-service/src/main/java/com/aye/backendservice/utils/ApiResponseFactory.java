@@ -8,8 +8,8 @@ package com.aye.backendservice.utils;
 
 
 import com.aye.backendservice.service.ApiRequestResponseMaker;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
 import org.springframework.http.HttpStatus;
 
 public class ApiResponseFactory {

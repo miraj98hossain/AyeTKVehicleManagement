@@ -2,17 +2,19 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.MuserService;
-import com.aye.backendservice.mapper.MRoleMapper;
-import com.aye.backendservice.mapper.MUserMapper;
-import com.aye.commonlib.dto.request.MUserRequest;
-import com.aye.commonlib.dto.request.UserSearchRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.MRoleResponse;
-import com.aye.commonlib.dto.response.MUserResponse;
+
+import com.aye.dtoLib.dto.request.MUserRequest;
+import com.aye.dtoLib.dto.request.UserSearchRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+import com.aye.dtoLib.dto.response.MRoleResponse;
+import com.aye.dtoLib.dto.response.MUserResponse;
 import com.aye.entitylib.entity.CommonColumn;
 import com.aye.entitylib.entity.user.Mrole;
 import com.aye.entitylib.entity.user.Muser;
+import com.aye.enums.UserType;
+import com.aye.mapper.user.MRoleMapper;
+import com.aye.mapper.user.MUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -111,7 +113,7 @@ public class UserServiceImpl implements UserService {
             reqUser.setLastName(mUserRequest.getLastName());
             reqUser.getRoles().add(mrole);
             reqUser.setEnabled(mUserRequest.isEnabled());
-            reqUser.setUserType(Muser.UserType.valueOf(mUserRequest.getUserType()));
+            reqUser.setUserType(mUserRequest.getUserType());
             var cc = reqUser.getColumn();
             cc.setLastUpdateBy(currentMuser.getId());
             cc.setLastUpdateDate(new Date());

@@ -2,10 +2,12 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.CustomerResourceService;
-import com.aye.backendservice.mapper.EmpResourceMapper;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.response.ApiRequestResponseDetail;
-import com.aye.commonlib.dto.response.EmpResourceResponse;
+
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+
+import com.aye.dtoLib.dto.response.userData.EmpResourceResDto;
+import com.aye.mapper.user.EmpResourceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,12 +23,12 @@ public class EmpResourceBServiceImpl implements EmpResourceBService {
 
     @Override
     public ApiRequestResponse findEmpResourceByOrgId(Long orgId) {
-        List<EmpResourceResponse> empRes = customerResourceService.findEmpResourceByOrgId(orgId)
+        List<EmpResourceResDto> empRes = customerResourceService.findEmpResourceByOrgId(orgId)
                 .stream().map(empResMapper::toResponseDto).toList();
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
                 ApiRequestResponseDetail.ObjectType.A, "empResourceList",
-                EmpResourceResponse.class.getName(), empRes
+                EmpResourceResDto.class.getName(), empRes
         );
     }
 }

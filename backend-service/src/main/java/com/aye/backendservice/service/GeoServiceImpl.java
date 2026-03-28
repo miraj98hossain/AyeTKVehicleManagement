@@ -2,8 +2,9 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.repo.GeoRepo;
+import com.aye.dtoLib.dto.response.geo.GeoSerach;
 import com.aye.entitylib.entity.geo.Geo;
-import com.aye.entitylib.entity.geo.GeoSerach;
+
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;

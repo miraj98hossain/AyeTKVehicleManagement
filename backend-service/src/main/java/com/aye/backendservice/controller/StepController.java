@@ -1,10 +1,10 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.StepService;
-import com.aye.commonlib.dto.request.StepRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.validationGroup.StepCreateValidation;
-import com.aye.commonlib.dto.validationGroup.StepUpdateValidation;
+import com.aye.dtoLib.dto.request.StepRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.validationGroup.StepCreateValidation;
+import com.aye.dtoLib.dto.validationGroup.StepUpdateValidation;
 import jakarta.validation.groups.Default;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

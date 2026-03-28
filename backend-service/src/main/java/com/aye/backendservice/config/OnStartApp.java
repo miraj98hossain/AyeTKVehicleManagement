@@ -11,9 +11,10 @@ import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.PageService;
 import com.aye.entitylib.entity.CommonColumn;
 import com.aye.entitylib.entity.Pages;
-import com.aye.entitylib.entity.enums.PageUrl;
-import com.aye.entitylib.entity.enums.RoleTypes;
+
 import com.aye.entitylib.entity.user.Muser;
+import com.aye.enums.PageUrl;
+import com.aye.enums.RoleTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
