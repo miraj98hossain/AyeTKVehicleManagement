@@ -1,0 +1,29 @@
+package com.aye.dtoLib.dto.response.userOrg;
+
+
+import com.aye.enums.MenuLevel;
+import com.aye.enums.RoleTypes;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserMenuResponse {
+    private Integer id;
+    private String menuName;
+    private Long moduleId;
+    private String moduleName;
+    private String moduleCode;
+    private MenuLevel level;
+
+    private Boolean isActive;
+    private RoleTypes pageType;
+    private List<UserSubMenuResponse> subMenus;
+}
+

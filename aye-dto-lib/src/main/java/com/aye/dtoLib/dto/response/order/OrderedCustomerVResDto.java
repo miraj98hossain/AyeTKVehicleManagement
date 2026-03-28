@@ -1,0 +1,17 @@
+package com.aye.dtoLib.dto.response.order;
+
+import lombok.Data;
+
+/**
+ * @author: Miraj
+ * @date: 05/01/2026
+ * @time: 10:08
+ */
+@Data
+public class OrderedCustomerVResDto {
+    private Long id;
+    private Long orgId;
+    private String partyName;
+    private String accountNumber;
+    private Long custAccountId;
+}
