@@ -8,7 +8,7 @@ import java.util.List;
 
 @Setter
 @Getter
-public class mOutMenuList {
+public class MOutMenuList {
 
     private String autoNumber;
 
@@ -30,13 +30,13 @@ public class mOutMenuList {
 
     private List<OutMenuMain> outMenuList;
 
-    public mOutMenuList() {
+    public MOutMenuList() {
 
 
     }
 
 
-    public mOutMenuList(String autoNumber, String approvalPath, String colorSchma, Boolean passwordChange,//BigDecimal passwordChange ,
+    public MOutMenuList(String autoNumber, String approvalPath, String colorSchma, Boolean passwordChange,//BigDecimal passwordChange ,
                         String ColorSchemaApp, String ColorSchemaButton, List<OutMenuMain> outMenuList) {
         this.setOutMenuList(outMenuList);
         this.setAutoNumber(autoNumber);

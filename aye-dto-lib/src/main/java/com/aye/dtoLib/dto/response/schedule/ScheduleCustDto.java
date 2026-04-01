@@ -1,4 +1,4 @@
-package com.aye.dtoLib.dto.request.schedule;
+package com.aye.dtoLib.dto.response.schedule;
 
 
 import lombok.AllArgsConstructor;
@@ -12,12 +12,13 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScheduleCustReqDto {
+public class ScheduleCustDto {
 
 
-    private final List<ScheduleLineReqDto> scheduleLineReqDtos = new ArrayList();
+    private List<ScheduleLineDto> scheduleLines = new ArrayList();
     private Integer id;
-    private ScheduleHeaderReqDto scheduleHeader;
+    private Integer scheduleHeaderId;
+    private String scheduleNumber;
     private Integer createdBy;
     private Date creationDate;
     private Integer lastUpdateBy;

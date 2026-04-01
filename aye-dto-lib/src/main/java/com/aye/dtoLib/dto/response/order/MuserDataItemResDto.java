@@ -71,13 +71,4 @@ public class MuserDataItemResDto {
     private BigDecimal calculationValue;
 
 
-    public interface ItemInfo {
-        Integer getOrgId();
-
-        Integer getInvItemId();
-
-        String getItemCode();
-
-        String getItemMask();
-    }
 }

@@ -7,15 +7,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VehicleStractureInfoVResDto {
+public class ScheduleListDto {
+    Long orgId;
 
+    Long invOrgId;
 
-    private Long id;
+    Integer createdBy;
 
+    Integer id;
 
-    private String categoryType;
-
-
-    private String categoryValue;
-
+    String scheduleNumber;
 }

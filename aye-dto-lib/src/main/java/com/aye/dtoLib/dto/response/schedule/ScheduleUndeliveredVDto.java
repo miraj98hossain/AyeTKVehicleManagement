@@ -15,7 +15,7 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScheduleUndeliveredVResDto {
+public class ScheduleUndeliveredVDto {
 
 
     private Long id;

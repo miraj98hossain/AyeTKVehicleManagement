@@ -1,5 +1,6 @@
-package com.aye.dtoLib.dto.request.schedule;
+package com.aye.dtoLib.dto.response.schedule;
 
+import com.aye.enums.RegularData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,18 +13,19 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ScheduleHeaderReqDto {
+public class ScheduleHeaderDto {
 
-    private List<ScheduleCustReqDto> scheduleCusts = new ArrayList();
+    private List<ScheduleCustDto> scheduleCusts = new ArrayList();
     private Integer id;
+    private String scheduleNumber;
     private Integer createdBy;
     private Date creationDate;
     private Integer lastUpdateBy;
     private Date lastUpdateLogin;
     private Date lastUpdateDate;
     private Long orgId;
-    private String scheduleNumber;
-    private String status;
+
+    private RegularData.ScheduleStstus status;
     private Long invOrgId;
     @DateTimeFormat(
             pattern = "yyyy-MM-dd"
@@ -34,5 +36,6 @@ public class ScheduleHeaderReqDto {
     )
     private Date endtDate;
     private String userName;
+
 
 }
