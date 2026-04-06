@@ -17,7 +17,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NorderHeaderResDto {
+public class NorderHeaderDto {
 
     private Integer id;
 
@@ -94,19 +94,19 @@ public class NorderHeaderResDto {
     private Boolean dimOrderFlage;
 
 
-    private List<NorderLineResDto> orderLine = new ArrayList<>();
+    private List<NorderLineDto> orderLine = new ArrayList<>();
 
 
-    private Set<OrderCollectionResDto> orderCollection;
+    private Set<OrderCollectionDto> orderCollection;
 
 
-    public NorderHeaderResDto(String OrderNumber, Date OrderDate, Long OrgId,
-                              Integer CustAcctId, Integer PartyId, String CustomerName, String Address,
-                              String UserName, Integer CreatedBy, Date CreationDate,
-                              Integer LastUpdateBy, Date LastUpdateDate, BigDecimal TotalAmount, //Double TotalAmount,
-                              RegularData.OrderStstus Status,
-                              Long InvOrgId, String SubInv,
-                              Integer TarnsactionId, String remarks, String workOrderNum, Boolean dimOrderFlage, String OutMsg, List<NorderLineResDto> nl) {
+    public NorderHeaderDto(String OrderNumber, Date OrderDate, Long OrgId,
+                           Integer CustAcctId, Integer PartyId, String CustomerName, String Address,
+                           String UserName, Integer CreatedBy, Date CreationDate,
+                           Integer LastUpdateBy, Date LastUpdateDate, BigDecimal TotalAmount, //Double TotalAmount,
+                           RegularData.OrderStstus Status,
+                           Long InvOrgId, String SubInv,
+                           Integer TarnsactionId, String remarks, String workOrderNum, Boolean dimOrderFlage, String OutMsg, List<NorderLineDto> nl) {
         this.orderNumber = OrderNumber;
         this.orderDate = OrderDate;
         this.orgId = OrgId;
@@ -130,7 +130,7 @@ public class NorderHeaderResDto {
         this.orderLine = nl;
     }
 
-    public NorderHeaderResDto(NorderHeaderResDto orderHeader) {
+    public NorderHeaderDto(NorderHeaderDto orderHeader) {
         //System.out.println("in The Header");
         this.orderNumber = orderHeader.orderNumber;
         this.orderDate = orderHeader.orderDate;
@@ -154,7 +154,7 @@ public class NorderHeaderResDto {
         this.remarks = orderHeader.getRemarks();
         this.workOrderNum = orderHeader.getWorkOrderNum();
         this.dimOrderFlage = orderHeader.dimOrderFlage;
-        List<NorderLineResDto> nl = orderHeader.orderLine;
+        List<NorderLineDto> nl = orderHeader.orderLine;
     }
 
 

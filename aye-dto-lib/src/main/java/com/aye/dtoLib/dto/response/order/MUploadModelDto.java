@@ -10,7 +10,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MUploadModelResDto {
+public class MUploadModelDto {
 
 
     private Integer id;
@@ -39,10 +39,10 @@ public class MUploadModelResDto {
     private String imgUrl;
 
 
-    private OnlineCollectionResDto onlineCollectionResDto;
+    private OnlineCollectionDto onlineCollectionResDto;
 
 
-    private BulkContractPaymentResDto bulkContractPayment;
+    private BulkContractPaymentDto bulkContractPayment;
 
     private MuploadTrnsSource trnsSource;
 

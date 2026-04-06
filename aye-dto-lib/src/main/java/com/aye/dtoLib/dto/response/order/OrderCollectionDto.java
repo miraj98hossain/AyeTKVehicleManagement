@@ -1,5 +1,7 @@
 package com.aye.dtoLib.dto.response.order;
 
+import com.aye.enums.AppFrom;
+import com.aye.enums.OrdColStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,14 +12,14 @@ import java.util.List;
 
 @Setter
 @Getter
-public class OrderCollectionResDto {
+public class OrderCollectionDto {
     private Integer id;
 
 
-    private NorderHeaderResDto order;
+    private NorderHeaderDto order;
 
 
-    private OnlineCollectionResDto collection;
+    private OnlineCollectionDto collection;
 
 
     private Integer createdBy;
@@ -54,7 +56,7 @@ public class OrderCollectionResDto {
 
     private AppFrom applyFrom;
 
-    public OrderCollectionResDto(OrderCollectionResDto orCol) {
+    public OrderCollectionDto(OrderCollectionDto orCol) {
         this.order = orCol.getOrder();
         this.collection = orCol.collection;
         this.createdBy = orCol.createdBy;
@@ -72,7 +74,7 @@ public class OrderCollectionResDto {
 
     }
 
-    public OrderCollectionResDto(NorderHeaderResDto h, OnlineCollectionResDto ocl, AppFrom appFrom, Integer userId) {
+    public OrderCollectionDto(NorderHeaderDto h, OnlineCollectionDto ocl, AppFrom appFrom, Integer userId) {
         this.order = h;
         this.collection = ocl;
         this.createdBy = userId;
@@ -91,25 +93,18 @@ public class OrderCollectionResDto {
     }
 
 
-    public OrderCollectionResDto() {
+    public OrderCollectionDto() {
 
     }
 
-    public OrderCollectionResDto(List<OrderCollectionResDto> collection) {
+    public OrderCollectionDto(List<OrderCollectionDto> collection) {
 
 
-        for (OrderCollectionResDto ocl : collection) {
-            new OrderCollectionResDto(ocl);
+        for (OrderCollectionDto ocl : collection) {
+            new OrderCollectionDto(ocl);
         }
 
     }
 
-    public enum AppFrom {
-        C, O
-    }
-
-    public enum OrdColStatus {
-        N, P
-    }
 
 }

@@ -9,7 +9,7 @@ import lombok.Data;
  * @time: 17:19
  */
 @Data
-public class OrderedItemVResDto {
+public class OrderedItemVDto {
 
     private Long inventoryItemId;
     private String orderedItem;

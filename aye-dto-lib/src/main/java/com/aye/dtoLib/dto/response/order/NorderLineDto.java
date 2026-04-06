@@ -15,7 +15,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class NorderLineResDto {
+public class NorderLineDto {
 
 
     private Integer lineId;
@@ -70,13 +70,13 @@ public class NorderLineResDto {
 
 
     private Integer priceListHeadarId;
-    private MuserDataItemResDto muserDataItem;
+    private MuserDataItemDto muserDataItem;
 
 
     private Integer muserDataItemId;
 
 
-    private NorderHeaderResDto norderHeaderResDto;
+    private NorderHeaderDto norderHeaderResDto;
 
     private BigDecimal width;
 
@@ -93,11 +93,11 @@ public class NorderLineResDto {
     private BigDecimal conversionCalValue;
 
 
-    public NorderLineResDto(Long OrgId, Integer InvItemId, String orderItem, BigDecimal Qty, BigDecimal Rate, //Double Qty, Double Rate,
-                            String UomCode,
-                            Long InvOrgId, String SubInv, Integer CreatedBy, Date CreationDate, Integer LastUpdateBy,
-                            Date LastUpdateDate, BigDecimal ApproveQty, BigDecimal ApproveRate, //Double ApproveQty, Double ApproveRate,
-                            Integer PriceListHeadarId, BigDecimal Width, BigDecimal Height, BigDecimal Pcs, BigDecimal ConversionCalValue) {
+    public NorderLineDto(Long OrgId, Integer InvItemId, String orderItem, BigDecimal Qty, BigDecimal Rate, //Double Qty, Double Rate,
+                         String UomCode,
+                         Long InvOrgId, String SubInv, Integer CreatedBy, Date CreationDate, Integer LastUpdateBy,
+                         Date LastUpdateDate, BigDecimal ApproveQty, BigDecimal ApproveRate, //Double ApproveQty, Double ApproveRate,
+                         Integer PriceListHeadarId, BigDecimal Width, BigDecimal Height, BigDecimal Pcs, BigDecimal ConversionCalValue) {
         this.orgId = OrgId;
         this.invItemId = InvItemId;
         this.orderItem = orderItem;
@@ -120,8 +120,8 @@ public class NorderLineResDto {
 
     }
 
-    public NorderLineResDto(List<NorderLineResDto> orderLine) {
-        for (NorderLineResDto nl : orderLine) {
+    public NorderLineDto(List<NorderLineDto> orderLine) {
+        for (NorderLineDto nl : orderLine) {
             this.orgId = nl.orgId;
             this.invItemId = nl.invItemId;
             this.qty = nl.qty;
@@ -143,7 +143,7 @@ public class NorderLineResDto {
         }
     }
 
-    public NorderLineResDto(NorderLineResDto orderLine) {
+    public NorderLineDto(NorderLineDto orderLine) {
         this.orgId = orderLine.orgId;
         this.invItemId = orderLine.invItemId;
         this.qty = orderLine.qty;

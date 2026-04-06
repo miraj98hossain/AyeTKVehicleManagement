@@ -15,7 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OnlineCollectionResDto {
+public class OnlineCollectionDto {
 
     private Integer collectionId;
 
@@ -85,9 +85,9 @@ public class OnlineCollectionResDto {
 
     private String remarks;
 
-    private List<OrderCollectionResDto> orderCollectionResDto = new ArrayList<>();
+    private List<OrderCollectionDto> orderCollectionResDto = new ArrayList<>();
 
-    private List<MUploadModelResDto> uploadModels = new ArrayList<>();
+    private List<MUploadModelDto> uploadModels = new ArrayList<>();
 
 
     public enum OnlinePayType {

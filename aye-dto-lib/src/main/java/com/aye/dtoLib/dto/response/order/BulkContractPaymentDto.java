@@ -14,11 +14,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BulkContractPaymentResDto {
+public class BulkContractPaymentDto {
 
 
     private Integer paymentId;
-    private BulkContractResDto bulkContractResDto;
+    private BulkContractDto bulkContractResDto;
 
 
     private Long contNumber;
@@ -74,7 +74,7 @@ public class BulkContractPaymentResDto {
     private BigDecimal amount;
 
 
-    private List<MUploadModelResDto> uploadModels = new ArrayList<>();
+    private List<MUploadModelDto> uploadModels = new ArrayList<>();
 
 
     private Integer createdBy;

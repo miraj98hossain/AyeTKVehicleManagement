@@ -5,7 +5,7 @@ import com.aye.dtoLib.dto.response.userOrg.OrgHierarchyResponse;
 import lombok.Data;
 
 @Data
-public class OrdTrnsTypesVResDto {
+public class OrdTrnsTypesVDto {
 
     private Integer id;
     private String typeName;

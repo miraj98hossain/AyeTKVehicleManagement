@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 
-public class MuserDataItemResDto {
+public class MuserDataItemDto {
 
 
     private Integer id;

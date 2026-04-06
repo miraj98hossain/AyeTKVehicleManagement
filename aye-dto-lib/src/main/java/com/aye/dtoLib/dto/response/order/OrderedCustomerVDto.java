@@ -8,7 +8,7 @@ import lombok.Data;
  * @time: 10:08
  */
 @Data
-public class OrderedCustomerVResDto {
+public class OrderedCustomerVDto {
     private Long id;
     private Long orgId;
     private String partyName;

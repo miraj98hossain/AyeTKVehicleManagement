@@ -19,7 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BulkContractResDto {
+public class BulkContractDto {
     private Integer id;
 
     private Long orgId;
@@ -126,8 +126,8 @@ public class BulkContractResDto {
     private String reason;
 
 
-    private List<BulkContractPaymentResDto> bulkContractPayments = new ArrayList<>();
-    
+    private List<BulkContractPaymentDto> bulkContractPayments = new ArrayList<>();
+
     public interface ContractList {
         Long getOrgId();
 
