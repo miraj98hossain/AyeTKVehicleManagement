@@ -39,7 +39,7 @@ public class MUploadModelDto {
     private String imgUrl;
 
 
-    private OnlineCollectionDto onlineCollectionResDto;
+    private OnlineCollectionDto onlineCollection;
 
 
     private BulkContractPaymentDto bulkContractPayment;

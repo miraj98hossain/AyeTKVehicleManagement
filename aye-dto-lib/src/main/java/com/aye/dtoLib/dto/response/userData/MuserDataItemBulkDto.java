@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MuserDataItemBulkResDto {
+public class MuserDataItemBulkDto {
 
     private Integer id;
 

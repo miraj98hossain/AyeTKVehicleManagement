@@ -1,5 +1,6 @@
 package com.aye.dtoLib.dto.response.order;
 
+import com.aye.enums.PaymentType;
 import com.aye.enums.contPaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,13 +19,13 @@ public class BulkContractPaymentDto {
 
 
     private Integer paymentId;
-    private BulkContractDto bulkContractResDto;
+    private BulkContractDto bulkContract;
 
 
     private Long contNumber;
 
 
-    private String payType;
+    private PaymentType payType;
 
 
     private String refNumber;
