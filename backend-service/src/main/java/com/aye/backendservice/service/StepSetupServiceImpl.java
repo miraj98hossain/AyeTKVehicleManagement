@@ -3,7 +3,6 @@ package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserAccessTempltService;
-
 import com.aye.backendservice.repository.StepSetupRepository;
 import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
 import com.aye.dtoLib.dto.request.StepSetupRequest;
@@ -35,17 +34,17 @@ import java.util.stream.Collectors;
 @Service
 public class StepSetupServiceImpl implements StepSetupService {
     @Autowired
-    StepSetupRepository stepSetupRepository;
+    private StepSetupRepository stepSetupRepository;
     @Autowired
-    MuserService muserService;
+    private MuserService muserService;
     @Autowired
-    StepService stepService;
+    private StepService stepService;
     @Autowired
-    StepSetupDetailsService stepSetupDetailsService;
+    private StepSetupDetailsService stepSetupDetailsService;
     @Autowired
-    StepSetupMapper stepSetupMapper;
+    private StepSetupMapper stepSetupMapper;
     @Autowired
-    StepSetupDetailsMapper stepSetupDetailsMapper;
+    private StepSetupDetailsMapper stepSetupDetailsMapper;
     @Autowired
     private UserAccessTempltService userAccessTempltService;
 

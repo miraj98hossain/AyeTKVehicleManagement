@@ -16,6 +16,7 @@ public class StepTransDetailsLinesResponse {
     private Long stepTransDtlLnId;
     private String stepTransDtlLnNo;
     private Long stepTransDtlId;
+    private String stepTransDtlNo;
     private Long invItemId;
     private String orderedItem;
     private BigDecimal orderedQuantity;

@@ -33,9 +33,9 @@ public interface UserAccessBService {
 
     ApiRequestResponse findUsrAccInvOrgByTempDtlId(Integer tempDtlId);
 
-    ApiRequestResponse findUsrAccessInvOrgById(Long id);
+    ApiRequestResponse findUsrAccessInvOrgById(Long id) throws Exception;
 
-    ApiRequestResponse saveUsrAccessInvOrg(UserAccessInvOrgRequest userAccessInvOrgRequest, String userName);
+    ApiRequestResponse saveUsrAccessInvOrg(UserAccessInvOrgRequest userAccessInvOrgRequest, String userName) throws Exception;
 
     ApiRequestResponse deleteUsrAccessInvOrg(Long id);
 
@@ -45,7 +45,7 @@ public interface UserAccessBService {
 
     ApiRequestResponse findUserTransactionTypesById(Long id);
 
-    ApiRequestResponse saveUserTransactionTypes(UserTransactionTypesRequest ut, String userName);
+    ApiRequestResponse saveUserTransactionTypes(UserTransactionTypesRequest ut, String userName) throws Exception;
 
     ApiRequestResponse DeleteUserTransactionTypes(Long utId);
 

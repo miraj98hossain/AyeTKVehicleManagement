@@ -298,6 +298,143 @@
                         </div>
                     </div>
 
+                    <!-- STEP TRANS DETAILS MODAL START-->
+                    <div class="modal fade" id="stepTransDetailsModal" role="dialog" tabindex="-1">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">Step Trans Details</h4>
+                                </div>
+                                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                                    <div class="row">
+
+                                        <!-- CustName Name -->
+                                        <div class="form-group col-sm-12">
+                                            <label class="col-sm-1 control-label" for="modalCustName">Customer</label>
+
+                                            <div class="col-sm-3">
+                                                <input class="form-control" id="modalCustName"
+                                                       placeholder="Enter Customer Name"
+
+                                                       type="text">
+                                                <input class="form-control" id="modalCustAccountId"
+                                                       placeholder="Enter Customer Account Id"
+                                                       type="hidden">
+                                            </div>
+                                            <label class="col-sm-1 control-label" for="modalDeliveryNo">Delivery</label>
+
+                                            <div class="col-sm-3">
+                                                <input class="form-control"
+                                                       id="modalDeliveryNo"
+                                                       placeholder="Enter Delivery No"
+                                                       type="text">
+
+                                            </div>
+
+                                            <label class="col-sm-1 control-label" for="modalScheduleNo">Schedule</label>
+                                            <div class="col-sm-3">
+                                                <input class="form-control"
+                                                       id="modalScheduleNo"
+                                                       placeholder="Enter Schedule No"
+                                                       type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-12 Padding10px text-right">
+                                            <button class="btn btn-primary" onclick="createDetails()">Create
+                                            </button>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
+                                                <thead>
+                                                <tr>
+
+                                                    <th>Trans Details No</th>
+                                                    <th>Trans No</th>
+                                                    <th>Customer Name</th>
+                                                    <th>Schedule No</th>
+                                                    <th>Order Number</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody id="stepTransDtlTableBody">
+                                                <!-- rows -->
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row" id="modalDtlLn-div" style="display: none">
+                                        <div class="modal-header" style="margin-bottom: 15px;">
+                                            <h4 class="modal-title">Order Item Details</h4>
+                                        </div>
+
+                                        <!-- Ordered Item -->
+                                        <div class="form-group col-sm-12">
+                                            <label class="col-sm-1 control-label">Item:</label>
+                                            <div class="col-sm-4">
+                                                <input class="form-control"
+                                                       id="orderedItem"
+                                                       placeholder="Enter Ordered Item"
+
+                                                       type="text">
+                                                <input class="form-control"
+                                                       id="invItemId"
+                                                       placeholder="Enter Inventory Item ID"
+                                                       type="hidden">
+                                            </div>
+                                            <label class="col-sm-1 control-label">Quantity:</label>
+
+                                            <div class="col-sm-4">
+                                                <input class="form-control"
+                                                       id="modalOrdQty"
+                                                       inputmode="decimal"
+                                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
+                                                       placeholder="Enter Quantity"
+                                                       type="text">
+                                            </div>
+
+                                            <!-- Buttons -->
+                                            <div class="form-group col-sm-2 Padding10px">
+                                                <button class="btn btn-primary" onclick="createLine()">Add</button>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-sm-12">
+                                            <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
+                                                <thead>
+                                                <tr>
+                                                    <th>Trans Details No</th>
+                                                    <th>Line No</th>
+                                                    <th>Ordered Item</th>
+                                                    <th>Ordered Quantity</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody id="stepTransDtlLnTableBody">
+                                                <!-- rows -->
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- STEP TRANS DETAILS END MODAL -->
+
+
                     <!-- MODAL START-->
                     <div class="modal fade" id="stepTimelineModal" role="dialog" tabindex="-1">
                         <div class="modal-dialog modal-lg" role="document">
@@ -433,9 +570,13 @@
                                     <a class="btn btn-success"
                                        th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/'+${line.stepTransId}}"><span
                                             aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
+                                    <!--                                    <a class="btn btn-success"-->
+                                    <!--                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span-->
+                                    <!--                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>-->
                                     <a class="btn btn-success"
-                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span
-                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>
+                                       onclick="openStepTransDetailsModal(this)"
+                                       th:data-step-Trans-Id="${line.stepTransId}">
+                                        <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>
                                 </td>
                                 <td class="text-center">
 

@@ -35,7 +35,8 @@ public class StepTransDetailsController {
 
     @GetMapping("/findAllByStepTransId")
     public ResponseEntity<ApiRequestResponse> findAllByStepTransId(@RequestParam Long stepTransId) {
-        return ResponseEntity.ok().body(this.queryService.findAllByStepTransId(stepTransId));
+        var res = this.queryService.findAllByStepTransId(stepTransId);
+        return ResponseEntity.ok().body(res);
     }
 
     @GetMapping("/{id}")

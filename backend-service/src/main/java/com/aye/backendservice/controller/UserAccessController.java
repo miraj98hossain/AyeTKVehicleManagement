@@ -81,14 +81,14 @@ public class UserAccessController {
     }
 
     @GetMapping("/findUsrAccessInvOrgById/{id}")
-    public ResponseEntity<ApiRequestResponse> findUsrAccessInvOrgById(@PathVariable("id") Long id) {
+    public ResponseEntity<ApiRequestResponse> findUsrAccessInvOrgById(@PathVariable("id") Long id) throws Exception {
         return ResponseEntity.ok().body(this.userAccessBService.findUsrAccessInvOrgById(id));
     }
 
     @PostMapping("/saveUsrAccessInvOrg")
     public ResponseEntity<ApiRequestResponse> saveUsrAccessInvOrg(@Valid
                                                                   @RequestBody UserAccessInvOrgRequest userAccessInvOrgRequest,
-                                                                  @RequestParam String username) {
+                                                                  @RequestParam String username) throws Exception {
         return ResponseEntity.ok(this.userAccessBService.saveUsrAccessInvOrg(userAccessInvOrgRequest, username));
     }
 
@@ -110,7 +110,7 @@ public class UserAccessController {
 
     @PostMapping("/aveUserTransactionTypes")
     ResponseEntity<ApiRequestResponse> saveUserTransactionTypes(@Valid @RequestBody UserTransactionTypesRequest ut,
-                                                                @RequestParam String userName) {
+                                                                @RequestParam String userName) throws Exception {
         return ResponseEntity.ok(this.userAccessBService.saveUserTransactionTypes(ut, userName));
     }
 

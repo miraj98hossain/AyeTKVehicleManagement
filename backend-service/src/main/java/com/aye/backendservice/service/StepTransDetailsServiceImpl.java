@@ -1,7 +1,6 @@
 package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.MuserService;
-
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
@@ -9,7 +8,6 @@ import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
 import com.aye.dtoLib.dto.response.StepTransDetailsLinesResponse;
 import com.aye.dtoLib.dto.response.StepTransDetailsResponse;
-
 import com.aye.entitylib.entity.schedule.BeforeTripV;
 import com.aye.entitylib.entity.schedule.BeforeTripWDsV;
 import com.aye.entitylib.entity.user.Muser;
@@ -30,7 +28,7 @@ import java.util.List;
 @Service
 public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     @Autowired
-    NoGenService noGenService;
+    private NoGenService noGenService;
     @Autowired
     private StepTransDetailsRepository stepTrnsDtlRepo;
     @Autowired

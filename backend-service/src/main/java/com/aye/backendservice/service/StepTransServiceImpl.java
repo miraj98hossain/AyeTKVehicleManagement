@@ -3,14 +3,12 @@ package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserAccessTempltService;
-
 import com.aye.backendservice.repository.StepTransRepository;
 import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
 import com.aye.dtoLib.dto.response.*;
 import com.aye.entitylib.entity.UserTransactionTypes;
-
 import com.aye.entitylib.entity.user.Muser;
 import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
 import com.aye.entitylib.entity.vehicleproject.StepTrans;
@@ -38,21 +36,21 @@ import java.util.stream.Collectors;
 @Service
 public class StepTransServiceImpl implements StepTransService {
     @Autowired
-    StepTransRepository stepTransRepository;
+    private StepTransRepository stepTransRepository;
     @Autowired
-    StepTransMapper stepTransMapper;
+    private StepTransMapper stepTransMapper;
     @Autowired
-    StepTransLinesMapper stepTransLinesMapper;
+    private StepTransLinesMapper stepTransLinesMapper;
     @Autowired
-    StepTransLinesService stepTransLinesService;
+    private StepTransLinesService stepTransLinesService;
     @Autowired
-    NoGenService noGenService;
+    private NoGenService noGenService;
     @Autowired
-    StepSetupService stepSetupService;
+    private StepSetupService stepSetupService;
     @Autowired
-    MuserService userService;
+    private MuserService userService;
     @Autowired
-    StepWiseTransCountVService transCountVService;
+    private StepWiseTransCountVService transCountVService;
     @Autowired
     private UserAccessTempltService userAccessTempltService;
     @Autowired

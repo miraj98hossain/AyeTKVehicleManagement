@@ -1,11 +1,9 @@
 package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.OrderedCustomerVService;
-
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-
-import com.aye.dtoLib.dto.response.order.OrderedCustomerVResDto;
+import com.aye.dtoLib.dto.response.order.OrderedCustomerVDto;
 import com.aye.mapper.order.OrderedCustomerVMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +29,7 @@ public class OrderedCustomerVBServiceImpl implements OrderedCustomerVBService {
                 "Success",
                 ApiRequestResponseDetail.ObjectType.A,
                 "custList",
-                OrderedCustomerVResDto.class.getName(),
+                OrderedCustomerVDto.class.getName(),
                 list.stream().map(orderedCustomerVMapper::toResponseDto)
         );
     }

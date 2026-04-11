@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +21,5 @@ public class StepTransDetailsResponse {
     private String custName;
     private String scheduleNo;
     private Long orderNumber;
+    private List<StepTransDetailsLinesResponse> stepTransDetailsLines = new ArrayList<>();
 }

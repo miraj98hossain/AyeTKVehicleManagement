@@ -1,7 +1,6 @@
 package com.aye.backendservice.service;
 
 
-
 import com.aye.backendservice.repository.StepTransLinesRepository;
 import com.aye.dtoLib.dto.response.StepTransLinesResponse;
 import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
@@ -27,12 +26,12 @@ import java.util.List;
 @Service
 public class StepTransLinesServiceImpl implements StepTransLinesService {
     @Autowired
-    StepTransLinesRepository stepTransLinesRepository;
+    private StepTransLinesRepository stepTransLinesRepository;
 
     @Autowired
-    StepTransLinesMapper stepTransLinesMapper;
+    private StepTransLinesMapper stepTransLinesMapper;
     @Autowired
-    NoGenService noGenService;
+    private NoGenService noGenService;
 
     @Transactional
     public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId) {

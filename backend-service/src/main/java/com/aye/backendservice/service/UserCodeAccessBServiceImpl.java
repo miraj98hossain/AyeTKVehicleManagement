@@ -2,11 +2,9 @@ package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserCodeAccessService;
-
 import com.aye.dtoLib.dto.request.UserCodeAccessRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-
 import com.aye.dtoLib.dto.response.userOrg.UserCodeAccessResponse;
 import com.aye.entitylib.entity.UserCodeAccess;
 import com.aye.entitylib.entity.user.Muser;
@@ -20,11 +18,11 @@ import java.util.List;
 @Service
 public class UserCodeAccessBServiceImpl implements UserCodeAccessBService {
     @Autowired
-    MuserService userMuserService;
+    private MuserService userMuserService;
     @Autowired
-    UserCodeAccessService userCodeAccessService;
+    private UserCodeAccessService userCodeAccessService;
     @Autowired
-    UserCodeAccessMapper userCodeAccessMapper;
+    private UserCodeAccessMapper userCodeAccessMapper;
 
     @Override
     public ApiRequestResponse save(UserCodeAccessRequest userCodeAccessRequest, String currentUser) {

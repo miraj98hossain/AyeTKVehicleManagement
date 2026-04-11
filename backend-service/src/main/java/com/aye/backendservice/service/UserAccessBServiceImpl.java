@@ -2,16 +2,14 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.*;
-
 import com.aye.dtoLib.dto.request.*;
-import com.aye.dtoLib.dto.response.*;
-import com.aye.dtoLib.dto.response.order.OrdTrnsTypesVResDto;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
+import com.aye.dtoLib.dto.response.order.OrdTrnsTypesVDto;
 import com.aye.dtoLib.dto.response.userOrg.*;
 import com.aye.entitylib.entity.*;
-
 import com.aye.entitylib.entity.order.OrdTrnsTypesV;
 import com.aye.entitylib.entity.user.Muser;
-import com.aye.enums.TrnsType;
 import com.aye.mapper.order.OrdTrnsTypesVMapper;
 import com.aye.mapper.userOrg.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +22,9 @@ import java.util.List;
 @Service
 public class UserAccessBServiceImpl implements UserAccessBService {
     @Autowired
-    OrgHierarchyService orgHierarchyService;
+    private OrgHierarchyService orgHierarchyService;
     @Autowired
-    InvInformationsService invInfoService;
+    private InvInformationsService invInfoService;
     @Autowired
     private UserAccessTempltService usrAcsTempService;
     @Autowired
@@ -203,7 +201,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     }
 
     @Override
-    public ApiRequestResponse findUsrAccessInvOrgById(Long id) {
+    public ApiRequestResponse findUsrAccessInvOrgById(Long id) throws Exception {
         UserAccessInvOrgResponse invOrg = this.userAccessInvOrgMapper
                 .toResponseDto(this.usrAcsInvOrgService.findById(id));
         return ApiRequestResponseMaker.make(
@@ -214,7 +212,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     }
 
     @Override
-    public ApiRequestResponse saveUsrAccessInvOrg(UserAccessInvOrgRequest usrAccInvOrgReq, String userName) {
+    public ApiRequestResponse saveUsrAccessInvOrg(UserAccessInvOrgRequest usrAccInvOrgReq, String userName) throws Exception {
         Muser muser = this.mUserService.findByUserName(userName);
         CommonColumn cc = new CommonColumn();
         UserAccessTemltDtl userAccessTemltDtl = this.usrAcsTempService.findByDtlId(usrAccInvOrgReq.getUserAccessTemltDtlId());
@@ -281,7 +279,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     }
 
     @Override
-    public ApiRequestResponse saveUserTransactionTypes(UserTransactionTypesRequest ut, String userName) {
+    public ApiRequestResponse saveUserTransactionTypes(UserTransactionTypesRequest ut, String userName) throws Exception {
         UserAccessInvOrg userAccessInvOrg = this.usrAcsInvOrgService.findById(ut.getUserAccessInvOrgId());
         if (ut.getId() != null) {
             var db = this.transSubInvAcService.findUserTransactionTypesById(ut.getId());
@@ -346,12 +344,12 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         ordTrnsTypesV.setOrgHierarchy(orgHierarchy);
         ordTrnsTypesV.setInvOrgs(inv);
         ordTrnsTypesV.setTypeName(type);
-        List<OrdTrnsTypesVResDto> ordTrnsTypesVs = this.transSubInvAcService.searchOrdTrnsTypesV(ordTrnsTypesV)
+        List<OrdTrnsTypesVDto> ordTrnsTypesVs = this.transSubInvAcService.searchOrdTrnsTypesV(ordTrnsTypesV)
                 .stream().map(this.ordTrnsTypesVMapper::toResponseDto).toList();
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Successfully Fetched Types",
                 ApiRequestResponseDetail.ObjectType.A, "transTypesList",
-                OrdTrnsTypesVResDto.class.getName(), ordTrnsTypesVs
+                OrdTrnsTypesVDto.class.getName(), ordTrnsTypesVs
         );
     }
 
