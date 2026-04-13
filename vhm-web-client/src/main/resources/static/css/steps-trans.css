@@ -33,6 +33,11 @@
     text-align: center;
 }
 
+.custom-gray-table > tbody > tr > td {
+    
+    vertical-align: middle !important;
+}
+
 .steps-container {
     display: flex;
     flex-direction: column;

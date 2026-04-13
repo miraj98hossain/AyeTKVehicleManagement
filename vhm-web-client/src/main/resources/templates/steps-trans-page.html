@@ -184,7 +184,6 @@
                                 <input class="form-control"
                                        id="challanNumber"
                                        placeholder="Enter Trip Number"
-                                       required
                                        th:field="${stepTransReq.challanNumber}"
                                        type="text">
                             </div>
@@ -551,6 +550,7 @@
                                 <th>Entry Date</th>
                                 <th>VehicleNo</th>
                                 <th>Driver Phone</th>
+                                <th>Additional Info</th>
                                 <th>Step</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -564,6 +564,36 @@
                                 <td th:text="${#dates.format(line.createdAt, 'dd-MMM-yyyy')}"></td>
                                 <td th:text="${line.vehicleNumber}"></td>
                                 <td th:text="${line.driverPhoneNo}"></td>
+                                <td>
+                                    <div class="table-responsive" style="margin:0;">
+                                        <table class="table table-condensed table-bordered" style="margin-bottom:0;">
+                                            <tbody>
+                                            <tr th:each="dtl : ${line.stepTransDetails}">
+
+                                                <!-- Customer -->
+                                                <td style="width:60%; font-weight:normal;">
+                                                    <span th:text="${dtl.custName}"></span>
+                                                </td>
+
+                                                <!-- Items -->
+                                                <td style="width:40%; padding:0;">
+                                                    <table class="table table-condensed" style="margin-bottom:0;">
+                                                        <tbody>
+                                                        <tr th:each="ln : ${dtl.stepTransDetailsLines}">
+                                                            <td style="border-top:none;">
+                                                                <span class="text-muted"></span>
+                                                                <span th:text="${ln.orderedItem + ' (' + ln.orderedQuantity + ')'}"></span>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </td>
                                 <td th:text="${line.stepName}"></td>
                                 <td class="text-center" th:text="${line.stepStatus}"></td>
                                 <td class="text-center">
