@@ -86,7 +86,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             List<Long> stepSetupDIds,
             String searchWords,
             Pageable pageable) {
-        return this.stepTransLinesRepository.findAll((root, query, cb) -> {
+        var list = this.stepTransLinesRepository.findAll((root, query, cb) -> {
             assert query != null;
             query.distinct(true);
 
@@ -103,7 +103,10 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));
-        }, pageable).map(stepTransLinesMapper::toResponseDto);
+        }, pageable);
+
+
+        return this.stepTransLinesMapper.toResponseDto(list);
     }
 }
 

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,6 +26,7 @@ public class StepTransLinesResponse {
     private String stepStatus;
     private String remarks;
     private Integer stage;
+    private List<StepTransDetailsResponse> stepTransDetails;
     private Long createdBy;
     private Date createdAt;
     private Long updatedBy;
