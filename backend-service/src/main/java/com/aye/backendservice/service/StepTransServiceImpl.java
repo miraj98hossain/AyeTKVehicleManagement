@@ -112,10 +112,12 @@ public class StepTransServiceImpl implements StepTransService {
         stepTransMapper.toEntity(stepTransRequest, stepTrans);
         stepTrans.setUpdatedAt(new Date());
         stepTrans.setUpdatedBy(Long.valueOf(muser.getId()));
-        StepTransDetailsRequest dtlRequest = new StepTransDetailsRequest();
-        dtlRequest.setStepTransId(stepTransRequest.getStepTransId());
-        dtlRequest.setChallanNumber(stepTransRequest.getChallanNumber());
-        stepTransDetailsCreationService.save(dtlRequest, userName);
+        if (stepTrans.getChallanNumber() != null && !stepTrans.getChallanNumber().isEmpty()) {
+            StepTransDetailsRequest dtlRequest = new StepTransDetailsRequest();
+            dtlRequest.setStepTransId(stepTransRequest.getStepTransId());
+            dtlRequest.setChallanNumber(stepTransRequest.getChallanNumber());
+            stepTransDetailsCreationService.save(dtlRequest, userName);
+        }
         stepTrans = stepTransRepository.save(stepTrans);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
@@ -188,9 +190,9 @@ public class StepTransServiceImpl implements StepTransService {
                 .map(StepSetupDetailsResponse::getStepSetupDetailsId)
                 .collect(Collectors.toSet());   // or getStepId() depending on the field;
 
-        Set<Long> stepIds = details.stream()
-                .map(StepSetupDetailsResponse::getStepId)
-                .collect(Collectors.toSet());
+//        Set<Long> stepIds = details.stream()
+//                .map(StepSetupDetailsResponse::getStepId)
+//                .collect(Collectors.toSet());
 
         var list = this.stepTransLinesService.getAllStepTransLine(setupDIds.stream().toList(), searchWords, pageable);
 
