@@ -15,10 +15,9 @@ import java.util.List;
 public class ScheduleCustDto {
 
 
-    private List<ScheduleLineDto> scheduleLines = new ArrayList();
+    private List<ScheduleLineDto> scheduleLines = new ArrayList<>();
     private Integer id;
-    private Integer scheduleHeaderId;
-    private String scheduleNumber;
+    private ScheduleHeaderDto scheduleHeader;
     private Integer createdBy;
     private Date creationDate;
     private Integer lastUpdateBy;

@@ -1,7 +1,6 @@
 package com.aye.dtoLib.dto.response.schedule;
 
 
-import com.aye.enums.RegularData;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,11 +15,8 @@ import java.util.Date;
 public class ScheduleLineDto {
 
     private Integer scdLineId;
-    private Integer scheduleHeaderId;
-    private RegularData.ScheduleStstus scheduleHeaderStatus;
-    private String scheduleNumber;
-
-    private Integer scheduleCustId;
+    private ScheduleHeaderDto scheduleHeader;
+    private ScheduleCustDto scheduleCust;
 
     private Integer createdBy;
 
