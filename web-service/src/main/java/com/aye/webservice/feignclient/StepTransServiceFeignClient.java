@@ -1,9 +1,9 @@
 package com.aye.webservice.feignclient;
 
 
-import com.aye.commonlib.dto.request.StepTransLinesRequest;
-import com.aye.commonlib.dto.request.StepTransRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.StepTransLinesRequest;
+import com.aye.dtoLib.dto.request.StepTransRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;

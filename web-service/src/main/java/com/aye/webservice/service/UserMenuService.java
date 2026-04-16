@@ -1,9 +1,9 @@
 package com.aye.webservice.service;
 
 
-import com.aye.commonlib.dto.request.UserMenuRequest;
-import com.aye.commonlib.dto.request.UserSubMenuRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.UserMenuRequest;
+import com.aye.dtoLib.dto.request.UserSubMenuRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.webservice.feignclient.UserMenuFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,8 +1,8 @@
 package com.aye.webservice.service;
 
-import com.aye.commonlib.dto.request.StepTransLinesRequest;
-import com.aye.commonlib.dto.request.StepTransRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.StepTransLinesRequest;
+import com.aye.dtoLib.dto.request.StepTransRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.webservice.feignclient.StepTransServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

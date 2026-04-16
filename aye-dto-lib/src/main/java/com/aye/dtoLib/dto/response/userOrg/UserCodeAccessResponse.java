@@ -3,6 +3,9 @@ package com.aye.dtoLib.dto.response.userOrg;
 import com.aye.enums.AccessCodeLevel;
 import com.aye.enums.AccessCodeType;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 @Data
 public class UserCodeAccessResponse {
@@ -21,4 +24,8 @@ public class UserCodeAccessResponse {
     private Long scaleSetupId;
     private String scaleSetupName;
     private String scaleSetupIp;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date endDate;
 }

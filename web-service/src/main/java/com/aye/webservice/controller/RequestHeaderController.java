@@ -1,8 +1,8 @@
 package com.aye.webservice.controller;
 
-import com.aye.commonlib.dto.request.RequestGroupHeaderRequest;
-import com.aye.commonlib.dto.request.RequestGroupLineRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.RequestGroupHeaderRequest;
+import com.aye.dtoLib.dto.request.RequestGroupLineRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.RequestGroupService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

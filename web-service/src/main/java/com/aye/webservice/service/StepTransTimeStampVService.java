@@ -1,6 +1,6 @@
 package com.aye.webservice.service;
 
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.webservice.feignclient.StepTransTimeStampVFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class StepTransTimeStampVService {
     @Autowired
     private StepTransTimeStampVFeignClient stepTransTimeStampVFeignClient;
-    
+
     public ApiRequestResponse getTimeStampByDetailsId(Long stepSetupDetailsId) {
         return this.stepTransTimeStampVFeignClient.getTimeStampByDetailsId(stepSetupDetailsId).getBody();
     }

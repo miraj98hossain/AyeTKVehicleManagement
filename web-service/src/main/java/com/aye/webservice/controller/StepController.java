@@ -1,10 +1,10 @@
 package com.aye.webservice.controller;
 
 
-import com.aye.commonlib.dto.request.StepRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
-import com.aye.commonlib.dto.validationGroup.StepCreateValidation;
-import com.aye.commonlib.dto.validationGroup.StepUpdateValidation;
+import com.aye.dtoLib.dto.request.StepRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.validationGroup.StepCreateValidation;
+import com.aye.dtoLib.dto.validationGroup.StepUpdateValidation;
 import com.aye.webservice.service.StepService;
 import jakarta.validation.groups.Default;
 import lombok.extern.slf4j.Slf4j;

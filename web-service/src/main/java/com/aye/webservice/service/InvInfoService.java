@@ -1,8 +1,8 @@
 package com.aye.webservice.service;
 
 
-import com.aye.commonlib.dto.request.InventoryInformationRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.InventoryInformationRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.webservice.feignclient.InvInfoFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

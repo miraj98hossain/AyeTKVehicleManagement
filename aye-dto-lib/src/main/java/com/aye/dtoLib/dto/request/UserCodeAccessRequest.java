@@ -5,6 +5,8 @@ import com.aye.enums.AccessCodeType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.util.Date;
+
 @Data
 public class UserCodeAccessRequest {
 
@@ -23,5 +25,9 @@ public class UserCodeAccessRequest {
     private String invInfoCode;
     private Long scaleSetupId;
     private String scaleSetupName;
+
+    private Date startDate;
+
+    private Date endDate;
 
 }

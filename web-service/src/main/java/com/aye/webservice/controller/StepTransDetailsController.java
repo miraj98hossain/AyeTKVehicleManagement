@@ -1,9 +1,9 @@
 package com.aye.webservice.controller;
 
 
-import com.aye.commonlib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.commonlib.dto.request.StepTransDetailsRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
+import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.StepTransDetailsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

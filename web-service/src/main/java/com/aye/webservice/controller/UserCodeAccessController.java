@@ -1,7 +1,7 @@
 package com.aye.webservice.controller;
 
-import com.aye.commonlib.dto.request.UserCodeAccessRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.UserCodeAccessRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.UserCodeAccessService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,8 @@ public class UserCodeAccessController {
     @PostMapping("/save")
     public ResponseEntity<ApiRequestResponse> save(@Valid @RequestBody UserCodeAccessRequest userCodeAccess,
                                                    @RequestParam String currentUser) {
+        System.out.println(userCodeAccess.getStartDate());
+        System.out.println(userCodeAccess.getEndDate());
         return new ResponseEntity<>(userCodeAccessBService.save(userCodeAccess, currentUser), HttpStatus.OK);
     }
 

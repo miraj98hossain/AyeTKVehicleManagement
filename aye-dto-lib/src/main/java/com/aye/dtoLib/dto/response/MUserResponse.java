@@ -3,7 +3,7 @@ package com.aye.dtoLib.dto.response;
 import com.aye.enums.UserType;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 
@@ -22,6 +22,6 @@ public class MUserResponse {
     private UserType userType;
     private boolean isPassChange;
     private boolean chkDeviceId;
-    private LocalDateTime lastLogin;
+    private Date lastLogin;
     private List<MRoleResponse> roles;
 }

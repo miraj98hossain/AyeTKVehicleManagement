@@ -1,9 +1,9 @@
 package com.aye.webservice.feignclient;
 
 
-import com.aye.commonlib.dto.request.ExecutableParameterRequest;
-import com.aye.commonlib.dto.request.ExecutablesRequest;
-import com.aye.commonlib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.request.ExecutableParameterRequest;
+import com.aye.dtoLib.dto.request.ExecutablesRequest;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

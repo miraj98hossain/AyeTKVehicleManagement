@@ -4,6 +4,7 @@ import com.aye.backendservice.service.UserCodeAccessBService;
 import com.aye.dtoLib.dto.request.UserCodeAccessRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/user-code-access")
+@Slf4j
 public class UserCodeAccessController {
     @Autowired
     UserCodeAccessBService userCodeAccessBService;
@@ -20,6 +22,7 @@ public class UserCodeAccessController {
     public ResponseEntity<ApiRequestResponse> save(@Valid
                                                    @RequestBody UserCodeAccessRequest userCodeAccess,
                                                    @RequestParam String currentUser) {
+        log.info("save user code access request -- {}", userCodeAccess);
         return new ResponseEntity<>(userCodeAccessBService.save(userCodeAccess, currentUser), HttpStatus.OK);
     }
 

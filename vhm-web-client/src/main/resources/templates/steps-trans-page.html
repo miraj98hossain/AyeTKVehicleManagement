@@ -189,39 +189,40 @@
                             </div>
                         </div>
 
+                        <div class="form-group col-sm-12" th:if="${stepTransReq.stepTransId!=null}">
+                            <label class="col-sm-3 control-label" for="startNum">Scale Info</label>
+                            <div class="col-sm-1"><b>:</b></div>
 
-                        <div class="form-group col-sm-12" th:if="${isIpAllowed}">
-                            <label class="col-sm-3 control-label" for="startNum">Scale</label>
+                            <div id="target-div" th:fragment="content-fragment">
+                                <div class="col-sm-2">
 
-                            <div class="col-sm-1">
-                                <b>:</b>
+                                    <input class="form-control"
+                                           id="startNum"
+                                           placeholder="Initial Scale"
+                                           th:field="${stepTransReq.startNum}"
+                                           th:readonly="${!(isIpAllowed and stepTransReq.stepTransId != null)}"
+                                           type="text"/>
+                                </div>
+
+                                <div class="col-sm-2">
+
+                                    <input class="form-control"
+                                           id="endNum"
+                                           placeholder="Final Scale"
+                                           th:field="${stepTransReq.endNum}"
+                                           th:readonly="${!(isIpAllowed and stepTransReq.stepTransId != null)}"
+                                           type="text"/>
+                                </div>
                             </div>
 
-                            <div class="col-sm-8">
-                                <div class="row">
-                                    <div class="col-sm-3">
-                                        <input class="form-control"
-                                               id="startNum"
-                                               placeholder="Start Number"
-                                               th:field="${stepTransReq.startNum}"
-                                               type="text"/>
-                                    </div>
-
-                                    <div class="col-sm-3">
-                                        <input class="form-control"
-                                               id="endNum"
-                                               placeholder="End Number"
-                                               th:field="${stepTransReq.endNum}"
-                                               type="text"/>
-                                    </div>
-
-                                    <div class="col-sm-3">
-                                        <a class="btn btn-success btn-block"
-                                           th:href="@{'/api/strans-time-stamp/callApi'}">
-                                            Get
-                                        </a>
-                                    </div>
-                                </div>
+                            <div class="col-sm-2" th:if="${isIpAllowed and stepTransReq.stepTransId!=null}">
+                                <input class="form-check-input" id="isInitScale" type="checkbox">
+                                <label class="form-check-label" for="isInitScale">
+                                    is Initial?
+                                </label>
+                            </div>
+                            <div class="col-sm-2" th:if="${isIpAllowed and stepTransReq.stepTransId!=null}">
+                                <a class="btn btn-success btn-block" onclick="fetchWeight(this)">Get Weight</a>
                             </div>
                         </div>
 
@@ -568,7 +569,8 @@
                                     <div class="table-responsive" style="margin:0;">
                                         <table class="table table-condensed table-bordered" style="margin-bottom:0;">
                                             <tbody>
-                                            <tr th:each="dtl : ${line.stepTransDetails}">
+                                            <tr
+                                                    th:each="dtl : ${line.stepTransDetails}">
 
                                                 <!-- Customer -->
                                                 <td style="width:60%; font-weight:normal;">
@@ -579,7 +581,8 @@
                                                 <td style="width:40%; padding:0;">
                                                     <table class="table table-condensed" style="margin-bottom:0;">
                                                         <tbody>
-                                                        <tr th:each="ln : ${dtl.stepTransDetailsLines}">
+                                                        <tr
+                                                                th:each="ln : ${dtl.stepTransDetailsLines}">
                                                             <td style="border-top:none;">
                                                                 <span class="text-muted"></span>
                                                                 <span th:text="${ln.orderedItem + ' (' + ln.orderedQuantity + ')'}"></span>
@@ -597,13 +600,13 @@
                                 <td th:text="${line.stepName}"></td>
                                 <td class="text-center" th:text="${line.stepStatus}"></td>
                                 <td class="text-center">
-                                    <a class="btn btn-success"
+                                    <a class="btn btn-primary"
                                        th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/'+${line.stepTransId}}"><span
                                             aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
                                     <!--                                    <a class="btn btn-success"-->
                                     <!--                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span-->
                                     <!--                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>-->
-                                    <a class="btn btn-success"
+                                    <a class="btn btn-info"
                                        onclick="openStepTransDetailsModal(this)"
                                        th:data-step-Trans-Id="${line.stepTransId}">
                                         <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>
