@@ -23,6 +23,7 @@ spring:
         default_schema: mapps2
         id:
           new_generator_mappings: true
+        format_sql: false
 
   servlet:
     multipart:
@@ -34,8 +35,6 @@ spring:
 
   Report:
     dir: F:/Red/Report/
-  jackson:
-    date-format: yyyy-MM-dd
     serialization:
       fail-on-empty-beans: false
   data:
@@ -58,5 +57,10 @@ server:
 #    client-auth: need
 logging:
   level:
+    #    org:
+    #      hibernate:
+    #        orm:
+    #          jdbc:
+    #            bind: TRACE
     com.aye.RestfulServer.controller: INFO
     org.springframework.data.couchbase.repository.query: DEBUG
