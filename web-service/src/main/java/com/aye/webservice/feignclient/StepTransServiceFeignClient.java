@@ -1,6 +1,7 @@
 package com.aye.webservice.feignclient;
 
 
+import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
@@ -32,7 +33,12 @@ public interface StepTransServiceFeignClient {
     ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id);
 
     @GetMapping("/findAllByTempDtlId")
-    public ResponseEntity<ApiRequestResponse> findAllByTempDtlId(@RequestParam Integer tempDtlId,
-                                                                 @RequestParam(required = false) String searchWords,
-                                                                 @PageableDefault(size = 10, page = 0) Pageable pageable);
+    ResponseEntity<ApiRequestResponse> findAllByTempDtlId(@RequestParam Integer tempDtlId,
+                                                          @RequestParam(required = false) String searchWords,
+                                                          @PageableDefault(size = 10, page = 0) Pageable pageable);
+
+    @PostMapping("/searchTransactions")
+    ResponseEntity<ApiRequestResponse> searchTransactions(@RequestParam Integer tempDtlId,
+                                                          @RequestBody StepTransFilter stepTransFilter);
+
 }

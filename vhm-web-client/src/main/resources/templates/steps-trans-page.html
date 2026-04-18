@@ -237,6 +237,8 @@
                             <!--                               (pageId=${pageId},tempDtlId=${tempDtlId},page=${page},size=${size})}">Clear</a>-->
                             <a class="btn btn-default"
                                th:href="@{'/main'}">Back</a>
+                            <a class="btn btn-dark"
+                               th:href="@{'/step-trans/history/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'(pageId=${pageId},tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId})}">History</a>
                         </div>
 
                     </form>

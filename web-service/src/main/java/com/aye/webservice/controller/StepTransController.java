@@ -1,6 +1,7 @@
 package com.aye.webservice.controller;
 
 
+import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
@@ -51,5 +52,11 @@ public class StepTransController {
                                                                  @PageableDefault(size = 10, page = 0) Pageable pageable) {
         return ResponseEntity.ok().body(this.stepTransService.findAllByTempDtlId(tempDtlId, searchWords, pageable));
 
+    }
+
+    @PostMapping("/searchTransactions")
+    public ResponseEntity<ApiRequestResponse> searchTransactions(@RequestParam Integer tempDtlId,
+                                                                 @RequestBody StepTransFilter stepTransFilter) {
+        return ResponseEntity.ok().body(this.stepTransService.searchTransactions(tempDtlId, stepTransFilter));
     }
 }

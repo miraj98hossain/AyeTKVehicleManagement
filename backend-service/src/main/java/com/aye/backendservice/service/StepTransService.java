@@ -1,5 +1,6 @@
 package com.aye.backendservice.service;
 
+import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
@@ -28,4 +29,6 @@ public interface StepTransService {
     ApiRequestResponse findAllByTempDtlId(Integer tempDtlId, String searchWords, Pageable pageable);
 
 
+    @Transactional(readOnly = true)
+    ApiRequestResponse stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter);
 }

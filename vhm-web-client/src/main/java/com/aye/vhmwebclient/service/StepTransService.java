@@ -1,6 +1,7 @@
 package com.aye.vhmwebclient.service;
 
 
+import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
@@ -41,5 +42,10 @@ public class StepTransService {
                                                  Pageable pageable) {
         return this.stepTransServiceFeignClient.findAllByTempDtlId(tempDtlId, searchWords, pageable).getBody();
 
+    }
+
+
+    public ApiRequestResponse searchTransactions(Integer tempDtlId, StepTransFilter stepTransFilter) {
+        return this.stepTransServiceFeignClient.searchTransactions(tempDtlId, stepTransFilter).getBody();
     }
 }

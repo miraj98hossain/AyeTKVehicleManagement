@@ -5,6 +5,7 @@ import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserAccessTempltService;
 import com.aye.backendservice.repository.StepTransRepository;
 import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
+import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
 import com.aye.dtoLib.dto.response.*;
@@ -15,6 +16,7 @@ import com.aye.entitylib.entity.vehicleproject.StepTrans;
 import com.aye.entitylib.entity.vehicleproject.StepTransLines;
 import com.aye.entitylib.entity.vehicleproject.StepTransTimeline;
 import com.aye.enums.StepStatus;
+import com.aye.enums.StepTransStatus;
 import com.aye.mapper.StepTransLinesMapper;
 import com.aye.mapper.StepTransMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -58,6 +60,7 @@ public class StepTransServiceImpl implements StepTransService {
     @Autowired
     private StepTransDetailsCreationService stepTransDetailsCreationService;
 
+
     @Transactional
     @Override
     public ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest, String userName) {
@@ -87,6 +90,7 @@ public class StepTransServiceImpl implements StepTransService {
             line.getStepTransTimeline().add(stepTransTimeline);
         }
         stepTrans.setStepTransNo(noGenService.createTransNo());
+        stepTrans.setStepTransStatus(StepTransStatus.P);
         stepTrans = stepTransRepository.save(stepTrans);
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.OK.name());
@@ -221,7 +225,8 @@ public class StepTransServiceImpl implements StepTransService {
         StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesId());
         //for storing response
         StepTransLinesResponse objResponse = new StepTransLinesResponse();
-
+        StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
+                () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
         //-----------------------Business for pick event Starts----------------------------------
 
         //Checking Request is a pick event or not
@@ -264,8 +269,7 @@ public class StepTransServiceImpl implements StepTransService {
                     dbstepTransLines.setStepStatus(StepStatus.W);
                     dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
                     //Fetching the setup
-                    StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
-                            () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
+
                     List<StepSetupDetails> stepSetup = stepTrans.getStepSetup().getStepSetupDetails();
                     var existingTrans = stepTrans.getStepTransLinesList();
 
@@ -303,6 +307,9 @@ public class StepTransServiceImpl implements StepTransService {
                         childLine.setStage(childLine.getStage() + 1);//current value should be 1(0->1). Eligible to be at wip now.
                         //updating child
                         this.stepTransLinesService.saveStepTransLines(childLine, false, Long.valueOf(muser.getId()));
+                    } else {
+                        stepTrans.setStepTransStatus(StepTransStatus.C);
+                        this.stepTransRepository.save(stepTrans);
                     }
                 }
             }
@@ -311,6 +318,8 @@ public class StepTransServiceImpl implements StepTransService {
                 dbstepTransLines.setStepStatus(StepStatus.R);
                 dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
                 rejectTransLine(dbstepTransLines, Long.valueOf(muser.getId()), null);
+                stepTrans.setStepTransStatus(StepTransStatus.R);
+                this.stepTransRepository.save(stepTrans);
                 //objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//Changing Status.
             }
         }
@@ -350,6 +359,22 @@ public class StepTransServiceImpl implements StepTransService {
         return response;
     }
 
+    @Override
+    public ApiRequestResponse stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter) {
+        var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
+
+        List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
+                .flatMap(inv -> inv.getUserTransactionTypes().stream())
+                .map(UserTransactionTypes::getTrnsTypeId)
+                .toList();
+        List<StepTransLines> fetchedStepTransLines = this.stepTransLinesService.stepTransSearch(setupDetailIds, stepTransFilter);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "stepTransLinesList",
+                StepTransLinesResponse.class.getName(), this.stepTransLinesMapper.entityListToDtoList(fetchedStepTransLines)
+        );
+    }
+
 
     @Transactional
     protected void rejectTransLine(StepTransLines stepTransLines, Long currentUser, Set<Long> visited) {
@@ -374,5 +399,6 @@ public class StepTransServiceImpl implements StepTransService {
         stepTransLines.setStepStatus(StepStatus.R);
         this.stepTransLinesService.saveStepTransLines(stepTransLines, true, currentUser);
     }
+
 
 }

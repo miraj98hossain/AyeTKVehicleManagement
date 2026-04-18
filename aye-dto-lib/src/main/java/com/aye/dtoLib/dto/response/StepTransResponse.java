@@ -1,5 +1,6 @@
 package com.aye.dtoLib.dto.response;
 
+import com.aye.enums.StepTransStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,7 @@ public class StepTransResponse {
     private BigDecimal startNum;
     private BigDecimal endNum;
     private String challanNumber;
+    private StepTransStatus stepTransStatus;
     private List<StepTransLinesResponse> stepTransLinesResponseList = new ArrayList<>();
     private Long createdBy;
     private Date createdAt;

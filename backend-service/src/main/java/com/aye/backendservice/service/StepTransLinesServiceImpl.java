@@ -1,7 +1,10 @@
 package com.aye.backendservice.service;
 
 
+import com.aye.RestfulServer.service.MuserService;
 import com.aye.backendservice.repository.StepTransLinesRepository;
+import com.aye.backendservice.service.specification.StepTransSpecification;
+import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.response.StepTransLinesResponse;
 import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
 import com.aye.entitylib.entity.vehicleproject.StepTrans;
@@ -15,6 +18,7 @@ import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +36,10 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     private StepTransLinesMapper stepTransLinesMapper;
     @Autowired
     private NoGenService noGenService;
+    @Autowired
+    private MuserService mUserService;
+    @Autowired
+    private StepTransSpecification stepTransSpecification;
 
     @Transactional
     public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId) {
@@ -107,6 +115,17 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
 
 
         return this.stepTransLinesMapper.toResponseDto(list);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<StepTransLines> stepTransSearch(List<Long> setupDetailIds, StepTransFilter stepTransFilter) {
+
+
+        Specification<StepTransLines> spec = stepTransSpecification.filterBy(stepTransFilter, setupDetailIds);
+
+        List<StepTransLines> fetchedStepTrans = this.stepTransLinesRepository.findAll(spec);
+        return fetchedStepTrans;
     }
 }
 

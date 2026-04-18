@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html data-layout-decorate="~{fragments/layout}" lang="en">
+<head>
+
+    <link rel="stylesheet" th:href="@{/css/easyAutocomplete/easy-autocomplete.min.css}"/>
+
+    <script th:src="@{/js/easyAutocomplete/autocomplete.js}"></script>
+    <script th:src="@{/js/easyAutocomplete/jquery.easy-autocomplete.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/steps-trans.css}">
+    <title>Step Transaction History</title>
+</head>
+
+
+<body>
+<div class="right_col" data-layout-fragment="content" role="main">
+    <div class="row">
+        <div class="col-sm-12">
+            <!--<div class="container">-->
+            <div class="panel panel-default">
+                <input class="form-control"
+                       id="orgId"
+                       th:value="${orgId}"
+                       type="hidden">
+                <input class="form-control"
+                       id="invOrgId"
+                       th:value="${invOrgId}"
+                       type="hidden">
+                <input class="form-control" id="templateid" placeholder="Template Id" readonly
+                       th:value="${tempDtlId}" type="hidden"/>
+                <!-- Default panel contents -->
+                <div class="panel-heading">Step Transaction History</div>
+                <div class="panel-body">
+                    <form method="post"
+                          th:action="@{'/step-trans/history-search' + '/' + ${pageId} + '/' + ${tempDtlId}+ '/' + ${invOrgId}+ '/' + ${orgId}}"
+                          th:object="${stepTransFilter}">
+
+                        <div class="form-group">
+                            <!-- Search -->
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="search">Search</label>
+                                <div class="col-sm-1 text-center">:</div>
+                                <div class="col-sm-3">
+                                    <input class="form-control" id="search" placeholder="search"
+                                           th:field="*{searchKeyword}" type="text"/>
+                                    <p class="text-danger" th:errors="*{searchKeyword}"></p>
+                                </div>
+                            </div>
+
+                            <!-- Date Row -->
+                            <div class="form-group row">
+
+                                <!-- From Date -->
+                                <label class="col-sm-2 col-form-label" for="fromDate">From Date</label>
+                                <div class="col-sm-1 text-center">:</div>
+                                <div class="col-sm-3">
+                                    <input class="form-control" id="fromDate"
+                                           required th:field="*{fromDate}" type="date"/>
+                                    <p class="text-danger" th:errors="*{fromDate}"></p>
+                                </div>
+
+
+                            </div>
+
+                            <div class="form-group row">
+                                <!-- To Date -->
+                                <label class="col-sm-2 col-form-label" for="toDate">To Date</label>
+                                <div class="col-sm-1 text-center">:</div>
+                                <div class="col-sm-3">
+                                    <input class="form-control" id="toDate"
+                                           th:field="*{toDate}" type="date"/>
+                                    <p class="text-danger" th:errors="*{toDate}"></p>
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="form-group row">
+                                <div class="col-sm-12 text-left">
+                                    <button class="btn btn-primary" type="submit">Search</button>
+                                    <a class="btn btn-dark"
+                                       th:href="@{'/step-trans/history/' + ${pageId} + '/' + ${tempDtlId}+ '/' + ${invOrgId}+ '/' + ${orgId}}">
+                                        Reset
+                                    </a>
+                                    <a class="btn btn-default"
+                                       th:href="@{'/step-trans/list/' + ${pageId} + '/' + ${tempDtlId}+ '/' + ${invOrgId}+ '/' + ${orgId}}">
+                                        Back
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="row">
+                        <div class="form-group col-sm-12">
+                            <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
+                                <thead>
+                                <tr>
+                                    <th>SL#</th>
+                                    <th>TransNo</th>
+                                    <th>Entry Date</th>
+                                    <th>VehicleNo</th>
+                                    <th>Driver Phone</th>
+                                    <th>Additional Info</th>
+                                    <th>Step</th>
+                                    <th>Status</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                <tr th:each="line, i : ${stepTransLinesList}">
+                                    <td th:text="${i.index+1}"></td>
+                                    <td th:text="${line.stepTransNo}"></td>
+                                    <td th:text="${#dates.format(line.createdAt, 'dd-MMM-yyyy')}"></td>
+                                    <td th:text="${line.vehicleNumber}"></td>
+                                    <td th:text="${line.driverPhoneNo}"></td>
+                                    <td>
+                                        <div class="table-responsive" style="margin:0;">
+                                            <table class="table table-condensed table-bordered"
+                                                   style="margin-bottom:0;">
+                                                <tbody>
+                                                <tr
+                                                        th:each="dtl : ${line.stepTransDetails}">
+
+                                                    <!-- Customer -->
+                                                    <td style="width:60%; font-weight:normal;">
+                                                        <span th:text="${dtl.custName}"></span>
+                                                    </td>
+
+                                                    <!-- Items -->
+                                                    <td style="width:40%; padding:0;">
+                                                        <table class="table table-condensed" style="margin-bottom:0;">
+                                                            <tbody>
+                                                            <tr
+                                                                    th:each="ln : ${dtl.stepTransDetailsLines}">
+                                                                <td style="border-top:none;">
+                                                                    <span class="text-muted"></span>
+                                                                    <span th:text="${ln.orderedItem + ' (' + ln.orderedQuantity + ')'}"></span>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </td>
+                                    <td th:text="${line.stepName}"></td>
+                                    <td class="text-center" th:text="${line.stepStatus}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Pagination -->
+
+
+                        </div>
+                    </div>
+
+                    <div class="panel-footer"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

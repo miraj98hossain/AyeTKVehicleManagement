@@ -1,6 +1,7 @@
 package com.aye.backendservice.service;
 
 
+import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.response.StepTransLinesResponse;
 import com.aye.entitylib.entity.vehicleproject.StepTransLines;
 import org.springframework.data.domain.Page;
@@ -22,5 +23,8 @@ public interface StepTransLinesService {
 
     Page<StepTransLinesResponse> getAllStepTransLine(
             List<Long> stepSetupIds, String searchWords, Pageable pageable);
+
+
+    List<StepTransLines> stepTransSearch(List<Long> setupDetailIds, StepTransFilter stepTransFilter);
 }
 

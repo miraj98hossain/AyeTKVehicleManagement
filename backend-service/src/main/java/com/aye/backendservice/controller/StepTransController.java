@@ -2,6 +2,7 @@ package com.aye.backendservice.controller;
 
 
 import com.aye.backendservice.service.StepTransService;
+import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
@@ -58,5 +59,11 @@ public class StepTransController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiRequestResponse> findById(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body(this.stepTransService.findById(id));
+    }
+
+    @PostMapping("/searchTransactions")
+    public ResponseEntity<ApiRequestResponse> searchTransactions(@RequestParam Integer tempDtlId,
+                                                                 @RequestBody StepTransFilter stepTransFilter) {
+        return ResponseEntity.ok().body(this.stepTransService.stepTransSearch(tempDtlId, stepTransFilter));
     }
 }
