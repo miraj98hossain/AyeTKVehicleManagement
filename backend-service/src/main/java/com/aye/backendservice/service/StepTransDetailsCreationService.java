@@ -8,7 +8,6 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.MuserService;
-
 import com.aye.backendservice.service.domain.StepTransDetailsCreationStrategy;
 import com.aye.backendservice.service.domain.StepTransDetailsLineCreationStrategy;
 import com.aye.backendservice.utils.ApiResponseFactory;
@@ -20,6 +19,7 @@ import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 import com.aye.mapper.StepTransDetailsLinesMapper;
 import com.aye.mapper.StepTransDetailsMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +28,7 @@ import java.util.List;
 
 @Service
 @Transactional
+@Slf4j
 public class StepTransDetailsCreationService {
     @Autowired
     private List<StepTransDetailsCreationStrategy> stepTransDetailsCreationStrategies;
@@ -47,6 +48,7 @@ public class StepTransDetailsCreationService {
 
         for (StepTransDetailsCreationStrategy strategy : stepTransDetailsCreationStrategies) {
             if (strategy.supports(req)) {
+       
                 List<StepTransDetails> result = strategy.create(req, user);
                 return ApiResponseFactory.success(
                         result.stream().map(mapper::toResponseDto).toList()
