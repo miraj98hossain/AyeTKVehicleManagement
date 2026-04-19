@@ -25,7 +25,7 @@ public class StepTransSpecification {
     private final String DRIVER_NAME = "driverName";
     private final String TRANSPORT_NAME = "transportName";
     private final String CREATED_BY = "createdBy";
-    private final String CREATED_AT = "createdAt";
+    private final String UPDATED_AT = "updatedAt";
     private final String ITEM_NAME = "orderedItem";
     private final String CUST_NAME = "custName";
     private final String STEP_TRANS_DETAILS = "stepTransDetails";
@@ -78,11 +78,11 @@ public class StepTransSpecification {
     }
 
     private Specification<StepTransLines> hasFromDate(Date formDate) {
-        return ((root, query, cb) -> formDate == null ? cb.conjunction() : cb.greaterThanOrEqualTo(root.get(CREATED_AT).as(java.util.Date.class), formDate));
+        return ((root, query, cb) -> formDate == null ? cb.conjunction() : cb.greaterThanOrEqualTo(root.get(UPDATED_AT).as(java.util.Date.class), formDate));
     }
 
     private Specification<StepTransLines> hasToDate(Date toDate) {
-        return ((root, query, cb) -> toDate == null ? cb.conjunction() : cb.lessThanOrEqualTo(root.get(CREATED_AT).as(java.util.Date.class), toDate));
+        return ((root, query, cb) -> toDate == null ? cb.conjunction() : cb.lessThanOrEqualTo(root.get(UPDATED_AT).as(java.util.Date.class), toDate));
     }
 
     private Specification<StepTransLines> hasStepDetailsId(List<Long> setupDetailIds) {
