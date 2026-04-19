@@ -96,7 +96,7 @@
                                 <tr>
                                     <th>SL#</th>
                                     <th>TransNo</th>
-                                    <th>Entry Date</th>
+                                    <th>Updated Date</th>
                                     <th>VehicleNo</th>
                                     <th>Driver Phone</th>
                                     <th>Additional Info</th>
@@ -109,7 +109,7 @@
                                 <tr th:each="line, i : ${stepTransLinesList}">
                                     <td th:text="${i.index+1}"></td>
                                     <td th:text="${line.stepTransNo}"></td>
-                                    <td th:text="${#dates.format(line.createdAt, 'dd-MMM-yyyy')}"></td>
+                                    <td th:text="${#dates.format(line.updatedAt, 'dd-MMM-yyyy')}"></td>
                                     <td th:text="${line.vehicleNumber}"></td>
                                     <td th:text="${line.driverPhoneNo}"></td>
                                     <td>
