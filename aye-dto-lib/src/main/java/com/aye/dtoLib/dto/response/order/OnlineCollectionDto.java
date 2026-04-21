@@ -85,7 +85,7 @@ public class OnlineCollectionDto {
 
     private String remarks;
 
-    private List<OrderCollectionDto> orderCollectionResDto = new ArrayList<>();
+    private List<OrderCollectionDto> orderCollection = new ArrayList<>();
 
     private List<MUploadModelDto> uploadModels = new ArrayList<>();
 

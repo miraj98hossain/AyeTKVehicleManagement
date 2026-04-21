@@ -76,7 +76,7 @@ public class NorderLineDto {
     private Integer muserDataItemId;
 
 
-    private NorderHeaderDto norderHeaderResDto;
+    private NorderHeaderDto norderHeader;
 
     private BigDecimal width;
 
