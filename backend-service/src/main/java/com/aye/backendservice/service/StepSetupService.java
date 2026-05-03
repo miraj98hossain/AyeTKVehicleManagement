@@ -2,8 +2,10 @@ package com.aye.backendservice.service;
 
 import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
 import com.aye.dtoLib.dto.request.StepSetupRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.StepSetupDetailsResponse;
+import com.aye.entitylib.entity.vehicleproject.StepSetup;
+import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -11,26 +13,23 @@ import java.util.List;
 
 public interface StepSetupService {
 
-    ApiRequestResponse saveStepSetup(StepSetupRequest stepSetupRequest, String currentUserName);
+    StepSetup saveStepSetup(StepSetupRequest stepSetupRequest, String currentUserName);
 
-    ApiRequestResponse findByIdRes(Long StepSetup);
+    StepSetup findByIdRes(Long StepSetup);
 
-    ApiRequestResponse findById(Long id);
+    StepSetup findById(Long id);
 
-    ApiRequestResponse addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest, String currentUserName);
+    StepSetupDetails addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest, String currentUserName);
 
-    ApiRequestResponse findAllStepSetup(Pageable pageable);
+    Page<StepSetup> findAllStepSetup(Pageable pageable);
 
-    ApiRequestResponse filterStepSetup(Long orgId, Long invOrgId, String searchWords);
+    List<StepSetupDetails> filterStepSetup(Long orgId, Long invOrgId, String searchWords);
 
-    ApiRequestResponse findSetupByDtlId(Long setupDetailId);
-
-    ApiRequestResponse findStepStpDtlByDtlId(Long stepDetailId);
 
     List<StepSetupDetailsResponse> findStepStpDtlByDtlIds(List<Long> setupDetailIds);
 
 
-    ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId);
+    List<StepSetup> findSetupByTempDtlId(Integer tempDtlId, Long invOrgId);
 
-    ApiRequestResponse getAllDetailsBySetup(Long setupId);
+    List<StepSetupDetails> getAllDetailsBySetup(Long setupId);
 }

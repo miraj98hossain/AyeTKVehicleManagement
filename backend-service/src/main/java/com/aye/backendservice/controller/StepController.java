@@ -1,6 +1,6 @@
 package com.aye.backendservice.controller;
 
-import com.aye.backendservice.service.StepService;
+import com.aye.backendservice.service.StepViewService;
 import com.aye.dtoLib.dto.request.StepRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.validationGroup.StepCreateValidation;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/steps")
 public class StepController {
     @Autowired
-    private StepService stepService;
+    private StepViewService stepService;
 
     @PostMapping("/save")
     public ResponseEntity<ApiRequestResponse> saveStep(

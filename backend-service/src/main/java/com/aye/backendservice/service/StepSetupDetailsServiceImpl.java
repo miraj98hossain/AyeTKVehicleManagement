@@ -1,10 +1,8 @@
 package com.aye.backendservice.service;
 
 
-
 import com.aye.backendservice.repository.StepSetupDetailsRepository;
 import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
-import com.aye.dtoLib.dto.response.StepSetupDetailsResponse;
 import com.aye.entitylib.entity.vehicleproject.Step;
 import com.aye.entitylib.entity.vehicleproject.StepSetup;
 import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
@@ -32,7 +30,7 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
 
     @Transactional
     @Override
-    public StepSetupDetailsResponse saveStepSetupDetails(StepSetupDetailsRequest stepSetupDetailsRequest) {
+    public StepSetupDetails saveStepSetupDetails(StepSetupDetailsRequest stepSetupDetailsRequest) {
         StepSetupDetails stepSetupDetails = stepSetupDetailsMapper.toEntity(stepSetupDetailsRequest);
 
         if (stepSetupDetails.getStepSetupDetailsId() != null) {
@@ -43,11 +41,11 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
             stepSetupDetails.setCreatedBy(extstepSetupDetails.getCreatedBy());
             stepSetupDetails.setUpdatedAt(new Date());
             stepSetupDetails.setUpdatedBy((long) 1);
-            return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetailsRepository.save(stepSetupDetails));
+            return this.stepSetupDetailsRepository.save(stepSetupDetails);
         }
         stepSetupDetails.setCreatedAt(new Date());
         stepSetupDetails.setCreatedBy((long) 1);
-        return this.stepSetupDetailsMapper.toResponseDto(stepSetupDetailsRepository.save(stepSetupDetails));
+        return this.stepSetupDetailsRepository.save(stepSetupDetails);
 
     }
 
@@ -72,33 +70,33 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<StepSetupDetailsResponse> getDetailsBySetupId(StepSetup stepSetup) {
+    public List<StepSetupDetails> getDetailsBySetupId(StepSetup stepSetup) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("stepSetup"), stepSetup));
             predicates.add(cb.equal(root.get("isActive"), 1));
             return cb.and(predicates.toArray(new Predicate[0]));
-        }).stream().map(this.stepSetupDetailsMapper::toResponseDto).toList();
+        });
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<StepSetupDetailsResponse> getAllDetailsBySetup(StepSetup stepSetup) {
+    public List<StepSetupDetails> getAllDetailsBySetup(StepSetup stepSetup) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("stepSetup"), stepSetup));
             return cb.and(predicates.toArray(new Predicate[0]));
-        }).stream().map(this.stepSetupDetailsMapper::toResponseDto).toList();
+        });
     }
 
     @Transactional(readOnly = true)
     @Override
-    public Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable) {
+    public Page<StepSetupDetails> getAllStepSetupDetails(Pageable pageable) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("isActive"), 1));
             return cb.and(predicates.toArray(new Predicate[0]));
-        }, pageable).map(this.stepSetupDetailsMapper::toResponseDto);
+        }, pageable);
     }
 
     @Transactional

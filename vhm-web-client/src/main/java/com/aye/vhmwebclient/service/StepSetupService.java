@@ -41,8 +41,8 @@ public class StepSetupService {
     }
 
 
-    public ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId) {
-        return this.stepSetupServiceFeignClient.findSetupByTempDtlId(tempDtlId).getBody();
+    public ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId, Long invOrgId) {
+        return this.stepSetupServiceFeignClient.findSetupByTempDtlId(tempDtlId, invOrgId).getBody();
     }
 
     public ApiRequestResponse getAllDetailsBySetup(@PathVariable("setupId") Long setupId) {

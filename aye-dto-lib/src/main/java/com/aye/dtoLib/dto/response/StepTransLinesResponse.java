@@ -16,6 +16,7 @@ public class StepTransLinesResponse {
     private Long stepTransLinesId;
     private String stepTransLinesNo;
     private Long stepTransId;
+    private Long stepSetupDetailsId;
     private String stepTransNo;
     private String vehicleNumber;
     private String transportName;
@@ -24,6 +25,9 @@ public class StepTransLinesResponse {
     private Long stepId;
     private String stepName;
     private String stepStatus;
+    private String holdBy;
+    private boolean isHoldAble;
+    private String currentlyLoadingItem;
     private String remarks;
     private Integer stage;
     private List<StepTransDetailsResponse> stepTransDetails;

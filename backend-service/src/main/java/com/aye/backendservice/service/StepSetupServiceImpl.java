@@ -6,10 +6,7 @@ import com.aye.RestfulServer.service.UserAccessTempltService;
 import com.aye.backendservice.repository.StepSetupRepository;
 import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
 import com.aye.dtoLib.dto.request.StepSetupRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
 import com.aye.dtoLib.dto.response.StepSetupDetailsResponse;
-import com.aye.dtoLib.dto.response.StepSetupResponse;
 import com.aye.entitylib.entity.UserTransactionTypes;
 import com.aye.entitylib.entity.user.Muser;
 import com.aye.entitylib.entity.vehicleproject.Step;
@@ -20,8 +17,8 @@ import com.aye.mapper.StepSetupMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,8 +35,6 @@ public class StepSetupServiceImpl implements StepSetupService {
     @Autowired
     private MuserService muserService;
     @Autowired
-    private StepService stepService;
-    @Autowired
     private StepSetupDetailsService stepSetupDetailsService;
     @Autowired
     private StepSetupMapper stepSetupMapper;
@@ -50,7 +45,7 @@ public class StepSetupServiceImpl implements StepSetupService {
 
     @Transactional
     @Override
-    public ApiRequestResponse saveStepSetup(StepSetupRequest request, String currentUserName) {
+    public StepSetup saveStepSetup(StepSetupRequest request, String currentUserName) {
         Muser muser = this.muserService.findByUserName(currentUserName);
         StepSetup stepSetup;
         if (request.getStepSetupId() != null) {
@@ -67,16 +62,13 @@ public class StepSetupServiceImpl implements StepSetupService {
             stepSetup.setCreatedBy(Long.valueOf(muser.getId()));
             stepSetup = stepSetupRepository.save(stepSetup);
         }
-        return ApiRequestResponseMaker.make(HttpStatus.OK.name(), "Successfully created the step setup",
-                ApiRequestResponseDetail.ObjectType.O, "stepSetupResponse",
-                StepSetupResponse.class.getName(),
-                stepSetupMapper.toResponseDto(stepSetup));
+        return stepSetup;
     }
 
 
     @Transactional
     @Override
-    public ApiRequestResponse addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest, String currentUserName) {
+    public StepSetupDetails addOrUpdateDetail(StepSetupDetailsRequest newDetailsRequest, String currentUserName) {
         Muser muser = this.muserService.findByUserName(currentUserName);
         StepSetupDetails requestDetails = stepSetupDetailsMapper.toEntity(newDetailsRequest);
         Set<Step> existingSteps;
@@ -105,80 +97,47 @@ public class StepSetupServiceImpl implements StepSetupService {
             requestDetails = this.stepSetupDetailsService.save(dbDetails);
         }
 
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(), "Success",
-                ApiRequestResponseDetail.ObjectType.O,
-                "stepSetupDtlResponse",
-                StepSetupDetailsResponse.class.getName(),
-                stepSetupDetailsMapper.toResponseDto(requestDetails)
-        );
+        return requestDetails;
     }
 
 
     @Transactional(readOnly = true)
     @Override
-    public ApiRequestResponse findByIdRes(Long stepSetupId) {
+    public StepSetup findByIdRes(Long stepSetupId) {
         StepSetup stepSetup = this.stepSetupRepository.findById(stepSetupId).orElseThrow(
                 () -> new EntityNotFoundException("Step Setup Not Found with id:" + stepSetupId));
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully found the step setup");
-        List<ApiRequestResponseDetail> details = new ArrayList<>();
-        ApiRequestResponseDetail apiRequestResponseDetail = ApiRequestResponseDetail.builder()
-                .objectTag("stepSetupResponse")
-                .mapperClass(StepSetupResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.O)
-                .object(stepSetupMapper.toResponseDto(stepSetup))
-                .build();
-        details.add(apiRequestResponseDetail);
-        response.setApiRequestResponseDetails(details);
-        return response;
+        return stepSetup;
 
     }
 
     @Transactional(readOnly = true)
     @Override
-    public ApiRequestResponse findById(Long id) {
+    public StepSetup findById(Long id) {
 
         StepSetup stepSetup = this.stepSetupRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("StepSetup not found with this id " + id)
         );
-        return ApiRequestResponseMaker.make(HttpStatus.OK.name(), "Successfully created the step setup",
-                ApiRequestResponseDetail.ObjectType.O, "stepSetupResponse",
-                StepSetupResponse.class.getName(),
-                stepSetupMapper.toResponseDto(stepSetup));
+        return stepSetup;
 
     }
 
     @Transactional(readOnly = true)
     @Override
-    public ApiRequestResponse findAllStepSetup(Pageable pageable) {
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully found all the step setups");
+    public Page<StepSetup> findAllStepSetup(Pageable pageable) {
+
 
         var page = this.stepSetupRepository.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("isActive"), 1));
             return cb.and(predicates.toArray(new Predicate[0]));
-        }, pageable).map(stepSetupMapper::toResponseDto);
+        }, pageable);
 
-        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
-        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("stepSetupResList")
-                .object(page)
-                .mapperClass(StepSetupResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.PD)
-                .build();
-        detailsResList.add(details);
-        response.setApiRequestResponseDetails(detailsResList);
-        return response;
-
+        return page;
     }
 
     @Transactional(readOnly = true)
     @Override
-    public ApiRequestResponse filterStepSetup(Long orgId, Long invOrgId, String searchWords) {
+    public List<StepSetupDetails> filterStepSetup(Long orgId, Long invOrgId, String searchWords) {
         List<StepSetup> stepSetups = this.stepSetupRepository.findAll(
                 ((root, query, cb) -> {
                     List<Predicate> predicates = new ArrayList<>();
@@ -189,46 +148,9 @@ public class StepSetupServiceImpl implements StepSetupService {
                 })
         );
         var dtls = this.stepSetupDetailsService.filterStepSetupDetails(stepSetups, orgId, invOrgId, searchWords);
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Successfully found all the step setups",
-                ApiRequestResponseDetail.ObjectType.A,
-                "stepSetupResponseList",
-                StepSetupDetailsResponse.class.getName(),
-                dtls.stream().map(stepSetupDetailsMapper::toResponseDto).collect(Collectors.toList())
-        );
+        return dtls;
     }
 
-    @Transactional
-    @Override
-    public ApiRequestResponse findSetupByDtlId(Long setupDetailId) {
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully found");
-        StepSetupDetails details = this.stepSetupDetailsService.findById(setupDetailId);
-        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
-        ApiRequestResponseDetail resDetails = ApiRequestResponseDetail.builder()
-                .objectTag("stepSetupDetailsResponse")
-                .object(stepSetupDetailsMapper.toResponseDto(details))
-                .mapperClass(StepSetupDetailsResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.O)
-                .build();
-        detailsResList.add(resDetails);
-        response.setApiRequestResponseDetails(detailsResList);
-        return response;
-    }
-
-    @Transactional
-    @Override
-    public ApiRequestResponse findStepStpDtlByDtlId(Long stepDetailId) {
-        StepSetupDetails details = this.stepSetupDetailsService.findById(stepDetailId);
-
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(), "Success",
-                ApiRequestResponseDetail.ObjectType.O, "stepSetupDtl",
-                StepSetupDetailsResponse.class.getName(), this.stepSetupDetailsMapper.toResponseDto(details)
-        );
-    }
 
     @Transactional(readOnly = true)
     @Override
@@ -239,40 +161,30 @@ public class StepSetupServiceImpl implements StepSetupService {
 
     @Transactional(readOnly = true)
     @Override
-    public ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId) {
+    public List<StepSetup> findSetupByTempDtlId(Integer tempDtlId, Long invOrgId) {
         var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
-
-        List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
+        List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs()
+                .stream()
+                .filter(accessInvOrg -> accessInvOrg.getInvOrgs().getId().equals(invOrgId))
                 .flatMap(inv -> inv.getUserTransactionTypes().stream())
                 .map(UserTransactionTypes::getTrnsTypeId)
                 .toList();
-
         List<StepSetupDetailsResponse> details = findStepStpDtlByDtlIds(setupDetailIds);
-
         Set<Long> setupIds = details.stream()
                 .map(StepSetupDetailsResponse::getStepSetupId)
                 .collect(Collectors.toSet());
-        List<StepSetupResponse> stepSetupResponseList = this.stepSetupRepository
-                .findAllById(setupIds).stream().map(stepSetupMapper::toResponseDto).toList();
-
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(), "Success",
-                ApiRequestResponseDetail.ObjectType.A, "stepSetupList",
-                StepSetupResponse.class.getName(), stepSetupResponseList
-        );
+        List<StepSetup> stepSetupResponseList = this.stepSetupRepository
+                .findAllById(setupIds);
+        return stepSetupResponseList;
     }
 
     @Override
-    public ApiRequestResponse getAllDetailsBySetup(Long setupId) {
+    public List<StepSetupDetails> getAllDetailsBySetup(Long setupId) {
         StepSetup stepSetup = this.stepSetupRepository.findById(setupId).orElseThrow(
                 () -> new EntityNotFoundException("No Setup Found!!")
         );
-        List<StepSetupDetailsResponse> list = this.stepSetupDetailsService.getAllDetailsBySetup(stepSetup);
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(), "Success",
-                ApiRequestResponseDetail.ObjectType.A, "stepSetupDtlList",
-                StepSetupDetailsResponse.class.getName(), list
-        );
+        List<StepSetupDetails> list = this.stepSetupDetailsService.getAllDetailsBySetup(stepSetup);
+        return list;
     }
 
 }

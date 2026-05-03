@@ -14,8 +14,7 @@ public class UserTransactionTypesRequest {
 
     private Long id;
 
-    @NotBlank(message = "Transaction type code is required")
-    @Size(max = 50, message = "Transaction type code must be up to 50 characters")
+    @NotNull(message = "Transaction type code is required")
     private TrnsType trnsType;
 
     @NotNull(message = "Transaction type ID is required")

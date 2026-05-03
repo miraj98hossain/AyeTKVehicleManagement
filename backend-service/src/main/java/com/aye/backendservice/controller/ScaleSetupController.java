@@ -1,6 +1,6 @@
 package com.aye.backendservice.controller;
 
-import com.aye.backendservice.service.ScaleSetupService;
+import com.aye.backendservice.service.ScaleSetupViewService;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/scale-setup")
 public class ScaleSetupController {
     @Autowired
-    private ScaleSetupService scaleSetupService;
+    private ScaleSetupViewService scaleSetupService;
 
     @GetMapping
     public ResponseEntity<ApiRequestResponse> findAllScaleSetup() {

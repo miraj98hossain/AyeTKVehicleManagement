@@ -38,8 +38,8 @@ public class StepSetupService {
     }
 
 
-    public ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId) {
-        return stepSetupServiceFeignClient.findSetupByTempDtlId(tempDtlId).getBody();
+    public ApiRequestResponse findSetupByTempDtlId(Integer tempDtlId, Long invOrgId) {
+        return stepSetupServiceFeignClient.findSetupByTempDtlId(tempDtlId, invOrgId).getBody();
     }
 
     public ApiRequestResponse findAllSetupDetails(Long setupId) {

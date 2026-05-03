@@ -19,4 +19,6 @@ public class StepTransDetailsLinesRequest {
     private Long invItemId;
     private String orderedItem;
     private BigDecimal orderedQuantity;
+    private String stepStatus;
+    private Integer stage;
 }

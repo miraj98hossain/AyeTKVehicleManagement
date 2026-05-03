@@ -46,6 +46,10 @@ public class StepTransDetailsService {
         return this.stepTransDetailsFeignClient.saveStDtlLine(stepTrnsDtlLnsReq, userName).getBody();
     }
 
+    public ApiRequestResponse findAllLinesByStepTransIdAndUserItemAccess(Long stepTransId, String userName) {
+        var res = this.stepTransDetailsFeignClient.findAllLinesByStepTransIdAndUserItemAccess(stepTransId, userName).getBody();
+        return res;
+    }
 
     public ApiRequestResponse findStDtlLineById(Long stepTransDtlLnId) {
         return this.stepTransDetailsFeignClient.findStDtlLineById(stepTransDtlLnId).getBody();
@@ -57,5 +61,11 @@ public class StepTransDetailsService {
 
     public ApiRequestResponse deleteLineById(Long id) {
         return this.stepTransDetailsFeignClient.deleteLineById(id).getBody();
+    }
+
+    public ApiRequestResponse loadingStatusUpdate(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) {
+
+        return this.stepTransDetailsFeignClient.loadingStatusUpdate(stepTransLineId, detailLineId, stepStatus, userName).getBody();
+
     }
 }

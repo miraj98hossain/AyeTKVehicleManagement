@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface StepTransLinesService {
 
-    StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId);
+    StepTransLines saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId);
 
     StepTransLines getStepTransLine(String stepTransLinesNo);
 

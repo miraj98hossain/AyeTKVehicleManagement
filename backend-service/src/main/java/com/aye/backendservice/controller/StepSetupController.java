@@ -1,6 +1,6 @@
 package com.aye.backendservice.controller;
 
-import com.aye.backendservice.service.StepSetupService;
+import com.aye.backendservice.service.StepSetupViewService;
 import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
 import com.aye.dtoLib.dto.request.StepSetupRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/step-setup")
 public class StepSetupController {
     @Autowired
-    StepSetupService stepSetupService;
+    StepSetupViewService stepSetupService;
 
     @PostMapping("/save")
     public ResponseEntity<ApiRequestResponse> saveStepSetup(@Valid @RequestBody StepSetupRequest stepSetupRequest,
@@ -64,9 +64,10 @@ public class StepSetupController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @GetMapping("/findSetupByTempDtlId/{tempDtlId}")
-    public ResponseEntity<ApiRequestResponse> findSetupByTempDtlId(@PathVariable("tempDtlId") Integer tempDtlId) {
-        var obj = this.stepSetupService.findSetupByTempDtlId(tempDtlId);
+    @GetMapping("/findSetupByTempDtlId/{tempDtlId}/{invOrgId}")
+    public ResponseEntity<ApiRequestResponse> findSetupByTempDtlId(@PathVariable("tempDtlId") Integer tempDtlId,
+                                                                   @PathVariable Long invOrgId) {
+        var obj = this.stepSetupService.findSetupByTempDtlId(tempDtlId, invOrgId);
         if (obj == null) {
             return ResponseEntity.noContent().build();
         }

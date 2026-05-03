@@ -48,9 +48,10 @@ public class StepTransController {
 
     @GetMapping("/findAllByTempDtlId")
     public ResponseEntity<ApiRequestResponse> findAllByTempDtlId(@RequestParam Integer tempDtlId,
+                                                                 @RequestParam Long invOrgId,
                                                                  @RequestParam(required = false) String searchWords,
                                                                  @PageableDefault(size = 10, page = 0) Pageable pageable) {
-        return ResponseEntity.ok().body(this.stepTransService.findAllByTempDtlId(tempDtlId, searchWords, pageable));
+        return ResponseEntity.ok().body(this.stepTransService.findAllByTempDtlId(tempDtlId, invOrgId, searchWords, pageable));
 
     }
 

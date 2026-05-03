@@ -37,6 +37,12 @@ public interface StepTransDetailsFeignClient {
     ResponseEntity<ApiRequestResponse> saveStDtlLine(@RequestBody StepTransDetailsLinesRequest stepTrnsDtlLnsReq,
                                                      @RequestParam String userName);
 
+    @GetMapping("/findAllLinesByStepTransIdAndUserItemAccess")
+    ResponseEntity<ApiRequestResponse> findAllLinesByStepTransIdAndUserItemAccess(@RequestParam Long stepTransId, @RequestParam String userName);
+
+    @PostMapping("loadingStatusUpdate/{stepTransLineId}/{detailLineId}")
+    ResponseEntity<ApiRequestResponse> loadingStatusUpdate(@PathVariable Long stepTransLineId, @PathVariable Long detailLineId, @RequestParam String stepStatus, @RequestParam String userName);
+
     @GetMapping("/findStDtlLineById")
     ResponseEntity<ApiRequestResponse> findStDtlLineById(@RequestParam Long stepTransDtlLnId);
 

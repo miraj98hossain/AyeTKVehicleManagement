@@ -32,8 +32,9 @@ public interface StepSetupServiceFeignClient {
     @GetMapping("/findSetupByDtlId")
     ResponseEntity<ApiRequestResponse> findSetupByDtlId(@RequestParam Long detailId);
 
-    @GetMapping("/findSetupByTempDtlId/{tempDtlId}")
-    ResponseEntity<ApiRequestResponse> findSetupByTempDtlId(@PathVariable("tempDtlId") Integer tempDtlId);
+    @GetMapping("/findSetupByTempDtlId/{tempDtlId}/{invOrgId}")
+    ResponseEntity<ApiRequestResponse> findSetupByTempDtlId(@PathVariable("tempDtlId") Integer tempDtlId,
+                                                            @PathVariable Long invOrgId);
 
     @GetMapping("/getAllDetailsBySetup/{setupId}")
     ResponseEntity<ApiRequestResponse> findAllSetupDetails(@PathVariable("setupId") Long setupId);

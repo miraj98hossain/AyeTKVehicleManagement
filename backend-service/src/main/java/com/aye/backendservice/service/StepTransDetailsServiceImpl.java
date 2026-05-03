@@ -4,25 +4,20 @@ import com.aye.RestfulServer.service.MuserService;
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.StepTransDetailsLinesResponse;
-import com.aye.dtoLib.dto.response.StepTransDetailsResponse;
-import com.aye.entitylib.entity.schedule.BeforeTripV;
-import com.aye.entitylib.entity.schedule.BeforeTripWDsV;
+import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.entitylib.entity.user.Muser;
-import com.aye.entitylib.entity.vehicleproject.StepTrans;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
+import com.aye.entitylib.entity.vehicleproject.StepTransLines;
+import com.aye.enums.StepStatus;
 import com.aye.mapper.StepTransDetailsLinesMapper;
-import com.aye.mapper.StepTransDetailsMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -30,335 +25,147 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     @Autowired
     private NoGenService noGenService;
     @Autowired
-    private StepTransDetailsRepository stepTrnsDtlRepo;
+    private StepTransDetailsRepository detailsRepo;
     @Autowired
-    private StepTransDetailsLinesRepository stepTrnsDtlLnRepo;
+    private StepTransDetailsLinesRepository lineRepo;
     @Autowired
-    private StepTransDetailsMapper stepTransDetailsMapper;
-    @Autowired
-    private StepTransDetailsLinesMapper stepTrnsDtlLnMapper;
+    private StepTransDetailsLinesMapper lineMapper;
     @Autowired
     private MuserService muserService;
-//    @Autowired
-//    private BeforeTripVService beforeTripVService;
-//    @Autowired
-//    private BeforeTripWDsVService beforeTripWDsVService;
-
-
-//    @Override
-//    @Transactional
-//    public ApiRequestResponse save(StepTransDetailsRequest stepTransDRequest, String userName) {
-//        Muser muser = muserService.findByUserName(userName);
-//        //*********** Update Section
-//        if (stepTransDRequest.getStepTransDtlId() != null) {
-//            var dbTransDtl = stepTrnsDtlRepo.findById(stepTransDRequest.getStepTransDtlId()).orElseThrow(
-//                    () -> new EntityNotFoundException("StepTransDtl Not Found with id: " + stepTransDRequest.getStepTransDtlId())
-//            );
-//            stepTransDetailsMapper.dtoToEntity(stepTransDRequest, dbTransDtl);
-//            dbTransDtl.setUpdatedBy(Long.valueOf(muser.getId()));
-//            dbTransDtl = stepTrnsDtlRepo.save(dbTransDtl);
-//            return ApiRequestResponseMaker.make(
-//                    HttpStatus.OK.name(),
-//                    "Success",
-//                    ApiRequestResponseDetail.ObjectType.O,
-//                    "stepTransDtl",
-//                    StepTransDetailsResponse.class.getName(),
-//                    stepTransDetailsMapper.toResponseDto(dbTransDtl)
-//            );
-//        }
-//        final StepTransDetails stepTransDetails = stepTransDetailsMapper.dtoToEntity(stepTransDRequest);
-//        //***************** Checking Schedule no
-//        if (stepTransDRequest.getScheduleNo() != null && !stepTransDRequest.getScheduleNo().isEmpty()) {
-//            // fetch existing records
-//            List<StepTransDetails> dbExistList =
-//                    stepTrnsDtlRepo.findAllByScheduleNo(stepTransDRequest.getScheduleNo());
-//            // extract existing delivery numbers
-//            Set<Long> existingDeliveryNos = dbExistList.stream()
-//                    .map(StepTransDetails::getOrderNumber)
-//                    .collect(Collectors.toSet());
-//            List<StepTransDetails> stDtls = new ArrayList<>();
-//            var list = beforeTripWDsVService
-//                    .findAllByScheduleNumber(stepTransDRequest.getScheduleNo());
-//
-//            Map<Long, List<BeforeTripWDsV>> groupedOrderNumber = list.stream()
-//                    .collect(groupingBy(BeforeTripWDsV::getOrderNumber));
-//            list.forEach(element -> {
-//                // skip if delivery already exists
-//                if (existingDeliveryNos.contains(element.getOrderNumber())) {
-//                    return;
-//                }
-//                //adding to check duplicate entry.
-//                existingDeliveryNos.add(element.getOrderNumber());
-//
-//                StepTransDetails steptrnDtl = bfrTrpWDSToStpTrnDtl(element, stepTransDetails.getStepTrans(), muser);
-//                //getting the item data from grouped map
-//                List<StepTransDetailsLines> sdls =
-//                        groupedOrderNumber.get(steptrnDtl.getOrderNumber())
-//                                .stream()
-//                                .map(beforeTripWDsV -> {
-//                                    return bfrTrpWDSToStpTrnDtlLn(beforeTripWDsV, steptrnDtl, muser);
-//                                })
-//                                .collect(Collectors.toCollection(ArrayList::new));
-//
-//                steptrnDtl.getStepTransDetailsLines().addAll(sdls);
-//                stDtls.add(steptrnDtl);
-//                sdls.clear();
-//            });
-//            var res = stepTrnsDtlRepo.saveAll(stDtls);
-//            return ApiRequestResponseMaker.make(
-//                    HttpStatus.OK.name(),
-//                    "Success",
-//                    ApiRequestResponseDetail.ObjectType.A,
-//                    "stepTransDtl",
-//                    StepTransDetailsResponse.class.getName(),
-//                    res.stream().map(this.stepTransDetailsMapper::toResponseDto)
-//                            .collect(Collectors.toList())
-//            );
-//        }
-//        //***************** Checking Delivery no
-//        if (stepTransDRequest.getOrderNumber() != null) {
-//
-//            List<StepTransDetails> dbExistList =
-//                    stepTrnsDtlRepo.findAllByOrderNumber(stepTransDRequest.getOrderNumber());
-//            // extract existing delivery numbers
-//            Set<Long> existingDeliveryNos = dbExistList.stream()
-//                    .map(StepTransDetails::getOrderNumber)
-//                    .collect(Collectors.toSet());
-//            List<StepTransDetails> stDtls = new ArrayList<>();
-//            var list = beforeTripVService.findAllByOrderNumber(stepTransDRequest.getOrderNumber());
-//            Map<Long, List<BeforeTripV>> groupedOrderNumber = list.stream()
-//                    .collect(groupingBy(BeforeTripV::getOrderNumber));
-//            list.forEach(element -> {
-//
-//                // skip if delivery already exists
-//                if (existingDeliveryNos.contains(element.getOrderNumber())) {
-//                    return;
-//                }
-//                //adding to check duplicate entry.
-//                existingDeliveryNos.add(element.getOrderNumber());
-//                StepTransDetails steptrnDtl = bfrTrpToStpTrnDtl(element, stepTransDetails.getStepTrans(), muser);
-////                steptrnDtl.setStepTrans(stepTransDetails.getStepTrans());
-////                steptrnDtl.setCreatedBy(Long.valueOf(muser.getId()));
-////                steptrnDtl.setStepTransDtlNo(noGenService.createTransDNo());
-////                steptrnDtl.setCustAccountId(element.getCustAccountId());
-////                steptrnDtl.setCustName(element.getPartyName());
-////                steptrnDtl.setDeliveryNo(element.getOrderNumber());
-//
-//                //getting the item data from grouped map
-//                List<StepTransDetailsLines> sdls =
-//                        groupedOrderNumber.get(steptrnDtl.getOrderNumber())
-//                                .stream()
-//                                .map(beforeTripV -> {
-
-    /// /                                    StepTransDetailsLines sdl = new StepTransDetailsLines();
-    /// /                                    sdl.setStepTransDetails(steptrnDtl);
-    /// /                                    sdl.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
-    /// /                                    sdl.setInvItemId(beforeTripV.getInventoryItemId());
-    /// /                                    sdl.setOrderedItem(beforeTripV.getOrderedItem());
-    /// /                                    sdl.setOrderedQuantity(beforeTripV.getOrderedQuantity());
-    /// /                                    sdl.setCreatedBy(Long.valueOf(muser.getId()));
-    /// /                                    return sdl;
-//                                    return bfrTrpToStpTrnDtlLn(beforeTripV, steptrnDtl, muser);
-//                                })
-//                                .collect(Collectors.toCollection(ArrayList::new));
-//                steptrnDtl.getStepTransDetailsLines().addAll(sdls);
-//                stDtls.add(steptrnDtl);
-//                sdls.clear();
-//            });
-//            var res = stepTrnsDtlRepo.saveAll(stDtls);
-//            return ApiRequestResponseMaker.make(
-//                    HttpStatus.OK.name(),
-//                    "Success",
-//                    ApiRequestResponseDetail.ObjectType.A,
-//                    "stepTransDtl",
-//                    StepTransDetailsResponse.class.getName(),
-//                    res.stream().map(this.stepTransDetailsMapper::toResponseDto)
-//                            .collect(Collectors.toList())
-//            );
-//
-//        }
-//        stepTransDetails.setCreatedBy(Long.valueOf(muser.getId()));
-//        stepTransDetails.setStepTransDtlNo(noGenService.createTransDNo());
-//        var res = stepTrnsDtlRepo.save(stepTransDetails);
-//        return ApiRequestResponseMaker.make(
-//                HttpStatus.OK.name(),
-//                "Success",
-//                ApiRequestResponseDetail.ObjectType.O,
-//                "stepTransDtl",
-//                StepTransDetailsResponse.class.getName(),
-//                stepTransDetailsMapper.toResponseDto(res)
-//        );
-//    }
-    private StepTransDetailsLines bfrTrpWDSToStpTrnDtlLn(BeforeTripWDsV beforeTripWDsV, StepTransDetails stpTrnDtl, Muser muser) {
-        StepTransDetailsLines sdl = new StepTransDetailsLines();
-        sdl.setStepTransDetails(stpTrnDtl);
-        sdl.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
-        sdl.setInvItemId(beforeTripWDsV.getInventoryItemId());
-        sdl.setOrderedItem(beforeTripWDsV.getOrderedItem());
-        sdl.setOrderedQuantity(beforeTripWDsV.getOrderedQuantity());
-        sdl.setCreatedBy(Long.valueOf(muser.getId()));
-        return sdl;
-    }
-
-    private StepTransDetails bfrTrpWDSToStpTrnDtl(BeforeTripWDsV beforeTripWDsV, StepTrans stepTrans, Muser muser) {
-        StepTransDetails steptrnDtl = new StepTransDetails();
-        steptrnDtl.setStepTrans(stepTrans);
-        steptrnDtl.setCreatedBy(Long.valueOf(muser.getId()));
-        steptrnDtl.setStepTransDtlNo(noGenService.createTransDNo());
-        steptrnDtl.setCustAccountId(beforeTripWDsV.getCustAccountId());
-        steptrnDtl.setCustName(beforeTripWDsV.getPartyName());
-        steptrnDtl.setScheduleNo(beforeTripWDsV.getScheduleNumber());
-        steptrnDtl.setOrderNumber(beforeTripWDsV.getOrderNumber());
-        return steptrnDtl;
-    }
-
-
-    private StepTransDetailsLines bfrTrpToStpTrnDtlLn(BeforeTripV beforeTripV, StepTransDetails stpTrnDtl, Muser muser) {
-        StepTransDetailsLines sdl = new StepTransDetailsLines();
-        sdl.setStepTransDetails(stpTrnDtl);
-        sdl.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
-        sdl.setInvItemId(beforeTripV.getInventoryItemId());
-        sdl.setOrderedItem(beforeTripV.getOrderedItem());
-        sdl.setOrderedQuantity(beforeTripV.getOrderedQuantity());
-        sdl.setCreatedBy(Long.valueOf(muser.getId()));
-        return sdl;
-    }
-
-    private StepTransDetails bfrTrpToStpTrnDtl(BeforeTripV beforeTripV, StepTrans stepTrans, Muser muser) {
-        StepTransDetails steptrnDtl = new StepTransDetails();
-        steptrnDtl.setStepTrans(stepTrans);
-        steptrnDtl.setCreatedBy(Long.valueOf(muser.getId()));
-        steptrnDtl.setStepTransDtlNo(noGenService.createTransDNo());
-        steptrnDtl.setCustAccountId(beforeTripV.getCustAccountId());
-        steptrnDtl.setCustName(beforeTripV.getPartyName());
-        steptrnDtl.setOrderNumber(beforeTripV.getOrderNumber());
-        return steptrnDtl;
-    }
-
+    @Autowired
+    private StepTransService stepTransService;
+    @Autowired
+    private StepTransLinesService stepTransLinesService;
 
     @Override
     @Transactional(readOnly = true)
-    public ApiRequestResponse findById(Long stepTransDtlId) {
-        StepTransDetails stepTransDetails = stepTrnsDtlRepo.findById(stepTransDtlId).orElseThrow(
+    public StepTransDetails findById(Long stepTransDtlId) {
+        StepTransDetails stepTransDetails = detailsRepo.findById(stepTransDtlId).orElseThrow(
                 () -> new EntityNotFoundException("StepTransDtl Not Found with id: " + stepTransDtlId)
         );
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Success",
-                ApiRequestResponseDetail.ObjectType.O,
-                "stepTransDtl",
-                StepTransDetailsResponse.class.getName(),
-                stepTransDetailsMapper.toResponseDto(stepTransDetails)
-        );
+        return stepTransDetails;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ApiRequestResponse findAllByStepTransId(Long stepTransId) {
-        List<StepTransDetails> stepTransDetails = stepTrnsDtlRepo.findAllByStepTrans_StepTransId(stepTransId);
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Success",
-                ApiRequestResponseDetail.ObjectType.A,
-                "stepTransDtlList",
-                StepTransDetailsResponse.class.getName(),
-                stepTransDetails.stream().map(stepTransDetailsMapper::toResponseDto).toList()
-        );
+    public List<StepTransDetails> findAllByStepTransId(Long stepTransId) {
+        List<StepTransDetails> stepTransDetails = detailsRepo.findAllByStepTrans_StepTransId(stepTransId);
+        return stepTransDetails;
     }
 
     @Transactional
     @Override
-    public ApiRequestResponse deleteById(Long stepTransDtlId) {
-        this.stepTrnsDtlRepo.deleteById(stepTransDtlId);
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Successfully Deleted",
-                null, null, null, null
-        );
+    public void deleteById(Long stepTransDtlId) {
+        this.detailsRepo.deleteById(stepTransDtlId);
+
     }
 
     @Transactional
     @Override
     public void deleteAllByStepTransId(Long stepTransId) {
-        this.stepTrnsDtlRepo.deleteAllByStepTrans_StepTransId(stepTransId);
+        this.detailsRepo.deleteAllByStepTrans_StepTransId(stepTransId);
     }
 
     //***Line Section*********************
     @Override
     @Transactional
-    public ApiRequestResponse saveStDtlLine(StepTransDetailsLinesRequest stepTrnsDtlLnsReq, String userName) {
+    public StepTransDetailsLines saveStDtlLine(StepTransDetailsLinesRequest stepTrnsDtlLnsReq, String userName) {
         Muser muser = muserService.findByUserName(userName);
         if (stepTrnsDtlLnsReq.getStepTransDtlLnId() != null) {
-            var dbTransDtl = stepTrnsDtlLnRepo.findById(stepTrnsDtlLnsReq.getStepTransDtlLnId()).orElseThrow(
+            var dbTransDtl = lineRepo.findById(stepTrnsDtlLnsReq.getStepTransDtlLnId()).orElseThrow(
                     () -> new EntityNotFoundException("Step Trans Details Line Not Found with id: " + stepTrnsDtlLnsReq.getStepTransDtlLnId())
             );
-            stepTrnsDtlLnMapper.dtoToEntity(stepTrnsDtlLnsReq, dbTransDtl);
+            lineMapper.dtoToEntity(stepTrnsDtlLnsReq, dbTransDtl);
             dbTransDtl.setUpdatedBy(Long.valueOf(muser.getId()));
-            dbTransDtl = stepTrnsDtlLnRepo.save(dbTransDtl);
-            return ApiRequestResponseMaker.make(
-                    HttpStatus.OK.name(),
-                    "Success",
-                    ApiRequestResponseDetail.ObjectType.O,
-                    "stepTransDtlLn",
-                    StepTransDetailsLinesResponse.class.getName(),
-                    stepTrnsDtlLnMapper.toResponseDto(dbTransDtl)
-            );
+            dbTransDtl = lineRepo.save(dbTransDtl);
+            return dbTransDtl;
         }
-        StepTransDetailsLines stepTransDetails = stepTrnsDtlLnMapper.dtoToEntity(stepTrnsDtlLnsReq);
+        StepTransDetailsLines stepTransDetails = lineMapper.dtoToEntity(stepTrnsDtlLnsReq);
         stepTransDetails.setCreatedBy(Long.valueOf(muser.getId()));
         stepTransDetails.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
-        stepTransDetails = stepTrnsDtlLnRepo.save(stepTransDetails);
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Success",
-                ApiRequestResponseDetail.ObjectType.O,
-                "stepTransDtlLn",
-                StepTransDetailsLinesResponse.class.getName(),
-                stepTrnsDtlLnMapper.toResponseDto(stepTransDetails)
-        );
+        stepTransDetails = lineRepo.save(stepTransDetails);
+        return stepTransDetails;
 
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ApiRequestResponse findStDtlLineById(Long stepTransDtlLnId) {
-        StepTransDetailsLines stepTransDetailsLines = stepTrnsDtlLnRepo.findById(stepTransDtlLnId).orElseThrow(
+    public StepTransDetailsLines findStDtlLineById(Long stepTransDtlLnId) {
+        StepTransDetailsLines stepTransDetailsLines = lineRepo.findById(stepTransDtlLnId).orElseThrow(
                 () -> new EntityNotFoundException("Step Trans Details Line Not Found with id: " + stepTransDtlLnId)
         );
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Success",
-                ApiRequestResponseDetail.ObjectType.O,
-                "stepTransDtlLn",
-                StepTransDetailsLinesResponse.class.getName(),
-                stepTrnsDtlLnMapper.toResponseDto(stepTransDetailsLines)
-        );
+        return stepTransDetailsLines;
     }
 
     @Override
     @Transactional(readOnly = true)
-    public ApiRequestResponse findAllByStTrnDtlId(Long stepTransDtlId) {
-        List<StepTransDetailsLines> stepTransDetailsLines = stepTrnsDtlLnRepo
+    public List<StepTransDetailsLines> findAllByStTrnDtlId(Long stepTransDtlId) {
+        List<StepTransDetailsLines> stepTransDetailsLines = lineRepo
                 .findAllByStepTransDetails_StepTransDtlId(stepTransDtlId);
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Success",
-                ApiRequestResponseDetail.ObjectType.A,
-                "stepTransDtlLnList",
-                StepTransDetailsLinesResponse.class.getName(),
-                stepTransDetailsLines.stream().map(stepTrnsDtlLnMapper::toResponseDto).toList()
-        );
+        return stepTransDetailsLines;
     }
 
     @Transactional
     @Override
-    public ApiRequestResponse deleteLineById(Long stepTransDtlLnId) {
-        this.stepTrnsDtlLnRepo.deleteById(stepTransDtlLnId);
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Successfully Deleted",
-                null, null, null, null
-        );
+    public void deleteLineById(Long stepTransDtlLnId) {
+        this.lineRepo.deleteById(stepTransDtlLnId);
+
+    }
+
+    @Transactional
+    @Override
+    public List<StepTransDetails> findAllLinesByStepTransIdAndUserItemAccess(Long stepTransId) {
+        List<StepTransDetails> stepTransDetails = detailsRepo.findAllByStepTrans_StepTransId(stepTransId);
+        return stepTransDetails;
+    }
+
+    @Transactional
+    @Override
+    public StepTransDetailsLines updateLine(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) {
+        StepTransLines stepTransLine;
+        StepTransDetailsLines response = new StepTransDetailsLines();
+        StepStatus status = StepStatus.valueOf(stepStatus);
+
+        StepTransDetailsLines stepTransDetailsLines = this.findStDtlLineById(detailLineId);
+
+        StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
+        stepTransLinesRequest.setStepTransLinesId(stepTransLineId);
+
+        if (status.equals(StepStatus.W)) {
+            stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
+            List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
+
+            boolean areAllStageZero = stepTransDetails.stream()
+                    .flatMap(details -> details.getStepTransDetailsLines().stream())
+                    .allMatch(detailsLine -> detailsLine.getStage() == 0);
+            stepTransDetailsLines.setStage(stepTransDetailsLines.getStage() + 1);
+            stepTransDetailsLines.setStepStatus(StepStatus.W);
+            response = this.lineRepo.save(stepTransDetailsLines);
+            if (areAllStageZero) {
+                stepTransLinesRequest.setStepStatus(StepStatus.W.getDisplayName());
+                this.stepTransService.updateTransLines(stepTransLinesRequest, userName);
+            }
+        }
+        if (status.equals(StepStatus.C)) {
+            stepTransDetailsLines.setStage(stepTransDetailsLines.getStage() + 1);
+            stepTransDetailsLines.setStepStatus(StepStatus.C);
+            response = this.lineRepo.save(stepTransDetailsLines);
+
+            stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
+
+            List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
+
+            boolean isAllOtherItemsLoaded = stepTransDetails.stream()
+                    .flatMap(details -> details.getStepTransDetailsLines().stream().filter(detailsLine -> !Objects.equals(detailsLine.getStepTransDtlLnId(), detailLineId)))
+                    .allMatch(detailsLine -> detailsLine.getStepStatus().equals(StepStatus.C));
+            if (isAllOtherItemsLoaded) {
+                stepTransLinesRequest.setStepStatus(StepStatus.C.getDisplayName());
+                this.stepTransService.updateTransLines(stepTransLinesRequest, userName);
+
+            }
+
+        }
+        return response;
     }
 
 }

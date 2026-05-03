@@ -2,7 +2,6 @@ package com.aye.backendservice.service;
 
 
 import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
-import com.aye.dtoLib.dto.response.StepSetupDetailsResponse;
 import com.aye.entitylib.entity.vehicleproject.StepSetup;
 import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
 import org.springframework.data.domain.Page;
@@ -14,20 +13,19 @@ import java.util.List;
 public interface StepSetupDetailsService {
 
 
-    StepSetupDetailsResponse saveStepSetupDetails(StepSetupDetailsRequest stepSetupDetailsRequest);
+    StepSetupDetails saveStepSetupDetails(StepSetupDetailsRequest stepSetupDetailsRequest);
 
 
     StepSetupDetails findById(Long stepSetupDetailsId);
 
     List<StepSetupDetails> findByIds(List<Long> stepSetupDetailsIds);
 
-    Page<StepSetupDetailsResponse> getAllStepSetupDetails(Pageable pageable);
+    Page<StepSetupDetails> getAllStepSetupDetails(Pageable pageable);
 
-    List<StepSetupDetailsResponse> getAllDetailsBySetup(StepSetup stepSetup);
+    List<StepSetupDetails> getAllDetailsBySetup(StepSetup stepSetup);
 
-    List<StepSetupDetailsResponse> getDetailsBySetupId(StepSetup stepSetup);
-
-    //    List<StepSetupDetailsResponse> getDetailsBySetupIds(List<StepSetup> stepSetups);
+    List<StepSetupDetails> getDetailsBySetupId(StepSetup stepSetup);
+    
     void saveAll(List<StepSetupDetails> stepSetupDetails);
 
     StepSetupDetails save(StepSetupDetails stepSetupDetails);

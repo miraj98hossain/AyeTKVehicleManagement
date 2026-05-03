@@ -436,6 +436,46 @@
                     </div>
                     <!-- STEP TRANS DETAILS END MODAL -->
 
+                    <!-- STEP TRANS DETAIL LINES MODAL START-->
+                    <div class="modal fade" id="stepTransDetailsLineModal" role="dialog" tabindex="-1">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4 class="modal-title">Step Trans Detail Lines</h4>
+                                </div>
+                                <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                                    <div class="row">
+                                        <div class="form-group col-sm-12">
+                                            <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
+                                                <thead>
+                                                <tr>
+                                                    <th>Detail Line No</th>
+                                                    <th>Customer Name</th>
+                                                    <th>Order Item</th>
+                                                    <th>Order Quantity</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                                </thead>
+
+                                                <tbody id="stepTransDtlLineTableBody">
+                                                <!-- rows -->
+                                                </tbody>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-default" data-dismiss="modal" type="button">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- STEP TRANS DETAIL LINES MODAL MODAL -->
 
                     <!-- MODAL START-->
                     <div class="modal fade" id="stepTimelineModal" role="dialog" tabindex="-1">
@@ -556,6 +596,8 @@
                                 <th>Additional Info</th>
                                 <th>Step</th>
                                 <th>Status</th>
+                                <th>Hold By</th>
+                                <th>Cur.Loading</th>
                                 <th>Actions</th>
                                 <th>Update Status</th>
                             </tr>
@@ -600,48 +642,52 @@
                                     </div>
                                 </td>
                                 <td th:text="${line.stepName}"></td>
+
                                 <td class="text-center" th:text="${line.stepStatus}"></td>
+                                <td th:text="${line.holdBy}"></td>
+                                <td th:text="${line.currentlyLoadingItem}"></td>
                                 <td class="text-center">
                                     <a class="btn btn-primary"
-                                       th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/'+${line.stepTransId}}"><span
+                                       th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/'+${line.stepTransId}+'/'+${orgId}+'/'+${invOrgId}}"><span
                                             aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
                                     <!--                                    <a class="btn btn-success"-->
                                     <!--                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span-->
                                     <!--                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>-->
                                     <a class="btn btn-info"
-                                       onclick="openStepTransDetailsModal(this)"
-                                       th:data-step-Trans-Id="${line.stepTransId}">
-                                        <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>
+                                       th:data-step-Trans-Id="${line.stepTransId}"
+                                       th:data-step-Trans-Ln-Id="${line.stepTransLinesId}"
+                                       th:data-user-Name="${userName}"
+                                       th:onclick="${line.stepStatus == 'Hold' and line.holdBy==userName} ? 'openStepTransDetailsLineModal(this)' : 'openStepTransDetailsModal(this)'">
+                                        <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span>
+                                    </a>
                                 </td>
                                 <td class="text-center">
-
-                                    <!--                                    <a class="btn view-btn btn-success"-->
-                                    <!--                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'-->
-                                    <!--                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Complete',page=${page},size=${size})}"-->
-                                    <!--                                       th:if="${line.stage == 2}">-->
-                                    <!--                                        Release-->
-                                    <!--                                    </a>-->
 
                                     <a class="btn edit-btn btn-warning"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
                                        (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId},stepStatus='WIP',page=${page},size=${size})}"
-                                       th:if="${line.stage == 1 and line.stepStatus != 'WIP'}">
+                                       th:if="${line.stage == 1 and line.stepStatus != 'WIP' and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
                                         WIP
                                     </a>
 
                                     <a class="btn pick-btn btn-info"
                                        th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Hold',page=${page},size=${size})}"
+                                       th:if="${line.isHoldAble  and (line.stepStatus != 'Hold' or line.stepStatus == 'Let Go')}">
+                                        Hold
+                                    </a>
+                                    <a class="btn pick-btn btn-info"
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
+                                       (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Let Go',page=${page},size=${size})}"
+                                       th:if="${line.stage == 1 and line.isHoldAble and line.holdBy==userName and line.stepStatus != 'Let Go'}">
+                                        Let Go
+                                    </a>
+                                    <a class="btn pick-btn btn-info"
+                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
                                        (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Pick',page=${page},size=${size})}"
-                                       th:if="${line.stage == 0 and line.stepStatus != 'Pick'}">
+                                       th:if="${line.stage == 0 and !line.isHoldAble and line.stepStatus != 'Pick'}">
                                         Pick
                                     </a>
-
-                                    <!--                                    <a class="btn delete-btn btn-danger"-->
-                                    <!--                                       th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}'-->
-                                    <!--                                       (pageId=${pageId}, tempDtlId=${tempDtlId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Reject',page=${page},size=${size})}"-->
-                                    <!--                                       th:if="${line.stage == 2}">-->
-                                    <!--                                        Reject-->
-                                    <!--                                    </a>-->
 
                                     <a class="btn view-btn btn-success" onclick="openStatusModal(this)"
                                        th:data-is-reject="false"
@@ -649,7 +695,7 @@
                                        th:data-size="${size}"
                                        th:data-status="Complete"
                                        th:data-step-Trans-Lines-Id="${line.stepTransLinesId}"
-                                       th:if="${line.stage == 2}">
+                                       th:if="${line.stage == 2 and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
                                         Release
                                     </a>
 
@@ -659,7 +705,7 @@
                                        th:data-size="${size}"
                                        th:data-status="Reject"
                                        th:data-step-Trans-Lines-Id="${line.stepTransLinesId}"
-                                       th:if="${line.stage == 2}">
+                                       th:if="${line.stage == 2 and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
                                         Reject
                                     </a>
                                 </td>

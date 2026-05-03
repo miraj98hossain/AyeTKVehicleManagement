@@ -2,13 +2,11 @@ package com.aye.backendservice.service;
 
 
 import com.aye.backendservice.repository.ScaleSetupRepo;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.ScaleSetupResponse;
-import com.aye.mapper.ScaleSetupMapper;
+import com.aye.entitylib.entity.vehicleproject.ScaleSetup;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @author: Miraj
@@ -19,33 +17,17 @@ import org.springframework.stereotype.Service;
 public class ScaleSetupServiceImpl implements ScaleSetupService {
     @Autowired
     private ScaleSetupRepo scaleSetupRepo;
-    @Autowired
-    private ScaleSetupMapper scaleSetupMapper;
+
 
     @Override
-    public ApiRequestResponse findAllScaleSetup() {
-        var list = scaleSetupRepo.findAll().stream().map(scaleSetupMapper::toResponseDto).toList();
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Success",
-                ApiRequestResponseDetail.ObjectType.A,
-                "ipList",
-                ScaleSetupResponse.class.getName(),
-                list
-        );
+    public List<ScaleSetup> findAllScaleSetup() {
+        var list = scaleSetupRepo.findAll();
+        return list;
     }
 
     @Override
-    public ApiRequestResponse filterScaleSetup(Long orgId) {
-        var list = scaleSetupRepo.findAllByOrgHierarchy_Id(orgId)
-                .stream().map(scaleSetupMapper::toResponseDtoWOIP).toList();
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Success",
-                ApiRequestResponseDetail.ObjectType.A,
-                "ipList",
-                ScaleSetupResponse.class.getName(),
-                list
-        );
+    public List<ScaleSetup> filterScaleSetup(Long orgId) {
+        var list = scaleSetupRepo.findAllByOrgHierarchy_Id(orgId);
+        return list;
     }
 }

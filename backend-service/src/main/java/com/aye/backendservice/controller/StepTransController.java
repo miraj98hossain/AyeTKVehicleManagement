@@ -1,7 +1,7 @@
 package com.aye.backendservice.controller;
 
 
-import com.aye.backendservice.service.StepTransService;
+import com.aye.backendservice.service.StepTransViewService;
 import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/step-trans")
 public class StepTransController {
     @Autowired
-    private StepTransService stepTransService;
+    private StepTransViewService stepTransService;
 
     @PostMapping("/create")
     public ResponseEntity<ApiRequestResponse> create(
@@ -50,9 +50,10 @@ public class StepTransController {
 
     @GetMapping("/findAllByTempDtlId")
     public ResponseEntity<ApiRequestResponse> findAllByTempDtlId(@RequestParam Integer tempDtlId,
+                                                                 @RequestParam Long invOrgId,
                                                                  @RequestParam(required = false) String searchWords,
                                                                  @PageableDefault(size = 10, page = 0) Pageable pageable) {
-        return ResponseEntity.ok().body(this.stepTransService.findAllByTempDtlId(tempDtlId, searchWords, pageable));
+        return ResponseEntity.ok().body(this.stepTransService.findAllByTempDtlId(tempDtlId, invOrgId, searchWords, pageable));
     }
 
 

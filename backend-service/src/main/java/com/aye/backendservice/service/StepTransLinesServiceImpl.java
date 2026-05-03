@@ -42,7 +42,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     private StepTransSpecification stepTransSpecification;
 
     @Transactional
-    public StepTransLinesResponse saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId) {
+    public StepTransLines saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId) {
         if (stepTransLines.getStepTransLinesId() == null) {
             stepTransLines.setCreatedAt(new Date());
             stepTransLines.setCreatedBy(currentUserId);
@@ -59,7 +59,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             stepTransLines.getStepTransTimeline().add(stepTransTimeline);
         }
 
-        return this.stepTransLinesMapper.toResponseDto(this.stepTransLinesRepository.save(stepTransLines));
+        return this.stepTransLinesRepository.save(stepTransLines);
     }
 
     @Transactional(readOnly = true)

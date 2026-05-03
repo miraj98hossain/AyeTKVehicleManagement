@@ -7,22 +7,17 @@ package com.aye.backendservice.utils;
  */
 
 
-import com.aye.backendservice.service.ApiRequestResponseMaker;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import org.springframework.http.HttpStatus;
-
-public class ApiResponseFactory {
-
-    public static <T> ApiRequestResponse success(T data) {
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Success",
-                ApiRequestResponseDetail.ObjectType.O,
-                "data",
-                data.getClass().getName(),
-                data
-        );
-    }
-}
+//public class ApiResponseFactory {
+//
+//    public static <T> ApiRequestResponse success(T data) {
+//        return ApiRequestResponseMaker.make(
+//                HttpStatus.OK.name(),
+//                "Success",
+//                ApiRequestResponseDetail.ObjectType.O,
+//                "data",
+//                data.getClass().getName(),
+//                data
+//        );
+//    }
+//}
 

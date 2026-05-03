@@ -1,30 +1,35 @@
 package com.aye.backendservice.service;
 
 import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
+import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
 public interface StepTransDetailsService {
 
 
-//    ApiRequestResponse save(StepTransDetailsRequest stepTransRequest, String userName);
+    StepTransDetails findById(Long stepTransDtlId);
 
-    ApiRequestResponse findById(Long stepTransDtlId);
+    List<StepTransDetails> findAllByStepTransId(Long stepTransId);
 
-    ApiRequestResponse findAllByStepTransId(Long stepTransId);
-
-    ApiRequestResponse deleteById(Long stepTransDtlId);
+    void deleteById(Long stepTransDtlId);
 
     void deleteAllByStepTransId(Long stepTransId);
 
     //***Line Section*********************
-    ApiRequestResponse saveStDtlLine(StepTransDetailsLinesRequest stepTransDetailsLinesRequest, String userName);
+    StepTransDetailsLines saveStDtlLine(StepTransDetailsLinesRequest stepTransDetailsLinesRequest, String userName);
 
-    ApiRequestResponse findStDtlLineById(Long stepTransDtlLnId);
+    StepTransDetailsLines findStDtlLineById(Long stepTransDtlLnId);
 
-    ApiRequestResponse findAllByStTrnDtlId(Long stepTransDtlId);
+    List<StepTransDetailsLines> findAllByStTrnDtlId(Long stepTransDtlId);
 
-    ApiRequestResponse deleteLineById(Long stepTransDtlLnId);
+    void deleteLineById(Long stepTransDtlLnId);
+
+    List<StepTransDetails> findAllLinesByStepTransIdAndUserItemAccess(Long stepTransId);
+
+    StepTransDetailsLines updateLine(Long stepTransLineId, Long detailLineId, String stepStatus, String userName);
 }

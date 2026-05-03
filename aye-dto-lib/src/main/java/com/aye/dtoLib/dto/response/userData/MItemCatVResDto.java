@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class MitemCatVResDto {
+public class MItemCatVResDto {
 
 
     private Long id;

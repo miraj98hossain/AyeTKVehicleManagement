@@ -8,7 +8,6 @@ import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
 import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
-import com.aye.dtoLib.dto.response.*;
 import com.aye.entitylib.entity.UserTransactionTypes;
 import com.aye.entitylib.entity.user.Muser;
 import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
@@ -25,14 +24,14 @@ import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -48,22 +47,17 @@ public class StepTransServiceImpl implements StepTransService {
     @Autowired
     private NoGenService noGenService;
     @Autowired
-    private StepSetupService stepSetupService;
-    @Autowired
     private MuserService userService;
-    @Autowired
-    private StepWiseTransCountVService transCountVService;
     @Autowired
     private UserAccessTempltService userAccessTempltService;
     @Autowired
-    private ScaleSetupService scaleSetupService;
-    @Autowired
+    @Lazy
     private StepTransDetailsCreationService stepTransDetailsCreationService;
 
 
     @Transactional
     @Override
-    public ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest, String userName) {
+    public StepTrans saveStepTrans(StepTransRequest stepTransRequest, String userName) {
         Muser muser = userService.findByUserName(userName);
         StepTrans stepTrans = stepTransMapper.toEntity(stepTransRequest);
         stepTrans.setCreatedAt(new Date());
@@ -92,22 +86,12 @@ public class StepTransServiceImpl implements StepTransService {
         stepTrans.setStepTransNo(noGenService.createTransNo());
         stepTrans.setStepTransStatus(StepTransStatus.P);
         stepTrans = stepTransRepository.save(stepTrans);
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully Created");
-        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("stepTransResponse")
-                .object(this.stepTransMapper.toResponseDto(stepTrans))
-                .mapperClass(StepTransResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.O)
-                .build();
-        response.getApiRequestResponseDetails().add(details);
-        return response;
+        return stepTrans;
     }
 
     @Transactional
     @Override
-    public ApiRequestResponse updateStepTrans(StepTransRequest stepTransRequest, String userName) {
+    public StepTrans updateStepTrans(StepTransRequest stepTransRequest, String userName) {
         Muser muser = userService.findByUserName(userName);
 
         StepTrans stepTrans = stepTransRepository.findById(stepTransRequest.getStepTransId()).orElseThrow(
@@ -123,40 +107,23 @@ public class StepTransServiceImpl implements StepTransService {
             stepTransDetailsCreationService.save(dtlRequest, userName);
         }
         stepTrans = stepTransRepository.save(stepTrans);
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(),
-                "Successfully Updated",
-                ApiRequestResponseDetail.ObjectType.O,
-                "stepTransResponse",
-                StepTransResponse.class.getName(),
-                stepTransMapper.toResponseDto(stepTrans)
-        );
+        return stepTrans;
     }
 
     @Transactional
     @Override
-    public ApiRequestResponse findById(Long stepTransId) {
+    public StepTrans findById(Long stepTransId) {
         StepTrans stepTrans = this.stepTransRepository.findById(stepTransId).orElseThrow(
                 () -> new EntityNotFoundException("StepTrans not found with this id " + stepTransId)
         );
 
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully found step trans");
-        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("stepTransResponse")
-                .object(this.stepTransMapper.toResponseDto(stepTrans))
-                .mapperClass(StepTransResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.O)
-                .build();
-        response.getApiRequestResponseDetails().add(details);
-        return response;
+        return stepTrans;
 
     }
 
     @Transactional(readOnly = true)
     @Override
-    public ApiRequestResponse findAll(Pageable pageable) {
+    public Page<StepTrans> findAll(Pageable pageable) {
         var list = this.stepTransRepository.findAll((root, query, cb) -> {
             assert query != null;
             query.distinct(true);
@@ -167,56 +134,20 @@ public class StepTransServiceImpl implements StepTransService {
             predicates.add(cb.not(linesJoin.get("stepStatus").in('C', 'R')));
 
             return cb.and(predicates.toArray(new Predicate[0]));
-        }, pageable).map(stepTransMapper::toResponseDto);
-        list.forEach(stepTransResponse -> stepTransResponse.setStepTransLinesResponseList(
-                stepTransResponse.getStepTransLinesResponseList().stream()
-                        .filter(line -> !"Complete".equals(line.getStepStatus()) && !"Reject".equals(line.getStepStatus()))
+        }, pageable);
+        list.forEach(stepTrans -> stepTrans.setStepTransLinesList(
+                stepTrans.getStepTransLinesList().stream()
+                        .filter(line -> !line.getStepStatus().equals(StepStatus.C) && !line.getStepStatus().equals(StepStatus.R))
+//                        .filter(line -> !"Complete".equals(line.getStepStatus()) && !"Reject".equals(line.getStepStatus()))
                         .toList()
         ));
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully found all step trans");
-        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("stepTransResponseList")
-                .object(list)
-                .mapperClass(StepTransResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.PD)
-                .build();
-        response.getApiRequestResponseDetails().add(details);
-        return response;
-    }
-
-    @Transactional(readOnly = true)
-    protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, String searchWords, Pageable pageable) {
-        List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
-
-        Set<Long> setupDIds = details.stream()
-                .map(StepSetupDetailsResponse::getStepSetupDetailsId)
-                .collect(Collectors.toSet());   // or getStepId() depending on the field;
-
-//        Set<Long> stepIds = details.stream()
-//                .map(StepSetupDetailsResponse::getStepId)
-//                .collect(Collectors.toSet());
-
-        var list = this.stepTransLinesService.getAllStepTransLine(setupDIds.stream().toList(), searchWords, pageable);
-
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully found all step trans");
-        ApiRequestResponseDetail resdetails = ApiRequestResponseDetail.builder()
-                .objectTag("stepTransResponseList")
-                .object(list)
-                .mapperClass(StepTransLinesResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.PD)
-                .build();
-        response.getApiRequestResponseDetails().add(resdetails);
-        return response;
+        return list;
     }
 
 
     @Override
     @Transactional
-    public ApiRequestResponse updateTransLines(StepTransLinesRequest linesReq, String userName) {
+    public StepTransLines updateTransLines(StepTransLinesRequest linesReq, String userName) {
         Muser muser = userService.findByUserName(userName);
 
         //requestedLine
@@ -224,7 +155,7 @@ public class StepTransServiceImpl implements StepTransService {
         //databaseLine
         StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesId());
         //for storing response
-        StepTransLinesResponse objResponse = new StepTransLinesResponse();
+        StepTransLines objResponse = new StepTransLines();
         StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
                 () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
         //-----------------------Business for pick event Starts----------------------------------
@@ -266,7 +197,9 @@ public class StepTransServiceImpl implements StepTransService {
                     throw new IllegalArgumentException("This step trans is not eligible for WIP");
                 } else {
                     //Creating a new Step Trans and changing status
-                    dbstepTransLines.setStepStatus(StepStatus.W);
+                    if (!dbstepTransLines.getStepStatus().equals(StepStatus.H)) {
+                        dbstepTransLines.setStepStatus(StepStatus.W);
+                    }
                     dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
                     //Fetching the setup
 
@@ -313,7 +246,38 @@ public class StepTransServiceImpl implements StepTransService {
                     }
                 }
             }
+            if (reqStepTransLines.getStepStatus().equals(StepStatus.H)) {
+                if (dbstepTransLines.getStepStatus().equals(StepStatus.H)) {
+                    throw new IllegalArgumentException("This Step Trans is already hold by " + dbstepTransLines.getHoldBy());
+                }
+                //Checking it is child or not
+                //if parent ? Do not need to find it's parentTrans just increment the stage
+                if (dbstepTransLines.getParentLineId() == 0) {
+                    dbstepTransLines.setStepStatus(StepStatus.H);
+                    dbstepTransLines.setHoldBy(muser.getUserName());
+                    if (dbstepTransLines.getStage() != 1) {
+                        dbstepTransLines.setStage(dbstepTransLines.getStage() + 1); //current value should be 1(0->1). Eligible to be at WIP now.
+                    }
 
+                    objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//updating
+
+                } else {
+                    dbstepTransLines.setStepStatus(StepStatus.H);
+                    dbstepTransLines.setHoldBy(muser.getUserName());
+                    var parentTransLine = this.stepTransLinesService.getStepTransLine(dbstepTransLines.getParentLineId());
+                    if (parentTransLine.getStage() != 2) {
+                        parentTransLine.setStage(parentTransLine.getStage() + 1); //current value should be 2(1->2). Eligible to be at com now.
+                    }
+                    this.stepTransLinesService.saveStepTransLines(parentTransLine, false, Long.valueOf(muser.getId()));//updating parent
+                    objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//updating
+
+                }
+            }
+            if (reqStepTransLines.getStepStatus().equals(StepStatus.L)) {
+                dbstepTransLines.setStepStatus(StepStatus.L);
+                dbstepTransLines.setHoldBy(null);
+                this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));
+            }
             if (reqStepTransLines.getStepStatus().equals(StepStatus.R)) {
                 dbstepTransLines.setStepStatus(StepStatus.R);
                 dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
@@ -328,39 +292,25 @@ public class StepTransServiceImpl implements StepTransService {
         //-----------------------Business for status change event Ends----------------------------------
 
 
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Successfully updated step trans");
-        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("stepTransLinesResponse")
-                .object(objResponse)
-                .mapperClass(StepTransLinesResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.O)
-                .build();
-        response.getApiRequestResponseDetails().add(details);
-        return response;
+        return objResponse;
 
     }
 
     @Transactional(readOnly = true)
     @Override
-    public ApiRequestResponse findAllByTempDtlId(Integer tempDtlId, String searchWords, Pageable pageable) {
+    public List<Long> findAllByTempDtlId(Integer tempDtlId, Long invOrgId, String searchWords, Pageable pageable) {
         var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
 
         List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
+                .filter(uAInvOrg -> uAInvOrg.getInvOrgs().getId().equals(invOrgId))
                 .flatMap(inv -> inv.getUserTransactionTypes().stream())
                 .map(UserTransactionTypes::getTrnsTypeId)
                 .toList();
-        var ipRes = this.scaleSetupService.findAllScaleSetup();
-        var res = this.transCountVService.getCountByDetailId(setupDetailIds);
-        var response = findAllBySetupDtls(setupDetailIds, searchWords, pageable);
-        response.getApiRequestResponseDetails().addAll(res.getApiRequestResponseDetails());
-        response.getApiRequestResponseDetails().addAll(ipRes.getApiRequestResponseDetails());
-        return response;
+        return setupDetailIds;
     }
 
     @Override
-    public ApiRequestResponse stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter) {
+    public List<StepTransLines> stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter) {
         var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
 
         List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
@@ -368,11 +318,7 @@ public class StepTransServiceImpl implements StepTransService {
                 .map(UserTransactionTypes::getTrnsTypeId)
                 .toList();
         List<StepTransLines> fetchedStepTransLines = this.stepTransLinesService.stepTransSearch(setupDetailIds, stepTransFilter);
-        return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(), "Success",
-                ApiRequestResponseDetail.ObjectType.A, "stepTransLinesList",
-                StepTransLinesResponse.class.getName(), this.stepTransLinesMapper.entityListToDtoList(fetchedStepTransLines)
-        );
+        return fetchedStepTransLines;
     }
 
 

@@ -1,9 +1,9 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.entitylib.entity.vehicleproject.StepWiseTransCountV;
 
 import java.util.List;
 
 public interface StepWiseTransCountVService {
-    ApiRequestResponse getCountByDetailId(List<Long> detailId);
+    List<StepWiseTransCountV> getCountByDetailId(List<Long> detailId);
 }

@@ -41,11 +41,27 @@ public class StepTransDetailsController {
     }
 
     //***Line Section*********************
+    @PostMapping("loadingStatusUpdate/{stepTransLineId}/{detailLineId}")
+    public ResponseEntity<ApiRequestResponse> loadingStatusUpdate(@PathVariable Long stepTransLineId,
+                                                                  @PathVariable Long detailLineId,
+                                                                  @RequestParam String stepStatus,
+                                                                  @RequestParam String userName) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(this.stepTransDetailsService.loadingStatusUpdate(stepTransLineId, detailLineId, stepStatus, userName));
+
+    }
+
     @PostMapping("/create-dtl")
     public ResponseEntity<ApiRequestResponse> saveStDtlLine(@Valid @RequestBody StepTransDetailsLinesRequest stepTrnsDtlLnsReq,
                                                             @RequestParam String userName) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.stepTransDetailsService
                 .saveStDtlLine(stepTrnsDtlLnsReq, userName));
+    }
+
+    @GetMapping("/findAllLinesByStepTransIdAndUserItemAccess")
+    public ResponseEntity<ApiRequestResponse> findAllLinesByStepTransIdAndUserItemAccess(@RequestParam Long stepTransId, @RequestParam String userName) {
+        var res = this.stepTransDetailsService.findAllLinesByStepTransIdAndUserItemAccess(stepTransId, userName);
+        return ResponseEntity.ok().body(res);
     }
 
     @GetMapping("/findStDtlLineById")

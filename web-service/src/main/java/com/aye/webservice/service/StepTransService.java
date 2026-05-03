@@ -39,9 +39,10 @@ public class StepTransService {
 
 
     public ApiRequestResponse findAllByTempDtlId(Integer tempDtlId,
+                                                 Long invOrgId,
                                                  String searchWords,
                                                  Pageable pageable) {
-        return this.stepTransServiceFeignClient.findAllByTempDtlId(tempDtlId, searchWords, pageable).getBody();
+        return this.stepTransServiceFeignClient.findAllByTempDtlId(tempDtlId, invOrgId, searchWords, pageable).getBody();
 
     }
 

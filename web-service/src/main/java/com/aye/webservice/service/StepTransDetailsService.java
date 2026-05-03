@@ -45,6 +45,15 @@ public class StepTransDetailsService {
     }
 
 
+    public ApiRequestResponse findAllLinesByStepTransIdAndUserItemAccess(Long stepTransId, String userName) {
+        var res = this.stepTransDetailsFeignClient.findAllLinesByStepTransIdAndUserItemAccess(stepTransId, userName).getBody();
+        return res;
+    }
+
+    public ApiRequestResponse loadingStatusUpdate(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) {
+        return this.stepTransDetailsFeignClient.loadingStatusUpdate(stepTransLineId, detailLineId, stepStatus, userName).getBody();
+    }
+
     public ApiRequestResponse findStDtlLineById(Long stepTransDtlLnId) {
         return this.stepTransDetailsFeignClient.findStDtlLineById(stepTransDtlLnId).getBody();
     }
