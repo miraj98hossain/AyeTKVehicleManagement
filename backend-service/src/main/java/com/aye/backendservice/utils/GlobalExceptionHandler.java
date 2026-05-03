@@ -2,6 +2,7 @@ package com.aye.backendservice.utils;
 
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import jakarta.persistence.EntityNotFoundException;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -18,6 +19,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiRequestResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
+        response.setMessage(ex.getMessage());
+        log.error(ex.getMessage(), ex);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(ExecutionControl.NotImplementedException.class)
+    public ResponseEntity<ApiRequestResponse> handleNotImplementedException(ExecutionControl.NotImplementedException ex) {
         ApiRequestResponse response = new ApiRequestResponse();
         response.setHttpStatus(HttpStatus.BAD_REQUEST.name());
         response.setMessage(ex.getMessage());

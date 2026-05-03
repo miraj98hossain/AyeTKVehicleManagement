@@ -1,4 +1,4 @@
-package com.aye.backendservice.service.domain;
+package com.aye.backendservice.service.domain.stepTransDetails;
 
 /**
  * @author: Miraj
@@ -11,7 +11,6 @@ import com.aye.RestfulServer.service.BeforeTripWDsVService;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
-
 import com.aye.entitylib.entity.schedule.BeforeTripWDsV;
 import com.aye.entitylib.entity.user.Muser;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetails;

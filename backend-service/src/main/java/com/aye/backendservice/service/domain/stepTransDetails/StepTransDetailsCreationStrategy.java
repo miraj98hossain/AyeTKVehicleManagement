@@ -1,4 +1,4 @@
-package com.aye.backendservice.service.domain;
+package com.aye.backendservice.service.domain.stepTransDetails;
 
 /**
  * @author: Miraj

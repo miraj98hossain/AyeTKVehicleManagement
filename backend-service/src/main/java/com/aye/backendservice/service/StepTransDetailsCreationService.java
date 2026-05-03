@@ -8,8 +8,8 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.MuserService;
-import com.aye.backendservice.service.domain.StepTransDetailsCreationStrategy;
-import com.aye.backendservice.service.domain.StepTransDetailsLineCreationStrategy;
+import com.aye.backendservice.service.domain.stepTransDetails.StepTransDetailsCreationStrategy;
+import com.aye.backendservice.service.domain.stepTransDetails.StepTransDetailsLineCreationStrategy;
 import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
 import com.aye.entitylib.entity.user.Muser;

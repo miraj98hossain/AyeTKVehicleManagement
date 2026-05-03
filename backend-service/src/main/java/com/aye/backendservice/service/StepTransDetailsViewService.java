@@ -14,6 +14,7 @@ import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 import com.aye.mapper.StepTransDetailsLinesMapper;
 import com.aye.mapper.StepTransDetailsMapper;
 import jakarta.validation.Valid;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -79,7 +80,7 @@ public class StepTransDetailsViewService {
 
 
     //***Line Section*********************
-    public ApiRequestResponse loadingStatusUpdate(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) {
+    public ApiRequestResponse loadingStatusUpdate(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) throws ExecutionControl.NotImplementedException {
         StepTransDetailsLines stepTransDetailsLines = this.stepTransDetailsService.updateLine(stepTransLineId, detailLineId, stepStatus, userName);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),

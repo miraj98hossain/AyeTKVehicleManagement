@@ -12,6 +12,7 @@ import com.aye.entitylib.entity.vehicleproject.StepTransLines;
 import com.aye.enums.StepStatus;
 import com.aye.mapper.StepTransDetailsLinesMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -121,7 +122,7 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
 
     @Transactional
     @Override
-    public StepTransDetailsLines updateLine(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) {
+    public StepTransDetailsLines updateLine(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) throws ExecutionControl.NotImplementedException {
         StepTransLines stepTransLine;
         StepTransDetailsLines response = new StepTransDetailsLines();
         StepStatus status = StepStatus.valueOf(stepStatus);

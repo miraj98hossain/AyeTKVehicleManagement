@@ -6,6 +6,7 @@ import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,7 @@ public class StepTransDetailsController {
     public ResponseEntity<ApiRequestResponse> loadingStatusUpdate(@PathVariable Long stepTransLineId,
                                                                   @PathVariable Long detailLineId,
                                                                   @RequestParam String stepStatus,
-                                                                  @RequestParam String userName) {
+                                                                  @RequestParam String userName) throws ExecutionControl.NotImplementedException {
 
         return ResponseEntity.status(HttpStatus.OK).body(this.stepTransDetailsService.loadingStatusUpdate(stepTransLineId, detailLineId, stepStatus, userName));
 

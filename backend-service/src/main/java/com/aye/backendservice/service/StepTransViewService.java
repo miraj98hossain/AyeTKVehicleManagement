@@ -12,6 +12,7 @@ import com.aye.entitylib.entity.vehicleproject.StepTransLines;
 import com.aye.enums.StepStatus;
 import com.aye.mapper.StepTransLinesMapper;
 import com.aye.mapper.StepTransMapper;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -88,7 +89,7 @@ public class StepTransViewService {
         );
     }
 
-    public ApiRequestResponse updateTransLines(StepTransLinesRequest linesReq, String userName) {
+    public ApiRequestResponse updateTransLines(StepTransLinesRequest linesReq, String userName) throws ExecutionControl.NotImplementedException {
         StepTransLines stepTransLines = this.stepTransService.updateTransLines(linesReq, userName);
 
         return ApiRequestResponseMaker.make(

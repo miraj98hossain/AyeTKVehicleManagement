@@ -9,6 +9,7 @@ import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.validationGroup.StepTransLinesUpdateValidation;
 import jakarta.validation.Valid;
 import jakarta.validation.groups.Default;
+import jdk.jshell.spi.ExecutionControl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -39,7 +40,7 @@ public class StepTransController {
     public ResponseEntity<ApiRequestResponse> updateLines(
             @RequestParam String userName,
             @Validated({StepTransLinesUpdateValidation.class, Default.class})
-            @RequestBody StepTransLinesRequest stepTransLinesRequest) {
+            @RequestBody StepTransLinesRequest stepTransLinesRequest) throws ExecutionControl.NotImplementedException {
         return ResponseEntity.ok().body(this.stepTransService.updateTransLines(stepTransLinesRequest, userName));
     }
 
