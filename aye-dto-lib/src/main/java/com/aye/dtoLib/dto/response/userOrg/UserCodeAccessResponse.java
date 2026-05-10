@@ -24,6 +24,9 @@ public class UserCodeAccessResponse {
     private Long scaleSetupId;
     private String scaleSetupName;
     private String scaleSetupIp;
+    private Long userTransTypeId;
+    private Long transId;
+    private String transName;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

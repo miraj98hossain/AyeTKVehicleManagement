@@ -22,8 +22,8 @@
                 <div class="panel-heading">Step Transaction</div>
                 <div class="panel-body">
                     <form method="post"
-                          th:action="@{/step-trans/create/{pageId}/{tempDtlId}
-                          (pageId=${pageId},tempDtlId=${tempDtlId},page=${page},size=${size})}"
+                          th:action="@{/step-trans/create/{pageId}/{tempDtlId}/{orgId}/{invOrgId}
+                          (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},page=${page},size=${size})}"
                           th:object="${stepTransReq}">
                         <input class="form-control"
                                id="orgId"
@@ -188,44 +188,6 @@
                                        type="text">
                             </div>
                         </div>
-
-                        <div class="form-group col-sm-12" th:if="${stepTransReq.stepTransId!=null}">
-                            <label class="col-sm-3 control-label" for="startNum">Scale Info</label>
-                            <div class="col-sm-1"><b>:</b></div>
-
-                            <div id="target-div" th:fragment="content-fragment">
-                                <div class="col-sm-2">
-
-                                    <input class="form-control"
-                                           id="startNum"
-                                           placeholder="Initial Scale"
-                                           th:field="${stepTransReq.startNum}"
-                                           th:readonly="${!(isIpAllowed and stepTransReq.stepTransId != null)}"
-                                           type="text"/>
-                                </div>
-
-                                <div class="col-sm-2">
-
-                                    <input class="form-control"
-                                           id="endNum"
-                                           placeholder="Final Scale"
-                                           th:field="${stepTransReq.endNum}"
-                                           th:readonly="${!(isIpAllowed and stepTransReq.stepTransId != null)}"
-                                           type="text"/>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2" th:if="${isIpAllowed and stepTransReq.stepTransId!=null}">
-                                <input class="form-check-input" id="isInitScale" type="checkbox">
-                                <label class="form-check-label" for="isInitScale">
-                                    is Initial?
-                                </label>
-                            </div>
-                            <div class="col-sm-2" th:if="${isIpAllowed and stepTransReq.stepTransId!=null}">
-                                <a class="btn btn-success btn-block" onclick="fetchWeight(this)">Get Weight</a>
-                            </div>
-                        </div>
-
                         <!-- Buttons -->
                         <div class="form-group col-sm-12 Padding10px">
                             <button class="btn btn-primary"
@@ -299,6 +261,70 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- SCALE DETAILS MODAL START-->
+                    <form method="post"
+                          th:action="@{/step-trans/saveFetchedWeight/{pageId}/{tempDtlId}/{orgId}/{invOrgId}
+                          (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},page=${page},size=${size})}"
+                          th:object="${scaleReq}">
+                        <div class="modal fade" id="weightModal">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <h4 class="modal-title">Fetch Weight</h4>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="form-group row align-items-center">
+                                            <div class="col-auto" id="target-div" th:fragment="content-fragment">
+                                                <!-- Label -->
+                                                <label class="col-sm-4 col-form-label" for="vehicleWeight"> Vehicle
+                                                    Weight </label>
+
+                                                <input id="scaleModStepTransId" th:field="${scaleReq.stepTransId}"
+                                                       type="hidden"/>
+                                                <input id="scaleModStepTransLineId"
+                                                       th:field="${scaleReq.stepTransLineId}"
+                                                       type="hidden"/>
+                                                <input id="scaleModSetupDetailsId"
+                                                       th:field="${scaleReq.stepSetupDetailId}"
+                                                       type="hidden"/>
+                                                <!--                                            <input id="scaleModScaleName" th:field="${scaleReq.scaleName}"-->
+                                                <!--                                                   type="hidden"/>-->
+
+                                                <!-- Input -->
+                                                <div class="col-sm-4">
+                                                    <input id="scaleModScaleName" th:field="${scaleReq.scaleName}"
+                                                           type="hidden"/>
+                                                    <input class="form-control"
+                                                           id="vehicleWeight"
+                                                           placeholder="Enter weight"
+                                                           readonly
+                                                           th:field="${scaleReq.weight}"
+                                                           type="text">
+                                                </div>
+                                            </div>
+
+                                            <!-- Button -->
+                                            <div class="col-sm-4">
+                                                <a class="btn btn-success btn-block" onclick="fetchWeight(this)">Get
+                                                    Weight</a>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-primary" type="submit">Confirm</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <!-- SCALE DETAILS MODAL MODAL START-->
 
                     <!-- STEP TRANS DETAILS MODAL START-->
                     <div class="modal fade" id="stepTransDetailsModal" role="dialog" tabindex="-1">
@@ -596,6 +622,7 @@
                                 <th>Additional Info</th>
                                 <th>Step</th>
                                 <th>Status</th>
+                                <th>Weight</th>
                                 <th>Hold By</th>
                                 <th>Cur.Loading</th>
                                 <th>Actions</th>
@@ -642,13 +669,26 @@
                                     </div>
                                 </td>
                                 <td th:text="${line.stepName}"></td>
-
                                 <td class="text-center" th:text="${line.stepStatus}"></td>
+                                <td th:text="${line.stepTransScaleDetails?.weight}"></td>
                                 <td th:text="${line.holdBy}"></td>
                                 <td th:text="${line.currentlyLoadingItem}"></td>
                                 <td class="text-center">
+
+                                    <a class="btn btn-success" data-target="#weightModal"
+                                       data-toggle="modal"
+                                       th:attr="data-scale-name=${line.stepTransScaleDetails?.scaleName},
+                                                data-weight=${line.stepTransScaleDetails?.weight},
+                                                data-step-trans-id=${line.stepTransId},
+                                                data-step-trans-line-id=${line.stepTransLinesId},
+                                                data-setup-details-id=${line.stepSetupDetailsId}"
+                                       th:if="${isIpAllowed and #lists.contains(allowedStep, line.stepSetupDetailsId) and line.stage!=0}">
+
+                                        <span aria-hidden="true" class="fa fa-truck"></span>
+                                    </a>
+
                                     <a class="btn btn-primary"
-                                       th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/'+${line.stepTransId}+'/'+${orgId}+'/'+${invOrgId}}"><span
+                                       th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/        '+${line.stepTransId}+'/'+${orgId}+'/'+${invOrgId}}"><span
                                             aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
                                     <!--                                    <a class="btn btn-success"-->
                                     <!--                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span-->

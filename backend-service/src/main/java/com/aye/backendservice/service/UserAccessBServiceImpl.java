@@ -10,6 +10,7 @@ import com.aye.dtoLib.dto.response.userOrg.*;
 import com.aye.entitylib.entity.*;
 import com.aye.entitylib.entity.order.OrdTrnsTypesV;
 import com.aye.entitylib.entity.user.Muser;
+import com.aye.enums.TrnsType;
 import com.aye.mapper.order.OrdTrnsTypesVMapper;
 import com.aye.mapper.userOrg.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,10 +44,6 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     private UserAccessMapper userAccessMapper;
     @Autowired
     private UserTransactionTypesMapper transTypesMapper;
-    @Autowired
-    private CommonColumnServiceImpl commonColumnService;
-    @Autowired
-    private UserSubInvAccessMapper subInvMapper;
     @Autowired
     private UserAccessInvOrgMapper userAccessInvOrgMapper;
     @Autowired
@@ -367,6 +364,12 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     public ApiRequestResponse saveUserSubInvAccess(UserSubInvAccessRequest us, String userName) {
         return this.userTrnsAndSubinvAccessBService.saveUserSubInvAccess(us, userName);
     }
+
+    @Override
+    public ApiRequestResponse findByUserTransTypeAccessByInvOrgAndTransType(Long invOrgId, Integer userId, TrnsType transType) {
+        return this.userTrnsAndSubinvAccessBService.findByUserTransTypeAccessByInvOrgAndTransType(invOrgId, userId, transType);
+    }
+
 
     @Override
     public ApiRequestResponse findUserSubInvAccessById(Long id) {

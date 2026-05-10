@@ -21,4 +21,7 @@ public interface UserCodeAccessFeignClient {
 
     @GetMapping("/findAllByUserName/{userName}")
     ResponseEntity<ApiRequestResponse> findAllByUserName(@PathVariable("userName") String userName);
+
+    @DeleteMapping("/deleteById/{userCodeAccessId}")
+    ResponseEntity<ApiRequestResponse> deleteById(@PathVariable Long userCodeAccessId);
 }

@@ -30,4 +30,8 @@ public class UserCodeAccessService {
     public ApiRequestResponse findAllByUserName(String userName) {
         return userCodeAccessFeignClient.findAllByUserName(userName).getBody();
     }
+
+    public ApiRequestResponse deleteById(Long userCodeAccessId) {
+        return userCodeAccessFeignClient.deleteById(userCodeAccessId).getBody();
+    }
 }

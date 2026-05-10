@@ -2,8 +2,8 @@ package com.aye.webservice.controller;
 
 import com.aye.dtoLib.dto.request.*;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.enums.TrnsType;
 import com.aye.webservice.service.UserAccessService;
-import com.aye.webservice.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/user-access")
 public class UserAccessController {
-    @Autowired
-    UserService userService;
+
     @Autowired
     private UserAccessService userAccessService;
 
@@ -144,6 +143,13 @@ public class UserAccessController {
     @GetMapping("/findUserSubInvAccessById/{id}")
     public ResponseEntity<ApiRequestResponse> findUserSubInvAccessById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(this.userAccessService.findUserSubInvAccessById(id));
+    }
+
+    @GetMapping("/findByUserTransTypeAccessByInvOrgAndTransType/{invOrgId}/{userId}")
+    ResponseEntity<ApiRequestResponse> findByUserTransTypeAccessByInvOrgAndTransType(@PathVariable Long invOrgId,
+                                                                                     @PathVariable Integer userId,
+                                                                                     @RequestParam TrnsType transType) {
+        return ResponseEntity.ok(this.userAccessService.findByUserTransTypeAccessByInvOrgAndTransType(invOrgId, userId, transType));
     }
 
 }

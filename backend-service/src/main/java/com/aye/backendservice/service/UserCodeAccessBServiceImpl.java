@@ -93,4 +93,17 @@ public class UserCodeAccessBServiceImpl implements UserCodeAccessBService {
                 userCodeAccess.stream().map(this.userCodeAccessMapper::toResponseDto).toList()
         );
     }
+
+    @Override
+    public ApiRequestResponse deleteById(Long userCodeAccessId) {
+        userCodeAccessService.deleteById(userCodeAccessId);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(),
+                "Success",
+                null,
+                null,
+                null,
+                null
+        );
+    }
 }

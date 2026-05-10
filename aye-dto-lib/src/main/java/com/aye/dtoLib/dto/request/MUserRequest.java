@@ -36,8 +36,7 @@ public class MUserRequest {
     @Size(max = 20, message = "Auto Number must not exceed 20 characters")
     private String autoNumber;
 
-    @NotBlank(message = "User type is required")
-    @Size(max = 30, message = "User type must not exceed 30 characters")
+    @NotNull
     private UserType userType;
     @NotNull(message = "Role id is required")
     private Integer roleId;

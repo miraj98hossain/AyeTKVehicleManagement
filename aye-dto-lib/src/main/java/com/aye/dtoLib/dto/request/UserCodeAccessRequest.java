@@ -25,7 +25,8 @@ public class UserCodeAccessRequest {
     private String invInfoCode;
     private Long scaleSetupId;
     private String scaleSetupName;
-
+    private Long userTransTypeId;
+    private String userTransTypeName;
     private Date startDate;
 
     private Date endDate;

@@ -5,6 +5,7 @@ import com.aye.dtoLib.dto.request.*;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.entitylib.entity.UserSubInvAccess;
 import com.aye.entitylib.entity.UserTransactionTypes;
+import com.aye.enums.TrnsType;
 
 public interface UserAccessBService {
     ApiRequestResponse getAllTemplet();
@@ -67,4 +68,6 @@ public interface UserAccessBService {
     ApiRequestResponse findByTransactionTypes(Long userTranTypeId);
 
     ApiRequestResponse saveUserSubInvAccess(UserSubInvAccessRequest us, String userName);
+
+    ApiRequestResponse findByUserTransTypeAccessByInvOrgAndTransType(Long invOrgId, Integer userId, TrnsType transType);
 }

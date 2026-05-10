@@ -1,7 +1,6 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.MuserService;
 import com.aye.backendservice.repository.StepTransLinesRepository;
 import com.aye.backendservice.service.specification.StepTransSpecification;
 import com.aye.dtoLib.dto.request.StepTransFilter;
@@ -36,8 +35,6 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     private StepTransLinesMapper stepTransLinesMapper;
     @Autowired
     private NoGenService noGenService;
-    @Autowired
-    private MuserService mUserService;
     @Autowired
     private StepTransSpecification stepTransSpecification;
 

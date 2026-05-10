@@ -3,6 +3,7 @@ package com.aye.backendservice.controller;
 import com.aye.backendservice.service.UserAccessBService;
 import com.aye.dtoLib.dto.request.*;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.enums.TrnsType;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -144,5 +145,14 @@ public class UserAccessController {
     @GetMapping("/findUserSubInvAccessById/{id}")
     public ResponseEntity<ApiRequestResponse> findUserSubInvAccessById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(this.userAccessBService.findUserSubInvAccessById(id));
+    }
+
+    @GetMapping("/findByUserTransTypeAccessByInvOrgAndTransType/{invOrgId}/{userId}")
+    ResponseEntity<ApiRequestResponse> findByUserTransTypeAccessByInvOrgAndTransType(@PathVariable Long invOrgId,
+                                                                                     @PathVariable Integer userId,
+                                                                                     @RequestParam TrnsType transType) {
+
+        return ResponseEntity.ok(this.userAccessBService.findByUserTransTypeAccessByInvOrgAndTransType(invOrgId, userId, transType));
+
     }
 }

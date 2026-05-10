@@ -22,7 +22,6 @@ public class UserCodeAccessController {
     public ResponseEntity<ApiRequestResponse> save(@Valid
                                                    @RequestBody UserCodeAccessRequest userCodeAccess,
                                                    @RequestParam String currentUser) {
-        log.info("save user code access request -- {}", userCodeAccess);
         return new ResponseEntity<>(userCodeAccessBService.save(userCodeAccess, currentUser), HttpStatus.OK);
     }
 
@@ -39,6 +38,12 @@ public class UserCodeAccessController {
     @GetMapping("/findAllByUserName/{userName}")
     public ResponseEntity<ApiRequestResponse> findAllByUserName(@PathVariable("userName") String userName) {
         return new ResponseEntity<>(userCodeAccessBService.findAllByUser(userName), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/deleteById/{userCodeAccessId}")
+    public ResponseEntity<ApiRequestResponse> deleteById(@PathVariable Long userCodeAccessId) {
+        return new ResponseEntity<>(userCodeAccessBService.deleteById(userCodeAccessId), HttpStatus.OK);
+
     }
 
 }

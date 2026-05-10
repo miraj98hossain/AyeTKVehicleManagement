@@ -14,12 +14,12 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="@192.168.0.102" uuid="be59a66e-25a9-452f-9e80-2ca49ee0a978">
+    <data-source source="LOCAL" name="@production" uuid="ba4c7709-2962-446b-a637-a75d1049406c">
       <driver-ref>oracle.19</driver-ref>
       <synchronize>true</synchronize>
       <auto-commit>false</auto-commit>
       <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
-      <jdbc-url>jdbc:oracle:thin:@192.168.0.102:1521:PROD</jdbc-url>
+      <jdbc-url>jdbc:oracle:thin:@192.168.0.6:1521:PROD</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
@@ -27,12 +27,12 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="@production" uuid="ba4c7709-2962-446b-a637-a75d1049406c">
+    <data-source source="LOCAL" name="@192.168.0.102" uuid="40596cd0-e9c1-4322-80fa-ccef91e08abd">
       <driver-ref>oracle.19</driver-ref>
       <synchronize>true</synchronize>
       <auto-commit>false</auto-commit>
       <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
-      <jdbc-url>jdbc:oracle:thin:@192.168.0.6:1521:PROD</jdbc-url>
+      <jdbc-url>jdbc:oracle:thin:@192.168.0.102:1521:PROD</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.host.port" />
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />

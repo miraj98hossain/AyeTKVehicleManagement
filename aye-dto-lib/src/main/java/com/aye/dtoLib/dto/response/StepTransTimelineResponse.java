@@ -16,8 +16,8 @@ import java.time.LocalDateTime;
 public class StepTransTimelineResponse {
     private Long stepTransTLId;
     private Long stepTransLinesId;
+    private Long stepTransDtlLnId;
     private Long stepId;
-
     private LocalDateTime ignTimeN;
 
     private LocalDateTime ignTimeP;

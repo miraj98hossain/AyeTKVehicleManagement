@@ -30,10 +30,12 @@ public class StepSetupViewService {
 
     public ApiRequestResponse saveStepSetup(StepSetupRequest request, String currentUserName) {
         StepSetup stepSetup = this.stepSetupService.saveStepSetup(request, currentUserName);
+        StepSetupResponse stepSetupResponse = this.stepSetupMapper.toResponseDto(stepSetup);
         return ApiRequestResponseMaker.make(HttpStatus.OK.name(), "Successfully created the step setup",
                 ApiRequestResponseDetail.ObjectType.O, "stepSetupResponse",
                 StepSetupResponse.class.getName(),
-                stepSetupMapper.toResponseDto(stepSetup));
+                stepSetupResponse
+        );
     }
 
 
@@ -83,17 +85,13 @@ public class StepSetupViewService {
         response.setHttpStatus(HttpStatus.OK.name());
         response.setMessage("Successfully found all the step setups");
         var page = this.stepSetupService.findAllStepSetup(pageable);
-        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
-        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("stepSetupResList")
-                .object(page)
-                .mapperClass(StepSetupResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.PD)
-                .build();
-        detailsResList.add(details);
-        response.setApiRequestResponseDetails(detailsResList);
-        return response;
-
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(),
+                "Success",
+                ApiRequestResponseDetail.ObjectType.PD, "stepSetupResList",
+                StepSetupResponse.class.getName(),
+                this.stepSetupMapper.toResponseDto(page)
+        );
     }
 
 

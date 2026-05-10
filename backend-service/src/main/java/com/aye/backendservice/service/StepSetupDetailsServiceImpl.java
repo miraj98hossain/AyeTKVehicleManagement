@@ -83,6 +83,8 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     @Override
     public List<StepSetupDetails> getAllDetailsBySetup(StepSetup stepSetup) {
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
+            assert query != null;
+            query.orderBy(cb.asc(root.get("serialNo")));
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("stepSetup"), stepSetup));
             return cb.and(predicates.toArray(new Predicate[0]));
@@ -116,6 +118,8 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
     public List<StepSetupDetails> filterStepSetupDetails(List<StepSetup> stepSetups, Long orgId, Long invOrgId, String searchWords) {
 
         return this.stepSetupDetailsRepository.findAll((root, query, cb) -> {
+            assert query != null;
+            query.orderBy(cb.asc(root.get("serialNo")));
             Join<StepSetupDetails, Step> stepJoin = root.join("step", JoinType.INNER);
 
             List<Predicate> predicates = new ArrayList<>();

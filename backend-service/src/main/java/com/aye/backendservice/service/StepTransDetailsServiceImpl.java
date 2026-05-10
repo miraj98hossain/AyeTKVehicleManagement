@@ -9,6 +9,7 @@ import com.aye.entitylib.entity.user.Muser;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 import com.aye.entitylib.entity.vehicleproject.StepTransLines;
+import com.aye.entitylib.entity.vehicleproject.StepTransTimeline;
 import com.aye.enums.StepStatus;
 import com.aye.mapper.StepTransDetailsLinesMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -132,8 +134,15 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
         StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
         stepTransLinesRequest.setStepTransLinesId(stepTransLineId);
 
+        StepTransTimeline stepTransTimeline = new StepTransTimeline();
+        stepTransTimeline.setStepTransDetailsLines(stepTransDetailsLines);
+        stepTransTimeline.setIgnitionTime(LocalDateTime.now());
+        stepTransTimeline.setStepStatus(status);
+        stepTransDetailsLines.getStepTransTimeline().add(stepTransTimeline);
+
         if (status.equals(StepStatus.W)) {
             stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
+            stepTransTimeline.setStepTransLines(stepTransLine);
             List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
 
             boolean areAllStageZero = stepTransDetails.stream()
@@ -150,12 +159,10 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
         if (status.equals(StepStatus.C)) {
             stepTransDetailsLines.setStage(stepTransDetailsLines.getStage() + 1);
             stepTransDetailsLines.setStepStatus(StepStatus.C);
-            response = this.lineRepo.save(stepTransDetailsLines);
-
             stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
-
+            stepTransTimeline.setStepTransLines(stepTransLine);
+            response = this.lineRepo.save(stepTransDetailsLines);
             List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
-
             boolean isAllOtherItemsLoaded = stepTransDetails.stream()
                     .flatMap(details -> details.getStepTransDetailsLines().stream().filter(detailsLine -> !Objects.equals(detailsLine.getStepTransDtlLnId(), detailLineId)))
                     .allMatch(detailsLine -> detailsLine.getStepStatus().equals(StepStatus.C));

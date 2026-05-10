@@ -11,4 +11,6 @@ public interface UserCodeAccessBService {
     ApiRequestResponse findAllByUser(Integer userId);
 
     ApiRequestResponse findAllByUser(String userName);
+
+    ApiRequestResponse deleteById(Long userCodeAccessId);
 }

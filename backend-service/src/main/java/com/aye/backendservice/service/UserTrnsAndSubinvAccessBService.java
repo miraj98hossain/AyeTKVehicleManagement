@@ -4,19 +4,21 @@ import com.aye.RestfulServer.repo.InvOrgSubInvVRepo;
 import com.aye.RestfulServer.repo.UserSubInvAccessRepo;
 import com.aye.RestfulServer.repo.UserTransactionTypesRepo;
 import com.aye.RestfulServer.service.MuserService;
-
+import com.aye.RestfulServer.service.UserTrnsAndSubinvAccessService;
 import com.aye.dtoLib.dto.request.UserSubInvAccessRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-
 import com.aye.dtoLib.dto.response.userOrg.InvOrgSubInvVResponseDto;
 import com.aye.dtoLib.dto.response.userOrg.UserSubInvAccessResponse;
+import com.aye.dtoLib.dto.response.userOrg.UserTransactionTypesResponse;
 import com.aye.entitylib.entity.CommonColumn;
 import com.aye.entitylib.entity.InvOrgSubInvV;
 import com.aye.entitylib.entity.UserSubInvAccess;
 import com.aye.entitylib.entity.UserTransactionTypes;
+import com.aye.enums.TrnsType;
 import com.aye.mapper.userOrg.InvOrgSubInvVMapper;
 import com.aye.mapper.userOrg.UserSubInvAccessMapper;
+import com.aye.mapper.userOrg.UserTransactionTypesMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -39,6 +41,8 @@ import java.util.List;
 @Service
 public class UserTrnsAndSubinvAccessBService {
     @Autowired
+    private UserTrnsAndSubinvAccessService userTrnsAndSubinvAccessService;
+    @Autowired
     private MuserService muserService;
     @Autowired
     private InvOrgSubInvVRepo invOrgSubInvVRepo;
@@ -50,6 +54,8 @@ public class UserTrnsAndSubinvAccessBService {
     private UserSubInvAccessMapper userSubInvAccessMapper;
     @Autowired
     private UserTransactionTypesRepo userTransactionTypesRepo;
+    @Autowired
+    private UserTransactionTypesMapper userTransactionTypesMapper;
 
     ApiRequestResponse searchInvOrgSubInv(Long orgId, Long invOrgId, String subInvName) {
         List<InvOrgSubInvVResponseDto> invOrgSubInvVs = this.invOrgSubInvVRepo.findAll(new Specification<InvOrgSubInvV>() {
@@ -134,4 +140,16 @@ public class UserTrnsAndSubinvAccessBService {
                 response);
     }
 
+
+    public ApiRequestResponse findByUserTransTypeAccessByInvOrgAndTransType(Long invOrgId, Integer userId, TrnsType transType) {
+
+        var list = this.userTrnsAndSubinvAccessService.findByUserTransTypeAccessByInvOrgAndTransType(invOrgId, userId, transType);
+        return ApiRequestResponseMaker.make(HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "transTypeRes",
+                UserTransactionTypesResponse.class.getName(),
+                this.userTransactionTypesMapper.toResponseDto(list));
+    }
+
 }
+
+

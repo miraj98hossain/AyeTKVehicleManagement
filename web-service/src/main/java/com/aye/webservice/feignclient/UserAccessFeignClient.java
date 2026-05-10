@@ -2,6 +2,7 @@ package com.aye.webservice.feignclient;
 
 import com.aye.dtoLib.dto.request.*;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.enums.TrnsType;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -88,4 +89,9 @@ public interface UserAccessFeignClient {
 
     @GetMapping("/findUserSubInvAccessById/{id}")
     ResponseEntity<ApiRequestResponse> findUserSubInvAccessById(@PathVariable("id") Long id);
+
+    @GetMapping("/findByUserTransTypeAccessByInvOrgAndTransType/{invOrgId}/{userId}")
+    ResponseEntity<ApiRequestResponse> findByUserTransTypeAccessByInvOrgAndTransType(@PathVariable Long invOrgId,
+                                                                                     @PathVariable Integer userId,
+                                                                                     @RequestParam TrnsType transType);
 }

@@ -10,15 +10,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
 public class StepTransRequest {
-    
+
     private Long stepTransId;
     @NotBlank(groups = {StepTransCreateValidation.class, StepTransUpdateValidation.class}, message = "Vehicle City is required")
     private String vehicleCity;
@@ -41,8 +39,6 @@ public class StepTransRequest {
     @Size(max = 11, min = 11, message = "Phone number must be 11")
     @NotBlank(groups = {StepTransCreateValidation.class, StepTransUpdateValidation.class}, message = "Driver phone number is required")
     private String driverPhoneNo;
-    private BigDecimal startNum;
-    private BigDecimal endNum;
     private String challanNumber;
 
 }

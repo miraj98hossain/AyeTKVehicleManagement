@@ -2,6 +2,7 @@ package com.aye.webservice.service;
 
 import com.aye.dtoLib.dto.request.*;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.enums.TrnsType;
 import com.aye.webservice.feignclient.UserAccessFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserAccessService {
     @Autowired
-    UserAccessFeignClient controller;
+    private UserAccessFeignClient controller;
 
     public ApiRequestResponse getAllTemplet() {
         return this.controller.getAllTemplet().getBody();
@@ -123,4 +124,7 @@ public class UserAccessService {
         return this.controller.findUserSubInvAccessById(id).getBody();
     }
 
+    public ApiRequestResponse findByUserTransTypeAccessByInvOrgAndTransType(Long invOrgId, Integer userId, TrnsType transType) {
+        return this.controller.findByUserTransTypeAccessByInvOrgAndTransType(invOrgId, userId, transType).getBody();
+    }
 }

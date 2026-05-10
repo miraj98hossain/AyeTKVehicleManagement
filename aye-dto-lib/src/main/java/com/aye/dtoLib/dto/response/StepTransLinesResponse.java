@@ -31,6 +31,7 @@ public class StepTransLinesResponse {
     private String remarks;
     private Integer stage;
     private List<StepTransDetailsResponse> stepTransDetails;
+    private StepTransScaleDetailsDto stepTransScaleDetails;
     private Long createdBy;
     private Date createdAt;
     private Long updatedBy;

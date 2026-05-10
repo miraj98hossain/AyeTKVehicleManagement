@@ -3,8 +3,8 @@ spring:
     name: backend-service
   datasource:
     url: jdbc:oracle:thin:@192.168.0.102:1521/PROD
-    username: mapps2
-    password: mapps2
+    username: mapps
+    password: mapps
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
     show-sql: true
@@ -20,7 +20,7 @@ spring:
         proc:
           param_null_passing: true
         enable_lazy_load_no_trans: true
-        default_schema: mapps2
+        default_schema: mapps
         id:
           new_generator_mappings: true
         format_sql: true
