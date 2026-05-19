@@ -2,6 +2,7 @@ package com.aye.dtoLib.dto.request;
 
 import com.aye.dtoLib.dto.validationGroup.StepTransCreateValidation;
 import com.aye.dtoLib.dto.validationGroup.StepTransUpdateValidation;
+import com.aye.enums.TransportType;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -27,8 +28,8 @@ public class StepTransRequest {
     @NotBlank(groups = {StepTransCreateValidation.class, StepTransUpdateValidation.class}, message = "Vehicle number is required")
     private String vehicleNumber;
 
-    @NotBlank(groups = {StepTransCreateValidation.class, StepTransUpdateValidation.class}, message = "Transport name is required")
-    private String transportName;
+    @NotNull(groups = {StepTransCreateValidation.class, StepTransUpdateValidation.class}, message = "Transport name is required")
+    private TransportType transportName;
 
     @NotNull(groups = {StepTransCreateValidation.class, StepTransUpdateValidation.class}, message = "Step Setup id is required")
     private Long stepSetupId;

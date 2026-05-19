@@ -102,7 +102,6 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             predicates.add(cb.not(root.get("stepStatus").in('C', 'R')));
             // setupSetupId IN (...)
             predicates.add(stepSetupDJoin.get("stepSetupDetailsId").in(stepSetupDIds));
-
             if (searchWords != null && !searchWords.isEmpty()) {
                 predicates.add(cb.and(cb.like(masterJoin.get("vehicleNumber"), "%" + searchWords + "%")));
             }

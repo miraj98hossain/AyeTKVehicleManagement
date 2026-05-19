@@ -41,18 +41,52 @@ public class TripBasedDetailsCreationStrategy implements StepTransDetailsCreatio
 
     @Override
     public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {
+        List<StepTransDetails> existingDetails = repository.findAllByStepTrans_StepTransId(req.getStepTransId());
         StepTransDetails stepTransDetails = factory.fromStepDetailsReq(req, user);
         List<XxtkgTripDelvDtlV> trips = xxtkgTripDelvDtlVService.findByChallanNumber(req.getChallanNumber());
         Set<Long> addedOrderNumbers = new HashSet<>();
-        List<StepTransDetails> result = new ArrayList<>();
+        List<StepTransDetails> newList = new ArrayList<>();
+        // Collecting non match orderNumbers to remove from current list.
+        List<Long> removedStepTransDtlIds = existingDetails.stream()
+                .filter(std -> trips.stream()
+                        .noneMatch(trip -> trip.getOrderNumber().equals(std.getOrderNumber())))
+                .map(StepTransDetails::getStepTransDtlId)
+                .toList();
+        existingDetails.removeIf(std ->
+                removedStepTransDtlIds.contains(std.getStepTransDtlId())
+        );
+
+        existingDetails.forEach(detail -> {
+            addedOrderNumbers.add(detail.getOrderNumber());
+        });
         for (XxtkgTripDelvDtlV trip : trips) {
             if (addedOrderNumbers.contains(trip.getOrderNumber())) continue;
             addedOrderNumbers.add(trip.getOrderNumber());
             StepTransDetails dtl = factory.fromTripDtlView(trip, stepTransDetails.getStepTrans(), user);
-            result.add(dtl);
+            newList.add(dtl);
         }
-        repository.deleteAllByStepTrans_StepTransId(stepTransDetails.getStepTrans().getStepTransId());
-        return repository.saveAll(result);
+        this.repository.deleteAllById(removedStepTransDtlIds);
+        return this.repository.saveAll(newList);
     }
+
+
+//    public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {
+//        List<StepTransDetails> existingDetails = repository.findAllByStepTrans_StepTransId(req.getStepTransId());
+//        StepTransDetails stepTransDetails = factory.fromStepDetailsReq(req, user);
+//        List<XxtkgTripDelvDtlV> trips = xxtkgTripDelvDtlVService.findByChallanNumber(req.getChallanNumber());
+//        Set<Long> addedOrderNumbers = new HashSet<>();
+//        existingDetails.forEach(existingDetail -> {
+//            addedOrderNumbers.add(existingDetail.getOrderNumber());
+//        });
+//        List<StepTransDetails> result = new ArrayList<>();
+//        for (XxtkgTripDelvDtlV trip : trips) {
+//            if (addedOrderNumbers.contains(trip.getOrderNumber())) continue;
+//            addedOrderNumbers.add(trip.getOrderNumber());
+//            StepTransDetails dtl = factory.fromTripDtlView(trip, stepTransDetails.getStepTrans(), user);
+//            result.add(dtl);
+//        }
+//        //repository.deleteAllByStepTrans_StepTransId(stepTransDetails.getStepTrans().getStepTransId());
+//        return repository.saveAll(result);
+//    }
 }
 

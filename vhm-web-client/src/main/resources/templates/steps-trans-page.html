@@ -127,10 +127,17 @@
                             </div>
                             <div class="col-sm-8">
                                 <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
-                                <input class="form-control" id="transportName"
-                                       placeholder="Enter Transport Name" required
-                                       th:field="${stepTransReq.transportName}"
-                                       type="text">
+                                <!--                                <input class="form-control" id="transportName"-->
+                                <!--                                       placeholder="Enter Transport Name" required-->
+                                <!--                                       th:field="${stepTransReq.transportName}"-->
+                                <!--                                       type="text">-->
+                                <select class="form-control" id="transportName"
+                                        th:field="${stepTransReq.transportName}">
+                                    <option value="">-- Select --</option>
+                                    <option th:each="t : ${T(com.aye.enums.TransportType).values()}"
+                                            th:text="${t.displayName}" th:value="${t}">
+                                    </option>
+                                </select>
                             </div>
                         </div>
 

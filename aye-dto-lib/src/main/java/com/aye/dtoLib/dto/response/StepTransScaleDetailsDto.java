@@ -25,6 +25,8 @@ public class StepTransScaleDetailsDto {
     private String scaleName;
     @NotNull(message = "Weight Can Not Be Null")
     private Long weight;
+    @NotBlank(message = "Uom Can Not Be Null")
+    private String uom;
     private Date createdAt;
     private Long createdBy;
     private Date updatedAt;

@@ -24,6 +24,7 @@ public class StepTransLinesResponse {
     private String driverName;
     private Long stepId;
     private String stepName;
+    private String stepWiseWeight;
     private String stepStatus;
     private String holdBy;
     private boolean isHoldAble;

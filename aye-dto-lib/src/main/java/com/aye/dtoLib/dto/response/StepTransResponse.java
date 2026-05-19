@@ -1,6 +1,7 @@
 package com.aye.dtoLib.dto.response;
 
 import com.aye.enums.StepTransStatus;
+import com.aye.enums.TransportType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,7 +21,7 @@ public class StepTransResponse {
     private String stepTransNo;
     private Long stepSetupId;
     private String vehicleNumber;
-    private String transportName;
+    private TransportType transportName;
     private String driverPhoneNo;
     private String driverName;
     private String challanNumber;

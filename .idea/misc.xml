@@ -11,6 +11,9 @@
         <option value="$PROJECT_DIR$/web-client/pom.xml" />
         <option value="$PROJECT_DIR$/backend-service/common-lib/pom.xml" />
         <option value="$PROJECT_DIR$/vhm-web-client/pom.xml" />
+        <option value="$PROJECT_DIR$/dto-to-entity-mapper/pom.xml" />
+        <option value="$PROJECT_DIR$/aye-dto-lib/pom.xml" />
+        <option value="$PROJECT_DIR$/entity-lib/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

@@ -2,10 +2,7 @@ package com.aye.backendservice.service.specification;
 
 
 import com.aye.dtoLib.dto.request.StepTransFilter;
-import com.aye.entitylib.entity.vehicleproject.StepTrans;
-import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
-import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
-import com.aye.entitylib.entity.vehicleproject.StepTransLines;
+import com.aye.entitylib.entity.vehicleproject.*;
 import com.aye.enums.StepStatus;
 import com.aye.enums.StepTransStatus;
 import jakarta.persistence.criteria.Join;
@@ -24,7 +21,7 @@ public class StepTransSpecification {
     private final String DRIVER_PHONE_NO = "driverPhoneNo";
     private final String DRIVER_NAME = "driverName";
     private final String TRANSPORT_NAME = "transportName";
-    private final String CREATED_BY = "createdBy";
+    private final String STEP_NAME = "stepName";
     private final String UPDATED_AT = "updatedAt";
     private final String ITEM_NAME = "orderedItem";
     private final String CUST_NAME = "custName";
@@ -52,6 +49,8 @@ public class StepTransSpecification {
                 return cb.conjunction();
             }
             Join<StepTransLines, StepTrans> transJoin = root.join(STEP_TRANS, JoinType.INNER);
+            Join<StepTransLines, StepSetupDetails> setupDetailsJoin = root.join("stepSetupDetails", JoinType.INNER);
+            Join<StepSetupDetails, Step> stepJoin = setupDetailsJoin.join("step", JoinType.INNER);
 
             Join<StepTrans, StepTransDetails> transDetailsJoin = transJoin.join(STEP_TRANS_DETAILS, JoinType.LEFT);
 
@@ -64,7 +63,8 @@ public class StepTransSpecification {
                     cb.like(cb.lower(transJoin.get(DRIVER_NAME)), pattern),
                     cb.like(cb.lower(transJoin.get(TRANSPORT_NAME)), pattern),
                     cb.like(cb.lower(transDetailsJoin.get(CUST_NAME)), pattern),
-                    cb.like(cb.lower(transDetailsLineJoin.get(ITEM_NAME)), pattern)
+                    cb.like(cb.lower(transDetailsLineJoin.get(ITEM_NAME)), pattern),
+                    cb.like(cb.lower(stepJoin.get(STEP_NAME)), pattern)
             );
         };
     }
