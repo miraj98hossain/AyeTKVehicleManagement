@@ -76,13 +76,6 @@ public class UserMenuController {
         return ResponseEntity.ok(userMenuService.findSubMenuById(submenuId));
     }
 
-
-    @GetMapping("/getUserAccessByUserName")
-    ResponseEntity<ApiRequestResponse> getUserAccessByUserName(@RequestParam String username,
-                                                               @RequestParam String roleType) {
-        return ResponseEntity.ok(userMenuService.getUserAccessByUserName(username, roleType));
-    }
-
     @GetMapping("/findByPage")
     ResponseEntity<ApiRequestResponse> findByPage(@RequestParam String pageName) {
         return ResponseEntity.ok(userMenuService.findByPage(pageName));

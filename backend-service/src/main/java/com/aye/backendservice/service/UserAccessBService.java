@@ -3,8 +3,6 @@ package com.aye.backendservice.service;
 
 import com.aye.dtoLib.dto.request.*;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.entitylib.entity.UserSubInvAccess;
-import com.aye.entitylib.entity.UserTransactionTypes;
 import com.aye.enums.TrnsType;
 
 public interface UserAccessBService {
@@ -24,8 +22,12 @@ public interface UserAccessBService {
 
     ApiRequestResponse findByTempHdrId(Integer id);
 
+    void generateCache();
+
     ApiRequestResponse findUserAccessById(Integer id);
 
+
+    ApiRequestResponse getUserAccessByUserName(String username, String roleType);
 
     //***********************Inventory Orgs**********************************
     ApiRequestResponse findAllUsrAccessOrg();
@@ -52,13 +54,8 @@ public interface UserAccessBService {
 
     //===============UserSubInvAccess======
 
-    ApiRequestResponse findByTransactionTypes(UserTransactionTypes userTransactionTypes);
 
     ApiRequestResponse findUserSubInvAccessById(Long id);
-
-    ApiRequestResponse saveUserSubInvAccess(UserSubInvAccess us, String userName);
-
-    ApiRequestResponse deleteUserSubInvAccess(UserSubInvAccess us);
 
     ApiRequestResponse searchOrdTrnsTypesV(Long orgId, Long invOrgId, String typ);
 

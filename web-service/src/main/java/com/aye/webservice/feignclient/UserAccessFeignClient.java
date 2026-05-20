@@ -39,6 +39,10 @@ public interface UserAccessFeignClient {
     @GetMapping("/findUserAccessById/{id}")
     ResponseEntity<ApiRequestResponse> findUserAccessById(@PathVariable("id") Integer id);
 
+    @GetMapping("/getUserAccessByUserName")
+    ResponseEntity<ApiRequestResponse> getUserAccessByUserName(@RequestParam String username,
+                                                               @RequestParam String roleType);
+
     //***********************Inventory Orgs**********************************
     @GetMapping("/findAllUsrAccessOrg")
     ResponseEntity<ApiRequestResponse> findAllUsrAccessOrg();

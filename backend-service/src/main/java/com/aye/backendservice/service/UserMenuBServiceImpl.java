@@ -3,19 +3,17 @@ package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserMenuService;
-
 import com.aye.dtoLib.dto.request.UserMenuRequest;
 import com.aye.dtoLib.dto.request.UserSubMenuRequest;
-import com.aye.dtoLib.dto.response.*;
+import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
 import com.aye.dtoLib.dto.response.userOrg.UserAccessResponse;
 import com.aye.dtoLib.dto.response.userOrg.UserAccessTemltDtlResponse;
 import com.aye.dtoLib.dto.response.userOrg.UserMenuResponse;
 import com.aye.dtoLib.dto.response.userOrg.UserSubMenuResponse;
 import com.aye.entitylib.entity.UserMenu;
 import com.aye.entitylib.entity.UserSubMenu;
-
 import com.aye.entitylib.entity.user.Muser;
-import com.aye.enums.RoleTypes;
 import com.aye.mapper.userOrg.UserAccessMapper;
 import com.aye.mapper.userOrg.UserAccessTemltDtlMapper;
 import com.aye.mapper.userOrg.UserMenuMapper;
@@ -24,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -177,26 +174,6 @@ public class UserMenuBServiceImpl implements UserMenuBService {
                 ApiRequestResponseDetail.ObjectType.O, "userSubMenu",
                 UserSubMenuResponse.class.getName(), userSubMenuResponse
         );
-    }
-
-    @Override
-    public ApiRequestResponse getUserAccessByUserName(String username, String roleType) {
-        Muser curUser = this.userService.findByUserName(username.toUpperCase());
-        var list = this.menuService.getUserAccessNew1(curUser, RoleTypes.valueOf(roleType))
-                .stream().map(userAccessTemltDtlMapper::toResponseDto).toList();
-        ApiRequestResponse response = new ApiRequestResponse();
-        response.setHttpStatus(HttpStatus.OK.name());
-        response.setMessage("Success");
-        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
-        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
-                .objectTag("manus")
-                .object(list)
-                .mapperClass(UserAccessTemltDtlResponse.class.getName())
-                .objectType(ApiRequestResponseDetail.ObjectType.A)
-                .build();
-        detailsResList.add(details);
-        response.setApiRequestResponseDetails(detailsResList);
-        return response;
     }
 
 

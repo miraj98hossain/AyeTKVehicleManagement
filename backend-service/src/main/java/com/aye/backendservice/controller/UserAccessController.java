@@ -20,6 +20,12 @@ public class UserAccessController {
         return ResponseEntity.ok(this.userAccessBService.getAllTemplet());
     }
 
+    @GetMapping("/generateCache")
+    ResponseEntity<?> generateCache() {
+        this.userAccessBService.generateCache();
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/findByUserId/{userId}")
     ResponseEntity<ApiRequestResponse> findByUserId(@PathVariable("userId") Integer userId) {
         return ResponseEntity.ok(this.userAccessBService.findByUserId(userId));
@@ -35,6 +41,11 @@ public class UserAccessController {
         return ResponseEntity.ok(this.userAccessBService.saveDtlLine(userAccessRequest));
     }
 
+    @GetMapping("/getUserAccessByUserName")
+    public ResponseEntity<ApiRequestResponse> getUserAccessByUserName(@RequestParam String username,
+                                                                      @RequestParam String roleType) {
+        return ResponseEntity.ok(userAccessBService.getUserAccessByUserName(username, roleType));
+    }
 
     @PostMapping("/saveUserAccessTemp")
     public ResponseEntity<ApiRequestResponse> saveUserAccessTemp(@Valid

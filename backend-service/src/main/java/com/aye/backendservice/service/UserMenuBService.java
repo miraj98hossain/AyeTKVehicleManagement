@@ -30,9 +30,6 @@ public interface UserMenuBService {
 
     ApiRequestResponse findSubMenuById(Integer submenuId);
 
-    ApiRequestResponse getUserAccessByUserName(String username, String roleType);
-
-
     ApiRequestResponse findByPage(String pageName);
 
     ApiRequestResponse getUserReport(Integer temltDtId);

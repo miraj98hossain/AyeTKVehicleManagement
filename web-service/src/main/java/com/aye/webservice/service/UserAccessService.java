@@ -54,6 +54,11 @@ public class UserAccessService {
         return this.controller.findUserAccessById(id).getBody();
     }
 
+    public ApiRequestResponse getUserAccessByUserName(String username,
+                                                      String roleType) {
+        return this.controller.getUserAccessByUserName(username, roleType).getBody();
+    }
+
     //***********************Inventory Orgs**********************************
 
     public ApiRequestResponse findAllUsrAccessOrg() {

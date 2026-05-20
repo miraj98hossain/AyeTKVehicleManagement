@@ -5,6 +5,7 @@ import com.aye.RestfulServer.repo.UserSubInvAccessRepo;
 import com.aye.RestfulServer.repo.UserTransactionTypesRepo;
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserTrnsAndSubinvAccessService;
+import com.aye.backendservice.applicationEvent.UserAccessTemplateCacheSyncEvent;
 import com.aye.dtoLib.dto.request.UserSubInvAccessRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
@@ -25,6 +26,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -56,6 +58,8 @@ public class UserTrnsAndSubinvAccessBService {
     private UserTransactionTypesRepo userTransactionTypesRepo;
     @Autowired
     private UserTransactionTypesMapper userTransactionTypesMapper;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     ApiRequestResponse searchInvOrgSubInv(Long orgId, Long invOrgId, String subInvName) {
         List<InvOrgSubInvVResponseDto> invOrgSubInvVs = this.invOrgSubInvVRepo.findAll(new Specification<InvOrgSubInvV>() {
@@ -119,7 +123,8 @@ public class UserTrnsAndSubinvAccessBService {
             cc.setCreatedBy(user);
         }
         userSubInvAccess.setColumn(cc);
-
+        Integer userAccessTempId = userTransactionTypes.getUserAccessInvOrg().getUserAccessTemltDtl().getUserAccessTemplt().getId();
+        this.eventPublisher.publishEvent(new UserAccessTemplateCacheSyncEvent(this, userAccessTempId));
         this.userSubInvAccessRepo.save(userSubInvAccess);
         return ApiRequestResponseMaker.make(HttpStatus.OK.name(), "Success", null,
                 null,

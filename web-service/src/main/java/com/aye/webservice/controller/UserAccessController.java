@@ -63,6 +63,12 @@ public class UserAccessController {
         return ResponseEntity.ok(this.userAccessService.findTempDtlByDtlId(id));
     }
 
+    @GetMapping("/getUserAccessByUserName")
+    ResponseEntity<ApiRequestResponse> getUserAccessByUserName(@RequestParam String username,
+                                                               @RequestParam String roleType) {
+        return ResponseEntity.ok(this.userAccessService.getUserAccessByUserName(username, roleType));
+    }
+
     //***********************Inventory Orgs**********************************
     @GetMapping("/findAllUsrAccessOrg")
     public ResponseEntity<ApiRequestResponse> findAllUsrAccessOrg() {

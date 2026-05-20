@@ -2,6 +2,8 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.*;
+import com.aye.backendservice.applicationEvent.UserAccessCacheSyncEvent;
+import com.aye.backendservice.applicationEvent.UserAccessTemplateCacheSyncEvent;
 import com.aye.dtoLib.dto.request.*;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
@@ -10,18 +12,27 @@ import com.aye.dtoLib.dto.response.userOrg.*;
 import com.aye.entitylib.entity.*;
 import com.aye.entitylib.entity.order.OrdTrnsTypesV;
 import com.aye.entitylib.entity.user.Muser;
+import com.aye.enums.RoleTypes;
 import com.aye.enums.TrnsType;
 import com.aye.mapper.order.OrdTrnsTypesVMapper;
 import com.aye.mapper.userOrg.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class UserAccessBServiceImpl implements UserAccessBService {
+
     @Autowired
     private OrgHierarchyService orgHierarchyService;
     @Autowired
@@ -50,7 +61,12 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     private UserAccessService userAccessService;
     @Autowired
     private UserTrnsAndSubinvAccessBService userTrnsAndSubinvAccessBService;
-
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Override
     public ApiRequestResponse getAllTemplet() {
@@ -65,6 +81,26 @@ public class UserAccessBServiceImpl implements UserAccessBService {
 
     }
 
+    @Override
+    public void generateCache() {
+        List<UserAccess> allList = this.userAccessService.getAllUserAccess();
+
+        Map<Integer, List<Integer>> map = allList.stream()
+                .collect(Collectors.groupingBy(
+                        ua -> ua.getUserAccessTemplt().getId(),
+                        Collectors.mapping(e -> e.getUser().getId(), Collectors.toList())
+                ));
+
+        map.forEach((tempId, list) -> {
+            try {
+                String listAsString = objectMapper.writeValueAsString(list);
+                redisTemplate.opsForSet().add("USER-ACCESS-TEMPLATE:" + "TEMPLATE:" + tempId, listAsString);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
 
     @Override
     public ApiRequestResponse findUserAccessById(Integer id) {
@@ -74,6 +110,26 @@ public class UserAccessBServiceImpl implements UserAccessBService {
                 ApiRequestResponseDetail.ObjectType.O, "userAccess",
                 UserAccessResponse.class.getName(), userAccessesRes
         );
+    }
+
+    @Override
+    public ApiRequestResponse getUserAccessByUserName(String username, String roleType) {
+        Muser curUser = this.mUserService.findByUserName(username.toUpperCase());
+        var list = this.userAccessService.getUserAccess(curUser, RoleTypes.valueOf(roleType))
+                .stream().map(tempDtlMapper::toResponseDto).toList();
+        ApiRequestResponse response = new ApiRequestResponse();
+        response.setHttpStatus(HttpStatus.OK.name());
+        response.setMessage("Success");
+        List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
+        ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
+                .objectTag("manus")
+                .object(list)
+                .mapperClass(UserAccessTemltDtlResponse.class.getName())
+                .objectType(ApiRequestResponseDetail.ObjectType.A)
+                .build();
+        detailsResList.add(details);
+        response.setApiRequestResponseDetails(detailsResList);
+        return response;
     }
 
     @Override
@@ -95,6 +151,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         userAccess.setUser(muser);
         userAccess.setUserAccessTemplt(userAccessTemplt);
         this.userAccessService.saveDtlLine(userAccess);
+        this.eventPublisher.publishEvent(new UserAccessCacheSyncEvent(this, muser.getId(), userAccessTemplt.getId()));
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Successfully Created UserAccess",
                 null, "",
@@ -105,7 +162,8 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     @Override
     public ApiRequestResponse saveUserAccessTemp(UserAccessTempltRequest userAccessTempRequest) throws Exception {
         UserAccessTemplt userAccessTemplt = this.tempMapper.dtoToEntity(userAccessTempRequest);
-        this.usrAcsTempService.save(userAccessTemplt);
+        userAccessTemplt = this.usrAcsTempService.save(userAccessTemplt);
+        this.eventPublisher.publishEvent(new UserAccessTemplateCacheSyncEvent(this, userAccessTemplt.getId()));
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
                 null, "",
@@ -120,6 +178,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         userAccessTemltDtl.setUserAccessTemplt(userAccessTemplt);
         userAccessTemltDtl.setRequestGroupHeader(null);
         this.usrAcsTempService.saveDtlLine(userAccessTemltDtl);
+        this.eventPublisher.publishEvent(new UserAccessTemplateCacheSyncEvent(this, userAccessTemplt.getId()));
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
                 null, "",
@@ -223,6 +282,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
             db.setInvOrgs(userAccessInvOrg.getInvOrgs());
             db.setUserAccessTemltDtl(userAccessTemltDtl);
             this.usrAcsInvOrgService.save(db);
+            this.eventPublisher.publishEvent(new UserAccessTemplateCacheSyncEvent(this, userAccessTemltDtl.getUserAccessTemplt().getId()));
             return ApiRequestResponseMaker.make(
                     HttpStatus.OK.name(), "Successfully",
                     null, null,
@@ -244,7 +304,10 @@ public class UserAccessBServiceImpl implements UserAccessBService {
 
     @Override
     public ApiRequestResponse deleteUsrAccessInvOrg(Long id) {
+        UserAccessInvOrg userAccessInvOrg = this.usrAcsInvOrgService.findById(id);
+        Integer userAccessTempId = userAccessInvOrg.getUserAccessTemltDtl().getUserAccessTemplt().getId();
         this.usrAcsInvOrgService.delete(id);
+        this.eventPublisher.publishEvent(new UserAccessTemplateCacheSyncEvent(this, userAccessTempId));
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Successfully",
                 null, null,
@@ -278,6 +341,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     @Override
     public ApiRequestResponse saveUserTransactionTypes(UserTransactionTypesRequest ut, String userName) throws Exception {
         UserAccessInvOrg userAccessInvOrg = this.usrAcsInvOrgService.findById(ut.getUserAccessInvOrgId());
+        Integer userAccessTempId = userAccessInvOrg.getUserAccessTemltDtl().getUserAccessTemplt().getId();
         if (ut.getId() != null) {
             var db = this.transSubInvAcService.findUserTransactionTypesById(ut.getId());
             db.setName(ut.getName());
@@ -299,6 +363,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         UserTransactionTypes userTransactionTypes = this.transTypesMapper.dtoToEntity(ut);
         userTransactionTypes.setUserAccessInvOrg(userAccessInvOrg);
         this.transSubInvAcService.saveUserTransactionTypes(userTransactionTypes, userName);
+        this.eventPublisher.publishEvent(new UserAccessTemplateCacheSyncEvent(this, userAccessTempId));
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Successfully",
                 null, null,
@@ -308,7 +373,10 @@ public class UserAccessBServiceImpl implements UserAccessBService {
 
     @Override
     public ApiRequestResponse DeleteUserTransactionTypes(Long utId) {
+        UserTransactionTypes userTransactionTypes = this.transSubInvAcService.findUserTransactionTypesById(utId);
+        Integer userAccessTempId = userTransactionTypes.getUserAccessInvOrg().getUserAccessTemltDtl().getUserAccessTemplt().getId();
         this.transSubInvAcService.DeleteUserTransactionTypes(utId);
+        this.eventPublisher.publishEvent(new UserAccessTemplateCacheSyncEvent(this, userAccessTempId));
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Successfully",
                 null, null,
@@ -317,22 +385,6 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     }
 
     //===============UserSubInvAccess======
-    @Override
-    public ApiRequestResponse findByTransactionTypes(UserTransactionTypes userTransactionTypes) {
-        return null;
-    }
-
-
-    @Override
-    public ApiRequestResponse saveUserSubInvAccess(UserSubInvAccess us, String userName) {
-        return null;
-    }
-
-    @Override
-    public ApiRequestResponse deleteUserSubInvAccess(UserSubInvAccess us) {
-        return null;
-    }
-
     @Override
     public ApiRequestResponse searchOrdTrnsTypesV(Long orgId, Long invOrgId, String type) {
         OrgHierarchy orgHierarchy = this.orgHierarchyService.findById(orgId);
