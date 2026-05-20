@@ -30,6 +30,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -95,7 +96,7 @@ public class UserTrnsAndSubinvAccessBService {
                 list);
     }
 
-
+    @Transactional
     public ApiRequestResponse saveUserSubInvAccess(UserSubInvAccessRequest us, String userName) {
         var user = this.muserService.findByUserName(userName);
         CommonColumn cc = new CommonColumn();

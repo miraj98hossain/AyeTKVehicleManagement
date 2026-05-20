@@ -16,19 +16,23 @@ import com.aye.enums.RoleTypes;
 import com.aye.enums.TrnsType;
 import com.aye.mapper.order.OrdTrnsTypesVMapper;
 import com.aye.mapper.userOrg.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.aye.backendservice.utils.RedisKey.USER_LOGIN_RESPONSE_HASH_KEY;
+import static com.aye.backendservice.utils.RedisKey.USER_LOGIN_RESPONSE_KEY;
 
 @Service
 public class UserAccessBServiceImpl implements UserAccessBService {
@@ -83,7 +87,8 @@ public class UserAccessBServiceImpl implements UserAccessBService {
 
     @Override
     public void generateCache() {
-        List<UserAccess> allList = this.userAccessService.getAllUserAccess();
+
+        List<UserAccess> allList = userAccessService.getAllUserAccess();
 
         Map<Integer, List<Integer>> map = allList.stream()
                 .collect(Collectors.groupingBy(
@@ -92,12 +97,14 @@ public class UserAccessBServiceImpl implements UserAccessBService {
                 ));
 
         map.forEach((tempId, list) -> {
-            try {
-                String listAsString = objectMapper.writeValueAsString(list);
-                redisTemplate.opsForSet().add("USER-ACCESS-TEMPLATE:" + "TEMPLATE:" + tempId, listAsString);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
+
+            String key = "USER-ACCESS-TEMPLATE:TEMPLATE:" + tempId;
+
+            list.stream()
+                    .map(String::valueOf)
+                    .forEach(userId ->
+                            redisTemplate.opsForSet().add(key, userId)
+                    );
         });
     }
 
@@ -133,6 +140,41 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     }
 
     @Override
+    public ApiRequestResponse getUserAccessFromCacheByUserName(String username, String roleType) {
+        try {
+            RoleTypes roleTypes = RoleTypes.valueOf(roleType);
+            Muser curUser = this.mUserService.findByUserName(username.toUpperCase());
+            Object object = redisTemplate.opsForHash().get(USER_LOGIN_RESPONSE_KEY, USER_LOGIN_RESPONSE_HASH_KEY + ":" + curUser.getId());
+            assert object != null;
+            List<UserAccessTemltDtlResponse> list =
+                    objectMapper.readValue(
+                            object.toString(),
+                            new TypeReference<List<UserAccessTemltDtlResponse>>() {
+                            }
+                    );
+            list = list.stream()
+                    .filter(e -> e.getUserMenu().getPageType()
+                            .equals(roleTypes))
+                    .collect(Collectors.toList());
+            ApiRequestResponse response = new ApiRequestResponse();
+            response.setHttpStatus(HttpStatus.OK.name());
+            response.setMessage("Success");
+            List<ApiRequestResponseDetail> detailsResList = new ArrayList<>();
+            ApiRequestResponseDetail details = ApiRequestResponseDetail.builder()
+                    .objectTag("manus")
+                    .object(list)
+                    .mapperClass(UserAccessTemltDtlResponse.class.getName())
+                    .objectType(ApiRequestResponseDetail.ObjectType.A)
+                    .build();
+            detailsResList.add(details);
+            response.setApiRequestResponseDetails(detailsResList);
+            return response;
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    @Override
     public ApiRequestResponse findByUserId(Integer userId) {
         List<UserAccessResponse> userAccessesRes = this.userAccessService.findByUserId(userId)
                 .stream().map(userAccessMapper::toResponseDto).toList();
@@ -143,6 +185,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         );
     }
 
+    @Transactional
     @Override
     public ApiRequestResponse saveDtlLine(UserAccessRequest userAccessRequest) {
         UserAccess userAccess = this.userAccessMapper.dtoToUserAccess(userAccessRequest);
@@ -159,6 +202,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         );
     }
 
+    @Transactional
     @Override
     public ApiRequestResponse saveUserAccessTemp(UserAccessTempltRequest userAccessTempRequest) throws Exception {
         UserAccessTemplt userAccessTemplt = this.tempMapper.dtoToEntity(userAccessTempRequest);
@@ -172,6 +216,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
     }
 
     @Override
+    @Transactional
     public ApiRequestResponse saveUserAccessTempDtl(UserAccessTemltDtlRequest usrAcsTempDtlReq) throws Exception {
         UserAccessTemplt userAccessTemplt = this.usrAcsTempService.findById(usrAcsTempDtlReq.getUserAccessTempltId());
         UserAccessTemltDtl userAccessTemltDtl = this.tempDtlMapper.dtoToEntity(usrAcsTempDtlReq);
@@ -267,6 +312,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         );
     }
 
+    @Transactional
     @Override
     public ApiRequestResponse saveUsrAccessInvOrg(UserAccessInvOrgRequest usrAccInvOrgReq, String userName) throws Exception {
         Muser muser = this.mUserService.findByUserName(userName);
@@ -302,6 +348,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         );
     }
 
+    @Transactional
     @Override
     public ApiRequestResponse deleteUsrAccessInvOrg(Long id) {
         UserAccessInvOrg userAccessInvOrg = this.usrAcsInvOrgService.findById(id);
@@ -338,6 +385,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         );
     }
 
+    @Transactional
     @Override
     public ApiRequestResponse saveUserTransactionTypes(UserTransactionTypesRequest ut, String userName) throws Exception {
         UserAccessInvOrg userAccessInvOrg = this.usrAcsInvOrgService.findById(ut.getUserAccessInvOrgId());
@@ -353,6 +401,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
             db.setDescription(ut.getDescription());
             db.setIsMandatory(ut.getIsMandatory());
             this.transSubInvAcService.saveUserTransactionTypes(db, userName);
+            this.eventPublisher.publishEvent(new UserAccessTemplateCacheSyncEvent(this, userAccessTempId));
             return ApiRequestResponseMaker.make(
                     HttpStatus.OK.name(), "Successfully",
                     null, null,
@@ -371,6 +420,7 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         );
     }
 
+    @Transactional
     @Override
     public ApiRequestResponse DeleteUserTransactionTypes(Long utId) {
         UserTransactionTypes userTransactionTypes = this.transSubInvAcService.findUserTransactionTypesById(utId);

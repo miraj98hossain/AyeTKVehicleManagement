@@ -44,7 +44,7 @@ public class UserAccessController {
     @GetMapping("/getUserAccessByUserName")
     public ResponseEntity<ApiRequestResponse> getUserAccessByUserName(@RequestParam String username,
                                                                       @RequestParam String roleType) {
-        return ResponseEntity.ok(userAccessBService.getUserAccessByUserName(username, roleType));
+        return ResponseEntity.ok(userAccessBService.getUserAccessFromCacheByUserName(username, roleType));
     }
 
     @PostMapping("/saveUserAccessTemp")

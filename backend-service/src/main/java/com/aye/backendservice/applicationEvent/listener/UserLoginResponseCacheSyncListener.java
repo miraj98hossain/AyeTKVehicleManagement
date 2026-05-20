@@ -19,13 +19,13 @@ import org.springframework.transaction.event.TransactionalEventListener;
 import java.util.List;
 import java.util.Set;
 
+import static com.aye.backendservice.utils.RedisKey.*;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class UserLoginResponseCacheSyncListener {
 
-    private static final String USER_ACCESS_TEMPLATE_KEY = "USER-ACCESS-TEMPLATE";
-    private static final String USER_LOGIN_RESPONSE_KEY = "USER-LOGIN-RESPONSE";
 
     private final StringRedisTemplate redisTemplate;
     private final ObjectMapper objectMapper;
@@ -51,7 +51,7 @@ public class UserLoginResponseCacheSyncListener {
                     json
             );
 
-            log.debug("Synced login response cache for user {}", userId);
+            log.info("Synced login response cache for user {}", userId);
 
         } catch (Exception ex) {
 
@@ -84,29 +84,24 @@ public class UserLoginResponseCacheSyncListener {
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleUserAccessTemplateDetailChange(UserAccessTemplateCacheSyncEvent event) {
 
-        String templateKey = buildTemplateKey(
-                event.getUserAccessTempId()
-        );
+        String templateKey = buildTemplateKey(event.getUserAccessTempId());
 
-        Set<String> userIds =
-                redisTemplate.opsForSet().members(templateKey);
+        Set<String> userIds = redisTemplate.opsForSet().members(templateKey);
 
         if (userIds == null || userIds.isEmpty()) {
             return;
         }
 
         for (String userId : userIds) {
-            this.syncUserLoginResponse(
-                    Integer.valueOf(userId)
-            );
+            this.syncUserLoginResponse(Integer.valueOf(userId));
         }
     }
 
     private String buildTemplateKey(Integer templateId) {
-        return USER_ACCESS_TEMPLATE_KEY + ":" + "TEMPLATE:" + templateId;
+        return USER_ACCESS_TEMPLATE_KEY + ":" + USER_ACCESS_TEMPLATE_HASH_KEY + ":" + templateId;
     }
 
     private String buildUserKey(Integer userId) {
-        return "USER:" + userId;
+        return USER_LOGIN_RESPONSE_HASH_KEY + ":" + userId;
     }
 }

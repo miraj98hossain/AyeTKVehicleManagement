@@ -8,6 +8,8 @@ import com.aye.enums.TrnsType;
 public interface UserAccessBService {
     ApiRequestResponse getAllTemplet();
 
+    ApiRequestResponse getUserAccessFromCacheByUserName(String username, String roleType);
+
     ApiRequestResponse findByUserId(Integer userId);
 
     ApiRequestResponse saveDtlLine(UserAccessRequest userAccessRequest);

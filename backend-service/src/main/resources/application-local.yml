@@ -7,7 +7,7 @@ spring:
     password: mapps
     driver-class-name: oracle.jdbc.OracleDriver
   jpa:
-    show-sql: true
+    show-sql: false
     generate-ddl: false
     hibernate:
       ddl-auto: validate
@@ -23,7 +23,7 @@ spring:
         default_schema: mapps
         id:
           new_generator_mappings: true
-        format_sql: true
+        format_sql: false
 
   servlet:
     multipart:
@@ -65,6 +65,6 @@ logging:
       hibernate:
         orm:
           jdbc:
-            bind: TRACE
+            bind: info
     com.aye.RestfulServer.controller: INFO
     org.springframework.data.couchbase.repository.query: DEBUG
