@@ -2,6 +2,7 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.*;
+import com.aye.backendservice.applicationEvent.UserAccessCacheGenerateEvent;
 import com.aye.backendservice.applicationEvent.UserAccessCacheSyncEvent;
 import com.aye.backendservice.applicationEvent.UserAccessTemplateCacheSyncEvent;
 import com.aye.dtoLib.dto.request.*;
@@ -28,7 +29,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.aye.backendservice.utils.RedisKey.USER_LOGIN_RESPONSE_HASH_KEY;
@@ -87,25 +87,25 @@ public class UserAccessBServiceImpl implements UserAccessBService {
 
     @Override
     public void generateCache() {
-
-        List<UserAccess> allList = userAccessService.getAllUserAccess();
-
-        Map<Integer, List<Integer>> map = allList.stream()
-                .collect(Collectors.groupingBy(
-                        ua -> ua.getUserAccessTemplt().getId(),
-                        Collectors.mapping(e -> e.getUser().getId(), Collectors.toList())
-                ));
-
-        map.forEach((tempId, list) -> {
-
-            String key = "USER-ACCESS-TEMPLATE:TEMPLATE:" + tempId;
-
-            list.stream()
-                    .map(String::valueOf)
-                    .forEach(userId ->
-                            redisTemplate.opsForSet().add(key, userId)
-                    );
-        });
+        this.eventPublisher.publishEvent(new UserAccessCacheGenerateEvent(this));
+//        List<UserAccess> allList = userAccessService.getAllUserAccess();
+//
+//        Map<Integer, List<Integer>> map = allList.stream()
+//                .collect(Collectors.groupingBy(
+//                        ua -> ua.getUserAccessTemplt().getId(),
+//                        Collectors.mapping(e -> e.getUser().getId(), Collectors.toList())
+//                ));
+//
+//        map.forEach((tempId, list) -> {
+//
+//            String key = "USER-ACCESS-TEMPLATE:TEMPLATE:" + tempId;
+//
+//            list.stream()
+//                    .map(String::valueOf)
+//                    .forEach(userId ->
+//                            redisTemplate.opsForSet().add(key, userId)
+//                    );
+//        });
     }
 
 

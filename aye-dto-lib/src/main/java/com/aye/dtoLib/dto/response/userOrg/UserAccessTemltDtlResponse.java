@@ -18,6 +18,8 @@ public class UserAccessTemltDtlResponse {
     private Long orgHierarchyId;
     private String orgHierarchyName;
     private String orgHierarchyCode;
+    private String orgDimOrderEnabled;
+    private String orgCanChangePrice;
     //temp details
     private Integer userAccessTemltId;
     private String userAccessTemltNumber;

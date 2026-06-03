@@ -40,6 +40,10 @@ spring:
     serialization:
       fail-on-empty-beans: false
   data:
+    redis:
+      host: 192.168.0.136
+      port: 6379
+      password: redis13579
     jpa:
       repositories:
         enabled: true

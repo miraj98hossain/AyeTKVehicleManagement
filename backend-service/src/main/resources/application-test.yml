@@ -2,7 +2,7 @@ spring:
   application:
     name: backend-service
   datasource:
-    url: jdbc:oracle:thin:@192.168.0.66:1521/PROD
+    url: jdbc:oracle:thin:@192.168.0.102:1521/PROD
     username: mapps
     password: mapps
     driver-class-name: oracle.jdbc.OracleDriver
@@ -15,15 +15,15 @@ spring:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
       hibernate:
+        hbm2ddl:
+          schema_filter_provider: com.aye.backendservice.config.MySchemaFilterProvider
         proc:
           param_null_passing: true
         enable_lazy_load_no_trans: true
-        hbm2ddl:
-          schema_filter_provider: com.aye.backendservice.config.MySchemaFilterProvider
-          auto: validate
         default_schema: mapps
         id:
           new_generator_mappings: true
+        format_sql: false
 
   servlet:
     multipart:
@@ -35,11 +35,13 @@ spring:
 
   Report:
     dir: F:/Red/Report/
-  jackson:
-    date-format: yyyy-MM-dd
     serialization:
       fail-on-empty-beans: false
   data:
+    redis:
+      host: 192.168.0.113
+      port: 6380
+      password: redis13579
     jpa:
       repositories:
         enabled: true
@@ -59,5 +61,10 @@ server:
 #    client-auth: need
 logging:
   level:
+    org:
+      hibernate:
+        orm:
+          jdbc:
+            bind: info
     com.aye.RestfulServer.controller: INFO
     org.springframework.data.couchbase.repository.query: DEBUG

@@ -3,6 +3,7 @@ package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserMenuService;
+import com.aye.backendservice.applicationEvent.UserMenusCacheSyncEvent;
 import com.aye.dtoLib.dto.request.UserMenuRequest;
 import com.aye.dtoLib.dto.request.UserSubMenuRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
@@ -19,8 +20,10 @@ import com.aye.mapper.userOrg.UserAccessTemltDtlMapper;
 import com.aye.mapper.userOrg.UserMenuMapper;
 import com.aye.mapper.userOrg.UserSubMenuMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -38,6 +41,8 @@ public class UserMenuBServiceImpl implements UserMenuBService {
     private UserSubMenuMapper userSubMenuMapper;
     @Autowired
     private UserAccessMapper userAccessMapper;
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @Override
     public ApiRequestResponse findByMenuId(Integer id) {
@@ -106,10 +111,12 @@ public class UserMenuBServiceImpl implements UserMenuBService {
         );
     }
 
+    @Transactional
     @Override
     public ApiRequestResponse save(UserMenuRequest userMenuRequest) throws Exception {
         UserMenu userMenu = this.userMenuMapper.dtoToEntity(userMenuRequest);
-        this.menuService.save(userMenu);
+        userMenu = this.menuService.save(userMenu);
+        this.eventPublisher.publishEvent(new UserMenusCacheSyncEvent(this, userMenu.getId()));
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
                 null, null,
@@ -117,12 +124,14 @@ public class UserMenuBServiceImpl implements UserMenuBService {
         );
     }
 
+    @Transactional
     @Override
     public ApiRequestResponse saveline(UserSubMenuRequest userSubMenuReq) {
         UserSubMenu userSubMenu = this.userSubMenuMapper.dtoToEntity(userSubMenuReq);
         UserMenu userMenu = this.menuService.findByMenuId(userSubMenuReq.getUserMenuId());
         userSubMenu.setUserMenu(userMenu);
         this.menuService.saveline(userSubMenu);
+        this.eventPublisher.publishEvent(new UserMenusCacheSyncEvent(this, userMenu.getId()));
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
                 null, null,

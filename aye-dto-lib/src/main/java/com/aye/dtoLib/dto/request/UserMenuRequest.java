@@ -15,11 +15,11 @@ public class UserMenuRequest {
     private String menuName;
     @NotNull(message = "Module ID must not be null")
     private Long moduleId;
-    @NotBlank(message = "Level cannot be empty")
+    @NotNull(message = "Level cannot be empty")
     private MenuLevel level;
     @NotNull(message = "Active status must not be null")
     private Boolean isActive;
-    @NotBlank(message = "Page type cannot be empty")
+    @NotNull(message = "Page type cannot be empty")
     private RoleTypes pageType;
 
 }

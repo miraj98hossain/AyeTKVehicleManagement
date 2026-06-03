@@ -2,14 +2,19 @@ package com.aye.backendservice.applicationEvent.listener;
 
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.UserAccessService;
+import com.aye.backendservice.applicationEvent.UserAccessCacheGenerateEvent;
 import com.aye.backendservice.applicationEvent.UserAccessCacheSyncEvent;
 import com.aye.backendservice.applicationEvent.UserAccessTemplateCacheSyncEvent;
+import com.aye.backendservice.applicationEvent.UserMenusCacheSyncEvent;
 import com.aye.dtoLib.dto.response.userOrg.UserAccessTemltDtlResponse;
+import com.aye.entitylib.entity.UserAccess;
+import com.aye.entitylib.entity.UserAccessTemltDtl;
 import com.aye.entitylib.entity.user.Muser;
 import com.aye.mapper.userOrg.UserAccessTemltDtlMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.event.EventListener;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -17,7 +22,9 @@ import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.aye.backendservice.utils.RedisKey.*;
 
@@ -95,6 +102,53 @@ public class UserLoginResponseCacheSyncListener {
         for (String userId : userIds) {
             this.syncUserLoginResponse(Integer.valueOf(userId));
         }
+    }
+
+
+    @Async("asyncExecutor")
+    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
+    public void handleUserMenuChange(UserMenusCacheSyncEvent event) {
+
+        List<UserAccessTemltDtl> dtlList = this.userAccessService.findUserAccessTempDtlByMenuId(event.getUserMenuId());
+        dtlList.forEach(dtl -> {
+            String templateKey = buildTemplateKey(dtl.getUserAccessTemplt().getId());
+            Set<String> userIds = redisTemplate.opsForSet().members(templateKey);
+            if (userIds == null || userIds.isEmpty()) {
+                return;
+            }
+            for (String userId : userIds) {
+                this.syncUserLoginResponse(Integer.valueOf(userId));
+            }
+        });
+    }
+
+
+    @Async("asyncExecutor")
+    @EventListener
+    public void handleUserAccessCacheGenerate(UserAccessCacheGenerateEvent event) {
+
+        List<UserAccess> allList = userAccessService.getAllUserAccess();
+
+        Map<Integer, List<Integer>> map = allList.stream()
+                .collect(Collectors.groupingBy(
+                        ua -> ua.getUserAccessTemplt().getId(),
+                        Collectors.mapping(e -> e.getUser().getId(), Collectors.toList())
+                ));
+
+        map.forEach((tempId, list) -> {
+
+            String key = this.buildTemplateKey(tempId);
+
+            list.stream()
+                    .map(String::valueOf)
+                    .forEach(userId ->
+                            redisTemplate.opsForSet().add(key, userId)
+                    );
+
+            for (Integer userId : list) {
+                this.syncUserLoginResponse(userId);
+            }
+        });
     }
 
     private String buildTemplateKey(Integer templateId) {
