@@ -637,7 +637,7 @@
                             </tr>
                             </thead>
 
-                            <tbody>
+                            <tbody th:if="${stepTransResponseList != null and stepTransResponseList.getContent() != null and !stepTransResponseList.getContent().isEmpty()}">
                             <tr th:each="line, stat : ${stepTransResponseList.getContent()}">
                                 <td th:text="${line.stepTransNo}"></td>
                                 <td th:text="${#dates.format(line.createdAt, 'dd-MMM-yyyy')}"></td>
@@ -762,7 +762,7 @@
 
                         <!-- Pagination -->
                         <nav aria-label="Page navigation" class="text-left"
-                             th:if="${stepTransResponseList.totalPages > 1}">
+                             th:if="${stepTransResponseList != null and stepTransResponseList.totalPages > 1}">
                             <ul class="pagination">
                                 <!-- Previous -->
                                 <li th:classappend="${!stepTransResponseList.hasPrevious()} ? 'disabled'">
