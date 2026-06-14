@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html data-layout-decorate="~{fragments/layout}" lang="en">
+
+<head>
+    <title>Dashboard</title>
+    <script th:src="@{/js/echarts.min.js}"></script>
+    <script th:src="@{/js/stepTrans/dashboard.js}"></script>
+    <style>
+        #chart3 tbody tr.auto-active-row td {
+            background-color: #dff0d8 !important;
+            transition: background-color 0.4s ease;
+        }
+
+        .chart-card {
+            background: #fff;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.10);
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .chart-card .chart-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 8px;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            min-height: 220px;
+        }
+
+        /* Table inside chart-container needs its own height */
+        .chart-container.table-container {
+            height: auto;
+            min-height: unset;
+            overflow-x: auto;
+        }
+
+        /* Tighter padding on small screens */
+        @media (max-width: 991px) {
+            .chart-container {
+                height: 260px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .chart-container {
+                height: 220px;
+            }
+
+            /* Full-width columns on phones */
+            .col-sm-12 {
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+        }
+
+        /* Equal-height cards per row on tablet and up */
+        @media (min-width: 768px) {
+            .row.equal-height {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            .row.equal-height > [class*="col-"] {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .row.equal-height .chart-card {
+                flex: 1;
+            }
+        }
+
+        /* Table responsive tweaks */
+        .table-responsive-dashboard {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-responsive-dashboard .table {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="right_col" data-layout-fragment="content" role="main">
+
+    <div class="container-fluid">
+
+        <!-- Row 1 -->
+        <div class="row equal-height">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="chart-card">
+                    <div class="chart-title">Step Wise Vehicle Count</div>
+                    <div class="chart-container" id="chart1"></div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="chart-card">
+                    <div class="chart-title">Total Vehicle Count</div>
+                    <div class="chart-container" id="chart2"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2 -->
+        <div class="row equal-height">
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="chart-card">
+                    <div class="chart-title">Vehicle Wise Total Time</div>
+                    <div class="chart-container table-container" id="chart3">
+                        <div class="table-responsive-dashboard">
+                            <table class="table table-bordered table-hover table-striped" style="margin-bottom:0;">
+                                <thead>
+                                <tr>
+                                    <th>Vehicle Number</th>
+                                    <th>Description</th>
+                                    <th>Total Time</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="vh : ${stepTransTotalTime}" th:if="${!#lists.isEmpty(stepTransTotalTime)}">
+                                    <td th:text="${vh.vehicleNumber}"></td>
+                                    <td th:text="${vh.description}"></td>
+                                    <td th:text="${vh.totalTime}"></td>
+                                    <td>
+                                        <div class="btn-group"
+                                             onclick="showStepWiseTimePieChart(this)"
+                                             role="group"
+                                             th:data-step-Trans-Id="${vh.stepTransId}">
+                                            <a class="btn btn-success btn-sm">
+                                                <span class="glyphicon glyphicon-edit"></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr th:if="${#lists.isEmpty(stepTransTotalTime)}">
+                                    <td class="text-center" colspan="4">No records found.</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="chart-card">
+                    <div class="chart-title">Chart 4 Title</div>
+                    <div class="chart-container" id="chart4"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
