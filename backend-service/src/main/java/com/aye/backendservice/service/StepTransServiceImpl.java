@@ -34,6 +34,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.aye.backendservice.utils.RedisKey.STEP_TRANS_LINE_LOCK_KEY;
+
 @Slf4j
 @Service
 public class StepTransServiceImpl implements StepTransService {
@@ -56,6 +58,8 @@ public class StepTransServiceImpl implements StepTransService {
     private StepTransDetailsCreationService stepTransDetailsCreationService;
     @Autowired
     private List<StepTransLineEventStrategy> strategies;
+    @Autowired
+    private RedisIdLockService redisIdLockService;
 
     @Transactional
     @Override
@@ -158,14 +162,21 @@ public class StepTransServiceImpl implements StepTransService {
         StepTransLines objResponse = new StepTransLines();
         StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
                 () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
-        objResponse = strategies.stream()
-                .filter(strategy -> strategy.supports(reqStepTransLines))
-                .findFirst()
-                .map(strategy -> strategy.doEvent(reqStepTransLines, dbstepTransLines, stepTrans, muser))
-                .orElseThrow(() -> new ExecutionControl.NotImplementedException("Not implemented for Status: " + reqStepTransLines.getStepStatus()));
+        boolean isNotLocked = redisIdLockService
+                .tryLock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(),
+                        dbstepTransLines.getStepTransLinesId(), 21600); //Locked for 6 Hours
 
-        return objResponse;
+        if (isNotLocked) {
+            objResponse = strategies.stream()
+                    .filter(strategy -> strategy.supports(reqStepTransLines))
+                    .findFirst()
+                    .map(strategy -> strategy.doEvent(reqStepTransLines, dbstepTransLines, stepTrans, muser))
+                    .orElseThrow(() -> new ExecutionControl.NotImplementedException("Not implemented for Status: " + reqStepTransLines.getStepStatus()));
 
+            return objResponse;
+        } else {
+            throw new RuntimeException("Step Trans Lines event request for this id " + reqStepTransLines.getStepTransLinesId() + " is locked");
+        }
     }
 //    @Override
 //    @Transactional

@@ -34,6 +34,9 @@ public class StepTransLineRejectEvent implements StepTransLineEventStrategy {
     @Override
     @Transactional
     public StepTransLines doEvent(StepTransLines reqStepTransLines, StepTransLines dbstepTransLines, StepTrans stepTrans, Muser user) {
+        if (dbstepTransLines.getStepStatus().equals(StepStatus.R)) {
+            throw new RuntimeException("This Step Trans is already Rejected");
+        }
         dbstepTransLines.setStepStatus(StepStatus.R);
         dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
         rejectTransLine(dbstepTransLines, Long.valueOf(user.getId()), null);

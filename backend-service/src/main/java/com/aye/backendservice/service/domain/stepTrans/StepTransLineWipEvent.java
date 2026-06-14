@@ -30,8 +30,11 @@ public class StepTransLineWipEvent implements StepTransLineEventStrategy {
     @Override
     public StepTransLines doEvent(StepTransLines reqStepTransLines, StepTransLines dbstepTransLines, StepTrans stepTrans, Muser user) {
         StepTransLines objResponse;
+        if (dbstepTransLines.getStepStatus().equals(StepStatus.W)) {
+            throw new RuntimeException("This Step Trans is already in progress");
+        }
         if (!(dbstepTransLines.getStage() == 1)) {
-            throw new IllegalArgumentException("This step trans is not eligible for WIP");
+            throw new RuntimeException("This step trans is not eligible for WIP");
         } else {
             //Creating a new Step Trans and changing status
             if (!dbstepTransLines.getStepStatus().equals(StepStatus.H)) {
@@ -40,7 +43,9 @@ public class StepTransLineWipEvent implements StepTransLineEventStrategy {
             dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
             //Fetching the setup
 
-            List<StepSetupDetails> stepSetup = stepTrans.getStepSetup().getStepSetupDetails();
+            List<StepSetupDetails> stepSetup = stepTrans.getStepSetup().getStepSetupDetails()
+                    .stream()
+                    .filter(stepSetupDetails -> stepSetupDetails.getIsActive() == 1).toList();
             var existingTrans = stepTrans.getStepTransLinesList();
 
             if (!(stepSetup.size() == existingTrans.size())) {
