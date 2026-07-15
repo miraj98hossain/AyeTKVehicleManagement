@@ -33,7 +33,7 @@ public class OrgHierarchyBServiceImpl implements OrgHierarchyBService {
         OrgHierarchyResponse orgHierarchyResponse = orgHierarchyMapper.toResponseDto(orgHierarchy);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
-                ApiRequestResponseDetail.ObjectType.O, "org",
+                ApiRequestResponseDetail.ObjectType.O, "orgHierarchy",
                 OrgHierarchyResponse.class.getName(), orgHierarchyResponse
         );
     }
@@ -64,26 +64,27 @@ public class OrgHierarchyBServiceImpl implements OrgHierarchyBService {
     @Override
     public ApiRequestResponse saveOrg(OrgHierarchyRequest orgHierarchyRequest, String userName) {
         Muser dBUser = userService.findByUserName(userName);
-        OrgHierarchy pOrgHierarchy = new OrgHierarchy();
-        OrgHierarchy orgHierarchy = new OrgHierarchy();
+        OrgHierarchy orgHierarchy;
+
         if (orgHierarchyRequest.getId() == null) {
-            pOrgHierarchy = orgHierarchyService.findById(orgHierarchyRequest.getParentId());
             orgHierarchy = orgHierarchyMapper.dtoToEntity(orgHierarchyRequest);
             CommonColumn commonColumn = new CommonColumn();
-
             commonColumn.setCreatedBy(dBUser);
             orgHierarchy.setColumn(commonColumn);
-
         } else {
             orgHierarchy = orgHierarchyService.findById(orgHierarchyRequest.getId());
-            pOrgHierarchy = orgHierarchyService.findById(orgHierarchyRequest.getParentId());
             orgHierarchyMapper.dtoToEntity(orgHierarchyRequest, orgHierarchy);
             CommonColumn commonColumn = orgHierarchy.getColumn();
             commonColumn.setLastUpdateBy(dBUser.getId());
             orgHierarchy.setColumn(commonColumn);
         }
+        if (orgHierarchyRequest.getParentId() != null) {
+            OrgHierarchy pOrgHierarchy = orgHierarchyService.findById(orgHierarchyRequest.getParentId());
+            orgHierarchy.setOrgHierarchy(pOrgHierarchy);
+        } else {
+            orgHierarchy.setOrgHierarchy(null);
+        }
 
-        orgHierarchy.setOrgHierarchy(pOrgHierarchy);
         orgHierarchyService.saveOrg(orgHierarchy);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",

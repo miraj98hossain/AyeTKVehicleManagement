@@ -19,6 +19,7 @@ public class OrgHierarchyResponse {
     private String code;
     private String address;
     private Long parentId;
+    private String parentOrgCode;
     private Integer calendarHeader;
     private Integer invCstGrp;
     private Boolean undoLog;
