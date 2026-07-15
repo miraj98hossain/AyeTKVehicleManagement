@@ -16,7 +16,7 @@ public interface InvInformationBService {
 
     ApiRequestResponse findByOuNotItemOrg(Long orgHierarchyId);
 
-    ApiRequestResponse save(InventoryInformationRequest inventoryInformationRequest);
+    ApiRequestResponse save(InventoryInformationRequest inventoryInformationRequest, String userName);
 
     ApiRequestResponse delete(Long invId);
 }

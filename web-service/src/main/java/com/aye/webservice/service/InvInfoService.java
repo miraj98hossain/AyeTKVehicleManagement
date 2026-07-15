@@ -42,8 +42,8 @@ public class InvInfoService {
 
 
     public ApiRequestResponse save(
-            InventoryInformationRequest inventoryInformationRequest) {
-        return invInfoFeignClient.save(inventoryInformationRequest).getBody();
+            InventoryInformationRequest inventoryInformationRequest, String userName) {
+        return invInfoFeignClient.save(inventoryInformationRequest, userName).getBody();
     }
 
 

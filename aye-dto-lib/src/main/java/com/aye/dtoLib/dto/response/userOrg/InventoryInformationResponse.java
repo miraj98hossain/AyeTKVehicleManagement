@@ -20,5 +20,7 @@ public class InventoryInformationResponse {
     private String orgHierarchyName;
     private String orgHierarchyCode;
     private Integer itemOrg;
+    private Integer itemOrgCode;
+    private Integer itemOrgName;
     private Boolean isItemMaster;
 }

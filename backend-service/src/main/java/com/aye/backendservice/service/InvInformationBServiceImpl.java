@@ -2,13 +2,14 @@ package com.aye.backendservice.service;
 
 
 import com.aye.RestfulServer.service.InvInformationsService;
-
+import com.aye.RestfulServer.service.MuserService;
 import com.aye.dtoLib.dto.request.InventoryInformationRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-
 import com.aye.dtoLib.dto.response.userOrg.InventoryInformationResponse;
+import com.aye.entitylib.entity.CommonColumn;
 import com.aye.entitylib.entity.InventoryInformations;
+import com.aye.entitylib.entity.user.Muser;
 import com.aye.mapper.userOrg.InventoryInformationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,11 @@ import java.util.List;
 @Service
 public class InvInformationBServiceImpl implements InvInformationBService {
     @Autowired
-    InvInformationsService invService;
+    private InvInformationsService invService;
     @Autowired
-    InventoryInformationMapper inventoryMapper;
+    private InventoryInformationMapper inventoryMapper;
+    @Autowired
+    private MuserService muserService;
 
     @Override
     public ApiRequestResponse findAll() {
@@ -88,10 +91,25 @@ public class InvInformationBServiceImpl implements InvInformationBService {
     }
 
     @Override
-    public ApiRequestResponse save(InventoryInformationRequest inventoryInformationRequest) {
-        InventoryInformations inventoryInformations = this.inventoryMapper.dtoToEntity(inventoryInformationRequest);
+    public ApiRequestResponse save(InventoryInformationRequest inventoryInformationRequest, String userName) {
+        Muser muser = muserService.findByUserName(userName);
+        InventoryInformations inventoryInformations;
+        if (inventoryInformationRequest.getId() == null) {
+            inventoryInformations = this.inventoryMapper.dtoToEntity(inventoryInformationRequest);
+            CommonColumn commonColumn = new CommonColumn();
+            commonColumn.setCreatedBy(muser);
+            inventoryInformations.setColumn(commonColumn);
+
+        } else {
+            inventoryInformations = this.invService.findOne(Long.valueOf(inventoryInformationRequest.getId()));
+            this.inventoryMapper.dtoToEntity(inventoryInformationRequest, inventoryInformations);
+            CommonColumn commonColumn = inventoryInformations.getColumn();
+            commonColumn.setLastUpdateBy(muser.getId());
+            inventoryInformations.setColumn(commonColumn);
+        }
+        invService.Save(inventoryInformations);
         return ApiRequestResponseMaker.make(
-                HttpStatus.OK.name(), null,
+                HttpStatus.OK.name(), "Success",
                 null, null,
                 null, null
         );

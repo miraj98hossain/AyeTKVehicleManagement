@@ -3,7 +3,6 @@ package com.aye.backendservice.controller;
 import com.aye.backendservice.service.OrgHierarchyBService;
 import com.aye.dtoLib.dto.request.OrgHierarchyRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +23,9 @@ public class OrgHierarchyController {
         return ResponseEntity.ok(orgHierarchyService.findOrgPrntById(orgId));
     }
 
-    @PostMapping("/saveOrg")
-    public ResponseEntity<ApiRequestResponse> saveOrg(@Valid @RequestBody OrgHierarchyRequest orgHierarchyResponse) {
-        return ResponseEntity.ok(orgHierarchyService.saveOrg(orgHierarchyResponse));
+    @PostMapping("/saveOrg/{userName}")
+    public ResponseEntity<ApiRequestResponse> saveOrg(@RequestBody OrgHierarchyRequest orgHierarchyResponse, @PathVariable String userName) {
+        return ResponseEntity.ok(orgHierarchyService.saveOrg(orgHierarchyResponse, userName));
     }
 
     @GetMapping("/getAllOrgHierachy")
@@ -37,5 +36,10 @@ public class OrgHierarchyController {
     @GetMapping("/findByType")
     public ResponseEntity<ApiRequestResponse> findByType(@RequestParam String orgType) {
         return ResponseEntity.ok().body(this.orgHierarchyService.findByType(orgType));
+    }
+
+    @GetMapping("/findAllByParentOrgId")
+    public ResponseEntity<ApiRequestResponse> findAllByParentOrgId(@RequestParam Long parentOrgId) {
+        return ResponseEntity.ok().body(this.orgHierarchyService.findAllByParentOrgId(parentOrgId));
     }
 }

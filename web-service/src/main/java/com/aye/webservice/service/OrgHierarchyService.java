@@ -21,8 +21,8 @@ public class OrgHierarchyService {
         return this.controller.findOrgPrntById(orgId).getBody();
     }
 
-    public ApiRequestResponse saveOrg(OrgHierarchyRequest orgHierarchyResponse) {
-        return this.controller.saveOrg(orgHierarchyResponse).getBody();
+    public ApiRequestResponse saveOrg(OrgHierarchyRequest orgHierarchyResponse, String userName) {
+        return this.controller.saveOrg(orgHierarchyResponse, userName).getBody();
     }
 
     public ApiRequestResponse getAllOrgHierachy() {
@@ -31,5 +31,9 @@ public class OrgHierarchyService {
 
     public ApiRequestResponse findByType(String orgType) {
         return this.controller.findByType(orgType).getBody();
+    }
+
+    public ApiRequestResponse findAllByParentOrgId(Long parentOrgId) {
+        return this.controller.findAllByParentOrgId(parentOrgId).getBody();
     }
 }

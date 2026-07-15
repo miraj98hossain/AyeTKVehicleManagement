@@ -1,15 +1,15 @@
 package com.aye.backendservice.service;
 
 
+import com.aye.RestfulServer.service.MuserService;
 import com.aye.RestfulServer.service.OrgHierarchyService;
-
 import com.aye.dtoLib.dto.request.OrgHierarchyRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-
 import com.aye.dtoLib.dto.response.userOrg.OrgHierarchyResponse;
+import com.aye.entitylib.entity.CommonColumn;
 import com.aye.entitylib.entity.OrgHierarchy;
-
+import com.aye.entitylib.entity.user.Muser;
 import com.aye.enums.OrgType;
 import com.aye.mapper.userOrg.OrgHierarchyMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +21,11 @@ import java.util.List;
 @Service
 public class OrgHierarchyBServiceImpl implements OrgHierarchyBService {
     @Autowired
-    OrgHierarchyService orgHierarchyService;
+    private OrgHierarchyService orgHierarchyService;
     @Autowired
     private OrgHierarchyMapper orgHierarchyMapper;
+    @Autowired
+    private MuserService userService;
 
     @Override
     public ApiRequestResponse findById(Long orgId) {
@@ -49,9 +51,38 @@ public class OrgHierarchyBServiceImpl implements OrgHierarchyBService {
     }
 
     @Override
-    public ApiRequestResponse saveOrg(OrgHierarchyRequest orgHierarchyRequest) {
-        OrgHierarchy pOrgHierarchy = orgHierarchyService.findById(orgHierarchyRequest.getPOrgHierarchy());
-        OrgHierarchy orgHierarchy = orgHierarchyMapper.dtoToEntity(orgHierarchyRequest);
+    public ApiRequestResponse findAllByParentOrgId(Long parentOrgId) {
+        OrgHierarchy orgHierarchy = orgHierarchyService.findById(parentOrgId);
+        List<OrgHierarchy> orgHierarchyList = orgHierarchyService.findByHierarchy(orgHierarchy);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "parentOrg",
+                OrgHierarchyResponse.class.getName(), orgHierarchyMapper.entityListToResponseDtoList(orgHierarchyList)
+        );
+    }
+
+    @Override
+    public ApiRequestResponse saveOrg(OrgHierarchyRequest orgHierarchyRequest, String userName) {
+        Muser dBUser = userService.findByUserName(userName);
+        OrgHierarchy pOrgHierarchy = new OrgHierarchy();
+        OrgHierarchy orgHierarchy = new OrgHierarchy();
+        if (orgHierarchyRequest.getId() == null) {
+            pOrgHierarchy = orgHierarchyService.findById(orgHierarchyRequest.getParentId());
+            orgHierarchy = orgHierarchyMapper.dtoToEntity(orgHierarchyRequest);
+            CommonColumn commonColumn = new CommonColumn();
+
+            commonColumn.setCreatedBy(dBUser);
+            orgHierarchy.setColumn(commonColumn);
+
+        } else {
+            orgHierarchy = orgHierarchyService.findById(orgHierarchyRequest.getId());
+            pOrgHierarchy = orgHierarchyService.findById(orgHierarchyRequest.getParentId());
+            orgHierarchyMapper.dtoToEntity(orgHierarchyRequest, orgHierarchy);
+            CommonColumn commonColumn = orgHierarchy.getColumn();
+            commonColumn.setLastUpdateBy(dBUser.getId());
+            orgHierarchy.setColumn(commonColumn);
+        }
+
         orgHierarchy.setOrgHierarchy(pOrgHierarchy);
         orgHierarchyService.saveOrg(orgHierarchy);
         return ApiRequestResponseMaker.make(

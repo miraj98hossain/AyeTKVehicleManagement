@@ -3,7 +3,6 @@ package com.aye.backendservice.controller;
 import com.aye.backendservice.service.InvInformationBService;
 import com.aye.dtoLib.dto.request.InventoryInformationRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +45,8 @@ public class InventoryInformationController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<ApiRequestResponse> save(@Valid @RequestBody InventoryInformationRequest inventoryInformationRequest) {
-        return ResponseEntity.ok().body(this.invInformationBService.save(inventoryInformationRequest));
+    public ResponseEntity<ApiRequestResponse> save(@RequestBody InventoryInformationRequest inventoryInformationRequest, @RequestParam String userName) {
+        return ResponseEntity.ok().body(this.invInformationBService.save(inventoryInformationRequest, userName));
     }
 
     @DeleteMapping

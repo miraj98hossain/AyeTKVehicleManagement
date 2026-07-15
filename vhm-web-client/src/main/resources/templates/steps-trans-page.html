@@ -846,7 +846,7 @@
 
                                 <tbody>
 
-                                <tr th:each="line, stat : ${stepTransResponseList.getContent()}">
+                                <tr th:each="line, stat : ${stepTransResponseList != null ? stepTransResponseList.getContent() : {}}">
                                     <td th:text="${line.stepTransNo}"></td>
                                     <td th:text="${#dates.format(line.createdAt, 'dd-MMM-yyyy')}"></td>
                                     <td th:text="${line.vehicleNumber}"></td>

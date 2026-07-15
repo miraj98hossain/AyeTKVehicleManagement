@@ -3,7 +3,6 @@ package com.aye.webservice.feignclient;
 
 import com.aye.dtoLib.dto.request.InventoryInformationRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +32,8 @@ public interface InvInfoFeignClient {
     ResponseEntity<ApiRequestResponse> findByOuNotItemOrg(@PathVariable("id") Long orgHierarchyId);
 
     @PostMapping("/save")
-    ResponseEntity<ApiRequestResponse> save(@Valid @RequestBody
-                                            InventoryInformationRequest inventoryInformationRequest);
+    ResponseEntity<ApiRequestResponse> save(@RequestBody InventoryInformationRequest inventoryInformationRequest,
+                                            @RequestParam String userName);
 
     @DeleteMapping
     ResponseEntity<ApiRequestResponse> delete(Long invId);

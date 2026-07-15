@@ -1,8 +1,8 @@
 package com.aye.dtoLib.dto.response;
 
 import com.aye.enums.DefaultModal;
+import com.aye.enums.DefaultParameterValueType;
 import com.aye.enums.ParameterFieldType;
-import com.aye.enums.defaultParameterValueType;
 import lombok.Data;
 
 
@@ -14,7 +14,7 @@ public class ExecutableParameterResponse {
 
     private String parameterToken;
     private ParameterFieldType parameterFieldType;
-    private defaultParameterValueType defaultValueType;
+    private DefaultParameterValueType defaultValueType;
     private String dataSetName;
     private String displayField;
     private String isReadOnly;
