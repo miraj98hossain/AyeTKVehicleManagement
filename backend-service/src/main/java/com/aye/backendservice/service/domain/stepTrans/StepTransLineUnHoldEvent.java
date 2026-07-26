@@ -33,8 +33,8 @@ public class StepTransLineUnHoldEvent implements StepTransLineEventStrategy {
         dbstepTransLines.setStepStatus(StepStatus.L);
         dbstepTransLines.setHoldBy(null);
         StepTransLines stepTransLines = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(user.getId()));
-        this.redisIdLockService.unlock(STEP_TRANS_LINE_LOCK_KEY, dbstepTransLines.getStepTransLinesId(), StepStatus.H.getDisplayName());
-        this.redisIdLockService.unlock(STEP_TRANS_LINE_LOCK_KEY, dbstepTransLines.getStepTransLinesId(), StepStatus.L.getDisplayName());
+        this.redisIdLockService.unlock(STEP_TRANS_LINE_LOCK_KEY, StepStatus.H.getDisplayName(), dbstepTransLines.getStepTransLinesId());
+        this.redisIdLockService.unlock(STEP_TRANS_LINE_LOCK_KEY, StepStatus.L.getDisplayName(), dbstepTransLines.getStepTransLinesId());
         return stepTransLines;
     }
 }

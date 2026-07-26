@@ -15,4 +15,5 @@ public class OrderedItemVDto {
     private String orderedItem;
     private Long orgId;
     private Long invOrgId;
+    private String uom;
 }

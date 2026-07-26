@@ -25,7 +25,7 @@ public class RedisIdLockService {
         return Boolean.TRUE.equals(result);
     }
 
-    public void unlock(String transactionName, Long id, String eventName) {
+    public void unlock(String transactionName, String eventName, Long id) {
         redisTemplate.delete(key(transactionName, id, eventName));
     }
 }

@@ -52,9 +52,10 @@ public class StepTransDetailsViewService {
                 ApiRequestResponseDetail.ObjectType.A,
                 "data",
                 StepTransDetailsResponse.class.getName(),
-                this.stepTransDetailsMapper.entityListToResponseList(list)
+                this.stepTransDetailsMapper.toResponseDto(list)
 
         );
+
     }
 
     public ApiRequestResponse findAllByStepTransId(Long stepTransId) {
@@ -65,7 +66,7 @@ public class StepTransDetailsViewService {
                 ApiRequestResponseDetail.ObjectType.A,
                 "stepTransDtlList",
                 StepTransDetailsResponse.class.getName(),
-                stepTransDetailsMapper.entityListToResponseList(stepTransDetails)
+                stepTransDetailsMapper.toResponseDto(stepTransDetails)
         );
     }
 
@@ -140,7 +141,7 @@ public class StepTransDetailsViewService {
     }
 
     public ApiRequestResponse findAllLinesByStepTransIdAndUserItemAccess(Long stepTransId, String userName) {
-        List<StepTransDetailsResponse> detailsList = this.stepTransDetailsMapper.entityListToResponseList(this.stepTransDetailsService.findAllLinesByStepTransIdAndUserItemAccess(stepTransId));
+        List<StepTransDetailsResponse> detailsList = this.stepTransDetailsMapper.toResponseDto(this.stepTransDetailsService.findAllLinesByStepTransIdAndUserItemAccess(stepTransId));
 
         List<String> itemAccessList = userCodeAccessService.findAllUserItemAccess(userName).stream()
                 .map(UserCodeAccess::getItemCatComb).toList();

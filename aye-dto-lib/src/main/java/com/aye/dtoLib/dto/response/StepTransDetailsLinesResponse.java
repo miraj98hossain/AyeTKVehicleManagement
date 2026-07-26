@@ -23,6 +23,7 @@ public class StepTransDetailsLinesResponse {
     private String stepStatus;
     private Integer stage;
     private BigDecimal orderedQuantity;
+    private String uom;
     private Long createdBy;
     private Date createdAt;
     private Long updatedBy;

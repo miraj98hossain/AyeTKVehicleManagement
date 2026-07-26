@@ -21,4 +21,5 @@ public class StepTransDetailsLinesRequest {
     private BigDecimal orderedQuantity;
     private String stepStatus;
     private Integer stage;
+    private String uom;
 }

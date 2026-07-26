@@ -31,6 +31,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -162,21 +163,26 @@ public class StepTransServiceImpl implements StepTransService {
         StepTransLines objResponse = new StepTransLines();
         StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
                 () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
-        boolean isNotLocked = redisIdLockService
+        boolean isNotLocked = this.redisIdLockService
                 .tryLock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(),
-                        dbstepTransLines.getStepTransLinesId(), 21600); //Locked for 6 Hours
-
+                        dbstepTransLines.getStepTransLinesId(), Duration.ofHours(8).getSeconds()); //Locked for 8 Hours
         if (isNotLocked) {
-            objResponse = strategies.stream()
-                    .filter(strategy -> strategy.supports(reqStepTransLines))
-                    .findFirst()
-                    .map(strategy -> strategy.doEvent(reqStepTransLines, dbstepTransLines, stepTrans, muser))
-                    .orElseThrow(() -> new ExecutionControl.NotImplementedException("Not implemented for Status: " + reqStepTransLines.getStepStatus()));
+            try {
+                objResponse = strategies.stream()
+                        .filter(strategy -> strategy.supports(reqStepTransLines))
+                        .findFirst()
+                        .map(strategy -> strategy.doEvent(reqStepTransLines, dbstepTransLines, stepTrans, muser))
+                        .orElseThrow(() -> new ExecutionControl.NotImplementedException("Not implemented for Status: " + reqStepTransLines.getStepStatus()));
 
-            return objResponse;
+                return objResponse;
+            } catch (Exception e) {
+                this.redisIdLockService
+                        .unlock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(), dbstepTransLines.getStepTransLinesId());
+            }
         } else {
             throw new RuntimeException("Step Trans Lines event request for this id " + reqStepTransLines.getStepTransLinesId() + " is locked");
         }
+        return objResponse;
     }
 //    @Override
 //    @Transactional

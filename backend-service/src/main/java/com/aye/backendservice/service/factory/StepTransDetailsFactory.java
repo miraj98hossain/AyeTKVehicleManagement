@@ -7,11 +7,9 @@ package com.aye.backendservice.service.factory;
  */
 
 
-
 import com.aye.backendservice.service.NoGenService;
 import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
-
 import com.aye.entitylib.entity.schedule.BeforeTripV;
 import com.aye.entitylib.entity.schedule.BeforeTripWDsV;
 import com.aye.entitylib.entity.schedule.XxtkgTripDelvDtlV;
@@ -59,6 +57,7 @@ public class StepTransDetailsFactory {
         ln.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
         ln.setInvItemId(src.getInventoryItemId());
         ln.setOrderedItem(src.getOrderedItem());
+        ln.setUom(src.getOrderQuantityUom());
         ln.setOrderedQuantity(src.getOrderedQuantity());
         ln.setCreatedBy(Long.valueOf(user.getId()));
         dtl.getStepTransDetailsLines().add(ln);
@@ -74,10 +73,22 @@ public class StepTransDetailsFactory {
 
     public StepTransDetailsLines fromStepDetailsLineReq(StepTransDetailsLinesRequest request, Muser user) {
         var obj = stepTransDetailsLinesMapper.dtoToEntity(request);
-        obj.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
-        obj.setCreatedBy(Long.valueOf(user.getId()));
+        if (request.getStepTransDtlLnId() == null) {
+            obj.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
+            obj.setCreatedBy(Long.valueOf(user.getId()));
+        } else {
+            obj.setUpdatedBy(Long.valueOf(user.getId()));
+        }
+
         return obj;
     }
+
+    public StepTransDetailsLines fromStepDetailsLineReq(StepTransDetailsLinesRequest request, StepTransDetailsLines dbObj, Muser user) {
+        stepTransDetailsLinesMapper.dtoToEntity(request, dbObj);
+        dbObj.setUpdatedBy(Long.valueOf(user.getId()));
+        return dbObj;
+    }
+
 
     public StepTransDetailsLines lineFromBeforeTripV(BeforeTripV src, StepTransDetails parent, Muser user) {
         StepTransDetailsLines ln = new StepTransDetailsLines();
@@ -85,6 +96,7 @@ public class StepTransDetailsFactory {
         ln.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
         ln.setInvItemId(src.getInventoryItemId());
         ln.setOrderedItem(src.getOrderedItem());
+        ln.setUom(src.getOrderQuantityUom());
         ln.setOrderedQuantity(src.getOrderedQuantity());
         ln.setCreatedBy(Long.valueOf(user.getId()));
         return ln;
@@ -108,6 +120,7 @@ public class StepTransDetailsFactory {
         ln.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
         ln.setInvItemId(src.getInventoryItemId());
         ln.setOrderedItem(src.getOrderedItem());
+        ln.setUom(src.getOrderQuantityUom());
         ln.setOrderedQuantity(src.getOrderedQuantity());
         ln.setCreatedBy(Long.valueOf(user.getId()));
         return ln;

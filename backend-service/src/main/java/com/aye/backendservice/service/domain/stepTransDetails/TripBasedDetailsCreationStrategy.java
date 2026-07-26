@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Set;
 
 @Service
-@Transactional()
 public class TripBasedDetailsCreationStrategy implements StepTransDetailsCreationStrategy {
     @Autowired
     private XxtkgTripDelvDtlVService xxtkgTripDelvDtlVService;
@@ -39,9 +38,11 @@ public class TripBasedDetailsCreationStrategy implements StepTransDetailsCreatio
         return req.getChallanNumber() != null && !req.getChallanNumber().isEmpty();
     }
 
+    @Transactional
     @Override
     public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {
         List<StepTransDetails> existingDetails = repository.findAllByStepTrans_StepTransId(req.getStepTransId());
+
         StepTransDetails stepTransDetails = factory.fromStepDetailsReq(req, user);
         List<XxtkgTripDelvDtlV> trips = xxtkgTripDelvDtlVService.findByChallanNumber(req.getChallanNumber());
         Set<Long> addedOrderNumbers = new HashSet<>();

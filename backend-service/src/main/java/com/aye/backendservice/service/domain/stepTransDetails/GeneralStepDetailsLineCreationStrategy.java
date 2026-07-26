@@ -6,6 +6,7 @@ import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.entitylib.entity.user.Muser;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +30,8 @@ public class GeneralStepDetailsLineCreationStrategy implements StepTransDetailsL
     @Override
     public List<StepTransDetailsLines> create(StepTransDetailsLinesRequest req, Muser user) {
         List<StepTransDetailsLines> list = new ArrayList<>();
-        var obj = repository.save(factory.fromStepDetailsLineReq(req, user));
+        var dbObj = repository.findById(req.getStepTransDtlLnId()).orElseThrow(() -> new EntityNotFoundException("StepTransDetailsLines not found with id: " + req.getStepTransDtlLnId()));
+        var obj = repository.save(factory.fromStepDetailsLineReq(req, dbObj, user));
         list.add(obj);
         return list;
     }

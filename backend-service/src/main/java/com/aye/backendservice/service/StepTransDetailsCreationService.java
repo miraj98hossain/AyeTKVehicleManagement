@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional
+
 @Slf4j
 public class StepTransDetailsCreationService {
     @Autowired
@@ -33,9 +33,8 @@ public class StepTransDetailsCreationService {
     private List<StepTransDetailsLineCreationStrategy> stepTransDetailsLineCreationStrategy;
     @Autowired
     private MuserService muserService;
-    @Autowired
-    private StepTransService stepTransService;
 
+    @Transactional
     public List<StepTransDetails> save(StepTransDetailsRequest req, String username) {
         Muser user = muserService.findByUserName(username);
         List<StepTransDetails> result = new ArrayList<>();
