@@ -200,12 +200,16 @@
                             <button class="btn btn-primary"
                                     th:text="${stepTransReq.stepTransId!= null ? 'Update' : 'Create'}"
                                     type="submit"></button>
+                            <a class="btn btn-default"
+                               th:href="@{'/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'(pageId=${pageId},tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId})}"
+                               th:if="${stepTransReq.stepTransId!= null}">Cancel</a>
 
                             <!--                            <a class="btn cancel-btn"-->
                             <!--                               th:href="@{/step-trans/{pageId}/{tempDtlId}-->
                             <!--                               (pageId=${pageId},tempDtlId=${tempDtlId},page=${page},size=${size})}">Clear</a>-->
                             <a class="btn btn-default"
                                th:href="@{'/main'}">Back</a>
+
                             <a class="btn btn-dark"
                                th:href="@{'/step-trans/history/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'(pageId=${pageId},tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId})}">History</a>
                         </div>
@@ -415,32 +419,48 @@
 
                                         <!-- Ordered Item -->
                                         <div class="form-group col-sm-12">
-                                            <label class="col-sm-1 control-label">Item:</label>
-                                            <div class="col-sm-4">
-                                                <input class="form-control"
-                                                       id="orderedItem"
-                                                       placeholder="Enter Ordered Item"
+                                            <div class="row">
 
-                                                       type="text">
-                                                <input class="form-control"
-                                                       id="invItemId"
-                                                       placeholder="Enter Inventory Item ID"
-                                                       type="hidden">
-                                            </div>
-                                            <label class="col-sm-1 control-label">Quantity:</label>
+                                                <!-- Item -->
+                                                <div class="col-xs-12 col-sm-6 col-md-5">
+                                                    <label class="control-label" for="orderedItem">Item:</label>
+                                                    <input class="form-control"
+                                                           id="orderedItem"
+                                                           placeholder="Enter Ordered Item"
+                                                           type="text">
+                                                    <input id="stepTransDtlLnId" type="hidden">
+                                                    <input id="invItemId" type="hidden">
+                                                </div>
 
-                                            <div class="col-sm-4">
-                                                <input class="form-control"
-                                                       id="modalOrdQty"
-                                                       inputmode="decimal"
-                                                       oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
-                                                       placeholder="Enter Quantity"
-                                                       type="text">
-                                            </div>
+                                                <!-- Quantity -->
+                                                <div class="col-xs-6 col-sm-3 col-md-3">
+                                                    <label class="control-label" for="modalOrdQty">Quantity:</label>
+                                                    <input class="form-control"
+                                                           id="modalOrdQty"
+                                                           inputmode="decimal"
+                                                           oninput="this.value = this.value.replace(/[^0-9.]/g, '');"
+                                                           placeholder="Enter Quantity"
+                                                           type="text">
+                                                </div>
 
-                                            <!-- Buttons -->
-                                            <div class="form-group col-sm-2 Padding10px">
-                                                <button class="btn btn-primary" onclick="createLine()">Add</button>
+                                                <!-- UOM -->
+                                                <div class="col-xs-6 col-sm-2 col-md-2">
+                                                    <label class="control-label" for="orderedItemUom">UOM:</label>
+                                                    <input class="form-control"
+                                                           id="orderedItemUom"
+                                                           placeholder="UOM"
+                                                           readonly
+                                                           type="text">
+                                                </div>
+
+                                                <!-- Add button -->
+                                                <div class="col-xs-12 col-sm-1 col-md-2">
+                                                    <label class="control-label hidden-xs">&nbsp;</label>
+                                                    <button class="btn btn-primary btn-block" onclick="createLine()">
+                                                        Add
+                                                    </button>
+                                                </div>
+
                                             </div>
                                         </div>
                                         <div class="form-group col-sm-12">
@@ -451,6 +471,7 @@
                                                     <th>Line No</th>
                                                     <th>Ordered Item</th>
                                                     <th>Ordered Quantity</th>
+                                                    <th>Ordered UOM</th>
                                                     <th>Actions</th>
                                                 </tr>
                                                 </thead>
@@ -906,7 +927,8 @@
                                         </a>
 
                                         <a class="btn btn-primary"
-                                           th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/        '+${line.stepTransId}+'/'+${orgId}+'/'+${invOrgId}}"><span
+                                           th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/        '+${line.stepTransId}+'/'+${orgId}+'/'+${invOrgId}}"
+                                           th:if="${line.stepStatus == 'WIP'}"><span
                                                 aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
                                         <!--                                    <a class="btn btn-success"-->
                                         <!--                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span-->
@@ -915,7 +937,10 @@
                                            th:data-step-Trans-Id="${line.stepTransId}"
                                            th:data-step-Trans-Ln-Id="${line.stepTransLinesId}"
                                            th:data-user-Name="${userName}"
-                                           th:onclick="${line.stepStatus == 'Hold' and line.holdBy==userName} ? 'openStepTransDetailsLineModal(this)' : 'openStepTransDetailsModal(this)'">
+                                           th:if="${line.stepStatus == 'Hold' or line.stepStatus == 'WIP' or line.stepStatus == 'Let Go'}"
+                                           th:onclick="${line.stepStatus == 'Hold' and line.holdBy==userName} ?
+                                            'openStepTransDetailsLineModal(this)' : 'openStepTransDetailsModal(this)'">
+
                                             <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span>
                                         </a>
                                     </td>
