@@ -111,8 +111,12 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     @Transactional
     @Override
     public void deleteLineById(Long stepTransDtlLnId) {
-        this.lineRepo.deleteById(stepTransDtlLnId);
-
+        StepTransDetailsLines line = lineRepo.findById(stepTransDtlLnId).orElseThrow(
+                () -> new EntityNotFoundException("Entity Not Found with id: " + stepTransDtlLnId)
+        );
+        StepTransDetails stepTransDetails = this.findById(line.getStepTransDetails().getStepTransDtlId());
+        stepTransDetails.getStepTransDetailsLines().remove(line);
+        this.detailsRepo.save(stepTransDetails);
     }
 
     @Transactional

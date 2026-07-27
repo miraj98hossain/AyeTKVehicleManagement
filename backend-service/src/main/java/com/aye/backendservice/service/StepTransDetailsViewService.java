@@ -128,7 +128,7 @@ public class StepTransDetailsViewService {
 
 
     public ApiRequestResponse deleteLineById(Long stepTransDtlLnId) {
-        this.stepTransDetailsService.deleteById(stepTransDtlLnId);
+        this.stepTransDetailsService.deleteLineById(stepTransDtlLnId);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
                 "Successfully Deleted",
