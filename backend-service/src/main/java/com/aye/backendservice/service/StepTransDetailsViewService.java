@@ -1,14 +1,11 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.service.UserCodeAccessService;
 import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
 import com.aye.dtoLib.dto.response.StepTransDetailsLinesResponse;
 import com.aye.dtoLib.dto.response.StepTransDetailsResponse;
-import com.aye.entitylib.entity.UserCodeAccess;
-import com.aye.entitylib.entity.order.MItemCatV;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
 import com.aye.mapper.StepTransDetailsLinesMapper;
@@ -29,8 +26,7 @@ public class StepTransDetailsViewService {
     private final StepTransDetailsMapper stepTransDetailsMapper;
     private final StepTransDetailsLinesMapper stepTrnsDtlLnMapper;
     private final StepTransDetailsCreationService creationService;
-    private final MItemCatVService mItemCatVService;
-    private final UserCodeAccessService userCodeAccessService;
+    private final CommonHelperService commonHelper;
 
     public ApiRequestResponse findById(Long stepTransDtlId) {
         StepTransDetails stepTransDetails = stepTransDetailsService.findById(stepTransDtlId);
@@ -142,13 +138,7 @@ public class StepTransDetailsViewService {
 
     public ApiRequestResponse findAllLinesByStepTransIdAndUserItemAccess(Long stepTransId, String userName) {
         List<StepTransDetailsResponse> detailsList = this.stepTransDetailsMapper.toResponseDto(this.stepTransDetailsService.findAllLinesByStepTransIdAndUserItemAccess(stepTransId));
-
-        List<String> itemAccessList = userCodeAccessService.findAllUserItemAccess(userName).stream()
-                .map(UserCodeAccess::getItemCatComb).toList();
-        List<Long> itemCatVList = mItemCatVService.findAllByItemCombinations(itemAccessList)
-                .stream()
-                .map(MItemCatV::getInventoryItemId)
-                .toList();
+        List<Long> itemCatVList = commonHelper.getUserAccessedItems(userName);
         List<StepTransDetailsLinesResponse> stepTransDetailsLines =
                 detailsList.stream()
                         .flatMap(item ->

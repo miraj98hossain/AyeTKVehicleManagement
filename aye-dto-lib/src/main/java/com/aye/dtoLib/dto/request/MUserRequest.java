@@ -24,8 +24,8 @@ public class MUserRequest {
     @Size(max = 50, message = "First name must not exceed 50 characters")
     private String name;
 
-    @NotBlank(message = "Last name is required")
-    @Size(max = 50, message = "Last name must not exceed 50 characters")
+    //    @NotBlank(message = "Last name is required")
+//    @Size(max = 50, message = "Last name must not exceed 50 characters")
     private String lastName;
 
     private boolean accountExpired;

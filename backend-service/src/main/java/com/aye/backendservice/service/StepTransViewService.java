@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -39,6 +40,7 @@ public class StepTransViewService {
     private final StepWiseTransCountVViewService stepWiseTransCountVService;
     private final StepSetupService stepSetupService;
     private final UserAccessTempltService userAccessTempltService;
+    private final CommonHelperService commonHelperService;
 
     public ApiRequestResponse saveStepTrans(StepTransRequest stepTransRequest, String userName) {
         StepTrans stepTrans = this.stepTransService.saveStepTrans(stepTransRequest, userName);
@@ -111,7 +113,8 @@ public class StepTransViewService {
         );
     }
 
-    public ApiRequestResponse findAllByTempDtlId(Integer tempDtlId, Long invOrgId, String searchWords, Pageable pageable) {
+    public ApiRequestResponse findAllByTempDtlId(Integer tempDtlId, String userName, Long invOrgId, String searchWords, Pageable pageable) {
+
         UserAccessTemltDtl tempDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
 
         List<Long> holdAbleStepDetails = tempDtl.getUserAccessInvOrgs()
@@ -126,20 +129,28 @@ public class StepTransViewService {
         List<Long> setupDetailIds = this.stepTransService.findAllByTempDtlId(tempDtlId, invOrgId, searchWords, pageable);
         var scaleSetupList = this.scaleSetupService.findAllScaleSetup();
         var stepWiseTransCountVList = this.stepWiseTransCountVService.getCountByDetailId(setupDetailIds);
-        var response = this.findAllBySetupDtls(setupDetailIds, holdAbleStepDetails, searchWords, pageable);
+        var response = this.findAllBySetupDtls(setupDetailIds, holdAbleStepDetails, searchWords, pageable, userName, tempDtl.getUserSpecefic());
         response.getApiRequestResponseDetails().addAll(stepWiseTransCountVList.getApiRequestResponseDetails());
         response.getApiRequestResponseDetails().addAll(scaleSetupList.getApiRequestResponseDetails());
         return response;
     }
 
-    protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, List<Long> holdAbleStepDetails, String searchWords, Pageable pageable) {
+    protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, List<Long> holdAbleStepDetails,
+                                                    String searchWords, Pageable pageable, String userName, Boolean isUserSpecific) {
+        List<Long> userItemAccess;
+        if (isUserSpecific) {
+            userItemAccess = commonHelperService.getUserAccessedItems(userName);
+        } else {
+            userItemAccess = new ArrayList<>();
+        }
+
         List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
 
         Set<Long> setupDIds = details.stream()
                 .map(StepSetupDetailsResponse::getStepSetupDetailsId)
                 .collect(Collectors.toSet());
 
-        Page<StepTransLinesResponse> stepTransPage = this.stepTransLinesService.getAllStepTransLine(setupDIds.stream().toList(), searchWords, pageable);
+        Page<StepTransLinesResponse> stepTransPage = this.stepTransLinesService.getAllStepTransLine(setupDIds.stream().toList(), userItemAccess, searchWords, pageable);
 
         stepTransPage.getContent().stream()
                 .filter(linesResponse -> holdAbleStepDetails

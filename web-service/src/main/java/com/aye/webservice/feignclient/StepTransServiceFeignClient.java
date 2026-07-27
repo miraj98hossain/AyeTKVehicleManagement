@@ -35,6 +35,7 @@ public interface StepTransServiceFeignClient {
     @GetMapping("/findAllByTempDtlId")
     ResponseEntity<ApiRequestResponse> findAllByTempDtlId(@RequestParam Integer tempDtlId,
                                                           @RequestParam Long invOrgId,
+                                                          @RequestParam String userName,
                                                           @RequestParam(required = false) String searchWords,
                                                           @PageableDefault(size = 10, page = 0) Pageable pageable);
 

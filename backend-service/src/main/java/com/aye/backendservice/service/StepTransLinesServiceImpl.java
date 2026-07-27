@@ -5,10 +5,7 @@ import com.aye.backendservice.repository.StepTransLinesRepository;
 import com.aye.backendservice.service.specification.StepTransSpecification;
 import com.aye.dtoLib.dto.request.StepTransFilter;
 import com.aye.dtoLib.dto.response.StepTransLinesResponse;
-import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
-import com.aye.entitylib.entity.vehicleproject.StepTrans;
-import com.aye.entitylib.entity.vehicleproject.StepTransLines;
-import com.aye.entitylib.entity.vehicleproject.StepTransTimeline;
+import com.aye.entitylib.entity.vehicleproject.*;
 import com.aye.mapper.StepTransLinesMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
@@ -89,6 +86,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     @Override
     public Page<StepTransLinesResponse> getAllStepTransLine(
             List<Long> stepSetupDIds,
+            List<Long> invItemsAccess,
             String searchWords,
             Pageable pageable) {
         var list = this.stepTransLinesRepository.findAll((root, query, cb) -> {
@@ -96,6 +94,8 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             query.distinct(true);
 
             Join<StepTransLines, StepTrans> masterJoin = root.join("stepTrans", JoinType.INNER);
+            Join<StepTrans, StepTransDetails> stepTransDetails = masterJoin.join("stepTransDetails", JoinType.LEFT);
+            Join<StepTransDetails, StepTransDetailsLines> stepTransDetailsLines = stepTransDetails.join("stepTransDetailsLines", JoinType.LEFT);
             Join<StepTransLines, StepSetupDetails> stepSetupDJoin = root.join("stepSetupDetails", JoinType.INNER);
             List<Predicate> predicates = new ArrayList<>();
             // stepStatus not in C,R
@@ -104,6 +104,9 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             predicates.add(stepSetupDJoin.get("stepSetupDetailsId").in(stepSetupDIds));
             if (searchWords != null && !searchWords.isEmpty()) {
                 predicates.add(cb.and(cb.like(masterJoin.get("vehicleNumber"), "%" + searchWords + "%")));
+            }
+            if (invItemsAccess != null && !invItemsAccess.isEmpty()) {
+                predicates.add(cb.in(stepTransDetailsLines.get("invItemId")).value(invItemsAccess));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

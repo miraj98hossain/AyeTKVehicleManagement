@@ -30,9 +30,15 @@ public class GeneralStepDetailsLineCreationStrategy implements StepTransDetailsL
     @Override
     public List<StepTransDetailsLines> create(StepTransDetailsLinesRequest req, Muser user) {
         List<StepTransDetailsLines> list = new ArrayList<>();
-        var dbObj = repository.findById(req.getStepTransDtlLnId()).orElseThrow(() -> new EntityNotFoundException("StepTransDetailsLines not found with id: " + req.getStepTransDtlLnId()));
-        var obj = repository.save(factory.fromStepDetailsLineReq(req, dbObj, user));
-        list.add(obj);
+        if (req.getStepTransDtlLnId() != null) {
+            var dbObj = repository.findById(req.getStepTransDtlLnId()).orElseThrow(() -> new EntityNotFoundException("StepTransDetailsLines not found with id: " + req.getStepTransDtlLnId()));
+            var obj = repository.save(factory.fromStepDetailsLineReq(req, dbObj, user));
+            list.add(obj);
+        } else {
+            var obj = repository.save(factory.fromStepDetailsLineReq(req, user));
+            list.add(obj);
+        }
+        
         return list;
     }
 }

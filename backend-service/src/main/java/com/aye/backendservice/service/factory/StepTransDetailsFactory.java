@@ -73,13 +73,8 @@ public class StepTransDetailsFactory {
 
     public StepTransDetailsLines fromStepDetailsLineReq(StepTransDetailsLinesRequest request, Muser user) {
         var obj = stepTransDetailsLinesMapper.dtoToEntity(request);
-        if (request.getStepTransDtlLnId() == null) {
-            obj.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
-            obj.setCreatedBy(Long.valueOf(user.getId()));
-        } else {
-            obj.setUpdatedBy(Long.valueOf(user.getId()));
-        }
-
+        obj.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
+        obj.setCreatedBy(Long.valueOf(user.getId()));
         return obj;
     }
 
