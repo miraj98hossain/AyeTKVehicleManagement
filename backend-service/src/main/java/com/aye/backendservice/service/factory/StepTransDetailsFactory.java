@@ -39,6 +39,7 @@ public class StepTransDetailsFactory {
         dtl.setCustAccountId(src.getCustAccountId());
         dtl.setCustName(src.getPartyName());
         dtl.setOrderNumber(src.getOrderNumber());
+        dtl.setOrderMode(src.getOrderMode());
         return dtl;
     }
 
@@ -51,6 +52,7 @@ public class StepTransDetailsFactory {
         dtl.setCustName(src.getPartyName());
         dtl.setOrderNumber(src.getOrderNumber());
         dtl.setScheduleNo(src.getScheduleNumber());
+        dtl.setOrderMode(src.getOrderMode());
 
         StepTransDetailsLines ln = new StepTransDetailsLines();
         ln.setStepTransDetails(dtl);

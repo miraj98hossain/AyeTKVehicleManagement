@@ -10,6 +10,7 @@ import com.aye.mapper.StepTransLinesMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Order;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -88,6 +89,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             List<Long> stepSetupDIds,
             List<Long> invItemsAccess,
             String searchWords,
+            String filterStatus,
             Pageable pageable) {
         var list = this.stepTransLinesRepository.findAll((root, query, cb) -> {
             assert query != null;
@@ -97,13 +99,27 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
             Join<StepTrans, StepTransDetails> stepTransDetails = masterJoin.join("stepTransDetails", JoinType.LEFT);
             Join<StepTransDetails, StepTransDetailsLines> stepTransDetailsLines = stepTransDetails.join("stepTransDetailsLines", JoinType.LEFT);
             Join<StepTransLines, StepSetupDetails> stepSetupDJoin = root.join("stepSetupDetails", JoinType.INNER);
+            List<Order> orders = new ArrayList<>();
+            orders.add(cb.asc(masterJoin.get("stepTransId")));
+            orders.add(cb.asc(masterJoin.get("createdAt")));
+            query.orderBy(orders);
+
             List<Predicate> predicates = new ArrayList<>();
             // stepStatus not in C,R
             predicates.add(cb.not(root.get("stepStatus").in('C', 'R')));
             // setupSetupId IN (...)
             predicates.add(stepSetupDJoin.get("stepSetupDetailsId").in(stepSetupDIds));
             if (searchWords != null && !searchWords.isEmpty()) {
-                predicates.add(cb.and(cb.like(masterJoin.get("vehicleNumber"), "%" + searchWords + "%")));
+                String pattern = "%" + searchWords.toLowerCase() + "%";
+                predicates.add(cb.or(
+                        cb.like(cb.lower(masterJoin.get("vehicleNumber")), pattern),
+                        cb.like(cb.lower(masterJoin.get("driverPhoneNo")), pattern),
+                        cb.like(cb.lower(masterJoin.get("driverName")), pattern),
+                        cb.like(cb.lower(masterJoin.get("transportName")), pattern)
+                ));
+            }
+            if (filterStatus != null && !filterStatus.isEmpty()) {
+                predicates.add(cb.or(cb.equal(root.get("stepStatus"), filterStatus)));
             }
             if (invItemsAccess != null && !invItemsAccess.isEmpty()) {
                 predicates.add(cb.in(stepTransDetailsLines.get("invItemId")).value(invItemsAccess));

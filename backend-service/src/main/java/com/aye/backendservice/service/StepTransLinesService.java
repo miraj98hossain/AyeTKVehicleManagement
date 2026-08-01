@@ -22,7 +22,7 @@ public interface StepTransLinesService {
     Page<StepTransLinesResponse> getAllStepTransLine(Pageable pageable);
 
     Page<StepTransLinesResponse> getAllStepTransLine(
-            List<Long> stepSetupIds, List<Long> invItemsAccess, String searchWords, Pageable pageable);
+            List<Long> stepSetupIds, List<Long> invItemsAccess, String searchWords, String filterStatus, Pageable pageable);
 
 
     List<StepTransLines> stepTransSearch(List<Long> setupDetailIds, StepTransFilter stepTransFilter);

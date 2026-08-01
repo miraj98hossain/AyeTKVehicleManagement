@@ -21,5 +21,6 @@ public class StepTransDetailsResponse {
     private String custName;
     private String scheduleNo;
     private Long orderNumber;
+    private String orderMode;
     private List<StepTransDetailsLinesResponse> stepTransDetailsLines = new ArrayList<>();
 }

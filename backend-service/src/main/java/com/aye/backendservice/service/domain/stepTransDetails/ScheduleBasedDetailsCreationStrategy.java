@@ -46,7 +46,7 @@ public class ScheduleBasedDetailsCreationStrategy implements StepTransDetailsCre
     @Override
     public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {
         StepTransDetails stepTransDetails = factory.fromStepDetailsReq(req, user);
-        List<StepTransDetails> existing = repository.findAllByScheduleNo(req.getScheduleNo());
+        List<StepTransDetails> existing = repository.findAllByScheduleNoAndStepTrans_StepTransId(req.getScheduleNo(), req.getStepTransId());
         Set<Long> existingOrders = existing.stream().map(StepTransDetails::getOrderNumber).collect(Collectors.toSet());
 
         List<BeforeTripWDsV> trips = beforeTripWDsVService.findAllByScheduleNumber(req.getScheduleNo());

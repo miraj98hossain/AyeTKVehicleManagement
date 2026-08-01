@@ -337,7 +337,7 @@ public class StepTransServiceImpl implements StepTransService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Long> findAllByTempDtlId(Integer tempDtlId, Long invOrgId, String searchWords, Pageable pageable) {
+    public List<Long> findAllByTempDtlId(Integer tempDtlId, Long invOrgId, Pageable pageable) {
         var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
 
         List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()

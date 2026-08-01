@@ -37,10 +37,10 @@ public class StepTransSpecification {
                 .<StepTransLines>unrestricted()
                 .and(hasStepStatus(stepTransFilter.getStepStatus()))
                 .and(hasSearchKeyword(stepTransFilter.getSearchKeyword()))
-
                 .and(hasStepDetailsId(setupDetailIds))
                 .and(hasFromDate(stepTransFilter.getFromDate()))
-                .and(hasToDate(stepTransFilter.getToDate()));
+                .and(hasToDate(stepTransFilter.getToDate()))
+                .and(orderBy());
     }
 
     private Specification<StepTransLines> hasSearchKeyword(String searchKeyword) {
@@ -87,6 +87,14 @@ public class StepTransSpecification {
 
     private Specification<StepTransLines> hasStepDetailsId(List<Long> setupDetailIds) {
         return ((root, query, cb) -> setupDetailIds == null || setupDetailIds.isEmpty() ? cb.conjunction() : root.get(STEP_SETUP_DETAILS).get(STEP_SETUP_DETAILS_ID).in(setupDetailIds));
+    }
+
+    private Specification<StepTransLines> orderBy() {
+        return (root, query, cb) -> {
+            assert query != null;
+            query.orderBy(cb.asc(root.get(STEP_TRANS).get("stepTransId")));
+            return cb.conjunction(); // no filtering, just ordering
+        };
     }
 
 }

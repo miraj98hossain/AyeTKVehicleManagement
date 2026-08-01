@@ -1,10 +1,8 @@
 package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.BeforeTripVService;
-
 import com.aye.dtoLib.dto.response.ApiRequestResponse;
 import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-
 import com.aye.dtoLib.dto.response.userOrg.BeforeTripVResDto;
 import com.aye.mapper.schedule.BeforeTripVMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +24,17 @@ public class BeforeTripVBServiceImpl implements BeforeTripVBService {
 
     @Override
     public ApiRequestResponse getDeliveryNumbers(Long orgId, Long invOrgId, Long searchWords) {
-
+        var listss = this.beforeTripVService.getDeliveryNumbers(orgId, invOrgId, "On Hand", searchWords);
+        var list = this.beforeTripVService.getDeliveryNumbers(orgId, invOrgId, "On Hand", searchWords).stream().map(
+                beforeTripVMapper::toResponseDto
+        ).toList();
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
                 "Success",
                 ApiRequestResponseDetail.ObjectType.A,
                 "doList",
-                BeforeTripVResDto.class.getName(),
-                this.beforeTripVService.getDeliveryNumbers(orgId, invOrgId, "On Hand", searchWords).stream().map(
-                        beforeTripVMapper::toResponseDto
-                ).toList()
+                BeforeTripVResDto.class.getName(), list
+
         );
     }
 }

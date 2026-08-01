@@ -51,8 +51,9 @@ public class StepTransController {
                                                                  @RequestParam Long invOrgId,
                                                                  @RequestParam String userName,
                                                                  @RequestParam(required = false) String searchWords,
+                                                                 @RequestParam(required = false) String filterStatus,
                                                                  @PageableDefault(size = 10, page = 0) Pageable pageable) {
-        return ResponseEntity.ok().body(this.stepTransService.findAllByTempDtlId(tempDtlId, invOrgId, userName, searchWords, pageable));
+        return ResponseEntity.ok().body(this.stepTransService.findAllByTempDtlId(tempDtlId, invOrgId, userName, searchWords, filterStatus, pageable));
 
     }
 

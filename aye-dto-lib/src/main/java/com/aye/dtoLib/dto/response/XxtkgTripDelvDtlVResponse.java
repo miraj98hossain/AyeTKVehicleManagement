@@ -20,6 +20,7 @@ public class XxtkgTripDelvDtlVResponse {
     private Long headerId;
     private Long lineId;
     private String orderedItem;
+    private String orderMode;
     private Long inventoryItemId;
     private String orderQuantityUom;
     private BigDecimal orderedQuantity;

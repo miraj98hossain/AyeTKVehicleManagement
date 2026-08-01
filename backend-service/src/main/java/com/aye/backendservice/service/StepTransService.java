@@ -28,7 +28,7 @@ public interface StepTransService {
 
     StepTransLines updateTransLines(StepTransLinesRequest stepTransLinesRequest, String userName) throws ExecutionControl.NotImplementedException;
 
-    List<Long> findAllByTempDtlId(Integer tempDtlId, Long invOrgId, String searchWords, Pageable pageable);
+    List<Long> findAllByTempDtlId(Integer tempDtlId, Long invOrgId, Pageable pageable);
 
     List<StepTransLines> stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter);
 }

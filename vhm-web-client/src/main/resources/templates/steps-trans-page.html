@@ -23,7 +23,7 @@
                 <div class="panel-body">
                     <form method="post"
                           th:action="@{/step-trans/create/{pageId}/{tempDtlId}/{orgId}/{invOrgId}
-                          (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},page=${page},size=${size})}"
+                          (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                           th:object="${stepTransReq}">
                         <input class="form-control"
                                id="orgId"
@@ -56,12 +56,10 @@
                                         id="stepSetupList"
                                         required
                                         th:field="${stepTransReq.stepSetupId}">
-                                    <!--                                    <div th:if="${#lists.size(stepSetupList) &gt; 1}">-->
-                                    <!--                                        <option value="">&#45;&#45; Select &#45;&#45;</option>-->
-                                    <!--                                    </div>-->
-                                    <div th:if="${stepSetupList != null and #lists.size(stepSetupList) > 1}">
-                                        <option value="">-- Select --</option>
-                                    </div>
+                                    <option th:if="${stepSetupList != null and #lists.size(stepSetupList) > 1}"
+                                            value="">
+                                        -- Select --
+                                    </option>
                                     <option th:each="stepSetup : ${stepSetupList}"
                                             th:text="${stepSetup.description}"
                                             th:value="${stepSetup.stepSetupId}">
@@ -132,6 +130,7 @@
                                 <!--                                       th:field="${stepTransReq.transportName}"-->
                                 <!--                                       type="text">-->
                                 <select class="form-control" id="transportName"
+                                        required
                                         th:field="${stepTransReq.transportName}">
                                     <option value="">-- Select --</option>
                                     <option th:each="t : ${T(com.aye.enums.TransportType).values()}"
@@ -201,7 +200,7 @@
                                     th:text="${stepTransReq.stepTransId!= null ? 'Update' : 'Create'}"
                                     type="submit"></button>
                             <a class="btn btn-default"
-                               th:href="@{'/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'(pageId=${pageId},tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId})}"
+                               th:href="@{'/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'(pageId=${pageId},tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                th:if="${stepTransReq.stepTransId!= null}">Cancel</a>
 
                             <!--                            <a class="btn cancel-btn"-->
@@ -276,7 +275,7 @@
                     <!-- SCALE DETAILS MODAL START-->
                     <form method="post"
                           th:action="@{/step-trans/saveFetchedWeight/{pageId}/{tempDtlId}/{orgId}/{invOrgId}
-                          (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},page=${page},size=${size})}"
+                          (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                           th:object="${scaleReq}">
                         <div class="modal fade" id="weightModal">
                             <div class="modal-dialog">
@@ -573,7 +572,7 @@
                             <div class="modal-content">
 
                                 <form method="post"
-                                      th:action="@{'/step-trans/update-lines-frm-modal/'+${pageId}+'/'+${tempDtlId}+'/'+${invOrgId}+'/'+${orgId}+'?page='+${page}+'&size='+${size}}"
+                                      th:action="@{/step-trans/update-lines-frm-modal/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${page}, size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                       th:object="${stepTransLineReq}">
 
                                     <div class="modal-header">
@@ -845,6 +844,55 @@
                     <!--                        </nav>-->
 
                     <!--                    </div>-->
+                    <form method="GET"
+                          style="max-width: 550px;"
+                          th:action="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId},tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId},page=${page}, size=${size})}">
+
+                        <div style="display: flex; align-items: center; gap: 20px; width: 100%; margin-bottom: 20px;">
+
+                            <input class="form-control"
+                                   id="searchInput"
+                                   name="searchWords"
+                                   placeholder="Search..."
+                                   style="flex: 1;"
+                                   th:value="${searchWords}"
+                                   type="text">
+                            <select class="form-control"
+                                    id="filterStatus"
+                                    name="filterStatus"
+                                    style="flex: 1;">
+                                <option value="">-- Select --</option>
+                                <option th:each="t : ${T(com.aye.enums.StepStatus).values()}"
+                                        th:selected="${t == filterStatus}"
+                                        th:text="${t.displayName}"
+                                        th:value="${t}">
+                                </option>
+                            </select>
+                            <div style="display: flex; gap: 10px; flex-shrink: 0;">
+                                <button class="btn btn-outline-secondary"
+                                        onclick="clearSearch()"
+                                        title="Clear"
+                                        type="button">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fa fa-search me-1"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <script>
+                        function clearSearch() {
+                            const input = document.getElementById("searchInput");
+                            const select = document.getElementById("filterStatus");
+
+                            input.value = "";
+                            select.value = "";
+
+                            input.closest("form").submit();
+                        }
+                    </script>
                     <div class="form-group col-sm-12">
                         <div class="table-responsive">
                             <table class="table table-bordered table-hover table-striped custom-gray-table text-dark text-center">
@@ -881,10 +929,12 @@
                                                         th:each="dtl : ${line.stepTransDetails}">
 
                                                     <!-- Customer -->
-                                                    <td style="width:60%; font-weight:normal;">
+                                                    <td style="width:40%; font-weight:normal;">
                                                         <span th:text="${dtl.custName}"></span>
                                                     </td>
-
+                                                    <td style="width:10%; font-weight:normal;">
+                                                        <span th:text="${dtl.orderMode}"></span>
+                                                    </td>
                                                     <!-- Items -->
                                                     <td style="width:40%; padding:0;">
                                                         <table class="table table-condensed" style="margin-bottom:0;">
@@ -907,7 +957,8 @@
                                     </td>
                                     <td th:text="${line.stepName}"></td>
                                     <td class="text-center" th:text="${line.stepStatus}"></td>
-                                    <td th:text="${line.stepTransScaleDetails?.weight}"></td>
+                                    <!--                                    <td th:text="${line.stepTransScaleDetails?.weight}"></td>-->
+                                    <td th:text="${line.stepWiseWeight}"></td>
                                     <!--                                    <td th:text="${line.holdBy}"></td>-->
                                     <!--                                    <td th:text="${line.currentlyLoadingItem}"></td>-->
                                     <td th:text="${(line.holdBy ?: '') + (line.holdBy != null && (line.currentlyLoadingItem  != null && not #strings.isEmpty(line.currentlyLoadingItem)) ?' -> ': '') + (line.currentlyLoadingItem ?: '')}"></td>
@@ -927,8 +978,7 @@
                                         </a>
 
                                         <a class="btn btn-primary"
-                                           th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/        '+${line.stepTransId}+'/'+${orgId}+'/'+${invOrgId}}"
-                                           th:if="${line.stepStatus == 'WIP'}"><span
+                                           th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/        '+${line.stepTransId}+'/'+${orgId}+'/'+${invOrgId}}"><span
                                                 aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>
                                         <!--                                    <a class="btn btn-success"-->
                                         <!--                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span-->
@@ -937,37 +987,38 @@
                                            th:data-step-Trans-Id="${line.stepTransId}"
                                            th:data-step-Trans-Ln-Id="${line.stepTransLinesId}"
                                            th:data-user-Name="${userName}"
-                                           th:if="${line.stepStatus == 'Hold' or line.stepStatus == 'WIP' or line.stepStatus == 'Let Go'}"
+
                                            th:onclick="${line.stepStatus == 'Hold' and line.holdBy==userName} ?
                                             'openStepTransDetailsLineModal(this)' : 'openStepTransDetailsModal(this)'">
 
                                             <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span>
                                         </a>
                                     </td>
+                                    <!--                                    th:if="${line.stepStatus == 'Hold' or line.stepStatus == 'WIP' or line.stepStatus == 'Let Go'}"-->
                                     <td class="text-center">
 
                                         <a class="btn edit-btn btn-warning"
                                            th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
-                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId},stepStatus='WIP',page=${page},size=${size})}"
+                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId},stepStatus='WIP',page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                            th:if="${line.stage == 1 and line.stepStatus != 'WIP' and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
                                             WIP
                                         </a>
 
                                         <a class="btn pick-btn btn-info"
                                            th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
-                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Hold',page=${page},size=${size})}"
+                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Hold',page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                            th:if="${line.isHoldAble  and (line.stepStatus != 'Hold' or line.stepStatus == 'Let Go')}">
                                             Hold
                                         </a>
                                         <a class="btn pick-btn btn-info"
                                            th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
-                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Let Go',page=${page},size=${size})}"
+                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Let Go',page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                            th:if="${line.stage == 1 and line.isHoldAble and line.holdBy==userName and line.stepStatus != 'Let Go'}">
                                             Let Go
                                         </a>
                                         <a class="btn pick-btn btn-info"
                                            th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
-                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Pick',page=${page},size=${size})}"
+                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Pick',page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                            th:if="${line.stage == 0 and !line.isHoldAble and line.stepStatus != 'Pick'}">
                                             Pick
                                         </a>
@@ -1005,7 +1056,7 @@
                             <!-- Previous -->
                             <li th:classappend="${!stepTransResponseList.hasPrevious()} ? 'disabled'">
                                 <a aria-label="Previous"
-                                   th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.number - 1}, size=${stepTransResponseList.size})}"
+                                   th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.number - 1}, size=${stepTransResponseList.size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                    th:if="${stepTransResponseList.hasPrevious()}">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
@@ -1014,7 +1065,7 @@
 
                             <!-- First page -->
                             <li th:if="${stepTransResponseList.number > 2}">
-                                <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=0, size=${stepTransResponseList.size})}">1</a>
+                                <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=0, size=${stepTransResponseList.size},searchWords=${searchWords},filterStatus=${filterStatus})}">1</a>
                             </li>
                             <li class="disabled" th:if="${stepTransResponseList.number > 3}">
                                 <span>...</span>
@@ -1023,10 +1074,10 @@
                             <!-- Pages around current -->
                             <li th:classappend="${i == stepTransResponseList.number} ? 'active'"
                                 th:each="i : ${#numbers.sequence(
-                                            (stepTransResponseList.number > 1 ? stepTransResponseList.number : 0),
-                                            (stepTransResponseList.number < stepTransResponseList.totalPages - 2 ? stepTransResponseList.number + 1 : stepTransResponseList.totalPages - 1)
-                                        )}">
-                                <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${i}, size=${stepTransResponseList.size})}"
+                                                                (stepTransResponseList.number > 1 ? stepTransResponseList.number : 0),
+                                                                (stepTransResponseList.number < stepTransResponseList.totalPages - 2 ? stepTransResponseList.number + 1 : stepTransResponseList.totalPages - 1)
+                                                            )}">
+                                <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${i}, size=${stepTransResponseList.size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                    th:text="${i + 1}"></a>
                             </li>
 
@@ -1036,7 +1087,7 @@
                                 <span>...</span>
                             </li>
                             <li th:if="${stepTransResponseList.number < stepTransResponseList.totalPages - 2}">
-                                <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.totalPages - 1}, size=${stepTransResponseList.size})}"
+                                <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.totalPages - 1}, size=${stepTransResponseList.size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                    th:text="${stepTransResponseList.totalPages}">
                                 </a>
                             </li>
@@ -1044,7 +1095,7 @@
                             <!-- Next -->
                             <li th:classappend="${!stepTransResponseList.hasNext()} ? 'disabled'">
                                 <a aria-label="Next"
-                                   th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.number + 1}, size=${stepTransResponseList.size})}"
+                                   th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.number + 1}, size=${stepTransResponseList.size},searchWords=${searchWords},filterStatus=${filterStatus})}"
                                    th:if="${stepTransResponseList.hasNext()}">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>

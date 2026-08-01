@@ -42,8 +42,9 @@ public class StepTransService {
                                                  Long invOrgId,
                                                  String userName,
                                                  String searchWords,
+                                                 String filterStatus,
                                                  Pageable pageable) {
-        return this.stepTransServiceFeignClient.findAllByTempDtlId(tempDtlId, invOrgId, userName, searchWords, pageable).getBody();
+        return this.stepTransServiceFeignClient.findAllByTempDtlId(tempDtlId, invOrgId, userName, searchWords, filterStatus, pageable).getBody();
 
     }
 

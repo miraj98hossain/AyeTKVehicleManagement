@@ -113,7 +113,7 @@ public class StepTransViewService {
         );
     }
 
-    public ApiRequestResponse findAllByTempDtlId(Integer tempDtlId, String userName, Long invOrgId, String searchWords, Pageable pageable) {
+    public ApiRequestResponse findAllByTempDtlId(Integer tempDtlId, String userName, Long invOrgId, String searchWords, String filterStatus, Pageable pageable) {
 
         UserAccessTemltDtl tempDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
 
@@ -126,17 +126,17 @@ public class StepTransViewService {
                 .map(UserTransactionTypes::getTrnsTypeId).toList();
 
 
-        List<Long> setupDetailIds = this.stepTransService.findAllByTempDtlId(tempDtlId, invOrgId, searchWords, pageable);
+        List<Long> setupDetailIds = this.stepTransService.findAllByTempDtlId(tempDtlId, invOrgId, pageable);
         var scaleSetupList = this.scaleSetupService.findAllScaleSetup();
         var stepWiseTransCountVList = this.stepWiseTransCountVService.getCountByDetailId(setupDetailIds);
-        var response = this.findAllBySetupDtls(setupDetailIds, holdAbleStepDetails, searchWords, pageable, userName, tempDtl.getUserSpecefic());
+        var response = this.findAllBySetupDtls(setupDetailIds, holdAbleStepDetails, searchWords, filterStatus, pageable, userName, tempDtl.getUserSpecefic());
         response.getApiRequestResponseDetails().addAll(stepWiseTransCountVList.getApiRequestResponseDetails());
         response.getApiRequestResponseDetails().addAll(scaleSetupList.getApiRequestResponseDetails());
         return response;
     }
 
     protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, List<Long> holdAbleStepDetails,
-                                                    String searchWords, Pageable pageable, String userName, Boolean isUserSpecific) {
+                                                    String searchWords, String filterStatus, Pageable pageable, String userName, Boolean isUserSpecific) {
         List<Long> userItemAccess;
         if (isUserSpecific) {
             userItemAccess = commonHelperService.getUserAccessedItems(userName);
@@ -150,7 +150,7 @@ public class StepTransViewService {
                 .map(StepSetupDetailsResponse::getStepSetupDetailsId)
                 .collect(Collectors.toSet());
 
-        Page<StepTransLinesResponse> stepTransPage = this.stepTransLinesService.getAllStepTransLine(setupDIds.stream().toList(), userItemAccess, searchWords, pageable);
+        Page<StepTransLinesResponse> stepTransPage = this.stepTransLinesService.getAllStepTransLine(setupDIds.stream().toList(), userItemAccess, searchWords, filterStatus, pageable);
 
         stepTransPage.getContent().stream()
                 .filter(linesResponse -> holdAbleStepDetails

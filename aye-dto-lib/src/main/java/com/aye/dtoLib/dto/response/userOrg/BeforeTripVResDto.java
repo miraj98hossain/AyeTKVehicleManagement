@@ -26,7 +26,7 @@ public class BeforeTripVResDto {
     private Long orderNumber;
 
     private String orderNumberMode;
-
+    private String orderMode;
     private String name;
 
     private Date orderedDate;

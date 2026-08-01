@@ -42,7 +42,7 @@ public class OrderBasedDetailsCreationStrategy implements StepTransDetailsCreati
     @Override
     public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {
         StepTransDetails stepTransDetails = factory.fromStepDetailsReq(req, user);
-        List<StepTransDetails> existing = repository.findAllByOrderNumber(req.getOrderNumber());
+        List<StepTransDetails> existing = repository.findAllByOrderNumberAndStepTrans_StepTransId(req.getOrderNumber(), req.getStepTransId());
         Set<Long> existingOrders = existing.stream().map(StepTransDetails::getOrderNumber).collect(Collectors.toSet());
 
         List<BeforeTripV> trips = beforeTripVService.findAllByOrderNumber(req.getOrderNumber());

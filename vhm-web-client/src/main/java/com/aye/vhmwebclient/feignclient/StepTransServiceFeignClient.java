@@ -37,6 +37,7 @@ public interface StepTransServiceFeignClient {
                                                           @RequestParam Long invOrgId,
                                                           @RequestParam String userName,
                                                           @RequestParam(required = false) String searchWords,
+                                                          @RequestParam(required = false) String filterStatus,
                                                           @PageableDefault(size = 10, page = 0) Pageable pageable);
 
     @PostMapping("/searchTransactions")
