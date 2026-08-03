@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class StepResponse {
     private String stepName;
     private Integer isActive;
     private Long createdBy;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long updatedBy;
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 }

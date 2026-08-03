@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.Optional;
 
 /**
@@ -45,7 +44,7 @@ public class StepTransScaleDetailsServiceImpl implements StepTransScaleDetailsSe
             return repository.save(dbEntity.get());
         } else {
             StepTransScaleDetails stepTransScaleDetails = mapper.toEntity(request);
-            stepTransScaleDetails.setCreatedAt(new Date());
+            //stepTransScaleDetails.setCreatedAt(new Date());
             stepTransScaleDetails.setCreatedBy(Long.valueOf(muser.getId()));
             return repository.save(stepTransScaleDetails);
         }

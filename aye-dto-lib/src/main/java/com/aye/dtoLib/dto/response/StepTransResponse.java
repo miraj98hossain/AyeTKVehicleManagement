@@ -7,8 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -29,7 +29,7 @@ public class StepTransResponse {
     private List<StepTransLinesResponse> stepTransLinesResponseList = new ArrayList<>();
     private List<StepTransScaleDetailsDto> StepTransScaleDetails = new ArrayList<>();
     private Long createdBy;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long updatedBy;
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 }

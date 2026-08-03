@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -22,8 +22,8 @@ public class StepSetupResponse {
     private Boolean isActive;
     private String description;
     private Long createdBy;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long updatedBy;
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
 }

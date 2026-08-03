@@ -3,7 +3,7 @@ package com.aye.dtoLib.dto.response;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author: Miraj
@@ -25,7 +25,7 @@ public class StepTransDetailsLinesResponse {
     private BigDecimal orderedQuantity;
     private String uom;
     private Long createdBy;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long updatedBy;
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 }

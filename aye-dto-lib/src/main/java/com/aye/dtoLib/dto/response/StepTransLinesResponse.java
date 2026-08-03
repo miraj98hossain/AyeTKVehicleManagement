@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -22,6 +22,7 @@ public class StepTransLinesResponse {
     private String transportName;
     private String driverPhoneNo;
     private String driverName;
+    private String entryDate;
     private Long stepId;
     private String stepName;
     private String stepWiseWeight;
@@ -34,7 +35,7 @@ public class StepTransLinesResponse {
     private List<StepTransDetailsResponse> stepTransDetails;
     private StepTransScaleDetailsDto stepTransScaleDetails;
     private Long createdBy;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long updatedBy;
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 }

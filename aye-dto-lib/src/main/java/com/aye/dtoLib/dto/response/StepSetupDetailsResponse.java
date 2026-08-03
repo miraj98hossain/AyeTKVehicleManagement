@@ -2,7 +2,7 @@ package com.aye.dtoLib.dto.response;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,7 +19,7 @@ public class StepSetupDetailsResponse {
     private Integer serialNo;
     private Boolean isActive;
     private Long createdBy;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long updatedBy;
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 }

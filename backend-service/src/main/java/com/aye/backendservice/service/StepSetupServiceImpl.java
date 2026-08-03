@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -53,12 +52,12 @@ public class StepSetupServiceImpl implements StepSetupService {
                     () -> new EntityNotFoundException("Step Setup Id not found")
             );
             this.stepSetupMapper.dtoToEntity(request, dbSetup);
-            dbSetup.setUpdatedAt(new Date());
+            //dbSetup.setUpdatedAt(new Date());
             dbSetup.setUpdatedBy(Long.valueOf(muser.getId()));
             stepSetup = stepSetupRepository.save(dbSetup);
         } else {
             stepSetup = stepSetupMapper.dtoToEntity(request);
-            stepSetup.setCreatedAt(new Date());
+            //stepSetup.setCreatedAt(new Date());
             stepSetup.setCreatedBy(Long.valueOf(muser.getId()));
             stepSetup = stepSetupRepository.save(stepSetup);
         }
@@ -85,13 +84,13 @@ public class StepSetupServiceImpl implements StepSetupService {
                 throw new IllegalArgumentException("Step is already exists in this setup");
             }
             requestDetails.setSerialNo(serialNo);
-            requestDetails.setCreatedAt(new Date());
+            //requestDetails.setCreatedAt(new Date());
             requestDetails.setCreatedBy(Long.valueOf(muser.getId()));
             requestDetails.setIsActive(1);
             requestDetails = this.stepSetupDetailsService.save(requestDetails);
         } else {
             var dbDetails = this.stepSetupDetailsService.findById(requestDetails.getStepSetupDetailsId());
-            dbDetails.setUpdatedAt(new Date());
+            //dbDetails.setUpdatedAt(new Date());
             dbDetails.setUpdatedBy(Long.valueOf(muser.getId()));
             dbDetails.setIsActive(requestDetails.getIsActive());
             requestDetails = this.stepSetupDetailsService.save(dbDetails);

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @author: Miraj
@@ -27,9 +27,9 @@ public class StepTransScaleDetailsDto {
     private Long weight;
     @NotBlank(message = "Uom Can Not Be Null")
     private String uom;
-    private Date createdAt;
+    private LocalDateTime createdAt;
     private Long createdBy;
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
     private Long updatedBy;
 
 }

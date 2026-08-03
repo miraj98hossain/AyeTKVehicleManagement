@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,10 +35,10 @@ public class StepServiceImpl implements StepService {
                     () -> new EntityNotFoundException("No Active Step found with this id " + stepRequest.getStepId()));
             reqStep.setCreatedAt(extStep.getCreatedAt());
             reqStep.setCreatedBy(extStep.getCreatedBy());
-            reqStep.setUpdatedAt(new Date());
+            //reqStep.setUpdatedAt(new Date());
             reqStep.setUpdatedBy(Long.valueOf(muser.getId()));
         } else {
-            reqStep.setCreatedAt(new Date());
+            //reqStep.setCreatedAt(new Date());
             reqStep.setCreatedBy(Long.valueOf(muser.getId()));
             reqStep.setIsActive(1);
         }

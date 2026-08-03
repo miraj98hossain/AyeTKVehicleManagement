@@ -33,7 +33,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.aye.backendservice.utils.RedisKey.STEP_TRANS_LINE_LOCK_KEY;
 
@@ -67,7 +70,7 @@ public class StepTransServiceImpl implements StepTransService {
     public StepTrans saveStepTrans(StepTransRequest stepTransRequest, String userName) {
         Muser muser = userService.findByUserName(userName);
         StepTrans stepTrans = stepTransMapper.toEntity(stepTransRequest);
-        stepTrans.setCreatedAt(new Date());
+        //stepTrans.setCreatedAt(new Date());
         stepTrans.setCreatedBy(Long.valueOf(muser.getId()));
 
         if (stepTrans.getStepTransLinesList().isEmpty()) {
@@ -79,7 +82,7 @@ public class StepTransServiceImpl implements StepTransService {
             line.setParentLineId(0L);
             line.setStage(0);
             line.setCreatedBy(Long.valueOf(muser.getId()));
-            line.setCreatedAt(new Date());
+            //line.setCreatedAt(new Date());
             stepTrans.getStepTransLinesList().add(line);
 
 //            //-----------------------Saving StepTransTimeLine----------------------------------
@@ -105,7 +108,7 @@ public class StepTransServiceImpl implements StepTransService {
                 () -> new EntityNotFoundException("Step Trans with id " + stepTransRequest.getStepTransId() + " not found")
         );
         stepTransMapper.toEntity(stepTransRequest, stepTrans);
-        stepTrans.setUpdatedAt(new Date());
+        //stepTrans.setUpdatedAt(new Date());
         stepTrans.setUpdatedBy(Long.valueOf(muser.getId()));
         if (stepTrans.getChallanNumber() != null && !stepTrans.getChallanNumber().isEmpty()) {
             StepTransDetailsRequest dtlRequest = new StepTransDetailsRequest();

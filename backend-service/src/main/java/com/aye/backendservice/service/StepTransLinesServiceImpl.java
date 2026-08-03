@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,11 +38,11 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     @Transactional
     public StepTransLines saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId) {
         if (stepTransLines.getStepTransLinesId() == null) {
-            stepTransLines.setCreatedAt(new Date());
+            //stepTransLines.setCreatedAt(new Date());
             stepTransLines.setCreatedBy(currentUserId);
             stepTransLines.setStepTransLinesNo(noGenService.createTransLNo());
         } else {
-            stepTransLines.setUpdatedAt(new Date());
+            //stepTransLines.setUpdatedAt(new Date());
             stepTransLines.setUpdatedBy(currentUserId);
         }
         if (isStatusChange) {
@@ -115,7 +114,10 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
                         cb.like(cb.lower(masterJoin.get("vehicleNumber")), pattern),
                         cb.like(cb.lower(masterJoin.get("driverPhoneNo")), pattern),
                         cb.like(cb.lower(masterJoin.get("driverName")), pattern),
-                        cb.like(cb.lower(masterJoin.get("transportName")), pattern)
+                        cb.like(cb.lower(masterJoin.get("transportName")), pattern),
+                        cb.like(cb.lower(stepTransDetails.get("custName")), pattern),
+                        cb.like(cb.lower(stepTransDetailsLines.get("orderedItem")), pattern)
+
                 ));
             }
             if (filterStatus != null && !filterStatus.isEmpty()) {

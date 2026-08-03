@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,11 +38,11 @@ public class StepSetupDetailsServiceImpl implements StepSetupDetailsService {
             );
             stepSetupDetails.setCreatedAt(extstepSetupDetails.getCreatedAt());
             stepSetupDetails.setCreatedBy(extstepSetupDetails.getCreatedBy());
-            stepSetupDetails.setUpdatedAt(new Date());
+            //stepSetupDetails.setUpdatedAt(new Date());
             stepSetupDetails.setUpdatedBy((long) 1);
             return this.stepSetupDetailsRepository.save(stepSetupDetails);
         }
-        stepSetupDetails.setCreatedAt(new Date());
+        //stepSetupDetails.setCreatedAt(new Date());
         stepSetupDetails.setCreatedBy((long) 1);
         return this.stepSetupDetailsRepository.save(stepSetupDetails);
 
