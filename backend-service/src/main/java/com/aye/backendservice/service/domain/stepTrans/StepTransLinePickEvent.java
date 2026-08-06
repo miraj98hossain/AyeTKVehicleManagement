@@ -32,7 +32,7 @@ public class StepTransLinePickEvent implements StepTransLineEventStrategy {
         //if parent ? Do not need to find it's parentTrans just increment the stage
         if (dbstepTransLines.getParentLineId() == 0) {
             if (dbstepTransLines.getStage() == 1) {
-                throw new IllegalArgumentException("This Step Trans is already picked");
+                throw new IllegalArgumentException("This Step Trans" + dbstepTransLines.getStepTransLinesId() + " is already picked");
             }
             dbstepTransLines.setStepStatus(StepStatus.P);
             dbstepTransLines.setStage(dbstepTransLines.getStage() + 1); //current value should be 1(0->1). Eligible to be at WIP now.
@@ -42,7 +42,7 @@ public class StepTransLinePickEvent implements StepTransLineEventStrategy {
             dbstepTransLines.setStepStatus(StepStatus.P);
             var parentTransLine = this.stepTransLinesService.getStepTransLine(dbstepTransLines.getParentLineId());
             if (parentTransLine.getStage() == 2) {
-                throw new IllegalArgumentException("This Step Trans is already picked");
+                throw new IllegalArgumentException("This Step Trans" + dbstepTransLines.getStepTransLinesId() + " is already picked");
             }
             parentTransLine.setStage(parentTransLine.getStage() + 1); //current value should be 2(1->2). Eligible to be at com now.
             this.stepTransLinesService.saveStepTransLines(parentTransLine, false, Long.valueOf(user.getId()));//updating parent

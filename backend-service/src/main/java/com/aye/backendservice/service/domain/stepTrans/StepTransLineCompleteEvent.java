@@ -31,11 +31,11 @@ public class StepTransLineCompleteEvent implements StepTransLineEventStrategy {
     public StepTransLines doEvent(StepTransLines reqStepTransLines, StepTransLines dbstepTransLines, StepTrans stepTrans, Muser user) {
         StepTransLines objResponse;
         if (dbstepTransLines.getStepStatus().equals(StepStatus.C)) {
-            throw new RuntimeException("This Step Trans is already Completed");
+            throw new RuntimeException("This Step Trans" + dbstepTransLines.getStepTransLinesId() + " is already Completed");
         }
 
         if (!(dbstepTransLines.getStage() == 2)) {
-            throw new RuntimeException("This step trans is not eligible for Complete");
+            throw new RuntimeException("This step trans" + dbstepTransLines.getStepTransLinesId() + " is not eligible for Complete");
         } else {
             dbstepTransLines.setStepStatus(StepStatus.C);
             dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());

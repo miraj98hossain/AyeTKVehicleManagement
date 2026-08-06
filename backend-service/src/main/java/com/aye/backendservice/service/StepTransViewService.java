@@ -156,9 +156,15 @@ public class StepTransViewService {
                 .filter(linesResponse -> holdAbleStepDetails
                         .contains(linesResponse.getStepSetupDetailsId()))
                 .forEach(line -> {
-                    boolean isHoldAble = line.
-                            getStepTransDetails().stream()
+//                    boolean isHoldAble = line.
+//                            getStepTransDetails().stream()
+//                            .flatMap(detail -> detail.getStepTransDetailsLines().stream())
+//                            .limit(2)
+//                            .count() > 1;
+                    boolean isHoldAble = line.getStepTransDetails().stream()
                             .flatMap(detail -> detail.getStepTransDetailsLines().stream())
+                            .map(StepTransDetailsLinesResponse::getInvItemId)
+                            .distinct()
                             .limit(2)
                             .count() > 1;
                     line.setHoldAble(isHoldAble);

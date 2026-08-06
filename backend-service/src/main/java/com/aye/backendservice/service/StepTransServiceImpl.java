@@ -158,35 +158,71 @@ public class StepTransServiceImpl implements StepTransService {
     @Transactional
     public StepTransLines updateTransLines(StepTransLinesRequest linesReq, String userName) throws ExecutionControl.NotImplementedException {
         Muser muser = userService.findByUserName(userName);
-        //requestedLine
+
+        // requestedLine
         StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(linesReq);
-        //databaseLine
+        // databaseLine
         StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesId());
-        //for storing response
-        StepTransLines objResponse = new StepTransLines();
-        StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
-                () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
+
+        StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
+
         boolean isNotLocked = this.redisIdLockService
                 .tryLock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(),
-                        dbstepTransLines.getStepTransLinesId(), Duration.ofHours(8).getSeconds()); //Locked for 8 Hours
-        if (isNotLocked) {
-            try {
-                objResponse = strategies.stream()
-                        .filter(strategy -> strategy.supports(reqStepTransLines))
-                        .findFirst()
-                        .map(strategy -> strategy.doEvent(reqStepTransLines, dbstepTransLines, stepTrans, muser))
-                        .orElseThrow(() -> new ExecutionControl.NotImplementedException("Not implemented for Status: " + reqStepTransLines.getStepStatus()));
+                        dbstepTransLines.getStepTransLinesId(), Duration.ofHours(8).getSeconds()); // Locked for 8 Hours
 
-                return objResponse;
-            } catch (Exception e) {
-                this.redisIdLockService
-                        .unlock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(), dbstepTransLines.getStepTransLinesId());
-            }
-        } else {
-            throw new RuntimeException("Step Trans Lines event request for this id " + reqStepTransLines.getStepTransLinesId() + " is locked");
+        if (!isNotLocked) {
+            throw new RuntimeException("Step Trans Lines event request for this id "
+                    + reqStepTransLines.getStepTransLinesId() + " is locked");
         }
-        return objResponse;
+
+        try {
+            return strategies.stream()
+                    .filter(strategy -> strategy.supports(reqStepTransLines))
+                    .findFirst()
+                    .map(strategy -> strategy.doEvent(reqStepTransLines, dbstepTransLines, stepTrans, muser))
+                    .orElseThrow(() -> new ExecutionControl.NotImplementedException(
+                            "Not implemented for Status: " + reqStepTransLines.getStepStatus()));
+        } catch (Exception e) {
+            this.redisIdLockService.unlock(STEP_TRANS_LINE_LOCK_KEY,
+                    reqStepTransLines.getStepStatus().getDisplayName(), dbstepTransLines.getStepTransLinesId());
+            throw e;
+        }
     }
+//    @Override
+//    @Transactional
+//    public StepTransLines updateTransLines(StepTransLinesRequest linesReq, String userName) throws ExecutionControl.NotImplementedException {
+//        Muser muser = userService.findByUserName(userName);
+//        //requestedLine
+//        StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(linesReq);
+//        //databaseLine
+//        StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesId());
+//        //for storing response
+//        StepTransLines objResponse = new StepTransLines();
+//        StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId()).orElseThrow(
+//                () -> new EntityNotFoundException("StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
+//        boolean isNotLocked = this.redisIdLockService
+//                .tryLock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(),
+//                        dbstepTransLines.getStepTransLinesId(), Duration.ofHours(8).getSeconds()); //Locked for 8 Hours
+//        if (isNotLocked) {
+//            try {
+//                objResponse = strategies.stream()
+//                        .filter(strategy -> strategy.supports(reqStepTransLines))
+//                        .findFirst()
+//                        .map(strategy -> strategy.doEvent(reqStepTransLines, dbstepTransLines, stepTrans, muser))
+//                        .orElseThrow(() -> new ExecutionControl.NotImplementedException("Not implemented for Status: " + reqStepTransLines.getStepStatus()));
+//
+//                return objResponse;
+//            } catch (Exception e) {
+//                this.redisIdLockService
+//                        .unlock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(), dbstepTransLines.getStepTransLinesId());
+//            }
+//        } else {
+//            throw new RuntimeException("Step Trans Lines event request for this id " + reqStepTransLines.getStepTransLinesId() + " is locked");
+//        }
+//        return objResponse;
+//    }
 //    @Override
 //    @Transactional
 //    public StepTransLines updateTransLines(StepTransLinesRequest linesReq, String userName) {

@@ -112,6 +112,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
                 String pattern = "%" + searchWords.toLowerCase() + "%";
                 predicates.add(cb.or(
                         cb.like(cb.lower(masterJoin.get("vehicleNumber")), pattern),
+                        cb.like(cb.lower(masterJoin.get("stepTransNo")), pattern),
                         cb.like(cb.lower(masterJoin.get("driverPhoneNo")), pattern),
                         cb.like(cb.lower(masterJoin.get("driverName")), pattern),
                         cb.like(cb.lower(masterJoin.get("transportName")), pattern),

@@ -14,6 +14,7 @@ import com.aye.enums.StepStatus;
 import com.aye.mapper.StepTransDetailsLinesMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jdk.jshell.spi.ExecutionControl;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import java.util.Objects;
 
 
 @Service
+@Slf4j
 public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     @Autowired
     private NoGenService noGenService;
@@ -145,6 +147,7 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
         stepTransDetailsLines.getStepTransTimeline().add(stepTransTimeline);
 
         if (status.equals(StepStatus.W)) {
+            log.info("Step Trans Details Line" + detailLineId + " Update Status W");
             stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
             stepTransTimeline.setStepTransLines(stepTransLine);
             List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
@@ -155,17 +158,20 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
             stepTransDetailsLines.setStage(stepTransDetailsLines.getStage() + 1);
             stepTransDetailsLines.setStepStatus(StepStatus.W);
             response = this.lineRepo.save(stepTransDetailsLines);
+            log.info("Step Trans Details Line W event after saving" + response);
             if (areAllStageZero) {
                 stepTransLinesRequest.setStepStatus(StepStatus.W.getDisplayName());
                 this.stepTransService.updateTransLines(stepTransLinesRequest, userName);
             }
         }
         if (status.equals(StepStatus.C)) {
+            log.info("Step Trans Details Line" + detailLineId + " Update Status C");
             stepTransDetailsLines.setStage(stepTransDetailsLines.getStage() + 1);
             stepTransDetailsLines.setStepStatus(StepStatus.C);
             stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
             stepTransTimeline.setStepTransLines(stepTransLine);
             response = this.lineRepo.save(stepTransDetailsLines);
+            log.info("Step Trans Details Line C event after saving" + response);
             List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
             boolean isAllOtherItemsLoaded = stepTransDetails.stream()
                     .flatMap(details -> details.getStepTransDetailsLines().stream().filter(detailsLine -> !Objects.equals(detailsLine.getStepTransDtlLnId(), detailLineId)))
