@@ -1,6 +1,6 @@
 package com.aye.backendservice.service;
 
-import com.aye.entitylib.entity.order.MItemCatV;
+import com.aye.entitylib.entity.order.MItemCatVNew;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ import java.util.List;
 public interface MItemCatVService {
 
 
-    List<MItemCatV> findAllByItemCombinations(List<String> itemCombinations);
+    List<MItemCatVNew> findAllByItemCombinations(List<String> itemCombinations);
 }

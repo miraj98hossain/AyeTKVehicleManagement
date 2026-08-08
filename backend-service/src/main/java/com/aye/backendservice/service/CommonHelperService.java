@@ -2,7 +2,7 @@ package com.aye.backendservice.service;
 
 import com.aye.RestfulServer.service.UserCodeAccessService;
 import com.aye.entitylib.entity.UserCodeAccess;
-import com.aye.entitylib.entity.order.MItemCatV;
+import com.aye.entitylib.entity.order.MItemCatVNew;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,7 +25,7 @@ public class CommonHelperService {
                 .map(UserCodeAccess::getItemCatComb).toList();
         List<Long> itemCatVList = mItemCatVService.findAllByItemCombinations(itemAccessList)
                 .stream()
-                .map(MItemCatV::getInventoryItemId)
+                .map(MItemCatVNew::getInventoryItemId)
                 .toList();
         return itemCatVList;
     }

@@ -1,7 +1,7 @@
 package com.aye.backendservice.service;
 
 import com.aye.backendservice.repository.MItemCatVRepo;
-import com.aye.entitylib.entity.order.MItemCatV;
+import com.aye.entitylib.entity.order.MItemCatVNew;
 import jakarta.persistence.criteria.Expression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class MItemCatVServiceImpl implements MItemCatVService {
 
     @Transactional
     @Override
-    public List<MItemCatV> findAllByItemCombinations(List<String> itemCombinations) {
+    public List<MItemCatVNew> findAllByItemCombinations(List<String> itemCombinations) {
         var list = this.mItemCatVRepo.findAll((root, query, cb) -> {
             Expression<String> fullPath = cb.concat(
                     cb.concat(root.get("categories"), "-"),
