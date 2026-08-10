@@ -31,10 +31,10 @@ public class StepTransLineWipEvent implements StepTransLineEventStrategy {
     public StepTransLines doEvent(StepTransLines reqStepTransLines, StepTransLines dbstepTransLines, StepTrans stepTrans, Muser user) {
         StepTransLines objResponse;
         if (dbstepTransLines.getStepStatus().equals(StepStatus.W)) {
-            throw new RuntimeException("This Step Trans" + dbstepTransLines.getStepTransLinesId() + " is already in progress");
+            throw new RuntimeException("This Step Trans " + dbstepTransLines.getStepTransLinesId() + " is already in progress");
         }
         if (!(dbstepTransLines.getStage() == 1)) {
-            throw new RuntimeException("This step trans" + dbstepTransLines.getStepTransLinesId() + " is not eligible for WIP");
+            throw new RuntimeException("This step trans " + dbstepTransLines.getStepTransLinesId() + " is not eligible for WIP");
         } else {
             //Creating a new Step Trans and changing status
             if (!dbstepTransLines.getStepStatus().equals(StepStatus.H)) {

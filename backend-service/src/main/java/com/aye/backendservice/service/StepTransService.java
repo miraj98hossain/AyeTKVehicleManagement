@@ -5,7 +5,6 @@ import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransRequest;
 import com.aye.entitylib.entity.vehicleproject.StepTrans;
 import com.aye.entitylib.entity.vehicleproject.StepTransLines;
-import jdk.jshell.spi.ExecutionControl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,7 +25,7 @@ public interface StepTransService {
 
     Page<StepTrans> findAll(Pageable pageable);
 
-    StepTransLines updateTransLines(StepTransLinesRequest stepTransLinesRequest, String userName) throws ExecutionControl.NotImplementedException;
+    StepTransLines updateTransLines(StepTransLinesRequest stepTransLinesRequest, String userName);
 
     List<Long> findAllByTempDtlId(Integer tempDtlId, Long invOrgId, Pageable pageable);
 

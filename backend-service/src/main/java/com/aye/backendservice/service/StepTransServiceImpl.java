@@ -22,7 +22,6 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
-import jdk.jshell.spi.ExecutionControl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -156,7 +155,7 @@ public class StepTransServiceImpl implements StepTransService {
 
     @Override
     @Transactional
-    public StepTransLines updateTransLines(StepTransLinesRequest linesReq, String userName) throws ExecutionControl.NotImplementedException {
+    public StepTransLines updateTransLines(StepTransLinesRequest linesReq, String userName) {
         Muser muser = userService.findByUserName(userName);
 
         // requestedLine
@@ -182,7 +181,7 @@ public class StepTransServiceImpl implements StepTransService {
                     .filter(strategy -> strategy.supports(reqStepTransLines))
                     .findFirst()
                     .map(strategy -> strategy.doEvent(reqStepTransLines, dbstepTransLines, stepTrans, muser))
-                    .orElseThrow(() -> new ExecutionControl.NotImplementedException(
+                    .orElseThrow(() -> new RuntimeException(
                             "Not implemented for Status: " + reqStepTransLines.getStepStatus()));
         } catch (Exception e) {
             this.redisIdLockService.unlock(STEP_TRANS_LINE_LOCK_KEY,

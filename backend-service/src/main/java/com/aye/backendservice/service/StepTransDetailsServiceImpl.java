@@ -3,25 +3,26 @@ package com.aye.backendservice.service;
 import com.aye.RestfulServer.service.MuserService;
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
+import com.aye.backendservice.service.domain.stepTransDetails.StepTransDetailsLinesEventStrategy;
 import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
 import com.aye.dtoLib.dto.request.StepTransLinesRequest;
 import com.aye.entitylib.entity.user.Muser;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
 import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
-import com.aye.entitylib.entity.vehicleproject.StepTransLines;
 import com.aye.entitylib.entity.vehicleproject.StepTransTimeline;
 import com.aye.enums.StepStatus;
 import com.aye.mapper.StepTransDetailsLinesMapper;
 import jakarta.persistence.EntityNotFoundException;
-import jdk.jshell.spi.ExecutionControl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
+
+import static com.aye.backendservice.utils.RedisKey.STEP_TRANS_DETAIL_LINE_LOCK_KEY;
 
 
 @Service
@@ -41,6 +42,10 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     private StepTransService stepTransService;
     @Autowired
     private StepTransLinesService stepTransLinesService;
+    @Autowired
+    private List<StepTransDetailsLinesEventStrategy> strategies;
+    @Autowired
+    private RedisIdLockService redisIdLockService;
 
     @Override
     @Transactional(readOnly = true)
@@ -128,62 +133,101 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
         return stepTransDetails;
     }
 
-    @Transactional
+//    @Transactional
+//    @Override
+//    public StepTransDetailsLines updateLine(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) throws ExecutionControl.NotImplementedException {
+//        StepTransLines stepTransLine;
+//        StepTransDetailsLines response = new StepTransDetailsLines();
+//        StepStatus status = StepStatus.valueOf(stepStatus);
+//
+//        StepTransDetailsLines stepTransDetailsLines = this.findStDtlLineById(detailLineId);
+//
+//        StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
+//        stepTransLinesRequest.setStepTransLinesId(stepTransLineId);
+//
+//        StepTransTimeline stepTransTimeline = new StepTransTimeline();
+//        stepTransTimeline.setStepTransDetailsLines(stepTransDetailsLines);
+//        stepTransTimeline.setIgnitionTime(LocalDateTime.now());
+//        stepTransTimeline.setStepStatus(status);
+//        stepTransDetailsLines.getStepTransTimeline().add(stepTransTimeline);
+//
+//        if (status.equals(StepStatus.W)) {
+//
+//            stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
+//            stepTransTimeline.setStepTransLines(stepTransLine);
+//            List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
+//
+//            boolean areAllStageZero = stepTransDetails.stream()
+//                    .flatMap(details -> details.getStepTransDetailsLines().stream())
+//                    .allMatch(detailsLine -> detailsLine.getStage() == 0);
+//            stepTransDetailsLines.setStage(stepTransDetailsLines.getStage() + 1);
+//            stepTransDetailsLines.setStepStatus(StepStatus.W);
+//            response = this.lineRepo.save(stepTransDetailsLines);
+//
+//            if (areAllStageZero) {
+//                stepTransLinesRequest.setStepStatus(StepStatus.W.getDisplayName());
+//                this.stepTransService.updateTransLines(stepTransLinesRequest, userName);
+//            }
+//        }
+//        if (status.equals(StepStatus.C)) {
+//            stepTransDetailsLines.setStage(stepTransDetailsLines.getStage() + 1);
+//            stepTransDetailsLines.setStepStatus(StepStatus.C);
+//            stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
+//            stepTransTimeline.setStepTransLines(stepTransLine);
+//            response = this.lineRepo.save(stepTransDetailsLines);
+//            log.info("Step Trans Details Line C event after saving" + response);
+//            List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
+//            boolean isAllOtherItemsLoaded = stepTransDetails.stream()
+//                    .flatMap(details -> details.getStepTransDetailsLines().stream().filter(detailsLine -> !Objects.equals(detailsLine.getStepTransDtlLnId(), detailLineId)))
+//                    .allMatch(detailsLine -> detailsLine.getStepStatus().equals(StepStatus.C));
+//            if (isAllOtherItemsLoaded) {
+//                stepTransLinesRequest.setStepStatus(StepStatus.C.getDisplayName());
+//                this.stepTransService.updateTransLines(stepTransLinesRequest, userName);
+//
+//            }
+//
+//        }
+//        return response;
+//    }
+
     @Override
-    public StepTransDetailsLines updateLine(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) throws ExecutionControl.NotImplementedException {
-        StepTransLines stepTransLine;
-        StepTransDetailsLines response = new StepTransDetailsLines();
+    @Transactional
+    public StepTransDetailsLines updateLine(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) {
+
         StepStatus status = StepStatus.valueOf(stepStatus);
-
         StepTransDetailsLines stepTransDetailsLines = this.findStDtlLineById(detailLineId);
-
         StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
         stepTransLinesRequest.setStepTransLinesId(stepTransLineId);
-
         StepTransTimeline stepTransTimeline = new StepTransTimeline();
         stepTransTimeline.setStepTransDetailsLines(stepTransDetailsLines);
         stepTransTimeline.setIgnitionTime(LocalDateTime.now());
         stepTransTimeline.setStepStatus(status);
-        stepTransDetailsLines.getStepTransTimeline().add(stepTransTimeline);
+        Muser muser = this.muserService.findByUserName(userName);
+        boolean isNotLocked = this.redisIdLockService
+                .tryLock(STEP_TRANS_DETAIL_LINE_LOCK_KEY, status.getDisplayName(), detailLineId, Duration.ofHours(3).getSeconds()); // Locked for 3 Hours
 
-        if (status.equals(StepStatus.W)) {
-            log.info("Step Trans Details Line" + detailLineId + " Update Status W");
-            stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
-            stepTransTimeline.setStepTransLines(stepTransLine);
-            List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
-
-            boolean areAllStageZero = stepTransDetails.stream()
-                    .flatMap(details -> details.getStepTransDetailsLines().stream())
-                    .allMatch(detailsLine -> detailsLine.getStage() == 0);
-            stepTransDetailsLines.setStage(stepTransDetailsLines.getStage() + 1);
-            stepTransDetailsLines.setStepStatus(StepStatus.W);
-            response = this.lineRepo.save(stepTransDetailsLines);
-            log.info("Step Trans Details Line W event after saving" + response);
-            if (areAllStageZero) {
-                stepTransLinesRequest.setStepStatus(StepStatus.W.getDisplayName());
-                this.stepTransService.updateTransLines(stepTransLinesRequest, userName);
-            }
+        if (!isNotLocked) {
+            throw new RuntimeException("Step Trans Detail Line event request for this id " + detailLineId + " is locked");
         }
-        if (status.equals(StepStatus.C)) {
-            log.info("Step Trans Details Line" + detailLineId + " Update Status C");
-            stepTransDetailsLines.setStage(stepTransDetailsLines.getStage() + 1);
-            stepTransDetailsLines.setStepStatus(StepStatus.C);
-            stepTransLine = stepTransLinesService.getStepTransLine(stepTransLineId);
-            stepTransTimeline.setStepTransLines(stepTransLine);
-            response = this.lineRepo.save(stepTransDetailsLines);
-            log.info("Step Trans Details Line C event after saving" + response);
-            List<StepTransDetails> stepTransDetails = stepTransLine.getStepTrans().getStepTransDetails();
-            boolean isAllOtherItemsLoaded = stepTransDetails.stream()
-                    .flatMap(details -> details.getStepTransDetailsLines().stream().filter(detailsLine -> !Objects.equals(detailsLine.getStepTransDtlLnId(), detailLineId)))
-                    .allMatch(detailsLine -> detailsLine.getStepStatus().equals(StepStatus.C));
-            if (isAllOtherItemsLoaded) {
-                stepTransLinesRequest.setStepStatus(StepStatus.C.getDisplayName());
-                this.stepTransService.updateTransLines(stepTransLinesRequest, userName);
 
-            }
+        try {
+            StepTransDetailsLinesEventStrategy strategy = strategies.stream()
+                    .filter(s -> s.supports(status))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException(
+                            "Not implemented for Status: " + status.getDisplayName()));
 
+            return strategy.doEvent(
+                    stepTransLineId,
+                    stepTransDetailsLines,
+                    stepTransTimeline,
+                    stepTransLinesRequest,
+                    muser
+            );
+
+        } catch (Exception e) {
+            this.redisIdLockService.unlock(STEP_TRANS_DETAIL_LINE_LOCK_KEY, status.getDisplayName(), detailLineId);
+            throw e;
         }
-        return response;
     }
-
 }

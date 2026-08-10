@@ -11,4 +11,5 @@ public class RedisKey {
     public static final String USER_LOGIN_RESPONSE_KEY = "USER-LOGIN-RESPONSE";
     public static final String USER_LOGIN_RESPONSE_HASH_KEY = "USER";
     public static final String STEP_TRANS_LINE_LOCK_KEY = "STEP-TRANS-LINES";
+    public static final String STEP_TRANS_DETAIL_LINE_LOCK_KEY = "STEP-TRANS-DETAIL-LINE";
 }
