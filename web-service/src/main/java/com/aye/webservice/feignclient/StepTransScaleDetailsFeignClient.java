@@ -1,6 +1,6 @@
 package com.aye.webservice.feignclient;
 
-import com.aye.dtoLib.dto.response.StepTransScaleDetailsDto;
+import com.aye.dto.response.StepTransScaleDetailsDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

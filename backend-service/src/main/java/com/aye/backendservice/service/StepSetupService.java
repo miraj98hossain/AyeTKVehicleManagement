@@ -1,10 +1,11 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
-import com.aye.dtoLib.dto.request.StepSetupRequest;
-import com.aye.dtoLib.dto.response.StepSetupDetailsResponse;
-import com.aye.entitylib.entity.vehicleproject.StepSetup;
-import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
+
+import com.aye.dto.request.StepSetupDetailsRequest;
+import com.aye.dto.request.StepSetupRequest;
+import com.aye.dto.response.StepSetupDetailsResponse;
+import com.aye.entity.vehicleproject.StepSetup;
+import com.aye.entity.vehicleproject.StepSetupDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

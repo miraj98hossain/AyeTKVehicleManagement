@@ -3,9 +3,10 @@ package com.aye.backendservice.service;
 
 import com.aye.backendservice.repository.StepTransLinesRepository;
 import com.aye.backendservice.service.specification.StepTransSpecification;
-import com.aye.dtoLib.dto.request.StepTransFilter;
-import com.aye.dtoLib.dto.response.StepTransLinesResponse;
-import com.aye.entitylib.entity.vehicleproject.*;
+
+import com.aye.dto.request.StepTransFilter;
+import com.aye.dto.response.StepTransLinesResponse;
+import com.aye.entity.vehicleproject.*;
 import com.aye.mapper.StepTransLinesMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Join;

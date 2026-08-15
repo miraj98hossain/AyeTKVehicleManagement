@@ -1,6 +1,6 @@
 package com.aye.vhmwebclient.service;
 
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.vhmwebclient.feignclient.StepTransDashBoardFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

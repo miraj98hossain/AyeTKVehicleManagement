@@ -1,11 +1,10 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.service.MuserDataCustService;
 
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-
-import com.aye.dtoLib.dto.response.userData.MuserDataCustResDto;
+import com.aye.backendservice.service.userData.MuserDataCustService;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.userData.MuserDataCustResDto;
 import com.aye.mapper.user.MuserDataCustMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

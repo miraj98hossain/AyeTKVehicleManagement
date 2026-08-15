@@ -1,9 +1,10 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.service.BeforeTripVService;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.userOrg.BeforeTripVResDto;
+
+import com.aye.backendservice.service.orgManagement.BeforeTripVService;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.userOrg.BeforeTripVResDto;
 import com.aye.mapper.schedule.BeforeTripVMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

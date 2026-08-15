@@ -1,7 +1,7 @@
 package com.aye.webservice.controller;
 
-import com.aye.dtoLib.dto.request.UserCodeAccessRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.UserCodeAccessRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.UserCodeAccessService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

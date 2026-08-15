@@ -1,14 +1,16 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.service.UserAccessTempltService;
-import com.aye.dtoLib.dto.request.StepTransFilter;
-import com.aye.dtoLib.dto.request.StepTransLinesRequest;
-import com.aye.dtoLib.dto.request.StepTransRequest;
-import com.aye.dtoLib.dto.response.*;
-import com.aye.entitylib.entity.UserAccessTemltDtl;
-import com.aye.entitylib.entity.UserTransactionTypes;
-import com.aye.entitylib.entity.vehicleproject.StepTrans;
-import com.aye.entitylib.entity.vehicleproject.StepTransLines;
+
+import com.aye.backendservice.service.orgManagement.UserAccessTempltService;
+
+import com.aye.dto.request.StepTransFilter;
+import com.aye.dto.request.StepTransLinesRequest;
+import com.aye.dto.request.StepTransRequest;
+import com.aye.dto.response.*;
+import com.aye.entity.UserAccessTemltDtl;
+import com.aye.entity.UserTransactionTypes;
+import com.aye.entity.vehicleproject.StepTrans;
+import com.aye.entity.vehicleproject.StepTransLines;
 import com.aye.enums.StepStatus;
 import com.aye.mapper.StepTransLinesMapper;
 import com.aye.mapper.StepTransMapper;

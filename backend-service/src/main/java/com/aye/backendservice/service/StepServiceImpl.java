@@ -1,11 +1,11 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.MuserService;
 import com.aye.backendservice.repository.StepRepository;
-import com.aye.dtoLib.dto.request.StepRequest;
-import com.aye.entitylib.entity.user.Muser;
-import com.aye.entitylib.entity.vehicleproject.Step;
+import com.aye.backendservice.service.user.MuserService;
+import com.aye.dto.request.StepRequest;
+import com.aye.entity.user.Muser;
+import com.aye.entity.vehicleproject.Step;
 import com.aye.mapper.StepMapper;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.criteria.Predicate;

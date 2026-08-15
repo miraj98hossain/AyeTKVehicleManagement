@@ -1,7 +1,8 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.request.PagesRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+
+import com.aye.dto.request.PagesRequest;
+import com.aye.dto.response.ApiRequestResponse;
 
 public interface PagesBService {
     ApiRequestResponse findAll();

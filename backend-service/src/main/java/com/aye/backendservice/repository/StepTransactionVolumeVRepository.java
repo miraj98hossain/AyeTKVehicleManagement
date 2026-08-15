@@ -1,6 +1,6 @@
 package com.aye.backendservice.repository;
 
-import com.aye.entitylib.entity.vehicleproject.StepTransactionVolumeV;
+import com.aye.entity.vehicleproject.StepTransactionVolumeV;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

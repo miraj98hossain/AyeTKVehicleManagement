@@ -1,6 +1,6 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponse;
 
 /**
  * @author: Miraj

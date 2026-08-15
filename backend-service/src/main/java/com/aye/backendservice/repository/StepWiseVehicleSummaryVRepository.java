@@ -1,6 +1,6 @@
 package com.aye.backendservice.repository;
 
-import com.aye.entitylib.entity.vehicleproject.StepWiseVehicleSummaryV;
+import com.aye.entity.vehicleproject.StepWiseVehicleSummaryV;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

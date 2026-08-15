@@ -1,8 +1,8 @@
 package com.aye.webservice.controller;
 
 
-import com.aye.dtoLib.dto.request.OrgHierarchyRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.OrgHierarchyRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.OrgHierarchyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

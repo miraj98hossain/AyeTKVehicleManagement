@@ -1,17 +1,18 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.MuserService;
+import com.aye.backendservice.service.user.MuserService;
 
-import com.aye.dtoLib.dto.request.MUserRequest;
-import com.aye.dtoLib.dto.request.UserSearchRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.MRoleResponse;
-import com.aye.dtoLib.dto.response.MUserResponse;
-import com.aye.entitylib.entity.CommonColumn;
-import com.aye.entitylib.entity.user.Mrole;
-import com.aye.entitylib.entity.user.Muser;
+import com.aye.dto.request.MUserRequest;
+import com.aye.dto.request.UserSearchRequest;
+import com.aye.dto.response.ApiRequestResponse;
+
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.MRoleResponse;
+import com.aye.dto.response.MUserResponse;
+import com.aye.entity.CommonColumn;
+import com.aye.entity.user.Mrole;
+import com.aye.entity.user.Muser;
 import com.aye.enums.UserType;
 import com.aye.mapper.user.MRoleMapper;
 import com.aye.mapper.user.MUserMapper;

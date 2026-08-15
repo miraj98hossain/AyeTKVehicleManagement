@@ -1,14 +1,15 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.request.ExecutableParameterRequest;
-import com.aye.dtoLib.dto.request.ExecutablesRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.concurrency.ExecutableParameterDto;
+import com.aye.dto.response.concurrency.ExecutablesDto;
 
 public interface ExecutablesBService {
 
-    ApiRequestResponse save(ExecutablesRequest executablesRequest);
+    ApiRequestResponse save(ExecutablesDto executablesRequest);
 
-    ApiRequestResponse saveParameters(ExecutableParameterRequest parameterRequest);
+    ApiRequestResponse saveParameters(ExecutableParameterDto parameterRequest);
 
     ApiRequestResponse findById(Long executablesId);
 

@@ -1,6 +1,6 @@
 package com.aye.webservice.controller;
 
-import com.aye.dtoLib.dto.response.StepTransScaleDetailsDto;
+import com.aye.dto.response.StepTransScaleDetailsDto;
 import com.aye.webservice.service.StepTransScaleDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

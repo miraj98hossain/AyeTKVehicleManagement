@@ -1,7 +1,7 @@
 package com.aye.webservice.feignclient;
 
-import com.aye.dtoLib.dto.request.StepRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.StepRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;

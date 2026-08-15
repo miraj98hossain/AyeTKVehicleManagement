@@ -1,9 +1,9 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.dtoLib.dto.request.MUserRequest;
-import com.aye.dtoLib.dto.request.UserSearchRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.MUserRequest;
+import com.aye.dto.request.UserSearchRequest;
+import com.aye.dto.response.ApiRequestResponse;
 
 
 public interface UserService {

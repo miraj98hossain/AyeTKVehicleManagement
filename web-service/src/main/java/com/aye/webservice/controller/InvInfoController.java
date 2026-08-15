@@ -1,8 +1,8 @@
 package com.aye.webservice.controller;
 
 
-import com.aye.dtoLib.dto.request.InventoryInformationRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.InventoryInformationRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.InvInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

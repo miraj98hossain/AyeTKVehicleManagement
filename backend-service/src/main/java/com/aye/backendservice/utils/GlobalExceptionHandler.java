@@ -1,6 +1,6 @@
 package com.aye.backendservice.utils;
 
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jdk.jshell.spi.ExecutionControl;
 import lombok.extern.slf4j.Slf4j;

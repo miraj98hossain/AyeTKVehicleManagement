@@ -2,7 +2,7 @@ package com.aye.backendservice.service;
 
 
 import com.aye.backendservice.repository.StepWiseTransCountVRepo;
-import com.aye.entitylib.entity.vehicleproject.StepWiseTransCountV;
+import com.aye.entity.vehicleproject.StepWiseTransCountV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

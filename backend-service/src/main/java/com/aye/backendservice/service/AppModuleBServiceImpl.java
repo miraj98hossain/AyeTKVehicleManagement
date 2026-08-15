@@ -1,15 +1,12 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.AppModuleService;
-
-import com.aye.dtoLib.dto.request.AppModuleRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-
-import com.aye.dtoLib.dto.response.userOrg.AppModuleResponse;
-import com.aye.entitylib.entity.AppModule;
-
+import com.aye.backendservice.service.orgManagement.AppModuleService;
+import com.aye.dto.request.AppModuleRequest;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.userOrg.AppModuleResponse;
+import com.aye.entity.AppModule;
 import com.aye.enums.AppModuleCode;
 import com.aye.mapper.userOrg.AppModuleMapper;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.dtoLib.dto.request.*;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.*;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.enums.TrnsType;
 
 public interface UserAccessBService {

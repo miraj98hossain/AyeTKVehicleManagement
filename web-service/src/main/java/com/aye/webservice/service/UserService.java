@@ -1,9 +1,9 @@
 package com.aye.webservice.service;
 
 
-import com.aye.dtoLib.dto.request.MUserRequest;
-import com.aye.dtoLib.dto.request.UserSearchRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.MUserRequest;
+import com.aye.dto.request.UserSearchRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.webservice.feignclient.UserFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

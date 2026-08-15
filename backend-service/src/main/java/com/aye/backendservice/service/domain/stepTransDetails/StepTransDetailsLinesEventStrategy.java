@@ -1,9 +1,10 @@
 package com.aye.backendservice.service.domain.stepTransDetails;
 
-import com.aye.dtoLib.dto.request.StepTransLinesRequest;
-import com.aye.entitylib.entity.user.Muser;
-import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
-import com.aye.entitylib.entity.vehicleproject.StepTransTimeline;
+
+import com.aye.dto.request.StepTransLinesRequest;
+import com.aye.entity.user.Muser;
+import com.aye.entity.vehicleproject.StepTransDetailsLines;
+import com.aye.entity.vehicleproject.StepTransTimeline;
 import com.aye.enums.StepStatus;
 
 /**

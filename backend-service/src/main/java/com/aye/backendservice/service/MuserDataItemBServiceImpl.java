@@ -1,10 +1,10 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.MuserDataItemService;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.entitylib.entity.user.userData.MuserDataItem;
+import com.aye.backendservice.service.userData.MuserDataItemService;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.entity.user.userData.MuserDataItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

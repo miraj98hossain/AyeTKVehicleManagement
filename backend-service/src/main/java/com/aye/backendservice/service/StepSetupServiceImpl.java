@@ -1,17 +1,18 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.MuserService;
-import com.aye.RestfulServer.service.UserAccessTempltService;
 import com.aye.backendservice.repository.StepSetupRepository;
-import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
-import com.aye.dtoLib.dto.request.StepSetupRequest;
-import com.aye.dtoLib.dto.response.StepSetupDetailsResponse;
-import com.aye.entitylib.entity.UserTransactionTypes;
-import com.aye.entitylib.entity.user.Muser;
-import com.aye.entitylib.entity.vehicleproject.Step;
-import com.aye.entitylib.entity.vehicleproject.StepSetup;
-import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
+import com.aye.backendservice.service.orgManagement.UserAccessTempltService;
+import com.aye.backendservice.service.user.MuserService;
+
+import com.aye.dto.request.StepSetupDetailsRequest;
+import com.aye.dto.request.StepSetupRequest;
+import com.aye.dto.response.StepSetupDetailsResponse;
+import com.aye.entity.UserTransactionTypes;
+import com.aye.entity.user.Muser;
+import com.aye.entity.vehicleproject.Step;
+import com.aye.entity.vehicleproject.StepSetup;
+import com.aye.entity.vehicleproject.StepSetupDetails;
 import com.aye.mapper.StepSetupDetailsMapper;
 import com.aye.mapper.StepSetupMapper;
 import jakarta.persistence.EntityNotFoundException;

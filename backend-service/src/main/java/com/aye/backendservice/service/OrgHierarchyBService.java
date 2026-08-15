@@ -1,7 +1,8 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.request.OrgHierarchyRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+
+import com.aye.dto.request.OrgHierarchyRequest;
+import com.aye.dto.response.ApiRequestResponse;
 
 public interface OrgHierarchyBService {
     ApiRequestResponse findById(Long orgId);

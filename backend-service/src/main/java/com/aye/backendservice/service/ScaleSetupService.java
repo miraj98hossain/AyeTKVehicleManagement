@@ -1,6 +1,6 @@
 package com.aye.backendservice.service;
 
-import com.aye.entitylib.entity.vehicleproject.ScaleSetup;
+import com.aye.entity.vehicleproject.ScaleSetup;
 
 import java.util.List;
 

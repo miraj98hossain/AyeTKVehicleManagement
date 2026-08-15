@@ -1,13 +1,15 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.StepTransDetailsLinesResponse;
-import com.aye.dtoLib.dto.response.StepTransDetailsResponse;
-import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
-import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
+import com.aye.dto.request.StepTransDetailsLinesRequest;
+import com.aye.dto.request.StepTransDetailsRequest;
+import com.aye.dto.response.ApiRequestResponseDetail;
+
+import com.aye.dto.response.ApiRequestResponse;
+
+import com.aye.dto.response.StepTransDetailsLinesResponse;
+import com.aye.dto.response.StepTransDetailsResponse;
+import com.aye.entity.vehicleproject.StepTransDetails;
+import com.aye.entity.vehicleproject.StepTransDetailsLines;
 import com.aye.mapper.StepTransDetailsLinesMapper;
 import com.aye.mapper.StepTransDetailsMapper;
 import jakarta.validation.Valid;

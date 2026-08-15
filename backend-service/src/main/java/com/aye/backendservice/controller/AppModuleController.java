@@ -1,8 +1,8 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.AppModuleBService;
-import com.aye.dtoLib.dto.request.AppModuleRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.AppModuleRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

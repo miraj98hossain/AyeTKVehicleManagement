@@ -1,8 +1,8 @@
 package com.aye.webservice.controller;
 
 
-import com.aye.dtoLib.dto.request.PagesRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.PagesRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.webservice.service.PagesService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

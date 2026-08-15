@@ -1,9 +1,9 @@
 package com.aye.webservice.feignclient;
 
 
-import com.aye.dtoLib.dto.request.UserMenuRequest;
-import com.aye.dtoLib.dto.request.UserSubMenuRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.UserMenuRequest;
+import com.aye.dto.request.UserSubMenuRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

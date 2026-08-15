@@ -1,8 +1,9 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.response.StepTransScaleDetailsDto;
-import com.aye.entitylib.entity.vehicleproject.StepTransScaleDetails;
-import com.aye.entitylib.entity.vehicleproject.embeddable.StepTransScaleDetailsId;
+
+import com.aye.dto.response.StepTransScaleDetailsDto;
+import com.aye.entity.vehicleproject.StepTransScaleDetails;
+import com.aye.entity.vehicleproject.embeddable.StepTransScaleDetailsId;
 
 /**
  * @author: Miraj

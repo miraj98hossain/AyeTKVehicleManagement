@@ -1,14 +1,12 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.PageService;
-
-import com.aye.dtoLib.dto.request.PagesRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-
-import com.aye.dtoLib.dto.response.userOrg.PagesResponse;
-import com.aye.entitylib.entity.Pages;
+import com.aye.backendservice.service.orgManagement.PageService;
+import com.aye.dto.request.PagesRequest;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.userOrg.PagesResponse;
+import com.aye.entity.Pages;
 import com.aye.mapper.userOrg.PagesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

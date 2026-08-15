@@ -1,10 +1,10 @@
 package com.aye.vhmwebclient.service;
 
 
-import com.aye.dtoLib.dto.request.StepTransFilter;
-import com.aye.dtoLib.dto.request.StepTransLinesRequest;
-import com.aye.dtoLib.dto.request.StepTransRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.StepTransFilter;
+import com.aye.dto.request.StepTransLinesRequest;
+import com.aye.dto.request.StepTransRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.vhmwebclient.feignclient.StepTransServiceFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;

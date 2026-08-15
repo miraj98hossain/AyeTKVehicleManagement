@@ -1,7 +1,7 @@
 package com.aye.webservice.feignclient;
 
-import com.aye.dtoLib.dto.request.UserCodeAccessRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.UserCodeAccessRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

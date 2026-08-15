@@ -1,15 +1,15 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.InvInformationsService;
-import com.aye.RestfulServer.service.MuserService;
-import com.aye.dtoLib.dto.request.InventoryInformationRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.userOrg.InventoryInformationResponse;
-import com.aye.entitylib.entity.CommonColumn;
-import com.aye.entitylib.entity.InventoryInformations;
-import com.aye.entitylib.entity.user.Muser;
+import com.aye.backendservice.service.orgManagement.InvInformationsService;
+import com.aye.backendservice.service.user.MuserService;
+import com.aye.dto.request.InventoryInformationRequest;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.userOrg.InventoryInformationResponse;
+import com.aye.entity.CommonColumn;
+import com.aye.entity.InventoryInformations;
+import com.aye.entity.user.Muser;
 import com.aye.mapper.userOrg.InventoryInformationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

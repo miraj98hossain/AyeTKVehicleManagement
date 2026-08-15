@@ -1,15 +1,15 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.MuserService;
-import com.aye.RestfulServer.service.OrgHierarchyService;
-import com.aye.dtoLib.dto.request.OrgHierarchyRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.userOrg.OrgHierarchyResponse;
-import com.aye.entitylib.entity.CommonColumn;
-import com.aye.entitylib.entity.OrgHierarchy;
-import com.aye.entitylib.entity.user.Muser;
+import com.aye.backendservice.service.orgManagement.OrgHierarchyService;
+import com.aye.backendservice.service.user.MuserService;
+import com.aye.dto.request.OrgHierarchyRequest;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.userOrg.OrgHierarchyResponse;
+import com.aye.entity.CommonColumn;
+import com.aye.entity.OrgHierarchy;
+import com.aye.entity.user.Muser;
 import com.aye.enums.OrgType;
 import com.aye.mapper.userOrg.OrgHierarchyMapper;
 import org.springframework.beans.factory.annotation.Autowired;

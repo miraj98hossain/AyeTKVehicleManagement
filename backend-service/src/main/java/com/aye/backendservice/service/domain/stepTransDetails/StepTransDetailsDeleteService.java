@@ -3,7 +3,7 @@ package com.aye.backendservice.service.domain.stepTransDetails;
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.ApiRequestResponseMaker;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

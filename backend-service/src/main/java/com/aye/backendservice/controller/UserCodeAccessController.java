@@ -1,8 +1,8 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.UserCodeAccessBService;
-import com.aye.dtoLib.dto.request.UserCodeAccessRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.UserCodeAccessRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

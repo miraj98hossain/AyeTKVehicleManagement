@@ -1,8 +1,8 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.UserAccessBService;
-import com.aye.dtoLib.dto.request.*;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.*;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.enums.TrnsType;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

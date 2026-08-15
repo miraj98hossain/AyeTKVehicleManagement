@@ -1,9 +1,10 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.StepWiseTransCountVResponse;
-import com.aye.entitylib.entity.vehicleproject.StepWiseTransCountV;
+import com.aye.dto.response.ApiRequestResponse;
+
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.StepWiseTransCountVResponse;
+import com.aye.entity.vehicleproject.StepWiseTransCountV;
 import com.aye.mapper.StepWiseTransCountVMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

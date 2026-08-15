@@ -1,57 +1,51 @@
 package com.aye.webservice.service;
 
 
-import com.aye.dtoLib.dto.request.ExecutableParameterRequest;
-import com.aye.dtoLib.dto.request.ExecutablesRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.concurrency.ExecutableParameterDto;
+import com.aye.dto.response.concurrency.ExecutablesDto;
 import com.aye.webservice.feignclient.ExecutablesFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 public class ExecutablesService {
     @Autowired
-    ExecutablesFeignClient executablesFeignClient;
+    private ExecutablesFeignClient executablesFeignClient;
 
-    public ApiRequestResponse save(@RequestBody ExecutablesRequest executablesRequest) {
-        return this.executablesFeignClient.save(executablesRequest).getBody();
+    // ******************** Executables ************************
+
+
+    public ApiRequestResponse getExecutableParamList(Long executableId) {
+        return this.executablesFeignClient.getExecutableParamList(executableId).getBody();
     }
 
-    public ApiRequestResponse saveParameters(@RequestBody ExecutableParameterRequest parameterRequest) {
-        return this.executablesFeignClient.saveParameters(parameterRequest).getBody();
+    public ApiRequestResponse findAllExecutables() {
+        return executablesFeignClient.findAllExecutables().getBody();
     }
 
-    public ApiRequestResponse findById(@PathVariable("executablesId") Long executablesId) {
-        return this.executablesFeignClient.findById(executablesId).getBody();
+    public ApiRequestResponse saveExecutables(ExecutablesDto executablesMDTO, String userName) {
+        return this.executablesFeignClient.saveExecutables(executablesMDTO, userName).getBody();
     }
 
-    public ApiRequestResponse findByFileName(@RequestParam("fileName") String fileName) {
-        return this.executablesFeignClient.findByFileName(fileName).getBody();
+    public ApiRequestResponse findExecutablesById(Long id) {
+        return this.executablesFeignClient.findExecutablesById(id).getBody();
     }
 
-    public ApiRequestResponse findAll() {
-        return this.executablesFeignClient.findAll().getBody();
+    // ******************** Executable Params ************************
+
+    public ApiRequestResponse uploadFile(Long executableId, MultipartFile files, String userName) throws IOException {
+        return this.executablesFeignClient.uploadFile(executableId, files, userName).getBody();
     }
 
-    public ApiRequestResponse findByExecName(@RequestParam("execName") String execName,
-                                             @RequestParam("moduleCode") Long moduleCode) {
-        return this.executablesFeignClient.findByExecName(execName, moduleCode).getBody();
+    public ApiRequestResponse getExecutableParamById(Long executableId, Long exectParamId) {
+        return this.executablesFeignClient.getExecutableParamById(executableId, exectParamId).getBody();
     }
 
-    public ApiRequestResponse findByModuleCode(@RequestParam("execName") String execName,
-                                               @RequestParam("moduleCode") Long moduleCode) {
-        return this.executablesFeignClient.findByModuleCode(execName, moduleCode).getBody();
-    }
-
-    public ApiRequestResponse findParametersByExecutable(@PathVariable("executableId") Long executableId,
-                                                         @PathVariable("temltId") Integer temltId) {
-        return this.executablesFeignClient.findParametersByExecutable(executableId, temltId).getBody();
-    }
-
-    public ApiRequestResponse findParamById(@PathVariable("exeParmId") Long exeParmId) {
-        return this.executablesFeignClient.findParamById(exeParmId).getBody();
+    public ApiRequestResponse saveExecutableParam(ExecutableParameterDto executableParameterDto, Long executableId, String userName) {
+        return this.executablesFeignClient.saveExecutableParam(executableParameterDto, executableId, userName).getBody();
     }
 }

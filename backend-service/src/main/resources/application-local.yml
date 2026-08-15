@@ -34,7 +34,7 @@ spring:
 
 
   Report:
-    dir: F:/Red/Report/
+    dir: C:/Users/User/JaspersoftWorkspace/MyReports
     serialization:
       fail-on-empty-beans: false
   data:

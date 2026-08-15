@@ -1,21 +1,24 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.repo.InvOrgSubInvVRepo;
-import com.aye.RestfulServer.repo.UserSubInvAccessRepo;
-import com.aye.RestfulServer.repo.UserTransactionTypesRepo;
-import com.aye.RestfulServer.service.MuserService;
-import com.aye.RestfulServer.service.UserTrnsAndSubinvAccessService;
+
 import com.aye.backendservice.applicationEvent.UserAccessTemplateCacheSyncEvent;
-import com.aye.dtoLib.dto.request.UserSubInvAccessRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.userOrg.InvOrgSubInvVResponseDto;
-import com.aye.dtoLib.dto.response.userOrg.UserSubInvAccessResponse;
-import com.aye.dtoLib.dto.response.userOrg.UserTransactionTypesResponse;
-import com.aye.entitylib.entity.CommonColumn;
-import com.aye.entitylib.entity.InvOrgSubInvV;
-import com.aye.entitylib.entity.UserSubInvAccess;
-import com.aye.entitylib.entity.UserTransactionTypes;
+import com.aye.backendservice.repository.orgManagement.InvOrgSubInvVRepo;
+import com.aye.backendservice.repository.orgManagement.UserSubInvAccessRepo;
+import com.aye.backendservice.repository.orgManagement.UserTransactionTypesRepo;
+import com.aye.backendservice.service.orgManagement.UserTrnsAndSubinvAccessService;
+import com.aye.backendservice.service.user.MuserService;
+import com.aye.dto.request.UserSubInvAccessRequest;
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.userOrg.InvOrgSubInvVResponseDto;
+
+import com.aye.dto.response.ApiRequestResponse;
+
+import com.aye.dto.response.userOrg.UserSubInvAccessResponse;
+import com.aye.dto.response.userOrg.UserTransactionTypesResponse;
+import com.aye.entity.CommonColumn;
+import com.aye.entity.InvOrgSubInvV;
+import com.aye.entity.UserSubInvAccess;
+import com.aye.entity.UserTransactionTypes;
 import com.aye.enums.TrnsType;
 import com.aye.mapper.userOrg.InvOrgSubInvVMapper;
 import com.aye.mapper.userOrg.UserSubInvAccessMapper;

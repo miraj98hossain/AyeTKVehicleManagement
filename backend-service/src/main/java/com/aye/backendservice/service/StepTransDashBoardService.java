@@ -1,9 +1,9 @@
 package com.aye.backendservice.service;
 
-import com.aye.entitylib.entity.vehicleproject.StepTransTotalTimeV;
-import com.aye.entitylib.entity.vehicleproject.StepTransactionVolumeV;
-import com.aye.entitylib.entity.vehicleproject.StepWiseVehicleSummaryV;
-import com.aye.entitylib.entity.vehicleproject.StrStepWiseTotalTimeV;
+import com.aye.entity.vehicleproject.StepTransTotalTimeV;
+import com.aye.entity.vehicleproject.StepTransactionVolumeV;
+import com.aye.entity.vehicleproject.StepWiseVehicleSummaryV;
+import com.aye.entity.vehicleproject.StrStepWiseTotalTimeV;
 
 import java.util.List;
 

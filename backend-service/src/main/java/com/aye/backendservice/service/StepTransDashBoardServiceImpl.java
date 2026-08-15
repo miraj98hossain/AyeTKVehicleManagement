@@ -4,10 +4,10 @@ import com.aye.backendservice.repository.StepTransTotalTimeVRepository;
 import com.aye.backendservice.repository.StepTransactionVolumeVRepository;
 import com.aye.backendservice.repository.StepWiseVehicleSummaryVRepository;
 import com.aye.backendservice.repository.StrStepWiseTotalTimeVRepository;
-import com.aye.entitylib.entity.vehicleproject.StepTransTotalTimeV;
-import com.aye.entitylib.entity.vehicleproject.StepTransactionVolumeV;
-import com.aye.entitylib.entity.vehicleproject.StepWiseVehicleSummaryV;
-import com.aye.entitylib.entity.vehicleproject.StrStepWiseTotalTimeV;
+import com.aye.entity.vehicleproject.StepTransTotalTimeV;
+import com.aye.entity.vehicleproject.StepTransactionVolumeV;
+import com.aye.entity.vehicleproject.StepWiseVehicleSummaryV;
+import com.aye.entity.vehicleproject.StrStepWiseTotalTimeV;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

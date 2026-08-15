@@ -1,8 +1,8 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
 
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponseDetail;
 
 public class ApiRequestResponseMaker {
 

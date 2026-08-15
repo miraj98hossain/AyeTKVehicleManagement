@@ -1,11 +1,12 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.dtoLib.dto.request.StepRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.StepResponse;
-import com.aye.entitylib.entity.vehicleproject.Step;
+import com.aye.dto.request.StepRequest;
+import com.aye.dto.response.ApiRequestResponse;
+
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.StepResponse;
+import com.aye.entity.vehicleproject.Step;
 import com.aye.mapper.StepMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

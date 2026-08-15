@@ -1,9 +1,9 @@
 package com.aye.vhmwebclient.feignclient;
 
 
-import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.StepTransDetailsLinesRequest;
+import com.aye.dto.request.StepTransDetailsRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

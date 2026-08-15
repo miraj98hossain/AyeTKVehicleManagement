@@ -1,15 +1,16 @@
 package com.aye.backendservice.applicationEvent.listener;
 
-import com.aye.RestfulServer.service.MuserService;
-import com.aye.RestfulServer.service.UserAccessService;
+
 import com.aye.backendservice.applicationEvent.UserAccessCacheGenerateEvent;
 import com.aye.backendservice.applicationEvent.UserAccessCacheSyncEvent;
 import com.aye.backendservice.applicationEvent.UserAccessTemplateCacheSyncEvent;
 import com.aye.backendservice.applicationEvent.UserMenusCacheSyncEvent;
-import com.aye.dtoLib.dto.response.userOrg.UserAccessTemltDtlResponse;
-import com.aye.entitylib.entity.UserAccess;
-import com.aye.entitylib.entity.UserAccessTemltDtl;
-import com.aye.entitylib.entity.user.Muser;
+import com.aye.backendservice.service.orgManagement.UserAccessService;
+import com.aye.backendservice.service.user.MuserService;
+import com.aye.dto.response.userOrg.UserAccessTemltDtlResponse;
+import com.aye.entity.UserAccess;
+import com.aye.entity.UserAccessTemltDtl;
+import com.aye.entity.user.Muser;
 import com.aye.mapper.userOrg.UserAccessTemltDtlMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

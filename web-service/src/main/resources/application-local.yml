@@ -4,7 +4,7 @@ spring:
 server:
   servlet:
     context-path: /aye-web-service
-  port: 8081
+  port: 6001
   #  ssl:
   #    enabled: true
   #    key-store-type: JKS

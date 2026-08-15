@@ -1,9 +1,9 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.dtoLib.dto.request.StepTransFilter;
-import com.aye.dtoLib.dto.response.StepTransLinesResponse;
-import com.aye.entitylib.entity.vehicleproject.StepTransLines;
+import com.aye.dto.request.StepTransFilter;
+import com.aye.dto.response.StepTransLinesResponse;
+import com.aye.entity.vehicleproject.StepTransLines;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

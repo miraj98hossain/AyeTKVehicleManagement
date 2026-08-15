@@ -1,9 +1,9 @@
 package com.aye.webservice.feignclient;
 
 
-import com.aye.dtoLib.dto.request.MUserRequest;
-import com.aye.dtoLib.dto.request.UserSearchRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.MUserRequest;
+import com.aye.dto.request.UserSearchRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

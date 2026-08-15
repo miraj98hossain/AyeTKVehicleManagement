@@ -15,7 +15,9 @@ public class RedisIdLockService {
     }
 
     private String key(String transactionName, Long id, String eventName) {
-        return "TRANSACTION-LOCK:" + transactionName + ":" + id + ":" + eventName;
+        return "TRANSACTION-LOCK:"
+
+                + transactionName + ":" + id + ":" + eventName;
     }
 
     public boolean tryLock(String transactionName, String eventName, Long id, long seconds) {

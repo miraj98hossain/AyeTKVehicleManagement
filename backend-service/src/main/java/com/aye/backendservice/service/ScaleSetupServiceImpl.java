@@ -2,7 +2,7 @@ package com.aye.backendservice.service;
 
 
 import com.aye.backendservice.repository.ScaleSetupRepo;
-import com.aye.entitylib.entity.vehicleproject.ScaleSetup;
+import com.aye.entity.vehicleproject.ScaleSetup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

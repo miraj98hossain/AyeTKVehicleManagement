@@ -1,11 +1,13 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.service.MuserService;
+
 import com.aye.backendservice.repository.StepTransScaleDetailsRepository;
-import com.aye.dtoLib.dto.response.StepTransScaleDetailsDto;
-import com.aye.entitylib.entity.user.Muser;
-import com.aye.entitylib.entity.vehicleproject.StepTransScaleDetails;
-import com.aye.entitylib.entity.vehicleproject.embeddable.StepTransScaleDetailsId;
+import com.aye.backendservice.service.user.MuserService;
+
+import com.aye.dto.response.StepTransScaleDetailsDto;
+import com.aye.entity.user.Muser;
+import com.aye.entity.vehicleproject.StepTransScaleDetails;
+import com.aye.entity.vehicleproject.embeddable.StepTransScaleDetailsId;
 import com.aye.mapper.StepTransScaleDetailsMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

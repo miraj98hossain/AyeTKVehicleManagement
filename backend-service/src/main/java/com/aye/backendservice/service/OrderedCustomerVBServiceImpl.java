@@ -1,9 +1,10 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.service.OrderedCustomerVService;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.order.OrderedCustomerVDto;
+
+import com.aye.backendservice.service.orgManagement.OrderedCustomerVService;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.order.OrderedCustomerVDto;
 import com.aye.mapper.order.OrderedCustomerVMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

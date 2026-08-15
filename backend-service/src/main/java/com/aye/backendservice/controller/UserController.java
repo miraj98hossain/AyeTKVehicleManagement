@@ -1,9 +1,9 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.UserService;
-import com.aye.dtoLib.dto.request.MUserRequest;
-import com.aye.dtoLib.dto.request.UserSearchRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.MUserRequest;
+import com.aye.dto.request.UserSearchRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

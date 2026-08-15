@@ -1,63 +1,65 @@
 package com.aye.backendservice.controller;
 
-import com.aye.backendservice.service.ExecutablesBService;
-import com.aye.dtoLib.dto.request.ExecutableParameterRequest;
-import com.aye.dtoLib.dto.request.ExecutablesRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.backendservice.service.concurrency.ExecutableViewService;
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.concurrency.ExecutableParameterDto;
+import com.aye.dto.response.concurrency.ExecutablesDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/executables")
 public class ExecutablesController {
 
     @Autowired
-    private ExecutablesBService executablesBService;
+    private ExecutableViewService executableViewService;
 
-    @PostMapping("/save")
-    ResponseEntity<ApiRequestResponse> save(@RequestBody ExecutablesRequest executablesRequest) {
-        return ResponseEntity.ok(executablesBService.save(executablesRequest));
+    // ******************** Executables ************************
+
+    @GetMapping("/findAllExecutables")
+    ResponseEntity<ApiRequestResponse> findAllExecutables() {
+        return ResponseEntity.ok(executableViewService.findAllExecutables());
     }
 
-    @PostMapping("/saveParameters")
-    ResponseEntity<ApiRequestResponse> saveParameters(@RequestBody ExecutableParameterRequest parameterRequest) {
-        return ResponseEntity.ok(executablesBService.saveParameters(parameterRequest));
+    @PostMapping("/saveExecutables/{userName}")
+    ResponseEntity<ApiRequestResponse> saveExecutables(@RequestBody ExecutablesDto executablesMDTO, @PathVariable String userName) {
+        return ResponseEntity.ok(executableViewService.saveExecutable(executablesMDTO, userName));
     }
 
-    @GetMapping("/findById/{executablesId}")
-    ResponseEntity<ApiRequestResponse> findById(@PathVariable("executablesId") Long executablesId) {
-        return ResponseEntity.ok(executablesBService.findById(executablesId));
+    @GetMapping("/executable/{id}")
+    ResponseEntity<ApiRequestResponse> findExecutablesById(@PathVariable Long id) {
+        return ResponseEntity.ok(executableViewService.findExecutablesById(id));
     }
 
-    @GetMapping("/findByFileName")
-    ResponseEntity<ApiRequestResponse> findByFileName(@RequestParam("fileName") String fileName) {
-        return ResponseEntity.ok(executablesBService.findByFileName(fileName));
+    @PostMapping(value = "/uploadFile/{userName}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<ApiRequestResponse> uploadFile(@RequestParam Long executableId,
+                                                  @RequestPart("files") MultipartFile files,
+                                                  @PathVariable("userName") String userName) throws IOException {
+        return ResponseEntity.ok(this.executableViewService.uploadFile(executableId, files, userName));
     }
 
-    @GetMapping("/findAll")
-    ResponseEntity<ApiRequestResponse> findAll() {
-        return ResponseEntity.ok(executablesBService.findAll());
+    // ******************** Executable Params ************************
+
+    @GetMapping("/getExecutableParamList/{executableId}")
+    ResponseEntity<ApiRequestResponse> getExecutableParamList(@PathVariable Long executableId) {
+        return ResponseEntity.ok(executableViewService.getExecutableParamList(executableId));
     }
 
-    @GetMapping("/findByExecName")
-    ResponseEntity<ApiRequestResponse> findByExecName(@RequestParam("execName") String execName, @RequestParam("moduleCode") Long moduleCode) {
-        return ResponseEntity.ok(executablesBService.findByExecName(execName, moduleCode));
+    @GetMapping("/getExecutableParamById/{executableId}/{exectParamId}")
+    ResponseEntity<ApiRequestResponse> getExecutableParamById(@PathVariable("executableId") Long executableId,
+                                                              @PathVariable("exectParamId") Long exectParamId) {
+        return ResponseEntity.ok(executableViewService.getExecutableParamById(executableId, exectParamId));
     }
 
-    @GetMapping("/findByModuleCode")
-    ResponseEntity<ApiRequestResponse> findByModuleCode(@RequestParam("execName") String execName, @RequestParam("moduleCode") Long moduleCode) {
-        return ResponseEntity.ok(executablesBService.findByModuleCode(execName, moduleCode));
-    }
-
-    @GetMapping("/findParametersByExecutable/{executableId}/{temltId}")
-    ResponseEntity<ApiRequestResponse> findParametersByExecutable(@PathVariable("executableId") Long executableId,
-                                                                  @PathVariable("temltId") Integer temltId) {
-        return ResponseEntity.ok(executablesBService.findParametersByExecutable(executableId, temltId));
-    }
-
-    @GetMapping("/findParamById/{exeParmId}")
-    ResponseEntity<ApiRequestResponse> findParamById(@PathVariable("exeParmId") Long exeParmId) {
-        return ResponseEntity.ok(executablesBService.findParamById(exeParmId));
+    @PostMapping("/saveExecutableParam/{executableId}/{userName}")
+    ResponseEntity<ApiRequestResponse> saveExecutableParam(@RequestBody ExecutableParameterDto executableParameterDto,
+                                                           @PathVariable("executableId") Long executableId,
+                                                           @PathVariable("userName") String userName) {
+        return ResponseEntity.ok(executableViewService.saveExecutableParam(executableParameterDto, executableId, userName));
     }
 }

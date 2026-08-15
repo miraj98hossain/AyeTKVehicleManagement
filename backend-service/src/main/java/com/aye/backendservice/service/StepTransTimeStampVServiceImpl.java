@@ -2,9 +2,10 @@ package com.aye.backendservice.service;
 
 
 import com.aye.backendservice.repository.StepTransTimeStampVRepo;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.StepTransTimeStampVResponse;
+import com.aye.dto.response.ApiRequestResponse;
+
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.StepTransTimeStampVResponse;
 import com.aye.mapper.StepTransTimeStampVMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

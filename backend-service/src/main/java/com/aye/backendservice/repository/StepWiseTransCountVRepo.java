@@ -1,7 +1,7 @@
 package com.aye.backendservice.repository;
 
 
-import com.aye.entitylib.entity.vehicleproject.StepWiseTransCountV;
+import com.aye.entity.vehicleproject.StepWiseTransCountV;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

@@ -1,8 +1,9 @@
 package com.aye.backendservice.service;
 
-import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.entitylib.entity.vehicleproject.StepTransDetails;
-import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
+
+import com.aye.dto.request.StepTransDetailsLinesRequest;
+import com.aye.entity.vehicleproject.StepTransDetails;
+import com.aye.entity.vehicleproject.StepTransDetailsLines;
 import jdk.jshell.spi.ExecutionControl;
 import org.springframework.stereotype.Service;
 

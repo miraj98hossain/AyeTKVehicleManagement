@@ -1,9 +1,9 @@
 package com.aye.backendservice.controller;
 
 import com.aye.backendservice.service.UserMenuBService;
-import com.aye.dtoLib.dto.request.UserMenuRequest;
-import com.aye.dtoLib.dto.request.UserSubMenuRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.UserMenuRequest;
+import com.aye.dto.request.UserSubMenuRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -74,7 +74,7 @@ public class UserMenuController {
     public ResponseEntity<ApiRequestResponse> findSubMenuById(@PathVariable("submenuId") Integer submenuId) {
         return ResponseEntity.ok(userMenuBService.findSubMenuById(submenuId));
     }
-    
+
 
     @GetMapping("/findByPage")
     public ResponseEntity<ApiRequestResponse> findByPage(@RequestParam String pageName) {

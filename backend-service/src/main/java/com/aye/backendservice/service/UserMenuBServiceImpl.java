@@ -1,20 +1,22 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.RestfulServer.service.MuserService;
-import com.aye.RestfulServer.service.UserMenuService;
 import com.aye.backendservice.applicationEvent.UserMenusCacheSyncEvent;
-import com.aye.dtoLib.dto.request.UserMenuRequest;
-import com.aye.dtoLib.dto.request.UserSubMenuRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.userOrg.UserAccessResponse;
-import com.aye.dtoLib.dto.response.userOrg.UserAccessTemltDtlResponse;
-import com.aye.dtoLib.dto.response.userOrg.UserMenuResponse;
-import com.aye.dtoLib.dto.response.userOrg.UserSubMenuResponse;
-import com.aye.entitylib.entity.UserMenu;
-import com.aye.entitylib.entity.UserSubMenu;
-import com.aye.entitylib.entity.user.Muser;
+import com.aye.backendservice.service.orgManagement.UserMenuService;
+import com.aye.backendservice.service.user.MuserService;
+import com.aye.dto.request.UserMenuRequest;
+import com.aye.dto.request.UserSubMenuRequest;
+import com.aye.dto.response.ApiRequestResponseDetail;
+
+import com.aye.dto.response.ApiRequestResponse;
+
+import com.aye.dto.response.userOrg.UserAccessResponse;
+import com.aye.dto.response.userOrg.UserAccessTemltDtlResponse;
+import com.aye.dto.response.userOrg.UserMenuResponse;
+import com.aye.dto.response.userOrg.UserSubMenuResponse;
+import com.aye.entity.UserMenu;
+import com.aye.entity.UserSubMenu;
+import com.aye.entity.user.Muser;
 import com.aye.mapper.userOrg.UserAccessMapper;
 import com.aye.mapper.userOrg.UserAccessTemltDtlMapper;
 import com.aye.mapper.userOrg.UserMenuMapper;

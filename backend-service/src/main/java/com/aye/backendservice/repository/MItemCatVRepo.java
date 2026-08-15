@@ -1,6 +1,6 @@
 package com.aye.backendservice.repository;
 
-import com.aye.entitylib.entity.order.MItemCatVNew;
+import com.aye.entity.order.MItemCatVNew;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 

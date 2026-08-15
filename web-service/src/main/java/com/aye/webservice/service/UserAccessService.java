@@ -1,7 +1,7 @@
 package com.aye.webservice.service;
 
-import com.aye.dtoLib.dto.request.*;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.*;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.enums.TrnsType;
 import com.aye.webservice.feignclient.UserAccessFeignClient;
 import org.springframework.beans.factory.annotation.Autowired;

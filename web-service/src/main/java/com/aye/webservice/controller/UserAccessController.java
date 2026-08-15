@@ -1,7 +1,7 @@
 package com.aye.webservice.controller;
 
-import com.aye.dtoLib.dto.request.*;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.*;
+import com.aye.dto.response.ApiRequestResponse;
 import com.aye.enums.TrnsType;
 import com.aye.webservice.service.UserAccessService;
 import jakarta.validation.Valid;

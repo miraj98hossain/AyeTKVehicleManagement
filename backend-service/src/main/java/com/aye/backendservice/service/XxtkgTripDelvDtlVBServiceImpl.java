@@ -1,10 +1,11 @@
 package com.aye.backendservice.service;
 
-import com.aye.RestfulServer.service.XxtkgTripDelvDtlVService;
 
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
-import com.aye.dtoLib.dto.response.ApiRequestResponseDetail;
-import com.aye.dtoLib.dto.response.XxtkgTripDelvDtlVResponse;
+import com.aye.backendservice.service.orgManagement.XxtkgTripDelvDtlVService;
+import com.aye.dto.response.ApiRequestResponse;
+
+import com.aye.dto.response.ApiRequestResponseDetail;
+import com.aye.dto.response.XxtkgTripDelvDtlVResponse;
 import com.aye.mapper.schedule.XxtkgTripDelvDtlVMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

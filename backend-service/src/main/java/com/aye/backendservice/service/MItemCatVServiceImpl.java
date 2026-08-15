@@ -1,7 +1,7 @@
 package com.aye.backendservice.service;
 
 import com.aye.backendservice.repository.MItemCatVRepo;
-import com.aye.entitylib.entity.order.MItemCatVNew;
+import com.aye.entity.order.MItemCatVNew;
 import jakarta.persistence.criteria.Expression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

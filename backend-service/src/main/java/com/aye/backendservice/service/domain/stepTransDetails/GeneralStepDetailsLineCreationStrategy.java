@@ -3,9 +3,10 @@ package com.aye.backendservice.service.domain.stepTransDetails;
 
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
-import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.entitylib.entity.user.Muser;
-import com.aye.entitylib.entity.vehicleproject.StepTransDetailsLines;
+
+import com.aye.dto.request.StepTransDetailsLinesRequest;
+import com.aye.entity.user.Muser;
+import com.aye.entity.vehicleproject.StepTransDetailsLines;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -38,7 +39,7 @@ public class GeneralStepDetailsLineCreationStrategy implements StepTransDetailsL
             var obj = repository.save(factory.fromStepDetailsLineReq(req, user));
             list.add(obj);
         }
-        
+
         return list;
     }
 }

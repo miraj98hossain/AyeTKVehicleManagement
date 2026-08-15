@@ -1,6 +1,6 @@
 package com.aye.backendservice.service;
 
-import com.aye.entitylib.entity.vehicleproject.StepWiseTransCountV;
+import com.aye.entity.vehicleproject.StepWiseTransCountV;
 
 import java.util.List;
 

@@ -1,8 +1,8 @@
 package com.aye.backendservice.service.specification;
 
 
-import com.aye.dtoLib.dto.request.StepTransFilter;
-import com.aye.entitylib.entity.vehicleproject.*;
+import com.aye.dto.request.StepTransFilter;
+import com.aye.entity.vehicleproject.*;
 import com.aye.enums.StepStatus;
 import com.aye.enums.StepTransStatus;
 import jakarta.persistence.criteria.Join;

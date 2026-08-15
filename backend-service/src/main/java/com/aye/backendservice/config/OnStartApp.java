@@ -7,12 +7,11 @@
 package com.aye.backendservice.config;
 
 
-import com.aye.RestfulServer.service.MuserService;
-import com.aye.RestfulServer.service.PageService;
-import com.aye.entitylib.entity.CommonColumn;
-import com.aye.entitylib.entity.Pages;
-
-import com.aye.entitylib.entity.user.Muser;
+import com.aye.backendservice.service.orgManagement.PageService;
+import com.aye.backendservice.service.user.MuserService;
+import com.aye.entity.CommonColumn;
+import com.aye.entity.Pages;
+import com.aye.entity.user.Muser;
 import com.aye.enums.PageUrl;
 import com.aye.enums.RoleTypes;
 import org.springframework.beans.factory.annotation.Autowired;

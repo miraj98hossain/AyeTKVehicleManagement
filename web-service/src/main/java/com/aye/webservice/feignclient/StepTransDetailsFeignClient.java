@@ -1,8 +1,8 @@
 package com.aye.webservice.feignclient;
 
-import com.aye.dtoLib.dto.request.StepTransDetailsLinesRequest;
-import com.aye.dtoLib.dto.request.StepTransDetailsRequest;
-import com.aye.dtoLib.dto.response.ApiRequestResponse;
+import com.aye.dto.request.StepTransDetailsLinesRequest;
+import com.aye.dto.request.StepTransDetailsRequest;
+import com.aye.dto.response.ApiRequestResponse;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

@@ -1,9 +1,9 @@
 package com.aye.backendservice.service;
 
 
-import com.aye.dtoLib.dto.request.StepSetupDetailsRequest;
-import com.aye.entitylib.entity.vehicleproject.StepSetup;
-import com.aye.entitylib.entity.vehicleproject.StepSetupDetails;
+import com.aye.dto.request.StepSetupDetailsRequest;
+import com.aye.entity.vehicleproject.StepSetup;
+import com.aye.entity.vehicleproject.StepSetupDetails;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -25,7 +25,7 @@ public interface StepSetupDetailsService {
     List<StepSetupDetails> getAllDetailsBySetup(StepSetup stepSetup);
 
     List<StepSetupDetails> getDetailsBySetupId(StepSetup stepSetup);
-    
+
     void saveAll(List<StepSetupDetails> stepSetupDetails);
 
     StepSetupDetails save(StepSetupDetails stepSetupDetails);
