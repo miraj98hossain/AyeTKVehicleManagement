@@ -1,6 +1,7 @@
 package com.aye.backendservice.service.domain.stepTrans;
 
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransRepository;
 import com.aye.backendservice.service.StepTransLinesService;
 import com.aye.entity.user.Muser;
@@ -27,6 +28,7 @@ public class StepTransLineCompleteEvent implements StepTransLineEventStrategy {
         return reqStepTransLines.getStepStatus().equals(StepStatus.C);
     }
 
+    @EnableLogging
     @Override
     public StepTransLines doEvent(StepTransLines reqStepTransLines, StepTransLines dbstepTransLines, StepTrans stepTrans, Muser user) {
         StepTransLines objResponse;

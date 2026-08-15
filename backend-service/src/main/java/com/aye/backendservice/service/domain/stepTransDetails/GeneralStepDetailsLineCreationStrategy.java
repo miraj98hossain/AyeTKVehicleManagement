@@ -1,9 +1,9 @@
 package com.aye.backendservice.service.domain.stepTransDetails;
 
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
-
 import com.aye.dto.request.StepTransDetailsLinesRequest;
 import com.aye.entity.user.Muser;
 import com.aye.entity.vehicleproject.StepTransDetailsLines;
@@ -27,7 +27,7 @@ public class GeneralStepDetailsLineCreationStrategy implements StepTransDetailsL
     @Autowired
     private StepTransDetailsFactory factory;
 
-
+    @EnableLogging
     @Override
     public List<StepTransDetailsLines> create(StepTransDetailsLinesRequest req, Muser user) {
         List<StepTransDetailsLines> list = new ArrayList<>();

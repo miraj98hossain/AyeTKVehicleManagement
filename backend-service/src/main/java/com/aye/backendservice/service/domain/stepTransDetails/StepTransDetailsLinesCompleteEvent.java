@@ -1,9 +1,9 @@
 package com.aye.backendservice.service.domain.stepTransDetails;
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.service.StepTransLinesService;
 import com.aye.backendservice.service.StepTransService;
-
 import com.aye.dto.request.StepTransLinesRequest;
 import com.aye.entity.user.Muser;
 import com.aye.entity.vehicleproject.StepTransDetails;
@@ -34,6 +34,7 @@ public class StepTransDetailsLinesCompleteEvent implements StepTransDetailsLines
         return status.equals(StepStatus.C);
     }
 
+    @EnableLogging
     @Override
     public StepTransDetailsLines doEvent(Long stepTransLineId,
                                          StepTransDetailsLines stepTransDetailsLines,

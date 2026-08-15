@@ -1,6 +1,7 @@
 package com.aye.backendservice.service;
 
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransDetailsLinesRepository;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.domain.stepTransDetails.StepTransDetailsLinesEventStrategy;
@@ -134,7 +135,7 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
         return stepTransDetails;
     }
 
-//    @Transactional
+    //    @Transactional
 //    @Override
 //    public StepTransDetailsLines updateLine(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) throws ExecutionControl.NotImplementedException {
 //        StepTransLines stepTransLine;
@@ -190,7 +191,7 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
 //        }
 //        return response;
 //    }
-
+    @EnableLogging
     @Override
     @Transactional
     public StepTransDetailsLines updateLine(Long stepTransLineId, Long detailLineId, String stepStatus, String userName) {

@@ -1,9 +1,9 @@
 package com.aye.backendservice.service.domain.stepTransDetails;
 
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
-
 import com.aye.backendservice.service.orgManagement.BeforeTripVService;
 import com.aye.dto.request.StepTransDetailsRequest;
 import com.aye.entity.schedule.BeforeTripV;
@@ -40,7 +40,7 @@ public class OrderBasedDetailsCreationStrategy implements StepTransDetailsCreati
                 && (req.getScheduleNo() == null || req.getScheduleNo().isEmpty());
     }
 
-
+    @EnableLogging
     @Override
     public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {
         StepTransDetails stepTransDetails = factory.fromStepDetailsReq(req, user);

@@ -1,11 +1,11 @@
 package com.aye.backendservice.service;
 
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransRepository;
 import com.aye.backendservice.service.domain.stepTrans.StepTransLineEventStrategy;
 import com.aye.backendservice.service.orgManagement.UserAccessTempltService;
 import com.aye.backendservice.service.user.MuserService;
-
 import com.aye.dto.request.StepTransDetailsRequest;
 import com.aye.dto.request.StepTransFilter;
 import com.aye.dto.request.StepTransLinesRequest;
@@ -156,6 +156,7 @@ public class StepTransServiceImpl implements StepTransService {
 
     @Override
     @Transactional
+    @EnableLogging
     public StepTransLines updateTransLines(StepTransLinesRequest linesReq, String userName) {
         Muser muser = userService.findByUserName(userName);
 

@@ -7,9 +7,9 @@ package com.aye.backendservice.service.domain.stepTransDetails;
  */
 
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
-
 import com.aye.backendservice.service.orgManagement.XxtkgTripDelvDtlVService;
 import com.aye.dto.request.StepTransDetailsRequest;
 import com.aye.entity.schedule.XxtkgTripDelvDtlV;
@@ -39,6 +39,7 @@ public class TripBasedDetailsCreationStrategy implements StepTransDetailsCreatio
         return req.getChallanNumber() != null && !req.getChallanNumber().isEmpty();
     }
 
+    @EnableLogging
     @Transactional
     @Override
     public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {

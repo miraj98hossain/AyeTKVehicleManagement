@@ -1,9 +1,9 @@
 package com.aye.backendservice.service.domain.stepTransDetails;
 
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
-
 import com.aye.dto.request.StepTransDetailsRequest;
 import com.aye.entity.user.Muser;
 import com.aye.entity.vehicleproject.StepTransDetails;
@@ -32,6 +32,7 @@ public class GeneralStepDetailsCreationStrategy implements StepTransDetailsCreat
         return (req.getOrderNumber() == null) && (req.getScheduleNo() == null || req.getScheduleNo().isEmpty()) && (req.getChallanNumber() == null || req.getChallanNumber().isEmpty());
     }
 
+    @EnableLogging
     @Override
     public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {
         List<StepTransDetails> list = new ArrayList<>();
