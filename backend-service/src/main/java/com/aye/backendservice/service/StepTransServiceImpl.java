@@ -5,11 +5,9 @@ import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransRepository;
 import com.aye.backendservice.service.domain.stepTrans.StepTransLineEventStrategy;
 import com.aye.backendservice.service.orgManagement.UserAccessTempltService;
+import com.aye.backendservice.service.specification.StepTransSpecification;
 import com.aye.backendservice.service.user.MuserService;
-import com.aye.dto.request.StepTransDetailsRequest;
-import com.aye.dto.request.StepTransFilter;
-import com.aye.dto.request.StepTransLinesRequest;
-import com.aye.dto.request.StepTransRequest;
+import com.aye.dto.request.*;
 import com.aye.entity.UserTransactionTypes;
 import com.aye.entity.user.Muser;
 import com.aye.entity.vehicleproject.StepTrans;
@@ -28,6 +26,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,6 +63,8 @@ public class StepTransServiceImpl implements StepTransService {
     private List<StepTransLineEventStrategy> strategies;
     @Autowired
     private RedisIdLockService redisIdLockService;
+    @Autowired
+    private StepTransSpecification stepTransSpecification;
 
     @Transactional
     @Override
@@ -389,15 +390,27 @@ public class StepTransServiceImpl implements StepTransService {
     }
 
     @Override
-    public List<StepTransLines> stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter) {
+    public List<StepTransLines> stepTransLinesSearch(Integer tempDtlId, StepTransLineFilter stepTransFilter) {
         var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
 
         List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
                 .flatMap(inv -> inv.getUserTransactionTypes().stream())
                 .map(UserTransactionTypes::getTrnsTypeId)
                 .toList();
-        List<StepTransLines> fetchedStepTransLines = this.stepTransLinesService.stepTransSearch(setupDetailIds, stepTransFilter);
+        List<StepTransLines> fetchedStepTransLines = this.stepTransLinesService.stepTransLinesSearch(setupDetailIds, stepTransFilter);
         return fetchedStepTransLines;
+    }
+
+    @Override
+    public List<StepTrans> stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter) {
+        var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
+        List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
+                .flatMap(inv -> inv.getUserTransactionTypes().stream())
+                .map(UserTransactionTypes::getTrnsTypeId)
+                .toList();
+        Specification<StepTrans> spec = this.stepTransSpecification.filterBy(stepTransFilter);
+        List<StepTrans> fetchedStepTrans = this.stepTransRepository.findAll(spec);
+        return fetchedStepTrans;
     }
 
 

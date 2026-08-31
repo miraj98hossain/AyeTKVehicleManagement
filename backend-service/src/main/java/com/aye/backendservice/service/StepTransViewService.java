@@ -2,8 +2,8 @@ package com.aye.backendservice.service;
 
 
 import com.aye.backendservice.service.orgManagement.UserAccessTempltService;
-
 import com.aye.dto.request.StepTransFilter;
+import com.aye.dto.request.StepTransLineFilter;
 import com.aye.dto.request.StepTransLinesRequest;
 import com.aye.dto.request.StepTransRequest;
 import com.aye.dto.response.*;
@@ -106,14 +106,24 @@ public class StepTransViewService {
         );
     }
 
-    public ApiRequestResponse stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter) {
-        List<StepTransLines> stepTransLines = this.stepTransService.stepTransSearch(tempDtlId, stepTransFilter);
+    public ApiRequestResponse stepTransLinesSearch(Integer tempDtlId, StepTransLineFilter stepTransFilter) {
+        List<StepTransLines> stepTransLines = this.stepTransService.stepTransLinesSearch(tempDtlId, stepTransFilter);
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(), "Success",
                 ApiRequestResponseDetail.ObjectType.A, "stepTransLinesList",
                 StepTransLinesResponse.class.getName(), this.stepTransLinesMapper.entityListToDtoList(stepTransLines)
         );
     }
+
+    public ApiRequestResponse stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter) {
+        List<StepTrans> stepTransLines = this.stepTransService.stepTransSearch(tempDtlId, stepTransFilter);
+        return ApiRequestResponseMaker.make(
+                HttpStatus.OK.name(), "Success",
+                ApiRequestResponseDetail.ObjectType.A, "stepTransList",
+                StepTransResponse.class.getName(), this.stepTransMapper.toResponseDto(stepTransLines)
+        );
+    }
+
 
     public ApiRequestResponse findAllByTempDtlId(Integer tempDtlId, String userName, Long invOrgId, String searchWords, String filterStatus, Pageable pageable) {
 

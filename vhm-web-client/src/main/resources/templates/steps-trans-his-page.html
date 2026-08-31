@@ -1,11 +1,6 @@
 <!DOCTYPE html>
 <html data-layout-decorate="~{fragments/layout}" lang="en">
 <head>
-
-    <link rel="stylesheet" th:href="@{/css/easyAutocomplete/easy-autocomplete.min.css}"/>
-
-    <script th:src="@{/js/easyAutocomplete/autocomplete.js}"></script>
-    <script th:src="@{/js/easyAutocomplete/jquery.easy-autocomplete.min.js}"></script>
     <link rel="stylesheet" th:href="@{/css/steps-trans.css}">
     <title>Step Transaction History</title>
 </head>
@@ -15,7 +10,6 @@
 <div class="right_col" data-layout-fragment="content" role="main">
     <div class="row">
         <div class="col-sm-12">
-            <!--<div class="container">-->
             <div class="panel panel-default">
                 <input class="form-control"
                        id="orgId"
@@ -46,9 +40,25 @@
                                 </div>
                             </div>
 
+                            <!-- Transport Name -->
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="search">Status</label>
+                                <div class="col-sm-1 text-center">:</div>
+                                <div class="col-sm-3">
+                                    <select class="form-control" id="stepTransStatus"
+                                            required
+                                            th:field="*{stepTransStatus}">
+                                        <option value="">-- Select --</option>
+                                        <option th:each="t : ${T(com.aye.enums.StepTransStatus).values()}"
+                                                th:text="${t.displayName}" th:value="${t}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+
+
                             <!-- Date Row -->
                             <div class="form-group row">
-
                                 <!-- From Date -->
                                 <label class="col-sm-2 col-form-label" for="fromDate">From Date</label>
                                 <div class="col-sm-1 text-center">:</div>
@@ -57,8 +67,6 @@
                                            required th:field="*{fromDate}" type="date"/>
                                     <p class="text-danger" th:errors="*{fromDate}"></p>
                                 </div>
-
-
                             </div>
 
                             <div class="form-group row">
@@ -94,73 +102,107 @@
                             <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
                                 <thead>
                                 <tr>
+                                    <th style="width: 50px;"></th>
                                     <th>TransNo</th>
                                     <th>Updated Date</th>
                                     <th>VehicleNo</th>
                                     <th>Driver Phone</th>
                                     <th>Additional Info</th>
-                                    <th>Step</th>
-                                    <th>Weight</th>
                                     <th>Status</th>
                                 </tr>
                                 </thead>
 
                                 <tbody>
-                                <tr th:each="line: ${stepTransLinesList}">
-                                    <td th:text="${line.stepTransNo}"></td>
-                                    <td th:text="${#temporals.format(line.updatedAt, 'dd-MMM-yyyy hh:mm a')}"></td>
-                                    <td th:text="${line.vehicleNumber}"></td>
-                                    <td th:text="${line.driverPhoneNo}"></td>
-                                    <td>
-                                        <div class="table-responsive" style="margin:0;">
-                                            <table class="table table-condensed table-bordered"
-                                                   style="margin-bottom:0;">
-                                                <tbody>
-                                                <tr
-                                                        th:each="dtl : ${line.stepTransDetails}">
+                                <th:block th:each="line, iterStat : ${stepTransList}">
 
-                                                    <!-- Customer -->
-                                                    <td style="width:60%; font-weight:normal;">
-                                                        <span th:text="${dtl.custName}"></span>
-                                                    </td>
+                                    <!-- Main row -->
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-default btn-xs" data-toggle="collapse"
+                                                    th:attr="data-target='#collapse-' + ${iterStat.index}, aria-expanded='false', aria-controls='collapse-' + ${iterStat.index}"
+                                                    type="button">
+                                                <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
+                                            </button>
+                                        </td>
+                                        <td th:text="${line.stepTransNo}"></td>
+                                        <td th:text="${#temporals.format(line.createdAt, 'dd-MMM-yyyy hh:mm a')}"></td>
+                                        <td th:text="${line.vehicleNumber}"></td>
+                                        <td th:text="${line.driverPhoneNo}"></td>
+                                        <td>
+                                            <div class="table-responsive" style="margin:0;">
+                                                <table class="table table-condensed table-bordered"
+                                                       style="margin-bottom:0;">
+                                                    <tbody>
+                                                    <tr th:each="dtl : ${line.stepTransDetails}">
+                                                        <td style="width:60%; font-weight:normal;">
+                                                            <span th:text="${dtl.custName}"></span>
+                                                        </td>
+                                                        <td style="width:40%; padding:0;">
+                                                            <table class="table table-condensed"
+                                                                   style="margin-bottom:0;">
+                                                                <tbody>
+                                                                <tr th:each="ln : ${dtl.stepTransDetailsLines}">
+                                                                    <td style="border-top:none;">
+                                                                        <span class="text-muted"></span>
+                                                                        <span th:text="${ln.orderedItem + ' (' + ln.orderedQuantity + ')'}"></span>
+                                                                    </td>
+                                                                </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                        <td class="text-center" th:text="${line.stepTransStatus}"></td>
+                                    </tr>
 
-                                                    <!-- Items -->
-                                                    <td style="width:40%; padding:0;">
-                                                        <table class="table table-condensed" style="margin-bottom:0;">
-                                                            <tbody>
-                                                            <tr
-                                                                    th:each="ln : ${dtl.stepTransDetailsLines}">
-                                                                <td style="border-top:none;">
-                                                                    <span class="text-muted"></span>
-                                                                    <span th:text="${ln.orderedItem + ' (' + ln.orderedQuantity + ')'}"></span>
-                                                                </td>
-                                                            </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </td>
+                                    <!-- Detail row, immediately below its own main row -->
+                                    <tr>
+                                        <td colspan="7" style="padding: 0; border-top: none;">
+                                            <div class="collapse" th:id="'collapse-' + ${iterStat.index}">
+                                                <div class="well" style="margin: 10px;">
+                                                    <h4>Step Transaction Lines for: <strong
+                                                            th:text="${line.stepTransNo}"></strong></h4>
+                                                    <table class="table table-bordered table-striped table-hover">
+                                                        <thead>
+                                                        <tr class="active">
+                                                            <th>Line No</th>
+                                                            <th>Step Name</th>
+                                                            <th>Last UpdatedAt</th>
+                                                            <th>Step Status</th>
+                                                            <th>Remarks</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:if="${line.stepTransLinesResponseList == null or line.stepTransLinesResponseList.isEmpty()}">
+                                                            <td class="text-center text-muted" colspan="12">
+                                                                <em>No step transaction lines found</em>
+                                                            </td>
+                                                        </tr>
+                                                        <tr th:each="transLine : ${line.stepTransLinesResponseList}">
+                                                            <td th:text="${transLine.stepTransLinesNo}"></td>
+                                                            <td th:text="${transLine.stepName}"></td>
+                                                            <td th:text="${transLine.updatedAt}"></td>
+                                                            <td th:text="${transLine.stepStatus}"></td>
+                                                            <td th:text="${transLine.remarks}"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
 
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </td>
-                                    <td th:text="${line.stepName}"></td>
-                                    <td th:text="${line.stepWiseWeight}"></td>
-
-                                    <td class="text-center" th:text="${line.stepStatus}"></td>
-                                </tr>
+                                </th:block>
                                 </tbody>
                             </table>
-
-                            <!-- Pagination -->
-
-
                         </div>
                     </div>
 
                     <div class="panel-footer"></div>
                 </div>
-
             </div>
         </div>
     </div>

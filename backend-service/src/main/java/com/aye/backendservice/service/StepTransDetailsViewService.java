@@ -1,11 +1,10 @@
 package com.aye.backendservice.service;
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.dto.request.StepTransDetailsLinesRequest;
 import com.aye.dto.request.StepTransDetailsRequest;
-import com.aye.dto.response.ApiRequestResponseDetail;
-
 import com.aye.dto.response.ApiRequestResponse;
-
+import com.aye.dto.response.ApiRequestResponseDetail;
 import com.aye.dto.response.StepTransDetailsLinesResponse;
 import com.aye.dto.response.StepTransDetailsResponse;
 import com.aye.entity.vehicleproject.StepTransDetails;
@@ -138,6 +137,7 @@ public class StepTransDetailsViewService {
         );
     }
 
+    @EnableLogging
     public ApiRequestResponse findAllLinesByStepTransIdAndUserItemAccess(Long stepTransId, String userName) {
         List<StepTransDetailsResponse> detailsList = this.stepTransDetailsMapper.toResponseDto(this.stepTransDetailsService.findAllLinesByStepTransIdAndUserItemAccess(stepTransId));
         List<Long> itemCatVList = commonHelper.getUserAccessedItems(userName);

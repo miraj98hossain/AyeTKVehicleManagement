@@ -2,6 +2,7 @@ package com.aye.backendservice.service;
 
 
 import com.aye.dto.request.StepTransFilter;
+import com.aye.dto.request.StepTransLineFilter;
 import com.aye.dto.request.StepTransLinesRequest;
 import com.aye.dto.request.StepTransRequest;
 import com.aye.entity.vehicleproject.StepTrans;
@@ -30,5 +31,7 @@ public interface StepTransService {
 
     List<Long> findAllByTempDtlId(Integer tempDtlId, Long invOrgId, Pageable pageable);
 
-    List<StepTransLines> stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter);
+    List<StepTransLines> stepTransLinesSearch(Integer tempDtlId, StepTransLineFilter stepTransFilter);
+
+    List<StepTrans> stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter);
 }

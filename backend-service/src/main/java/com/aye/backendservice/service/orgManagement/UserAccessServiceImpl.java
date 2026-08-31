@@ -175,28 +175,37 @@ public class UserAccessServiceImpl implements UserAccessService {
             for (UserAccessTemplt uact : accessTemp) {
 
                 uact.getUserAccessTemltDtls().sort(Comparator.comparing(UserAccessTemltDtl::getId));
-
                 for (UserAccessTemltDtl tmpdtl : uact.getUserAccessTemltDtls()) {
-                    Calendar cd = Calendar.getInstance();
-                    cd.setTime(new Date());
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    String from = sdf.format(cd.getTime());
-                    String start = sdf.format(tmpdtl.getStartDate());
-                    String end;
+                    LocalDate cc = LocalDate.now();
+                    LocalDate lstart = tmpdtl.getStartDate();
+                    LocalDate lend = (tmpdtl.getEndDate() == null) ? cc : tmpdtl.getEndDate();
 
-                    if (tmpdtl.getEndDate() == null) {
-                        end = from;
-                    } else {
-                        end = sdf.format(tmpdtl.getEndDate());
-                    }
-                    LocalDate cc = LocalDate.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    LocalDate lstart = LocalDate.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    LocalDate lend = LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
                     if ((lstart.compareTo(cc) * lend.compareTo(cc)) == 0) {
                         UserAccessTemltDtl ntmpdtl = setSubMenu(tmpdtl);
                         outMenus.add(ntmpdtl);
                     }
                 }
+//                for (UserAccessTemltDtl tmpdtl : uact.getUserAccessTemltDtls()) {
+//                    Calendar cd = Calendar.getInstance();
+//                    cd.setTime(new Date());
+//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//                    String from = sdf.format(cd.getTime());
+//                    String start = sdf.format(tmpdtl.getStartDate());
+//                    String end;
+//
+//                    if (tmpdtl.getEndDate() == null) {
+//                        end = from;
+//                    } else {
+//                        end = sdf.format(tmpdtl.getEndDate());
+//                    }
+//                    LocalDate cc = LocalDate.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//                    LocalDate lstart = LocalDate.parse(start, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//                    LocalDate lend = LocalDate.parse(end, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//                    if ((lstart.compareTo(cc) * lend.compareTo(cc)) == 0) {
+//                        UserAccessTemltDtl ntmpdtl = setSubMenu(tmpdtl);
+//                        outMenus.add(ntmpdtl);
+//                    }
+//                }
             }
         }
 

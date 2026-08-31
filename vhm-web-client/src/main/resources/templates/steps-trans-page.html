@@ -1017,7 +1017,7 @@
                                         <a class="btn pick-btn btn-info"
                                            th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
                                                                (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Let Go',page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
-                                           th:if="${line.stage == 1 and line.isHoldAble and line.holdBy==userName and line.stepStatus != 'Let Go'}">
+                                           th:if="${ line.isHoldAble and line.holdBy==userName and line.stepStatus != 'Let Go'}">
                                             Let Go
                                         </a>
                                         <a class="btn pick-btn btn-info"
@@ -1046,6 +1046,7 @@
                                            th:if="${line.stage == 2 and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
                                             Reject
                                         </a>
+
                                     </td>
                                 </tr>
                                 </tbody>

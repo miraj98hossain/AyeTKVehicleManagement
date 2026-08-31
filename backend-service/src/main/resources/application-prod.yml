@@ -39,6 +39,7 @@ spring:
     date-format: yyyy-MM-dd
     serialization:
       fail-on-empty-beans: false
+    time-zone: Asia/Dhaka
   data:
     redis:
       host: 192.168.0.136

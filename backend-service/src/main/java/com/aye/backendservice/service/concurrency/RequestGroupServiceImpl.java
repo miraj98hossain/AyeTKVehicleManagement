@@ -4,9 +4,11 @@ package com.aye.backendservice.service.concurrency;
 import com.aye.backendservice.repository.concurrency.RequestGroupHeaderRepo;
 import com.aye.backendservice.repository.concurrency.RequestGroupLinesRepo;
 import com.aye.backendservice.service.orgManagement.UserAccessTempltService;
+import com.aye.backendservice.service.user.MuserService;
 import com.aye.dto.response.concurrency.UserExecutable;
 import com.aye.dto.response.user.RequestGroupHeaderDto;
 import com.aye.dto.response.user.RequestGroupLineDto;
+import com.aye.entity.CommonColumn;
 import com.aye.entity.RequestGroupHeader;
 import com.aye.entity.RequestGroupLine;
 import com.aye.entity.UserAccessTemltDtl;
@@ -41,6 +43,8 @@ public class RequestGroupServiceImpl implements RequestGroupService {
     private RequestGroupHeaderMapper requestGroupHeaderMapper;
     @Autowired
     private RequestGroupLineMapper requestGroupLineMapper;
+    @Autowired
+    private MuserService muserService;
 
     @Transactional(readOnly = true)
     @Override
@@ -89,20 +93,18 @@ public class RequestGroupServiceImpl implements RequestGroupService {
 
     @Transactional
     @Override
-    public RequestGroupHeaderDto saveRequestGroup(RequestGroupHeaderDto requestGroupHeaderMDTO, Integer userId) {
+    public RequestGroupHeaderDto saveRequestGroup(RequestGroupHeaderDto requestGroupHeaderMDTO, String userName) {
         RequestGroupHeader entity = new RequestGroupHeader();
-
+        Muser muser = this.muserService.findByUserName(userName);
         if (requestGroupHeaderMDTO.getId() == null) {
             entity = this.requestGroupHeaderMapper.toEntity(requestGroupHeaderMDTO);
-            Muser muser = new Muser();
-            muser.setId(userId);
             entity.getColumn().setCreatedBy(muser);
         } else {
             entity = this.requestGroupHeaderMRepo.findById(requestGroupHeaderMDTO.getId()).orElseThrow(
                     () -> new EntityNotFoundException("Request GroupHeader not found with id: " + requestGroupHeaderMDTO.getId())
             );
             this.requestGroupHeaderMapper.toEntity(requestGroupHeaderMDTO, entity);
-            entity.getColumn().setLastUpdateBy(userId);
+            entity.getColumn().setLastUpdateBy(muser.getId());
         }
         var requestGroupHeaderM = this.requestGroupHeaderMRepo.save(entity);
         return this.requestGroupHeaderMapper.toResponseDto(requestGroupHeaderM);
@@ -132,19 +134,20 @@ public class RequestGroupServiceImpl implements RequestGroupService {
 
     @Transactional
     @Override
-    public RequestGroupLineDto saveRequestGroupLine(RequestGroupLineDto requestGroupLineMDTO, Integer userId) {
+    public RequestGroupLineDto saveRequestGroupLine(RequestGroupLineDto requestGroupLineMDTO, String userName) {
         RequestGroupLine entity = new RequestGroupLine();
+        Muser muser = this.muserService.findByUserName(userName);
         if (requestGroupLineMDTO.getId() == null) {
             entity = this.requestGroupLineMapper.toEntity(requestGroupLineMDTO);
-            Muser muser = new Muser();
-            muser.setId(userId);
-            entity.getColumn().setCreatedBy(muser);
+            CommonColumn commonColumn = new CommonColumn();
+            commonColumn.setCreatedBy(muser);
+            entity.setColumn(commonColumn);
         } else {
             entity = this.requestGroupLineMRepo.findById(requestGroupLineMDTO.getId()).orElseThrow(
                     () -> new EntityNotFoundException("Request GroupLine not found with id: " + requestGroupLineMDTO.getId())
             );
             this.requestGroupLineMapper.toEntity(requestGroupLineMDTO, entity);
-            entity.getColumn().setLastUpdateBy(userId);
+            entity.getColumn().setLastUpdateBy(muser.getId());
         }
         var save = this.requestGroupLineMRepo.save(entity);
         return this.requestGroupLineMapper.toResponseDto(save);

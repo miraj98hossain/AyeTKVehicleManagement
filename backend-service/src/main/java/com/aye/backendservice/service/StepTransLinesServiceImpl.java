@@ -1,10 +1,10 @@
 package com.aye.backendservice.service;
 
 
+import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransLinesRepository;
-import com.aye.backendservice.service.specification.StepTransSpecification;
-
-import com.aye.dto.request.StepTransFilter;
+import com.aye.backendservice.service.specification.StepTransLinesSpecification;
+import com.aye.dto.request.StepTransLineFilter;
 import com.aye.dto.response.StepTransLinesResponse;
 import com.aye.entity.vehicleproject.*;
 import com.aye.mapper.StepTransLinesMapper;
@@ -34,7 +34,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
     @Autowired
     private NoGenService noGenService;
     @Autowired
-    private StepTransSpecification stepTransSpecification;
+    private StepTransLinesSpecification stepTransLinesSpecification;
 
     @Transactional
     public StepTransLines saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId) {
@@ -138,10 +138,11 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<StepTransLines> stepTransSearch(List<Long> setupDetailIds, StepTransFilter stepTransFilter) {
+    @EnableLogging
+    public List<StepTransLines> stepTransLinesSearch(List<Long> setupDetailIds, StepTransLineFilter stepTransFilter) {
 
 
-        Specification<StepTransLines> spec = stepTransSpecification.filterBy(stepTransFilter, setupDetailIds);
+        Specification<StepTransLines> spec = stepTransLinesSpecification.filterBy(stepTransFilter, setupDetailIds);
 
         List<StepTransLines> fetchedStepTrans = this.stepTransLinesRepository.findAll(spec);
         return fetchedStepTrans;

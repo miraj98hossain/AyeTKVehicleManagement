@@ -1,64 +1,49 @@
 package com.aye.webservice.controller;
 
-//@RestController
-//@RequestMapping("/api/request-group")
-//public class RequestHeaderController {
-//    @Autowired
-//    private RequestGroupService requestGroupService;
-//
-//    @GetMapping("/findAllRequestGroup")
-//    public ResponseEntity<ApiRequestResponse> findAllRequestGroup() {
-//        return ResponseEntity.ok(requestGroupService.findAllRequestGroup());
-//    }
-//
-//    @GetMapping("/findReqGrpById/{id}")
-//    public ResponseEntity<ApiRequestResponse> findReqGrpById(@PathVariable("id") Long id) {
-//        return ResponseEntity.ok(requestGroupService.findReqGrpById(id));
-//    }
-//
-//    @PostMapping("/saveReqGrp")
-//    public ResponseEntity<ApiRequestResponse> saveReqGrp(@Valid @RequestBody
-//                                                         RequestGroupHeaderRequest requestGroupHeader) {
-//        return ResponseEntity.ok(requestGroupService.saveReqGrp(requestGroupHeader));
-//    }
-//
-//    @GetMapping("/getUserReport/{reqGrpId}")
-//    public ResponseEntity<ApiRequestResponse> getUserReport(@PathVariable("reqGrpId") Long reqGrpId) {
-//        return ResponseEntity.ok(requestGroupService.getUserReport(reqGrpId));
-//    }
-//
-//    @PostMapping("/saveReqGrpLine")
-//    public ResponseEntity<ApiRequestResponse> saveReqGrpLine(@Valid @RequestBody
-//                                                             RequestGroupLineRequest requestGroupLine) {
-//        return ResponseEntity.ok(requestGroupService.saveReqGrpLine(requestGroupLine));
-//    }
-//
-//    @GetMapping("/getAllLines")
-//    public ResponseEntity<ApiRequestResponse> getAllLines() {
-//        return ResponseEntity.ok(requestGroupService.getAllLines());
-//    }
-//
-//    @GetMapping("/findByLineId/{id}")
-//    public ResponseEntity<ApiRequestResponse> findByLineId(@PathVariable("id") Long id) {
-//        return ResponseEntity.ok(requestGroupService.findByLineId(id));
-//    }
-//
-//    @GetMapping("/findByrequestGroupHeader/{reqGrpHdrId}")
-//    public ResponseEntity<ApiRequestResponse> findByrequestGroupHeader(@PathVariable("reqGrpHdrId")
-//                                                                       Long reqGrpHdrId) {
-//        return ResponseEntity.ok(requestGroupService.findByrequestGroupHeader(reqGrpHdrId));
-//    }
-//
-//    @GetMapping("/findActByReqGrpHdr/{reqGrpHdrId}")
-//    public ResponseEntity<ApiRequestResponse> findActiveByRequestGroupHeader(@PathVariable("reqGrpHdrId")
-//                                                                             Long reqGrpHdrId) {
-//        return ResponseEntity.ok(requestGroupService.findActiveByRequestGroupHeader(reqGrpHdrId));
-//    }
-//
-//
-//    @GetMapping("/findByExecutables/{executablesId}")
-//    public ResponseEntity<ApiRequestResponse> findByExecutables(@PathVariable("executablesId")
-//                                                                Long executablesId) {
-//        return ResponseEntity.ok(requestGroupService.findByExecutables(executablesId));
-//    }
-//}
+import com.aye.dto.response.ApiRequestResponse;
+import com.aye.dto.response.user.RequestGroupHeaderDto;
+import com.aye.dto.response.user.RequestGroupLineDto;
+import com.aye.webservice.service.RequestGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/request-group")
+public class RequestHeaderController {
+    @Autowired
+    private RequestGroupService requestGroupService;
+
+
+    @GetMapping("/getAllRequestGroupHeader")
+    ResponseEntity<ApiRequestResponse> getAllRequestGroupHeader() {
+        return new ResponseEntity<>(requestGroupService.getAllRequestGroupHeader(), HttpStatus.OK);
+    }
+
+    @GetMapping("/getRequestGroupHeader/{headerId}")
+    ResponseEntity<ApiRequestResponse> getRequestGroupHeaderById(@PathVariable Long headerId) {
+        return new ResponseEntity<>(requestGroupService.getRequestGroupHeaderById(headerId), HttpStatus.OK);
+    }
+
+    @PostMapping("/saveRequestGroupHeader/{userName}")
+    ResponseEntity<ApiRequestResponse> saveRequestGroupHeader(@RequestBody RequestGroupHeaderDto requestGroupHeaderDto, @PathVariable String userName) {
+        return new ResponseEntity<>(requestGroupService.saveRequestGroupHeader(requestGroupHeaderDto, userName), HttpStatus.OK);
+    }
+
+    // not Api response
+    @GetMapping("/getRequestGroupLineByLineId/{lineId}")
+    ResponseEntity<ApiRequestResponse> getRequestGroupLineById(@PathVariable Long lineId) {
+        return new ResponseEntity<>(requestGroupService.getRequestGroupLineById(lineId), HttpStatus.OK);
+    }
+
+    @GetMapping("/getRequestGroupLinesByRequestGroupGeaderId/{headerId}")
+    ResponseEntity<ApiRequestResponse> getAllRequestGroupLineByHeaderId(@PathVariable Long headerId) {
+        return new ResponseEntity<>(requestGroupService.getAllRequestGroupLineByHeaderId(headerId), HttpStatus.OK);
+    }
+
+    @PostMapping("/saveRequestGroupLine/{userName}")
+    ResponseEntity<ApiRequestResponse> saveRequestGroupLine(@RequestBody RequestGroupLineDto requestGroupLineDto, @PathVariable String userName) {
+        return new ResponseEntity<>(requestGroupService.saveRequestGroupLine(requestGroupLineDto, userName), HttpStatus.OK);
+    }
+}

@@ -20,14 +20,14 @@ public interface RequestGroupService {
 
     List<UserExecutable> findUserExecutableListByUserAccessTempletDtlId(Integer userAccessTmpDtlId);
 
-    RequestGroupHeaderDto saveRequestGroup(RequestGroupHeaderDto requestGroupHeaderMDTO, Integer userId);
+    RequestGroupHeaderDto saveRequestGroup(RequestGroupHeaderDto requestGroupHeaderMDTO, String userName);
 
 
     List<RequestGroupLineDto> findByRequestGroupHeaderId(Long aLong);
 
     RequestGroupLineDto findByRequestLineId(Long aLong);
 
-    RequestGroupLineDto saveRequestGroupLine(RequestGroupLineDto requestGroupLineMDTO, Integer userId);
+    RequestGroupLineDto saveRequestGroupLine(RequestGroupLineDto requestGroupLineMDTO, String userName);
 
     void deleteByRequestGroupLineId(Long aLong);
 }

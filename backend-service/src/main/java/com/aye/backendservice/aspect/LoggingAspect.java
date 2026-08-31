@@ -21,12 +21,11 @@ public class LoggingAspect {
     public Object logControllerCall(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         String methodName = signature.getName();
-        String className = signature.getDeclaringTypeName();
-        String[] paramNames = signature.getParameterNames();
-        Object[] paramValues = joinPoint.getArgs();
+        String className = signature.getDeclaringType().getSimpleName();
+        //String[] paramNames = signature.getParameterNames();
+        //Object[] paramValues = joinPoint.getArgs();
         // HTTP request metadata
         String requestId = "N/A";
-
         ServletRequestAttributes attrs =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
@@ -34,9 +33,6 @@ public class LoggingAspect {
             HttpServletRequest request = attrs.getRequest();
             requestId = request.getRequestId();
         }
-
-        String params = buildArgString(paramNames, paramValues);
-
         log.info("▶ method={} | class={} | requestId={} ", methodName, className, requestId);
 
         long start = System.currentTimeMillis();
@@ -46,23 +42,15 @@ public class LoggingAspect {
 
             long elapsed = System.currentTimeMillis() - start;
 
-            log.info("✔ method={} | requestId={} | status=SUCCESS | executionTime={}ms", methodName, requestId, elapsed);
+            log.info("✔ method={} | class={} | requestId={} | status=SUCCESS | executionTime={}ms", methodName, className, requestId, elapsed);
 
             return result;
-
-        } catch (IllegalArgumentException ex) {
-
-            long elapsed = System.currentTimeMillis() - start;
-
-            log.warn("✘ method={} | requestId={} | status=BAD_REQUEST | reason={} | executionTime={}ms", methodName, requestId, ex.getMessage(), elapsed);
-
-            throw ex;
 
         } catch (Exception ex) {
 
             long elapsed = System.currentTimeMillis() - start;
 
-            log.error("✘ method={} | requestId={} | status=ERROR | exception={} | executionTime={}ms", methodName, requestId, ex.getClass().getSimpleName(), elapsed, ex);
+            log.warn("✘ method={} | class={} | requestId={} | status=BAD_REQUEST | reason={} | executionTime={}ms", methodName, className, requestId, ex.getMessage(), elapsed);
 
             throw ex;
         }
