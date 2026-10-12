@@ -296,6 +296,8 @@
 
                                                 <input id="scaleModStepTransId" th:field="${scaleReq.stepTransId}"
                                                        type="hidden"/>
+                                                <input id="scaleModPageId" type="hidden"/>
+                                                <input id="scaleModTempDtlId" type="hidden"/>
                                                 <input id="scaleModStepTransLineId"
                                                        th:field="${scaleReq.stepTransLineId}"
                                                        type="hidden"/>
@@ -304,7 +306,6 @@
                                                        type="hidden"/>
                                                 <input id="scaleModUom" th:field="${scaleReq.uom}"
                                                        type="hidden"/>
-
                                                 <!-- Input -->
                                                 <div class="col-sm-4">
                                                     <input id="scaleModScaleName" th:field="${scaleReq.scaleName}"
@@ -974,6 +975,8 @@
                                                                         data-weight=${line.stepTransScaleDetails?.weight},
                                                                         data-step-trans-id=${line.stepTransId},
                                                                         data-step-trans-line-id=${line.stepTransLinesId},
+                                                                        data-page-id=${pageId},
+                                                                        data-temp-dtl-id=${tempDtlId},
                                                                         data-setup-details-id=${line.stepSetupDetailsId}"
                                            th:if="${isIpAllowed and #lists.contains(allowedStep, line.stepSetupDetailsId) and line.stage!=0}">
 
@@ -1004,7 +1007,7 @@
                                         <a class="btn edit-btn btn-warning"
                                            th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
                                                                (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId},stepStatus='WIP',page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
-                                           th:if="${line.stage == 1 and line.stepStatus != 'WIP' and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
+                                           th:if="${line.stage == 1 and !line.isHoldAble and line.stepStatus != 'WIP' and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
                                             WIP
                                         </a>
 

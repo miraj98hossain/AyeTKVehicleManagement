@@ -4,7 +4,6 @@ package com.aye.backendservice.service;
 import com.aye.backendservice.applicationEvent.UserAccessCacheGenerateEvent;
 import com.aye.backendservice.applicationEvent.UserAccessCacheSyncEvent;
 import com.aye.backendservice.applicationEvent.UserAccessTemplateCacheSyncEvent;
-
 import com.aye.backendservice.service.orgManagement.*;
 import com.aye.backendservice.service.user.MuserService;
 import com.aye.dto.request.*;
@@ -223,7 +222,6 @@ public class UserAccessBServiceImpl implements UserAccessBService {
         UserAccessTemplt userAccessTemplt = this.usrAcsTempService.findById(usrAcsTempDtlReq.getUserAccessTempltId());
         UserAccessTemltDtl userAccessTemltDtl = this.tempDtlMapper.dtoToEntity(usrAcsTempDtlReq);
         userAccessTemltDtl.setUserAccessTemplt(userAccessTemplt);
-        userAccessTemltDtl.setRequestGroupHeader(null);
         this.usrAcsTempService.saveDtlLine(userAccessTemltDtl);
         this.eventPublisher.publishEvent(new UserAccessTemplateCacheSyncEvent(this, userAccessTemplt.getId()));
         return ApiRequestResponseMaker.make(

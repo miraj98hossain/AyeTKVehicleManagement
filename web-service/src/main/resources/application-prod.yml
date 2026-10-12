@@ -17,7 +17,11 @@ server:
   #    trust-store-password: changeit
   #    trust-store-type: JKS
   #    client-auth: need
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
 backend:
   service:
     url: http://aye-back-end-service:8443/aye-backend-service

@@ -102,12 +102,15 @@
                             <table class="table table-hover table-bordered custom-gray-table text-dark text-center">
                                 <thead>
                                 <tr>
+
                                     <th style="width: 50px;"></th>
+                                    <th style="width: 50px;">SL#</th>
                                     <th>TransNo</th>
-                                    <th>Updated Date</th>
+                                    <th>Entry Date</th>
                                     <th>VehicleNo</th>
                                     <th>Driver Phone</th>
                                     <th>Additional Info</th>
+                                    <th>Weight</th>
                                     <th>Status</th>
                                 </tr>
                                 </thead>
@@ -117,6 +120,7 @@
 
                                     <!-- Main row -->
                                     <tr>
+
                                         <td>
                                             <button class="btn btn-default btn-xs" data-toggle="collapse"
                                                     th:attr="data-target='#collapse-' + ${iterStat.index}, aria-expanded='false', aria-controls='collapse-' + ${iterStat.index}"
@@ -124,6 +128,7 @@
                                                 <span aria-hidden="true" class="glyphicon glyphicon-plus"></span>
                                             </button>
                                         </td>
+                                        <td th:text="${iterStat.index +1}"></td>
                                         <td th:text="${line.stepTransNo}"></td>
                                         <td th:text="${#temporals.format(line.createdAt, 'dd-MMM-yyyy hh:mm a')}"></td>
                                         <td th:text="${line.vehicleNumber}"></td>
@@ -134,7 +139,7 @@
                                                        style="margin-bottom:0;">
                                                     <tbody>
                                                     <tr th:each="dtl : ${line.stepTransDetails}">
-                                                        <td style="width:60%; font-weight:normal;">
+                                                        <td style="width:40%; font-weight:normal;">
                                                             <span th:text="${dtl.custName}"></span>
                                                         </td>
                                                         <td style="width:40%; padding:0;">
@@ -155,12 +160,14 @@
                                                 </table>
                                             </div>
                                         </td>
+                                        <td class="text-center" th:text="${line.stepWiseWeight}"></td>
                                         <td class="text-center" th:text="${line.stepTransStatus}"></td>
+
                                     </tr>
 
                                     <!-- Detail row, immediately below its own main row -->
                                     <tr>
-                                        <td colspan="7" style="padding: 0; border-top: none;">
+                                        <td colspan="9" style="padding: 0; border-top: none;">
                                             <div class="collapse" th:id="'collapse-' + ${iterStat.index}">
                                                 <div class="well" style="margin: 10px;">
                                                     <h4>Step Transaction Lines for: <strong
@@ -184,7 +191,8 @@
                                                         <tr th:each="transLine : ${line.stepTransLinesResponseList}">
                                                             <td th:text="${transLine.stepTransLinesNo}"></td>
                                                             <td th:text="${transLine.stepName}"></td>
-                                                            <td th:text="${transLine.updatedAt}"></td>
+                                                            <td th:text="${#temporals.format(transLine.updatedAt, 'dd-MMM-yyyy hh:mm a')}"></td>
+                                                            <!--                                                            <td th:text="${transLine.updatedAt}"></td>-->
                                                             <td th:text="${transLine.stepStatus}"></td>
                                                             <td th:text="${transLine.remarks}"></td>
                                                         </tr>

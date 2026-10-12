@@ -123,7 +123,7 @@ public class UserLoginResponseCacheSyncListener {
         });
     }
 
-
+  
     @Async("asyncExecutor")
     @EventListener
     public void handleUserAccessCacheGenerate(UserAccessCacheGenerateEvent event) {

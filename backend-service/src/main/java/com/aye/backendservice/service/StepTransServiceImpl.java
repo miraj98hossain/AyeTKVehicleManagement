@@ -402,12 +402,13 @@ public class StepTransServiceImpl implements StepTransService {
     }
 
     @Override
+    @EnableLogging
     public List<StepTrans> stepTransSearch(Integer tempDtlId, StepTransFilter stepTransFilter) {
-        var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
-        List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
-                .flatMap(inv -> inv.getUserTransactionTypes().stream())
-                .map(UserTransactionTypes::getTrnsTypeId)
-                .toList();
+//        var userAccessTmpDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
+//        List<Long> setupDetailIds = userAccessTmpDtl.getUserAccessInvOrgs().stream()
+//                .flatMap(inv -> inv.getUserTransactionTypes().stream())
+//                .map(UserTransactionTypes::getTrnsTypeId)
+//                .toList();
         Specification<StepTrans> spec = this.stepTransSpecification.filterBy(stepTransFilter);
         List<StepTrans> fetchedStepTrans = this.stepTransRepository.findAll(spec);
         return fetchedStepTrans;

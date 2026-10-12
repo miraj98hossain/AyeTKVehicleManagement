@@ -33,7 +33,7 @@ public class LoggingAspect {
             HttpServletRequest request = attrs.getRequest();
             requestId = request.getRequestId();
         }
-        log.info("▶ method={} | class={} | requestId={} ", methodName, className, requestId);
+        //log.info("▶ method={} | class={} | requestId={} ", methodName, className, requestId);
 
         long start = System.currentTimeMillis();
 

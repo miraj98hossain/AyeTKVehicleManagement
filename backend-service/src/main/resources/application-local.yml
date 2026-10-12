@@ -4,7 +4,7 @@ spring:
   application:
     name: backend-service
   datasource:
-    url: jdbc:oracle:thin:@192.168.0.3:1521/PROD
+    url: jdbc:oracle:thin:@192.168.0.102:1521/PROD
     username: mapps
     password: mapps
     driver-class-name: oracle.jdbc.OracleDriver
@@ -41,7 +41,7 @@ spring:
       fail-on-empty-beans: false
   data:
     redis:
-      host: 192.168.0.136
+      host: 192.168.0.113
       port: 6379
       password: redis13579
     jpa:
@@ -61,6 +61,11 @@ server:
 #    trust-store-password: changeit
 #    trust-store-type: JKS
 #    client-auth: need
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
 logging:
   level:
     org:

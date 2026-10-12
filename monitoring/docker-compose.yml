@@ -1,0 +1,48 @@
+services:
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus-test
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - "D:/docker_v/prometheus-data:/prometheus"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+    networks:
+      - monitoring-test
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana-test
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - "D:/docker_v/grafana-data:/var/lib/grafana"
+    depends_on:
+      - prometheus
+    networks:
+      - monitoring-test
+
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight-test
+    restart: unless-stopped
+    ports:
+      - "5541:5540"
+    volumes:
+      - "D:/docker_v/redis-insight-data-test:/data"
+    networks:
+      - monitoring-test
+
+volumes:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  monitoring-test:
+    driver: bridge

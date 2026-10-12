@@ -25,7 +25,6 @@ public class BeforeTripVBServiceImpl implements BeforeTripVBService {
 
     @Override
     public ApiRequestResponse getDeliveryNumbers(Long orgId, Long invOrgId, Long searchWords) {
-        var listss = this.beforeTripVService.getDeliveryNumbers(orgId, invOrgId, "On Hand", searchWords);
         var list = this.beforeTripVService.getDeliveryNumbers(orgId, invOrgId, "On Hand", searchWords).stream().map(
                 beforeTripVMapper::toResponseDto
         ).toList();

@@ -61,6 +61,11 @@ server:
 #    trust-store-password: changeit
 #    trust-store-type: JKS
 #    client-auth: need
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
 logging:
   level:
     org:

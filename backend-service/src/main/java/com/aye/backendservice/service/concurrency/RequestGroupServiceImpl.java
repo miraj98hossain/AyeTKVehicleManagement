@@ -98,7 +98,9 @@ public class RequestGroupServiceImpl implements RequestGroupService {
         Muser muser = this.muserService.findByUserName(userName);
         if (requestGroupHeaderMDTO.getId() == null) {
             entity = this.requestGroupHeaderMapper.toEntity(requestGroupHeaderMDTO);
-            entity.getColumn().setCreatedBy(muser);
+            CommonColumn commonColumn = new CommonColumn();
+            commonColumn.setCreatedBy(muser);
+            entity.setColumn(commonColumn);
         } else {
             entity = this.requestGroupHeaderMRepo.findById(requestGroupHeaderMDTO.getId()).orElseThrow(
                     () -> new EntityNotFoundException("Request GroupHeader not found with id: " + requestGroupHeaderMDTO.getId())
