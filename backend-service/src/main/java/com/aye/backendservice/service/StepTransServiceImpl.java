@@ -81,7 +81,7 @@ public class StepTransServiceImpl implements StepTransService {
             line.setStepStatus(StepStatus.N);
             line.setStepTransLinesNo(noGenService.createTransLNo());
             line.setParentLineId(0L);
-            line.setStage(0);
+            line.setStage(1);
             line.setCreatedBy(Long.valueOf(muser.getId()));
             //line.setCreatedAt(new Date());
             stepTrans.getStepTransLinesList().add(line);

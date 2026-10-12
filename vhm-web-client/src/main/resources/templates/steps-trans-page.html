@@ -1023,12 +1023,12 @@
                                            th:if="${ line.isHoldAble and line.holdBy==userName and line.stepStatus != 'Let Go'}">
                                             Let Go
                                         </a>
-                                        <a class="btn pick-btn btn-info"
-                                           th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
-                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Pick',page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
-                                           th:if="${line.stage == 0 and !line.isHoldAble and line.stepStatus != 'Pick'}">
-                                            Pick
-                                        </a>
+                                        <!--                                        <a class="btn pick-btn btn-info"-->
+                                        <!--                                           th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'-->
+                                        <!--                                                               (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Pick',page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"-->
+                                        <!--                                           th:if="${line.stage == 0 and !line.isHoldAble and line.stepStatus != 'Pick'}">-->
+                                        <!--                                            Pick-->
+                                        <!--                                        </a>-->
 
                                         <a class="btn view-btn btn-success" onclick="openStatusModal(this)"
                                            th:data-is-reject="false"
@@ -1036,7 +1036,7 @@
                                            th:data-size="${size}"
                                            th:data-status="Complete"
                                            th:data-step-Trans-Lines-Id="${line.stepTransLinesId}"
-                                           th:if="${line.stage == 2 and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
+                                           th:if="${line.stage == 1 and line.stepStatus == 'WIP' and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
                                             Release
                                         </a>
 
@@ -1046,7 +1046,7 @@
                                            th:data-size="${size}"
                                            th:data-status="Reject"
                                            th:data-step-Trans-Lines-Id="${line.stepTransLinesId}"
-                                           th:if="${line.stage == 2 and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
+                                           th:if="${line.stage == 1 and line.stepStatus == 'WIP' and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">
                                             Reject
                                         </a>
 
