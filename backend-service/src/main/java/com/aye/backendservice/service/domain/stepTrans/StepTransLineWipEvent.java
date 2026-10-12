@@ -25,8 +25,7 @@ public class StepTransLineWipEvent implements StepTransLineEventStrategy {
 
     @Override
     public boolean supports(StepTransLines reqStepTransLines) {
-        //return reqStepTransLines.getStepStatus().equals(StepStatus.W);
-        return false;
+        return reqStepTransLines.getStepStatus().equals(StepStatus.W);
     }
 
     @EnableLogging

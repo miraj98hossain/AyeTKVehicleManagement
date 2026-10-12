@@ -36,7 +36,7 @@ public class StepTransLineCompleteEvent implements StepTransLineEventStrategy {
             throw new RuntimeException("This Step Trans" + dbstepTransLines.getStepTransLinesId() + " is already Completed");
         }
 
-        if (!(dbstepTransLines.getStage() == 1)) {
+        if (!(dbstepTransLines.getStage() == 2)) {
             throw new RuntimeException("This step trans" + dbstepTransLines.getStepTransLinesId() + " is not eligible for Complete");
         } else {
             dbstepTransLines.setStepStatus(StepStatus.C);
