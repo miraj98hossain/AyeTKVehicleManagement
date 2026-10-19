@@ -10,6 +10,7 @@ import com.aye.backendservice.service.user.MuserService;
 import com.aye.dto.request.*;
 import com.aye.entity.UserTransactionTypes;
 import com.aye.entity.user.Muser;
+import com.aye.entity.vehicleproject.StepSetupDetails;
 import com.aye.entity.vehicleproject.StepTrans;
 import com.aye.entity.vehicleproject.StepTransLines;
 import com.aye.entity.vehicleproject.StepTransTimeline;
@@ -30,12 +31,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.aye.backendservice.utils.RedisKey.STEP_TRANS_LINE_LOCK_KEY;
 
@@ -77,7 +74,13 @@ public class StepTransServiceImpl implements StepTransService {
         if (stepTrans.getStepTransLinesList().isEmpty()) {
             StepTransLines line = new StepTransLines();
             line.setStepTrans(stepTrans);
-            line.setStepSetupDetails(stepTrans.getStepSetup().getStepSetupDetails().get(0));
+            List<StepSetupDetails> stepSetup = stepTrans.getStepSetup().getStepSetupDetails()
+                    .stream()
+                    .filter(d -> d.getParentDetail() == null)
+                    .filter(d -> d.getIsActive() == 1)
+                    .sorted(Comparator.comparing(StepSetupDetails::getSerialNo))
+                    .toList();
+            line.setStepSetupDetails(stepSetup.get(0));
             line.setStepStatus(StepStatus.N);
             line.setStepTransLinesNo(noGenService.createTransLNo());
             line.setParentLineId(0L);
@@ -165,19 +168,18 @@ public class StepTransServiceImpl implements StepTransService {
         StepTransLines reqStepTransLines = this.stepTransLinesMapper.toEntity(linesReq);
         // databaseLine
         StepTransLines dbstepTransLines = this.stepTransLinesService.getStepTransLine(linesReq.getStepTransLinesId());
-
         StepTrans stepTrans = this.stepTransRepository.findById(dbstepTransLines.getStepTrans().getStepTransId())
                 .orElseThrow(() -> new EntityNotFoundException(
                         "StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
 
-        boolean isNotLocked = this.redisIdLockService
-                .tryLock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(),
-                        dbstepTransLines.getStepTransLinesId(), Duration.ofHours(8).getSeconds()); // Locked for 8 Hours
-
-        if (!isNotLocked) {
-            throw new RuntimeException("Step Trans Lines event request for this id "
-                    + reqStepTransLines.getStepTransLinesId() + " is locked");
-        }
+//        boolean isNotLocked = this.redisIdLockService
+//                .tryLock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(),
+//                        dbstepTransLines.getStepTransLinesId(), Duration.ofHours(8).getSeconds()); // Locked for 8 Hours
+//
+//        if (!isNotLocked) {
+//            throw new RuntimeException("Step Trans Lines event request for this id "
+//                    + reqStepTransLines.getStepTransLinesId() + " is locked");
+//        }
 
         try {
             return strategies.stream()

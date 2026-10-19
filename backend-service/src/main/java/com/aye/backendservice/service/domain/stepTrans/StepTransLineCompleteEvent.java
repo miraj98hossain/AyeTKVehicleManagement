@@ -25,7 +25,7 @@ public class StepTransLineCompleteEvent implements StepTransLineEventStrategy {
 
     @Override
     public boolean supports(StepTransLines reqStepTransLines) {
-        return reqStepTransLines.getStepStatus().equals(StepStatus.C);
+        return reqStepTransLines.getParentTransId() == null && reqStepTransLines.getStepStatus().equals(StepStatus.C);
     }
 
     @EnableLogging

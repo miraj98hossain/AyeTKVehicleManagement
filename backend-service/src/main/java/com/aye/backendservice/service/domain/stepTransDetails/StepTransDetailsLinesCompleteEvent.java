@@ -12,6 +12,8 @@ import com.aye.entity.vehicleproject.StepTransLines;
 import com.aye.entity.vehicleproject.StepTransTimeline;
 import com.aye.enums.StepStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,9 +27,11 @@ import java.util.Objects;
 @Component
 @RequiredArgsConstructor
 public class StepTransDetailsLinesCompleteEvent implements StepTransDetailsLinesEventStrategy {
-    private final StepTransService stepTransService;
     private final StepTransLinesService stepTransLinesService;
     private final StepTransDetailsLinesRepository lineRepo;
+    @Lazy
+    @Autowired
+    private StepTransService stepTransService;
 
     @Override
     public boolean supports(StepStatus status) {

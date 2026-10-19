@@ -5,10 +5,13 @@ import com.aye.entity.vehicleproject.StepTransLines;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface StepTransLinesRepository extends JpaRepository<StepTransLines, Long>, JpaSpecificationExecutor<StepTransLines> {
     Optional<StepTransLines> findByParentLineId(Long parentLineId);
 
     Optional<StepTransLines> findByStepTransLinesNo(String stepTransLinesNo);
+
+    List<StepTransLines> findAllBySubTrnRefId(Long subTrnRefId);
 }

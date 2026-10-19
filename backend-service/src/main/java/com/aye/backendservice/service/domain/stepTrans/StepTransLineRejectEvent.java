@@ -42,6 +42,12 @@ public class StepTransLineRejectEvent implements StepTransLineEventStrategy {
         dbstepTransLines.setStepStatus(StepStatus.R);
         dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
         rejectTransLine(dbstepTransLines, Long.valueOf(user.getId()), null);
+        if (dbstepTransLines.getParentTransId() != null) {
+            StepTransLines stepTransLines = this.stepTransLinesService.getStepTransLine(dbstepTransLines.getParentTransId());
+            stepTransLines.setStepStatus(StepStatus.R);
+            stepTransLines.setRemarks(reqStepTransLines.getRemarks());
+            this.stepTransLinesService.saveStepTransLines(stepTransLines, true, Long.valueOf(user.getId()));
+        }
         stepTrans.setStepTransStatus(StepTransStatus.R);
         this.stepTransRepository.save(stepTrans);
         //objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//Changing Status.

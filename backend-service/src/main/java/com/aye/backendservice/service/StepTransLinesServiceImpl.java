@@ -122,6 +122,7 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
 
                 ));
             }
+            predicates.add(cb.isNull(root.get("holdBy")));
             if (filterStatus != null && !filterStatus.isEmpty()) {
                 predicates.add(cb.or(cb.equal(root.get("stepStatus"), filterStatus)));
             }

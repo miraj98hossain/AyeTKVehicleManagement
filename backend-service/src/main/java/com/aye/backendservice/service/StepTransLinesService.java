@@ -26,5 +26,6 @@ public interface StepTransLinesService {
 
 
     List<StepTransLines> stepTransLinesSearch(List<Long> setupDetailIds, StepTransLineFilter stepTransFilter);
+
 }
 

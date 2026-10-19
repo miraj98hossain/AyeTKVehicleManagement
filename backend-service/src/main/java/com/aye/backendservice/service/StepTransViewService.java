@@ -11,18 +11,18 @@ import com.aye.entity.UserAccessTemltDtl;
 import com.aye.entity.UserTransactionTypes;
 import com.aye.entity.vehicleproject.StepTrans;
 import com.aye.entity.vehicleproject.StepTransLines;
-import com.aye.enums.StepStatus;
 import com.aye.mapper.StepTransLinesMapper;
 import com.aye.mapper.StepTransMapper;
 import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -147,14 +147,145 @@ public class StepTransViewService {
         return response;
     }
 
+//    protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, List<Long> holdAbleStepDetails,
+//                                                    String searchWords, String filterStatus, Pageable pageable, String userName, Boolean isUserSpecific) {
+//        List<Long> userItemAccess;
+//        if (isUserSpecific) {
+//            userItemAccess = commonHelperService.getUserAccessedItems(userName);
+//        } else {
+//            userItemAccess = new ArrayList<>();
+//        }
+//
+//        List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
+//
+//        Set<Long> setupDIds = details.stream()
+//                .map(StepSetupDetailsResponse::getStepSetupDetailsId)
+//                .collect(Collectors.toSet());
+//
+//        Page<StepTransLinesResponse> stepTransPage = this.stepTransLinesService.getAllStepTransLine(setupDIds.stream().toList(), userItemAccess, searchWords, filterStatus, pageable);
+//        stepTransPage.getContent().stream()
+//                .filter(linesResponse -> holdAbleStepDetails
+//                        .contains(linesResponse.getStepSetupDetailsId()))
+//                .forEach(line -> {
+//                    if (!userItemAccess.isEmpty()) {
+//                        line.getStepTransDetails().removeIf(stepTransDetails ->
+//                                stepTransDetails.getStepTransDetailsLines().stream()
+//                                        .anyMatch(detailLine -> !userItemAccess.contains(detailLine.getInvItemId()))
+//                        );
+//                    }
+//                    line.setHoldAble(true);
+//                });
+//
+//        stepTransPage.getContent().stream()
+//                .filter(stepTransLine -> stepTransLine.getParentTransId() != null)
+//                .forEach(stepTransLine -> {
+//                    stepTransLine.getStepTransDetails().forEach(stepTransDetail ->
+//                            stepTransDetail.getStepTransDetailsLines().removeIf(detailLine ->
+//                                    !Objects.equals(stepTransLine.getStepTransLinesId(), detailLine.getTrnRefId())
+//                            )
+//                    );
+//
+//                    stepTransLine.getStepTransDetails().removeIf(stepTransDetail ->
+//                            stepTransDetail.getStepTransDetailsLines().isEmpty()
+//                    );
+//                });
+//
+//        return ApiRequestResponseMaker.make(
+//                HttpStatus.OK.name(),
+//                "Successfully found all step trans",
+//                ApiRequestResponseDetail.ObjectType.PD,
+//                "stepTransResponseList",
+//                StepTransLinesResponse.class.getName(),
+//                stepTransPage
+//        );
+//    }
+
+//    protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, List<Long> holdAbleStepDetails,
+//                                                    String searchWords, String filterStatus, Pageable pageable,
+//                                                    String userName, Boolean isUserSpecific) {
+//        List<Long> userItemAccess = isUserSpecific
+//                ? commonHelperService.getUserAccessedItems(userName)
+//                : new ArrayList<>();
+//
+//        List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
+//
+//        Set<Long> setupDIds = details.stream()
+//                .map(StepSetupDetailsResponse::getStepSetupDetailsId)
+//                .collect(Collectors.toSet());
+//
+//        Page<StepTransLinesResponse> stepTransPage = this.stepTransLinesService
+//                .getAllStepTransLine(setupDIds.stream().toList(), userItemAccess, searchWords, filterStatus, pageable);
+//
+//        // 1. Remove hold-able lines whose permitted detail lines are all completed
+//        List<StepTransLinesResponse> filteredContent = stepTransPage.getContent().stream()
+//                .filter(linesResponse -> {
+//                    if (!holdAbleStepDetails.contains(linesResponse.getStepSetupDetailsId())) {
+//                        return true;
+//                    }
+//
+//                    List<StepTransDetailsLinesResponse> permittedLines = linesResponse.getStepTransDetails().stream()
+//                            .flatMap(detail -> detail.getStepTransDetailsLines().stream())
+//                            .filter(detailLine -> userItemAccess.isEmpty()
+//                                    || userItemAccess.contains(detailLine.getInvItemId()))
+//                            .toList();
+//
+//                    boolean allCompleted = !permittedLines.isEmpty()
+//                            && permittedLines.stream()
+//                            .allMatch(detailLine -> StepStatus.C.name().equals(detailLine.getStepStatus()));
+//
+//                    return !allCompleted;
+//                })
+//                .collect(Collectors.toCollection(ArrayList::new));
+//
+//        // 2. Your existing mutations, now on the filtered list
+//        filteredContent.stream()
+//                .filter(line -> holdAbleStepDetails.contains(line.getStepSetupDetailsId()))
+//                .forEach(line -> {
+//                    if (!userItemAccess.isEmpty()) {
+//                        line.getStepTransDetails().removeIf(stepTransDetails ->
+//                                stepTransDetails.getStepTransDetailsLines().stream()
+//                                        .anyMatch(detailLine -> detailLine.getStepStatus().equals(StepStatus.C.name())));
+//                        line.getStepTransDetails().removeIf(stepTransDetails ->
+//                                stepTransDetails.getStepTransDetailsLines().stream()
+//                                        .anyMatch(detailLine -> !userItemAccess.contains(detailLine.getInvItemId())));
+//                    }
+//                    line.setHoldAble(true);
+//                });
+//        //for sub transaction only show the transaction item
+//        filteredContent.stream()
+//                .filter(stepTransLine -> stepTransLine.getParentTransId() != null)
+//                .forEach(stepTransLine -> {
+//                    stepTransLine.getStepTransDetails().forEach(stepTransDetail ->
+//                            stepTransDetail.getStepTransDetailsLines().removeIf(detailLine ->
+//                                    !Objects.equals(stepTransLine.getSubTrnRefId(), detailLine.getStepTransDtlLnId())));
+//
+//                    stepTransLine.getStepTransDetails().removeIf(stepTransDetail ->
+//                            stepTransDetail.getStepTransDetailsLines().isEmpty());
+//                });
+//
+//        // 3. Rebuild the Page
+//        int removed = stepTransPage.getContent().size() - filteredContent.size();
+//        Page<StepTransLinesResponse> resultPage = new PageImpl<>(
+//                filteredContent,
+//                pageable,
+//                Math.max(0, stepTransPage.getTotalElements() - removed)
+//        );
+//
+//        return ApiRequestResponseMaker.make(
+//                HttpStatus.OK.name(),
+//                "Successfully found all step trans",
+//                ApiRequestResponseDetail.ObjectType.PD,
+//                "stepTransResponseList",
+//                StepTransLinesResponse.class.getName(),
+//                resultPage
+//        );
+//    }
+
+
     protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, List<Long> holdAbleStepDetails,
-                                                    String searchWords, String filterStatus, Pageable pageable, String userName, Boolean isUserSpecific) {
-        List<Long> userItemAccess;
-        if (isUserSpecific) {
-            userItemAccess = commonHelperService.getUserAccessedItems(userName);
-        } else {
-            userItemAccess = new ArrayList<>();
-        }
+                                                    String searchWords, String filterStatus, Pageable pageable,
+                                                    String userName, Boolean isUserSpecific) {
+
 
         List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
 
@@ -162,32 +293,30 @@ public class StepTransViewService {
                 .map(StepSetupDetailsResponse::getStepSetupDetailsId)
                 .collect(Collectors.toSet());
 
-        Page<StepTransLinesResponse> stepTransPage = this.stepTransLinesService.getAllStepTransLine(setupDIds.stream().toList(), userItemAccess, searchWords, filterStatus, pageable);
+        Page<StepTransLinesResponse> stepTransPage = this.stepTransLinesService
+                .getAllStepTransLine(setupDIds.stream().toList(), List.of(), searchWords, filterStatus, pageable);
 
-        stepTransPage.getContent().stream()
-                .filter(linesResponse -> holdAbleStepDetails
-                        .contains(linesResponse.getStepSetupDetailsId()))
-                .forEach(line -> {
-//                    boolean isHoldAble = line.
-//                            getStepTransDetails().stream()
-//                            .flatMap(detail -> detail.getStepTransDetailsLines().stream())
-//                            .limit(2)
-//                            .count() > 1;
-                    boolean isHoldAble = line.getStepTransDetails().stream()
-                            .flatMap(detail -> detail.getStepTransDetailsLines().stream())
-                            .map(StepTransDetailsLinesResponse::getInvItemId)
-                            .distinct()
-                            .limit(2)
-                            .count() > 1;
-                    line.setHoldAble(isHoldAble);
-                    String items = line.getStepTransDetails().stream()
-                            .flatMap(stepTDtlRes -> stepTDtlRes.getStepTransDetailsLines().stream())
-                            .filter(stepTransDtlLRes -> stepTransDtlLRes.getStepStatus().equals(StepStatus.W.name()))
-                            .map(StepTransDetailsLinesResponse::getOrderedItem)
-                            .collect(Collectors.joining(", "));
-                    line.setCurrentlyLoadingItem(items);
+
+        List<StepTransLinesResponse> filteredContent = stepTransPage.getContent().stream().toList();
+
+        filteredContent.stream()
+                .filter(stepTransLine -> stepTransLine.getParentTransId() != null)
+                .forEach(stepTransLine -> {
+                    stepTransLine.getStepTransDetails().forEach(stepTransDetail ->
+                            stepTransDetail.getStepTransDetailsLines().removeIf(detailLine ->
+                                    !Objects.equals(stepTransLine.getStepTransLinesId(), detailLine.getTrnRefId())));
+
+                    stepTransLine.getStepTransDetails().removeIf(stepTransDetail ->
+                            stepTransDetail.getStepTransDetailsLines().isEmpty());
                 });
 
+        // 3. Rebuild the Page
+        int removed = stepTransPage.getContent().size() - filteredContent.size();
+        Page<StepTransLinesResponse> resultPage = new PageImpl<>(
+                filteredContent,
+                pageable,
+                Math.max(0, stepTransPage.getTotalElements() - removed)
+        );
 
         return ApiRequestResponseMaker.make(
                 HttpStatus.OK.name(),
@@ -195,7 +324,7 @@ public class StepTransViewService {
                 ApiRequestResponseDetail.ObjectType.PD,
                 "stepTransResponseList",
                 StepTransLinesResponse.class.getName(),
-                stepTransPage
+                resultPage
         );
     }
 }

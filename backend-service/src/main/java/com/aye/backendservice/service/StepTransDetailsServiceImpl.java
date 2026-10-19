@@ -9,14 +9,18 @@ import com.aye.backendservice.service.user.MuserService;
 import com.aye.dto.request.StepTransDetailsLinesRequest;
 import com.aye.dto.request.StepTransLinesRequest;
 import com.aye.entity.user.Muser;
+import com.aye.entity.vehicleproject.StepTrans;
 import com.aye.entity.vehicleproject.StepTransDetails;
 import com.aye.entity.vehicleproject.StepTransDetailsLines;
 import com.aye.entity.vehicleproject.StepTransTimeline;
 import com.aye.enums.StepStatus;
 import com.aye.mapper.StepTransDetailsLinesMapper;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,10 +44,6 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
     private StepTransDetailsLinesMapper lineMapper;
     @Autowired
     private MuserService muserService;
-    @Autowired
-    private StepTransService stepTransService;
-    @Autowired
-    private StepTransLinesService stepTransLinesService;
     @Autowired
     private List<StepTransDetailsLinesEventStrategy> strategies;
     @Autowired
@@ -231,5 +231,31 @@ public class StepTransDetailsServiceImpl implements StepTransDetailsService {
             this.redisIdLockService.unlock(STEP_TRANS_DETAIL_LINE_LOCK_KEY, status.getDisplayName(), detailLineId);
             throw e;
         }
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<StepTransDetailsLines> findByStepTransId(Long stepTransId) {
+        return this.lineRepo.findAll(
+                (root, query, cb) -> {
+                    Join<StepTransDetailsLines, StepTransDetails> detail = root.join("stepTransDetails", JoinType.INNER);
+                    Join<StepTransDetails, StepTrans> trans = detail.join("stepTrans", JoinType.INNER);
+
+                    return cb.equal(trans.get("stepTransId"), stepTransId);
+                },
+                Sort.by(Sort.Direction.ASC, "invItemId")
+        );
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<StepTransDetailsLines> findByTrnRefId(Long trnRefId) {
+        return this.lineRepo.findByTrnRefId(trnRefId);
+    }
+
+    @Transactional
+    @Override
+    public List<StepTransDetailsLines> saveAllLines(List<StepTransDetailsLines> stepTransDetailsLines) {
+        return this.lineRepo.saveAll(stepTransDetailsLines);
     }
 }

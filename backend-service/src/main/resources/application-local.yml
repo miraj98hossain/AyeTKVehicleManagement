@@ -75,3 +75,4 @@ logging:
             bind: info
     com.aye.RestfulServer.controller: INFO
     org.springframework.data.couchbase.repository.query: DEBUG
+
