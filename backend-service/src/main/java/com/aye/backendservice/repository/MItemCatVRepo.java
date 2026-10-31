@@ -14,4 +14,6 @@ import java.util.List;
  */
 public interface MItemCatVRepo extends JpaRepository<MItemCatVNew, Long>, JpaSpecificationExecutor<MItemCatVNew> {
     List<MItemCatVNew> findAllByInventoryItemIdIn(Collection<Long> inventoryItemIds);
+
+    List<MItemCatVNew> findByInventoryItemId(Long inventoryItemId);
 }

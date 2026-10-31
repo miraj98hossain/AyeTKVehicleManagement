@@ -93,7 +93,7 @@ public class StepTransLineWipV2Event implements StepTransLineEventStrategy {
                     StepTransLines newStepTransLines = new StepTransLines();
                     newStepTransLines.setStepStatus(StepStatus.N);
                     newStepTransLines.setStepTrans(stepTrans);
-                    newStepTransLines.setStepSetupDetails(entry.getValue().get(0).getStepSetup().getStepSetupDetails().get(0));
+                    newStepTransLines.setStepSetupDetails(entry.getValue().get(0).getStepSetup());
                     newStepTransLines.setParentLineId(0L);
                     newStepTransLines.setStage(1);
                     newStepTransLines.setParentTransId(dbstepTransLines.getStepTransLinesId());

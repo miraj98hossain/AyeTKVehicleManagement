@@ -1,14 +1,13 @@
 package com.aye.backendservice.service.domain.stepTransDetails;
 
 
-import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.dto.request.StepTransDetailsRequest;
 import com.aye.entity.user.Muser;
 import com.aye.entity.vehicleproject.StepTransDetails;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +17,8 @@ import java.util.List;
  * @date: 11/01/2026
  * @time: 15:31
  */
-@Component
+@Service
 public class GeneralStepDetailsCreationStrategy implements StepTransDetailsCreationStrategy {
-
     @Autowired
     private StepTransDetailsRepository repository;
     @Autowired
@@ -32,7 +30,6 @@ public class GeneralStepDetailsCreationStrategy implements StepTransDetailsCreat
         return (req.getOrderNumber() == null) && (req.getScheduleNo() == null || req.getScheduleNo().isEmpty()) && (req.getChallanNumber() == null || req.getChallanNumber().isEmpty());
     }
 
-    @EnableLogging
     @Override
     public List<StepTransDetails> create(StepTransDetailsRequest req, Muser user) {
         List<StepTransDetails> list = new ArrayList<>();

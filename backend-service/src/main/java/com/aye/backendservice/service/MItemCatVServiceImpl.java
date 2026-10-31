@@ -32,4 +32,10 @@ public class MItemCatVServiceImpl implements MItemCatVService {
         });
         return list;
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<MItemCatVNew> findByInvItemId(Long inventoryItemId) {
+        return this.mItemCatVRepo.findByInventoryItemId(inventoryItemId);
+    }
 }

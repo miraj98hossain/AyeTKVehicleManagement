@@ -7,10 +7,11 @@ package com.aye.backendservice.service.factory;
  */
 
 
+import com.aye.backendservice.service.MItemCatVService;
 import com.aye.backendservice.service.NoGenService;
-
 import com.aye.dto.request.StepTransDetailsLinesRequest;
 import com.aye.dto.request.StepTransDetailsRequest;
+import com.aye.entity.order.MItemCatVNew;
 import com.aye.entity.schedule.BeforeTripV;
 import com.aye.entity.schedule.BeforeTripWDsV;
 import com.aye.entity.schedule.XxtkgTripDelvDtlV;
@@ -21,10 +22,14 @@ import com.aye.entity.vehicleproject.StepTransDetailsLines;
 import com.aye.mapper.StepTransDetailsLinesMapper;
 import com.aye.mapper.StepTransDetailsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+import java.util.List;
+
+@Service
 public class StepTransDetailsFactory {
+    @Autowired
+    private MItemCatVService mItemCatVService;
     @Autowired
     private NoGenService noGenService;
     @Autowired
@@ -82,6 +87,8 @@ public class StepTransDetailsFactory {
     }
 
     public StepTransDetailsLines fromStepDetailsLineReq(StepTransDetailsLinesRequest request, StepTransDetailsLines dbObj, Muser user) {
+        List<MItemCatVNew> items = this.mItemCatVService.findByInvItemId(request.getInvItemId());
+        request.setItemGroupName(items.get(0).getFamily());
         stepTransDetailsLinesMapper.dtoToEntity(request, dbObj);
         dbObj.setUpdatedBy(Long.valueOf(user.getId()));
         return dbObj;
@@ -89,10 +96,12 @@ public class StepTransDetailsFactory {
 
 
     public StepTransDetailsLines lineFromBeforeTripV(BeforeTripV src, StepTransDetails parent, Muser user) {
+        List<MItemCatVNew> items = this.mItemCatVService.findByInvItemId(src.getInventoryItemId());
         StepTransDetailsLines ln = new StepTransDetailsLines();
         ln.setStepTransDetails(parent);
         ln.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
         ln.setInvItemId(src.getInventoryItemId());
+        ln.setItemGroupName(items.get(0).getFamily());
         ln.setOrderedItem(src.getOrderedItem());
         ln.setUom(src.getOrderQuantityUom());
         ln.setOrderedQuantity(src.getOrderedQuantity());
@@ -113,10 +122,12 @@ public class StepTransDetailsFactory {
     }
 
     public StepTransDetailsLines lineFromBeforeTripWDsV(BeforeTripWDsV src, StepTransDetails parent, Muser user) {
+        List<MItemCatVNew> items = this.mItemCatVService.findByInvItemId(src.getInventoryItemId());
         StepTransDetailsLines ln = new StepTransDetailsLines();
         ln.setStepTransDetails(parent);
         ln.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
         ln.setInvItemId(src.getInventoryItemId());
+        ln.setItemGroupName(items.get(0).getFamily());
         ln.setOrderedItem(src.getOrderedItem());
         ln.setUom(src.getOrderQuantityUom());
         ln.setOrderedQuantity(src.getOrderedQuantity());
