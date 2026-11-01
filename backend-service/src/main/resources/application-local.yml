@@ -3,50 +3,74 @@ spring:
     time-zone: Asia/Dhaka
   application:
     name: backend-service
-  datasource:
-    url: jdbc:oracle:thin:@192.168.0.102:1521/PROD
-    username: mapps
-    password: mapps
-    driver-class-name: oracle.jdbc.OracleDriver
-  jpa:
-    show-sql: false
-    generate-ddl: false
-    hibernate:
-      ddl-auto: validate
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    properties:
-      hibernate:
-        hbm2ddl:
-          schema_filter_provider: com.aye.backendservice.config.MySchemaFilterProvider
-        proc:
-          param_null_passing: true
-        enable_lazy_load_no_trans: true
-        default_schema: mapps
-        id:
-          new_generator_mappings: true
-        format_sql: false
-
-  servlet:
-    multipart:
-      enabled: true
-      file-size-threshold: 200KB
-      max-file-size: 100MB
-      max-request-size: 200MB
-
-
-  Report:
-    dir: C:/Users/User/JaspersoftWorkspace/MyReports
-    serialization:
-      fail-on-empty-beans: false
   data:
     redis:
       host: 192.168.0.113
       port: 6379
       password: redis13579
-    jpa:
-      repositories:
-        enabled: true
+  datasource:
+    ebs:
+      url: jdbc:oracle:thin:@192.168.0.102:1521/PROD
+      username: mapps
+      password: mapps
+      driver-class-name: oracle.jdbc.OracleDriver
+      hikari:
+        connectionTimeout: 30000
+        idleTimeout: 600000
+        maxLifetime: 1800000
+      jpa:
+        show-sql: false
+        generate-ddl: false
+        hibernate:
+          ddl-auto: validate
+          naming:
+            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        properties:
+          hibernate:
+            hbm2ddl:
+              schema_filter_provider: com.aye.backendservice.config.MySchemaFilterProvider
+            proc:
+              param_null_passing: true
+            enable_lazy_load_no_trans: true
+            default_schema: mapps
+            id:
+              new_generator_mappings: true
+            format_sql: false
+    postgres:
+      url: jdbc:postgresql://192.168.0.113:5432/mapps
+      username: mapps
+      password: mapps
+      driver-class-name: org.postgresql.Driver
+      hikari:
+        connectionTimeout: 30000
+        idleTimeout: 600000
+        maxLifetime: 1800000
+      jpa:
+        show-sql: false
+        generate-ddl: false
+        hibernate:
+          ddl-auto: validate
+          naming:
+            physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        properties:
+          hibernate:
+            proc:
+              param_null_passing: true
+            enable_lazy_load_no_trans: true
+            default_schema: public
+            id:
+              new_generator_mappings: true
+            format_sql: false
+  Report:
+    dir: C:/Users/User/JaspersoftWorkspace/MyReports
+#servlet:
+#  multipart:
+#    enabled: true
+#    file-size-threshold: 200KB
+#    max-file-size: 100MB
+#    max-request-size: 200MB
+
+
 server:
   port: 8443
   servlet:
