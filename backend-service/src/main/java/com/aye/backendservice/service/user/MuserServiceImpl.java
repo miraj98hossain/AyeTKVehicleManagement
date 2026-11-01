@@ -24,7 +24,7 @@ import java.util.List;
 public class MuserServiceImpl implements MuserService {
 
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "ebs")
     private EntityManager em;
 
     private Muser finalmuser;

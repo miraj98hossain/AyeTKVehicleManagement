@@ -1,8 +1,8 @@
 package com.aye.backendservice.service.orgManagement;
 
 
+import com.aye.backendservice.postgresEntity.BeforeTripSchedule;
 import com.aye.entity.projection.BeforeTripWDsVProjection;
-import com.aye.entity.schedule.BeforeTripWDsV;
 
 import java.util.List;
 
@@ -16,5 +16,5 @@ public interface BeforeTripWDsVService {
 
     List<BeforeTripWDsVProjection> findScheduleId(Long orgId, Long invOrgId, String searchWords);
 
-    List<BeforeTripWDsV> findAllByScheduleNumber(String scheduleNo);
+    List<BeforeTripSchedule> findAllByScheduleNumber(String scheduleNo);
 }

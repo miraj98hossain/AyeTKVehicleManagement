@@ -1,6 +1,7 @@
-package com.aye.backendservice.repository;
+package com.aye.backendservice.postgresRepository;
 
-import com.aye.entity.order.MItemCatVNew;
+
+import com.aye.backendservice.postgresEntity.MItemCatVNew;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
@@ -16,4 +17,6 @@ public interface MItemCatVRepo extends JpaRepository<MItemCatVNew, Long>, JpaSpe
     List<MItemCatVNew> findAllByInventoryItemIdIn(Collection<Long> inventoryItemIds);
 
     List<MItemCatVNew> findByInventoryItemId(Long inventoryItemId);
+
+    List<MItemCatVNew> findByInventoryItemIdAndOrgIdAndOrganizationId(Long inventoryItemId, Long orgId, Long organizationId);
 }

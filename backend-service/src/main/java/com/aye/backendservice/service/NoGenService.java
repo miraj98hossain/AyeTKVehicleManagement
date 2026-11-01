@@ -14,7 +14,7 @@ public class NoGenService {
 
     private static final Logger log = LoggerFactory.getLogger(NoGenService.class);
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "ebs")
     private EntityManager entityManager;
 
     private Long getNextVal(String sequenceName) {

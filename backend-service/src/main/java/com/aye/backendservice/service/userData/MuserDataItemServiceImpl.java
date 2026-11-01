@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 @Service
 public class MuserDataItemServiceImpl implements MuserDataItemService {
 
-    @PersistenceContext
+    @PersistenceContext(unitName = "ebs")
 
     private EntityManager em;
 

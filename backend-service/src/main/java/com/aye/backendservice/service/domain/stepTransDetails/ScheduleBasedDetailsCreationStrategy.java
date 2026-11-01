@@ -8,11 +8,11 @@ package com.aye.backendservice.service.domain.stepTransDetails;
 
 
 import com.aye.backendservice.aspect.annotation.EnableLogging;
+import com.aye.backendservice.postgresEntity.BeforeTripSchedule;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.backendservice.service.orgManagement.BeforeTripWDsVService;
 import com.aye.dto.request.StepTransDetailsRequest;
-import com.aye.entity.schedule.BeforeTripWDsV;
 import com.aye.entity.user.Muser;
 import com.aye.entity.vehicleproject.StepTransDetails;
 import com.aye.entity.vehicleproject.StepTransDetailsLines;
@@ -51,12 +51,12 @@ public class ScheduleBasedDetailsCreationStrategy implements StepTransDetailsCre
         List<StepTransDetails> existing = repository.findAllByScheduleNoAndStepTrans_StepTransId(req.getScheduleNo(), req.getStepTransId());
         Set<Long> existingOrders = existing.stream().map(StepTransDetails::getOrderNumber).collect(Collectors.toSet());
 
-        List<BeforeTripWDsV> trips = beforeTripWDsVService.findAllByScheduleNumber(req.getScheduleNo());
-        Map<Long, List<BeforeTripWDsV>> grouped = trips.stream().collect(Collectors.groupingBy(BeforeTripWDsV::getOrderNumber));
+        List<BeforeTripSchedule> trips = beforeTripWDsVService.findAllByScheduleNumber(req.getScheduleNo());
+        Map<Long, List<BeforeTripSchedule>> grouped = trips.stream().collect(Collectors.groupingBy(BeforeTripSchedule::getOrderNumber));
 
         List<StepTransDetails> result = new ArrayList<>();
 
-        for (BeforeTripWDsV trip : trips) {
+        for (BeforeTripSchedule trip : trips) {
             if (existingOrders.contains(trip.getOrderNumber())) continue;
 
             existingOrders.add(trip.getOrderNumber());

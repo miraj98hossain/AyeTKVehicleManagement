@@ -1,7 +1,7 @@
 package com.aye.backendservice.service;
 
-import com.aye.backendservice.repository.MItemCatVRepo;
-import com.aye.entity.order.MItemCatVNew;
+import com.aye.backendservice.postgresEntity.MItemCatVNew;
+import com.aye.backendservice.postgresRepository.MItemCatVRepo;
 import jakarta.persistence.criteria.Expression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,5 +37,11 @@ public class MItemCatVServiceImpl implements MItemCatVService {
     @Override
     public List<MItemCatVNew> findByInvItemId(Long inventoryItemId) {
         return this.mItemCatVRepo.findByInventoryItemId(inventoryItemId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<MItemCatVNew> findByInvItemIdAndOrgIdAndInvOrgId(Long inventoryItemId, Long orgId, Long invOrgId) {
+        return this.mItemCatVRepo.findByInventoryItemIdAndOrgIdAndOrganizationId(inventoryItemId, orgId, invOrgId);
     }
 }

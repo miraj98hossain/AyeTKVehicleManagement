@@ -7,15 +7,17 @@ package com.aye.backendservice.service.factory;
  */
 
 
+import com.aye.backendservice.postgresEntity.BeforeTripOrder;
+import com.aye.backendservice.postgresEntity.BeforeTripSchedule;
+import com.aye.backendservice.postgresEntity.MItemCatVNew;
+import com.aye.backendservice.service.ItemFamilyWiseStepDetailService;
 import com.aye.backendservice.service.MItemCatVService;
 import com.aye.backendservice.service.NoGenService;
 import com.aye.dto.request.StepTransDetailsLinesRequest;
 import com.aye.dto.request.StepTransDetailsRequest;
-import com.aye.entity.order.MItemCatVNew;
-import com.aye.entity.schedule.BeforeTripV;
-import com.aye.entity.schedule.BeforeTripWDsV;
 import com.aye.entity.schedule.XxtkgTripDelvDtlV;
 import com.aye.entity.user.Muser;
+import com.aye.entity.vehicleproject.ItemFamilyWiseStepDetail;
 import com.aye.entity.vehicleproject.StepTrans;
 import com.aye.entity.vehicleproject.StepTransDetails;
 import com.aye.entity.vehicleproject.StepTransDetailsLines;
@@ -29,6 +31,8 @@ import java.util.List;
 @Service
 public class StepTransDetailsFactory {
     @Autowired
+    private ItemFamilyWiseStepDetailService familySetupService;
+    @Autowired
     private MItemCatVService mItemCatVService;
     @Autowired
     private NoGenService noGenService;
@@ -37,7 +41,7 @@ public class StepTransDetailsFactory {
     @Autowired
     private StepTransDetailsLinesMapper stepTransDetailsLinesMapper;
 
-    public StepTransDetails fromBeforeTripV(BeforeTripV src, StepTrans stepTrans, Muser user) {
+    public StepTransDetails fromBeforeTripV(BeforeTripOrder src, StepTrans stepTrans, Muser user) {
         StepTransDetails dtl = new StepTransDetails();
         dtl.setStepTrans(stepTrans);
         dtl.setCreatedBy(Long.valueOf(user.getId()));
@@ -88,20 +92,41 @@ public class StepTransDetailsFactory {
 
     public StepTransDetailsLines fromStepDetailsLineReq(StepTransDetailsLinesRequest request, StepTransDetailsLines dbObj, Muser user) {
         List<MItemCatVNew> items = this.mItemCatVService.findByInvItemId(request.getInvItemId());
-        request.setItemGroupName(items.get(0).getFamily());
+        if (items != null && !items.isEmpty()) {
+            var item = items.get(0);
+            request.setItemGroupName(item.getFamily());
+            ItemFamilyWiseStepDetail familyWiseStepDetail = this.familySetupService.findByOrgIdAndInvOrgId(item.getOrgId(), item.getOrganizationId(), item.getFamily());
+            if (familyWiseStepDetail.getStepSetupDetails() == null) {
+                throw new IllegalArgumentException("This Item Family" + item.getFamily() + " Setup not found");
+            }
+            dbObj.setStepSetup(familyWiseStepDetail.getStepSetupDetails());
+        } else {
+            throw new IllegalArgumentException("Items not found with id: " + request.getInvItemId());
+        }
         stepTransDetailsLinesMapper.dtoToEntity(request, dbObj);
         dbObj.setUpdatedBy(Long.valueOf(user.getId()));
         return dbObj;
     }
 
 
-    public StepTransDetailsLines lineFromBeforeTripV(BeforeTripV src, StepTransDetails parent, Muser user) {
-        List<MItemCatVNew> items = this.mItemCatVService.findByInvItemId(src.getInventoryItemId());
+    public StepTransDetailsLines lineFromBeforeTripV(BeforeTripOrder src, StepTransDetails parent, Muser user) {
         StepTransDetailsLines ln = new StepTransDetailsLines();
+        List<MItemCatVNew> items = this.mItemCatVService
+                .findByInvItemIdAndOrgIdAndInvOrgId(src.getInventoryItemId(), src.getOrgId(), src.getInvOrgId());
+        if (items != null && !items.isEmpty()) {
+            var item = items.get(0);
+            ln.setItemGroupName(item.getFamily());
+            ItemFamilyWiseStepDetail familyWiseStepDetail = this.familySetupService.findByOrgIdAndInvOrgId(item.getOrgId(), item.getOrganizationId(), item.getFamily());
+            if (familyWiseStepDetail.getStepSetupDetails() == null) {
+                throw new IllegalArgumentException("This Item Family" + item.getFamily() + " Setup not found");
+            }
+            ln.setStepSetup(familyWiseStepDetail.getStepSetupDetails());
+        } else {
+            throw new IllegalArgumentException("Items not found with id: " + src.getInventoryItemId());
+        }
         ln.setStepTransDetails(parent);
         ln.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
         ln.setInvItemId(src.getInventoryItemId());
-        ln.setItemGroupName(items.get(0).getFamily());
         ln.setOrderedItem(src.getOrderedItem());
         ln.setUom(src.getOrderQuantityUom());
         ln.setOrderedQuantity(src.getOrderedQuantity());
@@ -109,7 +134,7 @@ public class StepTransDetailsFactory {
         return ln;
     }
 
-    public StepTransDetails fromBeforeTripWDsV(BeforeTripWDsV src, StepTrans stepTrans, Muser user) {
+    public StepTransDetails fromBeforeTripWDsV(BeforeTripSchedule src, StepTrans stepTrans, Muser user) {
         StepTransDetails dtl = new StepTransDetails();
         dtl.setStepTrans(stepTrans);
         dtl.setCreatedBy(Long.valueOf(user.getId()));
@@ -121,13 +146,24 @@ public class StepTransDetailsFactory {
         return dtl;
     }
 
-    public StepTransDetailsLines lineFromBeforeTripWDsV(BeforeTripWDsV src, StepTransDetails parent, Muser user) {
-        List<MItemCatVNew> items = this.mItemCatVService.findByInvItemId(src.getInventoryItemId());
+    public StepTransDetailsLines lineFromBeforeTripWDsV(BeforeTripSchedule src, StepTransDetails parent, Muser user) {
         StepTransDetailsLines ln = new StepTransDetailsLines();
+        List<MItemCatVNew> items = this.mItemCatVService
+                .findByInvItemIdAndOrgIdAndInvOrgId(src.getInventoryItemId(), src.getOrgId(), src.getInvOrgId());
+        if (items != null && !items.isEmpty()) {
+            var item = items.get(0);
+            ln.setItemGroupName(item.getFamily());
+            ItemFamilyWiseStepDetail familyWiseStepDetail = this.familySetupService.findByOrgIdAndInvOrgId(item.getOrgId(), item.getOrganizationId(), item.getFamily());
+            if (familyWiseStepDetail.getStepSetupDetails() == null) {
+                throw new IllegalArgumentException("This Item Family" + item.getFamily() + " Setup not found");
+            }
+            ln.setStepSetup(familyWiseStepDetail.getStepSetupDetails());
+        } else {
+            throw new IllegalArgumentException("Items not found with id: " + src.getInventoryItemId());
+        }
         ln.setStepTransDetails(parent);
         ln.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
         ln.setInvItemId(src.getInventoryItemId());
-        ln.setItemGroupName(items.get(0).getFamily());
         ln.setOrderedItem(src.getOrderedItem());
         ln.setUom(src.getOrderQuantityUom());
         ln.setOrderedQuantity(src.getOrderedQuantity());

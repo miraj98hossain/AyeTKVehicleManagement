@@ -15,6 +15,7 @@ import com.aye.mapper.concurrency.ExecutableMapper;
 import com.aye.mapper.concurrency.ExecutableParameterMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,9 @@ public class ExecutableServiceImpl implements ExecutableService {
     private final ExecutableParameterRepo executableParameterRepo;
     private final ExecutableMapper executableMapper;
     private final ExecutableParameterMapper executableParameterMapper;
-    private final EntityManager entityManager;
     private final MuserService muserService;
-
+    @PersistenceContext(unitName = "ebs")
+    private EntityManager entityManager;
     @Value("${spring.Report.dir}")
     private String reportDirectory;
 

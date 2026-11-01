@@ -2,11 +2,11 @@ package com.aye.backendservice.service.domain.stepTransDetails;
 
 
 import com.aye.backendservice.aspect.annotation.EnableLogging;
+import com.aye.backendservice.postgresEntity.BeforeTripOrder;
 import com.aye.backendservice.repository.StepTransDetailsRepository;
 import com.aye.backendservice.service.factory.StepTransDetailsFactory;
 import com.aye.backendservice.service.orgManagement.BeforeTripVService;
 import com.aye.dto.request.StepTransDetailsRequest;
-import com.aye.entity.schedule.BeforeTripV;
 import com.aye.entity.user.Muser;
 import com.aye.entity.vehicleproject.StepTransDetails;
 import com.aye.entity.vehicleproject.StepTransDetailsLines;
@@ -47,12 +47,12 @@ public class OrderBasedDetailsCreationStrategy implements StepTransDetailsCreati
         List<StepTransDetails> existing = repository.findAllByOrderNumberAndStepTrans_StepTransId(req.getOrderNumber(), req.getStepTransId());
         Set<Long> existingOrders = existing.stream().map(StepTransDetails::getOrderNumber).collect(Collectors.toSet());
 
-        List<BeforeTripV> trips = beforeTripVService.findAllByOrderNumber(req.getOrderNumber());
-        Map<Long, List<BeforeTripV>> grouped = trips.stream().collect(Collectors.groupingBy(BeforeTripV::getOrderNumber));
+        List<BeforeTripOrder> trips = beforeTripVService.findAllByOrderNumber(req.getOrderNumber());
+        Map<Long, List<BeforeTripOrder>> grouped = trips.stream().collect(Collectors.groupingBy(BeforeTripOrder::getOrderNumber));
 
         List<StepTransDetails> result = new ArrayList<>();
 
-        for (BeforeTripV trip : trips) {
+        for (BeforeTripOrder trip : trips) {
             if (existingOrders.contains(trip.getOrderNumber())) continue;
 
             existingOrders.add(trip.getOrderNumber());

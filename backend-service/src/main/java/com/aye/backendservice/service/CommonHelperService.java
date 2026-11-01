@@ -1,9 +1,9 @@
 package com.aye.backendservice.service;
 
 
+import com.aye.backendservice.postgresEntity.MItemCatVNew;
 import com.aye.backendservice.service.orgManagement.UserCodeAccessService;
 import com.aye.entity.UserCodeAccess;
-import com.aye.entity.order.MItemCatVNew;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

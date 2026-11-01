@@ -1,11 +1,13 @@
 package com.aye.backendservice.service.orgManagement;
 
 
-import com.aye.backendservice.repository.orgManagement.BeforeTripWDsVRepo;
+import com.aye.backendservice.postgresEntity.BeforeTripSchedule;
+import com.aye.backendservice.postgresRepository.BeforeTripScheduleRepository;
 import com.aye.entity.projection.BeforeTripWDsVProjection;
-import com.aye.entity.schedule.BeforeTripWDsV;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,22 +22,42 @@ import java.util.List;
  */
 @Service
 public class BeforeTripWDsVServiceImpl implements BeforeTripWDsVService {
+//    @Autowired
+//    private BeforeTripWDsVRepo beforeTripWDsVRepo;
+
     @Autowired
-    private BeforeTripWDsVRepo beforeTripWDsVRepo;
+    private BeforeTripScheduleRepository beforeTripScheduleRepo;
 
     @Override
     @Transactional(readOnly = true)
     public List<BeforeTripWDsVProjection> findScheduleId(Long orgId, Long invOrgId, String searchWords) {
-        var list = beforeTripWDsVRepo.findScheduleId(orgId, invOrgId, searchWords);
-        return list;
+//        var list = beforeTripWDsVRepo.findScheduleId(orgId, invOrgId, searchWords);
+//        return list;
+        Specification<BeforeTripSchedule> specification = (root, query, cb) -> {
+            if (query != null) {
+                query.distinct(true);
+            }
+            List<Predicate> predicates = new ArrayList<>();
+            predicates.add(cb.equal(root.get("orgId"), orgId));
+            predicates.add(cb.equal(root.get("invOrgId"), invOrgId));
+            if (searchWords != null) {
+                Expression<String> scheduleNumber = root.get("scheduleNumber");
+                predicates.add(cb.like(scheduleNumber, "%" + searchWords + "%"));
+            }
+            return cb.and(predicates.toArray(Predicate[]::new));
+        };
+        return this.beforeTripScheduleRepo.findBy(specification,
+                q -> q.as(BeforeTripWDsVProjection.class).all()
+        );
     }
+
 
     @Transactional(readOnly = true)
     @Override
-    public List<BeforeTripWDsV> findAllByScheduleNumber(String scheduleNo) {
+    public List<BeforeTripSchedule> findAllByScheduleNumber(String scheduleNo) {
 //        var list = beforeTripWDsVRepo.findAllByScheduleNumber(scheduleNo);
 //        return list;
-        List<BeforeTripWDsV> list = this.beforeTripWDsVRepo.findAll((root, query, cb) -> {
+        List<BeforeTripSchedule> list = this.beforeTripScheduleRepo.findAll((root, query, cb) -> {
             List<Predicate> predicates = new ArrayList<>();
             predicates.add(cb.equal(root.get("scheduleNumber"), scheduleNo));
             predicates.add(cb.notEqual(root.get("flowStatusCode"), "CLOSED"));
