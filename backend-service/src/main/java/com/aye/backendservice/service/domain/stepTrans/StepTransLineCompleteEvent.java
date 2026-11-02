@@ -42,7 +42,7 @@ public class StepTransLineCompleteEvent implements StepTransLineEventStrategy {
             dbstepTransLines.setStepStatus(StepStatus.C);
             dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
             objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(user.getId()));//Changing Status.
-            var childLine = this.stepTransLinesService.getChildStepLine(dbstepTransLines.getStepTransLinesId());
+            var childLine = this.stepTransLinesService.getHierarchicalChildStepLine(dbstepTransLines.getStepTransLinesId());
             if (childLine != null) {
                 childLine.setStage(childLine.getStage() + 1);//current value should be 1(0->1). Eligible to be at wip now.
                 //updating child

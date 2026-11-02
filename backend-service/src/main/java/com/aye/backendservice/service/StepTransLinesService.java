@@ -6,6 +6,7 @@ import com.aye.dto.response.StepTransLinesResponse;
 import com.aye.entity.vehicleproject.StepTransLines;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,7 +18,10 @@ public interface StepTransLinesService {
 
     StepTransLines getStepTransLine(Long stepTransLinesId);
 
-    StepTransLines getChildStepLine(Long stepTransLineId);
+    StepTransLines getHierarchicalChildStepLine(Long stepTransLineId);
+
+    @Transactional(readOnly = true)
+    List<StepTransLines> getChildStepLines(Long stepTransLineId);
 
     Page<StepTransLinesResponse> getAllStepTransLine(Pageable pageable);
 

@@ -3,6 +3,7 @@ package com.aye.backendservice.service.domain.stepTrans;
 import com.aye.backendservice.aspect.annotation.EnableLogging;
 import com.aye.backendservice.service.StepTransDetailsService;
 import com.aye.backendservice.service.StepTransLinesService;
+import com.aye.backendservice.service.StepTransScaleDetailsService;
 import com.aye.entity.user.Muser;
 import com.aye.entity.vehicleproject.StepSetupDetails;
 import com.aye.entity.vehicleproject.StepTrans;
@@ -24,7 +25,7 @@ import java.util.List;
 public class ChildStepTransLineWipEvent implements StepTransLineEventStrategy {
     private final StepTransLinesService stepTransLinesService;
     private final StepTransDetailsService stepTransDetailsService;
-
+    private final StepTransScaleDetailsService stepTransScaleDetailsService;
 
     @Override
     public boolean supports(StepTransLines reqStepTransLines) {
@@ -48,7 +49,7 @@ public class ChildStepTransLineWipEvent implements StepTransLineEventStrategy {
             List<StepSetupDetails> stepSetup = dbstepTransLines.getStepSetupDetails().getParentDetail().getStepSetupDetailsLines()
                     .stream()
                     .filter(stepSetupDetails -> stepSetupDetails.getIsActive() == 1).toList();
-            List<StepTransDetailsLines> existingTrans = this.stepTransDetailsService.findByTrnRefId(dbstepTransLines.getStepTransLinesId()); //TODO ADD SELF REF IN STEP TRANS LIKE SETUP DTL
+            List<StepTransDetailsLines> existingTrans = this.stepTransDetailsService.findByTrnRefId(dbstepTransLines.getStepTransLinesId());
             Integer existingTransLength = existingTrans.get(0).getStage();
             if (!(stepSetup.size() == existingTransLength)) {
                 var setupDetails = stepSetup.get(existingTransLength);
@@ -70,6 +71,19 @@ public class ChildStepTransLineWipEvent implements StepTransLineEventStrategy {
                     stepTransDetailsLines.setStepStatus(StepStatus.W);
                 }
                 this.stepTransDetailsService.saveAllLines(existingTrans);
+//                if (existingTransLength == 1) {
+//                    StepTransScaleDetails stepTransScaleDetails = dbstepTransLines.getStepTrans().getStepTransScaleDetails().get(0);
+//                    StepTransScaleDetailsDto stepTransScaleDetailsDto = new StepTransScaleDetailsDto();
+//                    stepTransScaleDetailsDto.setStepTransId(dbstepTransLines.getStepTrans().getStepTransId());
+//                    stepTransScaleDetailsDto.setStepTransLineId(dbstepTransLines.getStepTransLinesId());
+//                    stepTransScaleDetailsDto.setStepSetupDetailId(setupDetails.getStepSetupDetailsId());
+//                    stepTransScaleDetailsDto.setStepTransDetailsLineId(dbstepTransLines.getSubTrnRefId());
+//                    stepTransScaleDetailsDto.setWeight(stepTransScaleDetails.getWeight());
+//                    stepTransScaleDetailsDto.setScaleName(stepTransScaleDetails.getScaleName());
+//                    stepTransScaleDetailsDto.setUom(stepTransScaleDetails.getUom());
+//                    stepTransScaleDetailsService.save(stepTransScaleDetailsDto, user.getUserName());
+//                }
+
 
             } else {
                 //There is no step left to create also no child left to increase its stage.

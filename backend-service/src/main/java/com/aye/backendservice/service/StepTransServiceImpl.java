@@ -431,7 +431,7 @@ public class StepTransServiceImpl implements StepTransService {
         visited.add(stepId);
 
 
-        var childLine = this.stepTransLinesService.getChildStepLine(stepId);
+        var childLine = this.stepTransLinesService.getHierarchicalChildStepLine(stepId);
         if (childLine != null) {
             rejectTransLine(childLine, currentUser, visited);
         }

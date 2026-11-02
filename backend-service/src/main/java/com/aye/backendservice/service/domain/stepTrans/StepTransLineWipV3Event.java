@@ -1,7 +1,6 @@
 package com.aye.backendservice.service.domain.stepTrans;
 
 import com.aye.backendservice.aspect.annotation.EnableLogging;
-import com.aye.backendservice.service.CommonHelperService;
 import com.aye.backendservice.service.StepTransDetailsService;
 import com.aye.backendservice.service.StepTransLinesService;
 import com.aye.entity.user.Muser;
@@ -44,7 +43,6 @@ public class StepTransLineWipV3Event implements StepTransLineEventStrategy {
     private static final int STAGE_ELIGIBLE_FOR_WIP = 1;
 
     private final StepTransLinesService stepTransLinesService;
-    private final CommonHelperService commonHelperService;
     private final StepTransDetailsService stepTransDetailsService;
 
     @Override

@@ -304,6 +304,9 @@
                                                 <input id="scaleModSetupDetailsId"
                                                        th:field="${scaleReq.stepSetupDetailId}"
                                                        type="hidden"/>
+                                                <input id="scaleModStepTransDetailsLineId"
+                                                       th:field="${scaleReq.stepTransDetailsLineId}"
+                                                       type="hidden"/>
                                                 <input id="scaleModUom" th:field="${scaleReq.uom}"
                                                        type="hidden"/>
                                                 <!-- Input -->
@@ -963,7 +966,7 @@
                                             </table>
                                         </div>
                                     </td>
-                                    <td th:text="${line.stepName}"></td>
+                                    <td th:text="${line.stepDescription}"></td>
                                     <td class="text-center" th:text="${line.stepStatus}"></td>
                                     <!--                                    <td th:text="${line.stepTransScaleDetails?.weight}"></td>-->
                                     <td th:text="${line.stepWiseWeight}"></td>
@@ -981,7 +984,8 @@
                                                                         data-step-trans-line-id=${line.stepTransLinesId},
                                                                         data-page-id=${pageId},
                                                                         data-temp-dtl-id=${tempDtlId},
-                                                                        data-setup-details-id=${line.stepSetupDetailsId}"
+                                                                        data-setup-details-id=${line.stepSetupDetailsId},
+                                                                        data-step-trans-details-line-id=${line.subTrnRefId}"
                                            th:if="${isIpAllowed and #lists.contains(allowedStep, line.stepSetupDetailsId) and line.stage!=0}">
 
                                             <span aria-hidden="true" class="fa fa-truck"></span>

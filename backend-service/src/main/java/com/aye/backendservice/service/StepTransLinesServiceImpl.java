@@ -73,8 +73,14 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
 
     @Transactional(readOnly = true)
     @Override
-    public StepTransLines getChildStepLine(Long stepTransLineId) {
+    public StepTransLines getHierarchicalChildStepLine(Long stepTransLineId) {
         return this.stepTransLinesRepository.findByParentLineId(stepTransLineId).orElse(null);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<StepTransLines> getChildStepLines(Long stepTransLineId) {
+        return this.stepTransLinesRepository.findByParentTransId(stepTransLineId);
     }
 
     @Transactional(readOnly = true)

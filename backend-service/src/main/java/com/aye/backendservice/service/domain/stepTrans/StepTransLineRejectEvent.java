@@ -41,13 +41,22 @@ public class StepTransLineRejectEvent implements StepTransLineEventStrategy {
         }
         dbstepTransLines.setStepStatus(StepStatus.R);
         dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
-        rejectTransLine(dbstepTransLines, Long.valueOf(user.getId()), null);
-        if (dbstepTransLines.getParentTransId() != null) {
-            StepTransLines stepTransLines = this.stepTransLinesService.getStepTransLine(dbstepTransLines.getParentTransId());
-            stepTransLines.setStepStatus(StepStatus.R);
-            stepTransLines.setRemarks(reqStepTransLines.getRemarks());
-            this.stepTransLinesService.saveStepTransLines(stepTransLines, true, Long.valueOf(user.getId()));
+        if (dbstepTransLines.getParentTransId() == null) {
+            rejectTransLine(dbstepTransLines, Long.valueOf(user.getId()), null);
+        } else {
+            StepTransLines stepTransLine = stepTransLinesService.getStepTransLine(dbstepTransLines.getParentTransId());
+            stepTransLine.setStepStatus(StepStatus.R);
+            stepTransLine.setRemarks(reqStepTransLines.getRemarks());
+            rejectTransLine(stepTransLine, Long.valueOf(user.getId()), null);
         }
+
+
+//        if (dbstepTransLines.getParentTransId() != null) {
+//            StepTransLines stepTransLines = this.stepTransLinesService.getStepTransLine(dbstepTransLines.getParentTransId());
+//            stepTransLines.setStepStatus(StepStatus.R);
+//            stepTransLines.setRemarks(reqStepTransLines.getRemarks());
+//            this.stepTransLinesService.saveStepTransLines(stepTransLines, true, Long.valueOf(user.getId()));
+//        }
         stepTrans.setStepTransStatus(StepTransStatus.R);
         this.stepTransRepository.save(stepTrans);
         //objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(muser.getId()));//Changing Status.
@@ -61,16 +70,19 @@ public class StepTransLineRejectEvent implements StepTransLineEventStrategy {
             visited = new HashSet<>();
         }
 
-        Long stepId = stepTransLines.getStepTransLinesId();
-        if (visited.contains(stepId)) {
+        Long lineId = stepTransLines.getStepTransLinesId();
+        if (visited.contains(lineId)) {
             return; // Already processed this step
         }
-        visited.add(stepId);
+        visited.add(lineId);
 
 
-        var childLine = this.stepTransLinesService.getChildStepLine(stepId);
-        if (childLine != null) {
-            rejectTransLine(childLine, currentUser, visited);
+        var hierarchicalChildStepLine = this.stepTransLinesService.getHierarchicalChildStepLine(lineId);
+        if (hierarchicalChildStepLine != null) {
+            rejectTransLine(hierarchicalChildStepLine, currentUser, visited);
+        }
+        for (StepTransLines subLine : stepTransLinesService.getChildStepLines(lineId)) {
+            rejectTransLine(subLine, currentUser, visited);
         }
 
         // Reject current step

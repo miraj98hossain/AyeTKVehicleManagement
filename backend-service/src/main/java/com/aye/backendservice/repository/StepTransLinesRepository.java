@@ -14,4 +14,6 @@ public interface StepTransLinesRepository extends JpaRepository<StepTransLines, 
     Optional<StepTransLines> findByStepTransLinesNo(String stepTransLinesNo);
 
     List<StepTransLines> findAllBySubTrnRefId(Long subTrnRefId);
+
+    List<StepTransLines> findByParentTransId(Long parentTransId);
 }

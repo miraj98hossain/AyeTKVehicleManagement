@@ -8,7 +8,6 @@ import com.aye.dto.request.StepTransLinesRequest;
 import com.aye.dto.request.StepTransRequest;
 import com.aye.dto.response.*;
 import com.aye.entity.UserAccessTemltDtl;
-import com.aye.entity.UserTransactionTypes;
 import com.aye.entity.vehicleproject.StepTrans;
 import com.aye.entity.vehicleproject.StepTransLines;
 import com.aye.mapper.StepTransLinesMapper;
@@ -25,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author: Miraj
@@ -129,19 +129,19 @@ public class StepTransViewService {
 
         UserAccessTemltDtl tempDtl = this.userAccessTempltService.findByDtlId(tempDtlId);
 
-        List<Long> holdAbleStepDetails = tempDtl.getUserAccessInvOrgs()
-                .stream()
-                .filter(uAInvOrg -> uAInvOrg.getInvOrgs().getId().equals(invOrgId))
-                .flatMap(invOrg -> invOrg.getUserTransactionTypes()
-                        .stream()
-                        .filter(t -> Boolean.TRUE.equals(t.getIsMandatory())))
-                .map(UserTransactionTypes::getTrnsTypeId).toList();
+//        List<Long> holdAbleStepDetails = tempDtl.getUserAccessInvOrgs()
+//                .stream()
+//                .filter(uAInvOrg -> uAInvOrg.getInvOrgs().getId().equals(invOrgId))
+//                .flatMap(invOrg -> invOrg.getUserTransactionTypes()
+//                        .stream()
+//                        .filter(t -> Boolean.TRUE.equals(t.getIsMandatory())))
+//                .map(UserTransactionTypes::getTrnsTypeId).toList();
 
 
         List<Long> setupDetailIds = this.stepTransService.findAllByTempDtlId(tempDtlId, invOrgId, pageable);
         var scaleSetupList = this.scaleSetupService.findAllScaleSetup();
         var stepWiseTransCountVList = this.stepWiseTransCountVService.getCountByDetailId(setupDetailIds);
-        var response = this.findAllBySetupDtls(setupDetailIds, holdAbleStepDetails, searchWords, filterStatus, pageable, userName, tempDtl.getUserSpecefic());
+        var response = this.findAllBySetupDtls(setupDetailIds, searchWords, filterStatus, pageable, tempDtl.getUserSpecefic(), userName);
         response.getApiRequestResponseDetails().addAll(stepWiseTransCountVList.getApiRequestResponseDetails());
         response.getApiRequestResponseDetails().addAll(scaleSetupList.getApiRequestResponseDetails());
         return response;
@@ -282,22 +282,52 @@ public class StepTransViewService {
 //    }
 
 
-    protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds, List<Long> holdAbleStepDetails,
-                                                    String searchWords, String filterStatus, Pageable pageable,
-                                                    String userName, Boolean isUserSpecific) {
+    protected ApiRequestResponse findAllBySetupDtls(List<Long> setupDetailIds,
+                                                    String searchWords,
+                                                    String filterStatus,
+                                                    Pageable pageable,
+                                                    Boolean isUserSpecific,
+                                                    String userName) {
 
 
         List<StepSetupDetailsResponse> details = this.stepSetupService.findStepStpDtlByDtlIds(setupDetailIds);
 
         Set<Long> setupDIds = details.stream()
-                .map(StepSetupDetailsResponse::getStepSetupDetailsId)
-                .collect(Collectors.toSet());
+                .flatMap(d -> {
+                    Stream<Long> parentId = Stream.of(d.getStepSetupDetailsId());
+                    List<StepSetupDetailsResponse> lines = d.getStepSetupDetailsLines();
+                    if (lines == null || lines.isEmpty()) {
+                        return parentId;
+                    }
+                    Stream<Long> childLines = lines.stream()
+                            .map(StepSetupDetailsResponse::getStepSetupDetailsId); // adjust getter
 
+                    return Stream.concat(parentId, childLines);
+                })
+                .collect(Collectors.toSet());
+        List<Long> accessedItems;
+        accessedItems = isUserSpecific ? commonHelperService.getUserAccessedItems(userName) : List.of();
         Page<StepTransLinesResponse> stepTransPage = this.stepTransLinesService
                 .getAllStepTransLine(setupDIds.stream().toList(), List.of(), searchWords, filterStatus, pageable);
+        List<StepTransLinesResponse> filteredContent = new java.util.ArrayList<>(stepTransPage.getContent().stream().toList());
 
+        if (!accessedItems.isEmpty()) {
+            filteredContent.removeIf(transLines -> {
+                boolean isChild = transLines.getParentTransId() != null; // adjust getter
 
-        List<StepTransLinesResponse> filteredContent = stepTransPage.getContent().stream().toList();
+                transLines.getStepTransDetails().removeIf(transDetails -> {
+                    transDetails.getStepTransDetailsLines().removeIf(line ->
+                            !accessedItems.contains(line.getInvItemId())
+                                    || (isChild && !Objects.equals(
+                                    line.getStepTransDtlLnId(), transLines.getSubTrnRefId())));
+
+                    return transDetails.getStepTransDetailsLines().isEmpty();
+                });
+
+                return transLines.getStepTransDetails().isEmpty();
+            });
+        }
+
 
         filteredContent.stream()
                 .filter(stepTransLine -> stepTransLine.getParentTransId() != null)
