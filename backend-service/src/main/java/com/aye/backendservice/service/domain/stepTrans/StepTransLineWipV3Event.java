@@ -78,14 +78,15 @@ public class StepTransLineWipV3Event implements StepTransLineEventStrategy {
         }
 
         List<StepSetupDetails> activeSubSteps = getActiveSubSteps(currentStep);
-        boolean shouldSplitIntoChildren = !activeSubSteps.isEmpty()
-                && !Boolean.TRUE.equals(dbStepTransLines.getHasChildTrans());
+        boolean shouldSplitIntoChildren = !activeSubSteps.isEmpty() && !Boolean.TRUE.equals(dbStepTransLines.getHasChildTrans());
 
         if (shouldSplitIntoChildren) {
+
+            //First Move to Next Step and then create sub transactions as the WIP event locks in redis can't do wip event after last child finishes
+            moveToNextStep(reqStepTransLines, dbStepTransLines, stepTrans, currentStep, mainSteps.get(existingMainCount), user);
             return startSubTransactions(dbStepTransLines, stepTrans, currentStep, activeSubSteps.get(0), user);
         }
-        return moveToNextStep(reqStepTransLines, dbStepTransLines, stepTrans, currentStep,
-                mainSteps.get(existingMainCount), user);
+        return moveToNextStep(reqStepTransLines, dbStepTransLines, stepTrans, currentStep, mainSteps.get(existingMainCount), user);
     }
 
     // ------------------------------------------------------------------------------------------
@@ -230,7 +231,7 @@ public class StepTransLineWipV3Event implements StepTransLineEventStrategy {
         for (StepTransDetailsLines item : items) {
             item.setTrnRefId(savedChild.getStepTransLinesId());
             item.setStage(1);
-            item.setStepStatus(StepStatus.W);
+            item.setStepStatus(StepStatus.N);
         }
         updatedItems.addAll(items);
     }

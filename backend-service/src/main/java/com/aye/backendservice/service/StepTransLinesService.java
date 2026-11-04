@@ -14,6 +14,9 @@ public interface StepTransLinesService {
 
     StepTransLines saveStepTransLines(StepTransLines stepTransLines, boolean isStatusChange, Long currentUserId);
 
+    @Transactional
+    List<StepTransLines> saveAll(List<StepTransLines> stepTransLines);
+
     StepTransLines getStepTransLine(String stepTransLinesNo);
 
     StepTransLines getStepTransLine(Long stepTransLinesId);

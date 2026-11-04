@@ -178,22 +178,6 @@
 
                             </div>
                         </div>
-
-                        <!-- Challan Number -->
-                        <div class="form-group col-sm-12" th:if="${stepTransReq.stepTransId!=null}">
-                            <label class="col-sm-3 control-label" for="challanNumber">Trip Number</label>
-                            <div class="col-sm-1">
-                                <b>:</b>
-                            </div>
-                            <div class="col-sm-8">
-                                <!--                                th:readonly="${stepSetupDetailsResponse.serialNo != 1}"-->
-                                <input class="form-control"
-                                       id="challanNumber"
-                                       placeholder="Enter Trip Number"
-                                       th:field="${stepTransReq.challanNumber}"
-                                       type="text">
-                            </div>
-                        </div>
                         <!-- Buttons -->
                         <div class="form-group col-sm-12 Padding10px">
                             <button class="btn btn-primary"
@@ -647,211 +631,72 @@
                     <!-- MODAL END -->
 
 
-                    <!--                    <div class="form-group col-sm-12">-->
-                    <!--                        <div class="table-responsive">-->
-                    <!--                            <table class="table table-bordered table-hover table-striped">-->
-                    <!--                                <thead>-->
-                    <!--                                <tr>-->
-                    <!--                                    <th>TransNo</th>-->
-                    <!--                                    <th>Entry Date</th>-->
-                    <!--                                    <th>VehicleNo</th>-->
-                    <!--                                    <th>Driver Phone</th>-->
-                    <!--                                    <th>Additional Info</th>-->
-                    <!--                                    <th>Step</th>-->
-                    <!--                                    <th>Status</th>-->
-                    <!--                                    <th>Weight</th>-->
-                    <!--                                    &lt;!&ndash;                                    <th>Hold By</th>&ndash;&gt;-->
-                    <!--                                    <th>CurrentLoading</th>-->
-                    <!--                                    <th>Actions</th>-->
-                    <!--                                    <th>Update Status</th>-->
-                    <!--                                </tr>-->
-                    <!--                                </thead>-->
+                    <!-- TRIP NO MODAL START -->
+                    <div class="modal fade" id="updateTripNoModal" role="dialog" tabindex="-1">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
 
-                    <!--                                <tbody th:if="${stepTransResponseList != null and stepTransResponseList.getContent() != null and !stepTransResponseList.getContent().isEmpty()}">-->
-                    <!--                                <tr th:each="line, stat : ${stepTransResponseList.getContent()}">-->
-                    <!--                                    <td th:text="${line.stepTransNo}"></td>-->
-                    <!--                                    <td th:text="${#dates.format(line.createdAt, 'dd-MMM-yyyy')}"></td>-->
-                    <!--                                    <td th:text="${line.vehicleNumber}"></td>-->
-                    <!--                                    <td th:text="${line.driverPhoneNo}"></td>-->
-                    <!--                                    <td>-->
-                    <!--                                        <div class="table-responsive" style="margin:0;">-->
-                    <!--                                            <table class="table table-condensed table-bordered"-->
-                    <!--                                                   style="margin-bottom:0;">-->
-                    <!--                                                <tbody>-->
-                    <!--                                                <tr-->
-                    <!--                                                        th:each="dtl : ${line.stepTransDetails}">-->
+                                <form method="post"
+                                      th:action="@{/step-trans/saveFetchedTripNo/{pageId}/{tempDtlId}/{orgId}/{invOrgId}
+                          (pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"
+                                      th:object="${tripReq}">
 
-                    <!--                                                    &lt;!&ndash; Customer &ndash;&gt;-->
-                    <!--                                                    <td style="width:60%; font-weight:normal;">-->
-                    <!--                                                        <span th:text="${dtl.custName}"></span>-->
-                    <!--                                                    </td>-->
+                                    <div class="modal-header">
+                                        <button class="close" data-dismiss="modal" type="button">
+                                            <span>&times;</span>
+                                        </button>
+                                        <h4 class="modal-title" id="UpdateTripNoModalTitle">Update Line</h4>
+                                    </div>
 
-                    <!--                                                    &lt;!&ndash; Items &ndash;&gt;-->
-                    <!--                                                    <td style="width:40%; padding:0;">-->
-                    <!--                                                        <table class="table table-condensed" style="margin-bottom:0;">-->
-                    <!--                                                            <tbody>-->
-                    <!--                                                            <tr-->
-                    <!--                                                                    th:each="ln : ${dtl.stepTransDetailsLines}">-->
-                    <!--                                                                <td style="border-top:none;">-->
-                    <!--                                                                    <span class="text-muted"></span>-->
-                    <!--                                                                    <span th:text="${ln.orderedItem + ' (' + ln.orderedQuantity + ')'}"></span>-->
-                    <!--                                                                </td>-->
-                    <!--                                                            </tr>-->
-                    <!--                                                            </tbody>-->
-                    <!--                                                        </table>-->
-                    <!--                                                    </td>-->
+                                    <div class="modal-body">
+                                        <!-- line id (comes from row scope) -->
+                                        <input id="tripNoModalTrnLnId"
+                                               readonly
+                                               th:field="*{stepTransLineId}"
+                                               type="hidden"/>
+                                        <input id="tripNoModalStepTransId"
+                                               readonly
+                                               th:field="*{stepTransId}"
+                                               type="hidden"/>
 
-                    <!--                                                </tr>-->
-                    <!--                                                </tbody>-->
-                    <!--                                            </table>-->
-                    <!--                                        </div>-->
-                    <!--                                    </td>-->
-                    <!--                                    <td th:text="${line.stepName}"></td>-->
-                    <!--                                    <td class="text-center" th:text="${line.stepStatus}"></td>-->
-                    <!--                                    <td th:text="${line.stepTransScaleDetails?.weight}"></td>-->
-                    <!--                                    &lt;!&ndash;                                    <td th:text="${line.holdBy}"></td>&ndash;&gt;-->
-                    <!--                                    &lt;!&ndash;                                    <td th:text="${line.currentlyLoadingItem}"></td>&ndash;&gt;-->
-                    <!--                                    <td th:text="|${line.holdBy ?: ''} ${line.currentlyLoadingItem ?: ''}|"></td>-->
-
-                    <!--                                    <td class="text-center">-->
-
-                    <!--                                        <a class="btn btn-success" data-target="#weightModal"-->
-                    <!--                                           data-toggle="modal"-->
-                    <!--                                           th:attr="data-scale-name=${line.stepTransScaleDetails?.scaleName},-->
-                    <!--                                                data-weight=${line.stepTransScaleDetails?.weight},-->
-                    <!--                                                data-step-trans-id=${line.stepTransId},-->
-                    <!--                                                data-step-trans-line-id=${line.stepTransLinesId},-->
-                    <!--                                                data-setup-details-id=${line.stepSetupDetailsId}"-->
-                    <!--                                           th:if="${isIpAllowed and #lists.contains(allowedStep, line.stepSetupDetailsId) and line.stage!=0}">-->
-
-                    <!--                                            <span aria-hidden="true" class="fa fa-truck"></span>-->
-                    <!--                                        </a>-->
-
-                    <!--                                        <a class="btn btn-primary"-->
-                    <!--                                           th:href="@{'/step-trans/update-header/'+${pageId}+'/'+${tempDtlId}+'/        '+${line.stepTransId}+'/'+${orgId}+'/'+${invOrgId}}"><span-->
-                    <!--                                                aria-hidden="true" class="glyphicon glyphicon-edit"></span></a>-->
-                    <!--                                        &lt;!&ndash;                                    <a class="btn btn-success"&ndash;&gt;-->
-                    <!--                                        &lt;!&ndash;                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span&ndash;&gt;-->
-                    <!--                                        &lt;!&ndash;                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>&ndash;&gt;-->
-                    <!--                                        <a class="btn btn-info"-->
-                    <!--                                           th:data-step-Trans-Id="${line.stepTransId}"-->
-                    <!--                                           th:data-step-Trans-Ln-Id="${line.stepTransLinesId}"-->
-                    <!--                                           th:data-user-Name="${userName}"-->
-                    <!--                                           th:onclick="${line.stepStatus == 'Hold' and line.holdBy==userName} ? 'openStepTransDetailsLineModal(this)' : 'openStepTransDetailsModal(this)'">-->
-                    <!--                                            <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span>-->
-                    <!--                                        </a>-->
-                    <!--                                    </td>-->
-                    <!--                                    <td class="text-center">-->
-
-                    <!--                                        <a class="btn edit-btn btn-warning"-->
-                    <!--                                           th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'-->
-                    <!--                                       (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId},stepStatus='WIP',page=${page},size=${size})}"-->
-                    <!--                                           th:if="${line.stage == 1 and line.stepStatus != 'WIP' and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">-->
-                    <!--                                            WIP-->
-                    <!--                                        </a>-->
-
-                    <!--                                        <a class="btn pick-btn btn-info"-->
-                    <!--                                           th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'-->
-                    <!--                                       (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Hold',page=${page},size=${size})}"-->
-                    <!--                                           th:if="${line.isHoldAble  and (line.stepStatus != 'Hold' or line.stepStatus == 'Let Go')}">-->
-                    <!--                                            Hold-->
-                    <!--                                        </a>-->
-                    <!--                                        <a class="btn pick-btn btn-info"-->
-                    <!--                                           th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'-->
-                    <!--                                       (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Let Go',page=${page},size=${size})}"-->
-                    <!--                                           th:if="${line.stage == 1 and line.isHoldAble and line.holdBy==userName and line.stepStatus != 'Let Go'}">-->
-                    <!--                                            Let Go-->
-                    <!--                                        </a>-->
-                    <!--                                        <a class="btn pick-btn btn-info"-->
-                    <!--                                           th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'-->
-                    <!--                                       (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId}, stepStatus='Pick',page=${page},size=${size})}"-->
-                    <!--                                           th:if="${line.stage == 0 and !line.isHoldAble and line.stepStatus != 'Pick'}">-->
-                    <!--                                            Pick-->
-                    <!--                                        </a>-->
-
-                    <!--                                        <a class="btn view-btn btn-success" onclick="openStatusModal(this)"-->
-                    <!--                                           th:data-is-reject="false"-->
-                    <!--                                           th:data-page="${page}"-->
-                    <!--                                           th:data-size="${size}"-->
-                    <!--                                           th:data-status="Complete"-->
-                    <!--                                           th:data-step-Trans-Lines-Id="${line.stepTransLinesId}"-->
-                    <!--                                           th:if="${line.stage == 2 and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">-->
-                    <!--                                            Release-->
-                    <!--                                        </a>-->
-
-                    <!--                                        <a class="btn view-btn btn-danger" onclick="openStatusModal(this)"-->
-                    <!--                                           th:data-is-reject="true"-->
-                    <!--                                           th:data-page="${page}"-->
-                    <!--                                           th:data-size="${size}"-->
-                    <!--                                           th:data-status="Reject"-->
-                    <!--                                           th:data-step-Trans-Lines-Id="${line.stepTransLinesId}"-->
-                    <!--                                           th:if="${line.stage == 2 and line.stepStatus != 'Hold' and line.stepStatus != 'Let Go'}">-->
-                    <!--                                            Reject-->
-                    <!--                                        </a>-->
-                    <!--                                    </td>-->
-                    <!--                                </tr>-->
-                    <!--                                </tbody>-->
-                    <!--                            </table>-->
-                    <!--                        </div>-->
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <!-- Challan Number -->
+                                                <div class="col-md-9">
+                                                    <label for="tripNoModalChallanNumber">Trip Number</label>
+                                                    <input class="form-control"
+                                                           id="tripNoModalChallanNumber"
+                                                           placeholder="Enter Trip Number"
+                                                           th:field="*{tripNumber}"
+                                                           type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
 
-                    <!--                        &lt;!&ndash; Pagination &ndash;&gt;-->
-                    <!--                        <nav aria-label="Page navigation" class="text-left"-->
-                    <!--                             th:if="${stepTransResponseList != null and stepTransResponseList.totalPages > 1}">-->
-                    <!--                            <ul class="pagination">-->
-                    <!--                                &lt;!&ndash; Previous &ndash;&gt;-->
-                    <!--                                <li th:classappend="${!stepTransResponseList.hasPrevious()} ? 'disabled'">-->
-                    <!--                                    <a aria-label="Previous"-->
-                    <!--                                       th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.number - 1}, size=${stepTransResponseList.size})}"-->
-                    <!--                                       th:if="${stepTransResponseList.hasPrevious()}">-->
-                    <!--                                        <span aria-hidden="true">&laquo;</span>-->
-                    <!--                                    </a>-->
-                    <!--                                    <span th:unless="${stepTransResponseList.hasPrevious()}">&laquo;</span>-->
-                    <!--                                </li>-->
+                                    <div class="modal-footer">
+                                        <button class="btn btn-default"
+                                                data-dismiss="modal"
+                                                type="button">
+                                            Close
+                                        </button>
 
-                    <!--                                &lt;!&ndash; First page &ndash;&gt;-->
-                    <!--                                <li th:if="${stepTransResponseList.number > 2}">-->
-                    <!--                                    <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=0, size=${stepTransResponseList.size})}">1</a>-->
-                    <!--                                </li>-->
-                    <!--                                <li class="disabled" th:if="${stepTransResponseList.number > 3}">-->
-                    <!--                                    <span>...</span>-->
-                    <!--                                </li>-->
+                                        <!-- STATUS = Complete -->
+                                        <button class="btn btn-success"
+                                                type="submit">
+                                            Submit
+                                        </button>
 
-                    <!--                                &lt;!&ndash; Pages around current &ndash;&gt;-->
-                    <!--                                <li th:classappend="${i == stepTransResponseList.number} ? 'active'"-->
-                    <!--                                    th:each="i : ${#numbers.sequence(-->
-                    <!--                        (stepTransResponseList.number > 1 ? stepTransResponseList.number : 0),-->
-                    <!--                        (stepTransResponseList.number < stepTransResponseList.totalPages - 2 ? stepTransResponseList.number + 1 : stepTransResponseList.totalPages - 1)-->
-                    <!--                    )}">-->
-                    <!--                                    <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${i}, size=${stepTransResponseList.size})}"-->
-                    <!--                                       th:text="${i + 1}"></a>-->
-                    <!--                                </li>-->
+                                    </div>
 
-                    <!--                                &lt;!&ndash; Last page &ndash;&gt;-->
-                    <!--                                <li class="disabled"-->
-                    <!--                                    th:if="${stepTransResponseList.number < stepTransResponseList.totalPages - 3}">-->
-                    <!--                                    <span>...</span>-->
-                    <!--                                </li>-->
-                    <!--                                <li th:if="${stepTransResponseList.number < stepTransResponseList.totalPages - 2}">-->
-                    <!--                                    <a th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.totalPages - 1}, size=${stepTransResponseList.size})}"-->
-                    <!--                                       th:text="${stepTransResponseList.totalPages}">-->
-                    <!--                                    </a>-->
-                    <!--                                </li>-->
+                                </form>
 
-                    <!--                                &lt;!&ndash; Next &ndash;&gt;-->
-                    <!--                                <li th:classappend="${!stepTransResponseList.hasNext()} ? 'disabled'">-->
-                    <!--                                    <a aria-label="Next"-->
-                    <!--                                       th:href="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, page=${stepTransResponseList.number + 1}, size=${stepTransResponseList.size})}"-->
-                    <!--                                       th:if="${stepTransResponseList.hasNext()}">-->
-                    <!--                                        <span aria-hidden="true">&raquo;</span>-->
-                    <!--                                    </a>-->
-                    <!--                                    <span th:unless="${stepTransResponseList.hasNext()}">&raquo;</span>-->
-                    <!--                                </li>-->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- TRIP NO MODAL END -->
 
-                    <!--                            </ul>-->
-                    <!--                        </nav>-->
-
-                    <!--                    </div>-->
                     <form method="GET"
                           style="max-width: 550px;"
                           th:action="@{/step-trans/list/{pageId}/{tempDtlId}/{invOrgId}/{orgId}(pageId=${pageId},tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId},page=${page}, size=${size})}">
@@ -915,7 +760,6 @@
                                     <th>Step</th>
                                     <th>Status</th>
                                     <th>Weight</th>
-                                    <th>CurrentLoading</th>
                                     <th>Actions</th>
                                     <th>Update Status</th>
                                 </tr>
@@ -972,7 +816,7 @@
                                     <td th:text="${line.stepWiseWeight}"></td>
                                     <!--                                    <td th:text="${line.holdBy}"></td>-->
                                     <!--                                    <td th:text="${line.currentlyLoadingItem}"></td>-->
-                                    <td th:text="${(line.holdBy ?: '') + (line.holdBy != null && (line.currentlyLoadingItem  != null && not #strings.isEmpty(line.currentlyLoadingItem)) ?' -> ': '') + (line.currentlyLoadingItem ?: '')}"></td>
+                                    <!--                                    <td th:text="${(line.holdBy ?: '') + (line.holdBy != null && (line.currentlyLoadingItem  != null && not #strings.isEmpty(line.currentlyLoadingItem)) ?' -> ': '') + (line.currentlyLoadingItem ?: '')}"></td>-->
 
                                     <td class="text-center">
 
@@ -999,19 +843,24 @@
                                         <!--                                       th:href="@{'/step-trans-dtl/{pageId}/{tempDtlId}/{orgId}/{invOrgId}/{stepTransId}'(pageId=${pageId},tempDtlId=${tempDtlId},orgId=${orgId},invOrgId=${invOrgId},stepTransId=${line.stepTransId})}"><span-->
                                         <!--                                            aria-hidden="true" class="glyphicon glyphicon-info-sign"></span></a>-->
                                         <a class="btn btn-info"
+                                           onclick="openStepTransDetailsModal(this)"
                                            th:data-step-Trans-Id="${line.stepTransId}"
                                            th:data-step-Trans-Ln-Id="${line.stepTransLinesId}"
-                                           th:data-user-Name="${userName}"
-
-                                           th:onclick="${line.stepStatus == 'Hold' and line.holdBy==userName} ?
-                                            'openStepTransDetailsLineModal(this)' : 'openStepTransDetailsModal(this)'">
-
+                                           th:data-user-Name="${userName}">
                                             <span aria-hidden="true" class="glyphicon glyphicon-info-sign"></span>
+                                        </a>
+                                        <a class="btn view-btn btn-danger" onclick="openTripNoModalModal(this)"
+                                           th:data-page="${page}"
+                                           th:data-size="${size}"
+                                           th:data-step-Trans-Id="${line.stepTransId}"
+                                           th:data-step-Trans-Lines-Id="${line.stepTransLinesId}"
+                                           th:data-trip-Number="${line.tripNumber}"
+                                           th:if="${line.fetchTripNo}">
+                                            Assign Challan
                                         </a>
                                     </td>
                                     <!--                                    th:if="${line.stepStatus == 'Hold' or line.stepStatus == 'WIP' or line.stepStatus == 'Let Go'}"-->
                                     <td class="text-center">
-
                                         <a class="btn edit-btn btn-warning"
                                            th:href="@{'/step-trans/update-lines/{pageId}/{tempDtlId}/{invOrgId}/{orgId}'
                                                                (pageId=${pageId}, tempDtlId=${tempDtlId},invOrgId=${invOrgId},orgId=${orgId}, stepTransLinesId=${line.stepTransLinesId},stepStatus='WIP',isHoldAble=${line.isHoldAble},parentTransId=${line.parentTransId},page=${page},size=${size},searchWords=${searchWords},filterStatus=${filterStatus})}"

@@ -26,73 +26,92 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ChildStepTransLineCompleteEvent implements StepTransLineEventStrategy {
+
     private final StepTransLinesService stepTransLinesService;
     private final StepTransDetailsService stepTransDetailsService;
+
     @Autowired
     @Lazy
     private StepTransService stepTransService;
 
     @Override
     public boolean supports(StepTransLines reqStepTransLines) {
-        return reqStepTransLines.getParentTransId() != null && reqStepTransLines.getStepStatus().equals(StepStatus.C);
+        return reqStepTransLines.getParentTransId() != null
+                && reqStepTransLines.getStepStatus().equals(StepStatus.C);
     }
 
     @EnableLogging
     @Override
-    public StepTransLines doEvent(StepTransLines reqStepTransLines, StepTransLines dbstepTransLines, StepTrans stepTrans, Muser user) {
-        StepTransLines objResponse;
-        if (dbstepTransLines.getStepStatus().equals(StepStatus.C)) {
-            throw new RuntimeException("This Step Trans" + dbstepTransLines.getStepTransLinesId() + " is already Completed");
+    public StepTransLines doEvent(StepTransLines reqStepTransLines, StepTransLines dbStepTransLines,
+                                  StepTrans stepTrans, Muser user) {
+        Long lineId = dbStepTransLines.getStepTransLinesId();
+        Long userId = Long.valueOf(user.getId());
+
+        if (dbStepTransLines.getStepStatus().equals(StepStatus.C)) {
+            throw new RuntimeException("This Step Trans" + lineId + " is already Completed");
+        }
+        if (dbStepTransLines.getStage() != 1) {
+            throw new RuntimeException("This step trans" + lineId + " is not eligible for Complete");
         }
 
-        if (!(dbstepTransLines.getStage() == 1)) {
-            throw new RuntimeException("This step trans" + dbstepTransLines.getStepTransLinesId() + " is not eligible for Complete");
+        dbStepTransLines.setStepStatus(StepStatus.C);
+        dbStepTransLines.setRemarks(reqStepTransLines.getRemarks());
+        StepTransLines objResponse = stepTransLinesService.saveStepTransLines(dbStepTransLines, true, userId); // Changing status.
+
+        StepTransLines childLine = stepTransLinesService.getHierarchicalChildStepLine(lineId);
+        if (childLine != null) {
+            moveToChild(childLine, lineId, userId);
         } else {
-            dbstepTransLines.setStepStatus(StepStatus.C);
-            dbstepTransLines.setRemarks(reqStepTransLines.getRemarks());
-            objResponse = this.stepTransLinesService.saveStepTransLines(dbstepTransLines, true, Long.valueOf(user.getId()));//Changing Status.
-
-            var childLine = this.stepTransLinesService.getHierarchicalChildStepLine(dbstepTransLines.getStepTransLinesId());
-            if (childLine != null) {
-                childLine.setStage(childLine.getStage() + 1);//current value should be 1(0->1). Eligible to be at wip now.
-                //updating child
-                this.stepTransLinesService.saveStepTransLines(childLine, false, Long.valueOf(user.getId()));
-
-                List<StepTransDetailsLines> existingTrans = this.stepTransDetailsService.findByTrnRefId(dbstepTransLines.getStepTransLinesId());
-                for (StepTransDetailsLines stepTransDetailsLines : existingTrans) {
-                    stepTransDetailsLines.setTrnRefId(childLine.getStepTransLinesId());
-                }
-                this.stepTransDetailsService.saveAllLines(existingTrans);
-            } else {
-                List<StepTransDetailsLines> existingTrans = this.stepTransDetailsService.findByTrnRefId(dbstepTransLines.getStepTransLinesId());
-                for (StepTransDetailsLines stepTransDetailsLines : existingTrans) {
-                    stepTransDetailsLines.setStepStatus(StepStatus.C);
-                }
-                this.stepTransDetailsService.saveAllLines(existingTrans);
-
-                List<StepTransDetailsLines> itemList = this.stepTransDetailsService.findByStepTransId(dbstepTransLines.getStepTrans().getStepTransId());
-
-                boolean hasAnyNewItemLeft = itemList.stream()
-                        .anyMatch(stepTransDetailsLines -> List.of(StepStatus.N, StepStatus.W).contains(stepTransDetailsLines.getStepStatus()));
-                boolean canShowMainTrans = itemList.stream()
-                        .anyMatch(stepTransDetailsLines -> stepTransDetailsLines.getStepStatus().equals(StepStatus.W));
-                StepTransLines mainTransaction = this.stepTransLinesService.getStepTransLine(dbstepTransLines.getParentTransId());
-                if (!hasAnyNewItemLeft) {
-                    StepTransLinesRequest stepTransLinesRequest = new StepTransLinesRequest();
-                    stepTransLinesRequest.setStepTransLinesId(mainTransaction.getStepTransLinesId());
-                    stepTransLinesRequest.setStepStatus(StepStatus.W.getDisplayName());
-                    stepTransLinesRequest.setHoldAble(false);
-                    this.stepTransService.updateTransLines(stepTransLinesRequest, user.getUserName());
-                    stepTransLinesRequest.setStepStatus(StepStatus.C.getDisplayName());
-                    this.stepTransService.updateTransLines(stepTransLinesRequest, user.getUserName());
-                }
-                if (!canShowMainTrans) {
-                    mainTransaction.setHoldBy(null);
-                    this.stepTransLinesService.saveStepTransLines(mainTransaction, false, Long.valueOf(user.getId()));
-                }
-            }
-
+            completeParentIfAllDone(dbStepTransLines, user);
+            releaseHeldChildTransaction(dbStepTransLines, user);
         }
         return objResponse;
+    }
+
+    /**
+     * Child becomes eligible for WIP (stage 0 -> 1) and takes over the existing detail lines.
+     */
+    private void moveToChild(StepTransLines childLine, Long lineId, Long userId) {
+        childLine.setStage(childLine.getStage() + 1);
+        stepTransLinesService.saveStepTransLines(childLine, false, userId);
+
+        List<StepTransDetailsLines> existingTrans = stepTransDetailsService.findByTrnRefId(lineId);
+        existingTrans.forEach(detail -> detail.setTrnRefId(childLine.getStepTransLinesId()));
+        stepTransDetailsService.saveAllLines(existingTrans);
+    }
+
+    /**
+     * Last step in the chain: complete the detail lines, and if nothing is left in N/W status,
+     * complete the main transaction as well.
+     */
+    private void completeParentIfAllDone(StepTransLines dbStepTransLines, Muser user) {
+        List<StepTransDetailsLines> existingTrans =
+                stepTransDetailsService.findByTrnRefId(dbStepTransLines.getStepTransLinesId());
+        existingTrans.forEach(detail -> detail.setStepStatus(StepStatus.C));
+        stepTransDetailsService.saveAllLines(existingTrans);
+
+        List<StepTransDetailsLines> itemList =
+                stepTransDetailsService.findByStepTransId(dbStepTransLines.getStepTrans().getStepTransId());
+        boolean hasAnyNewItemLeft = itemList.stream()
+                .anyMatch(detail -> detail.getStepStatus() == StepStatus.N
+                        || detail.getStepStatus() == StepStatus.W);
+
+        StepTransLines mainTransaction = stepTransLinesService.getStepTransLine(dbStepTransLines.getParentTransId());
+        if (!hasAnyNewItemLeft) {
+            StepTransLinesRequest request = new StepTransLinesRequest();
+            request.setStepTransLinesId(mainTransaction.getStepTransLinesId());
+            request.setStepStatus(StepStatus.C.getDisplayName());
+            stepTransService.updateTransLines(request, user.getUserName());
+        }
+    }
+
+    private void releaseHeldChildTransaction(StepTransLines current, Muser user) {
+        List<StepTransLines> allChildLines = this.stepTransLinesService.getChildStepLines(current.getParentTransId());
+        allChildLines.removeIf(stepTransLines -> stepTransLines.getSubTrnRefId().equals(current.getSubTrnRefId()));
+        allChildLines.removeIf(stepTransLines -> stepTransLines.getStepStatus().equals(StepStatus.C));
+        for (StepTransLines stepTransLines : allChildLines) {
+            stepTransLines.setHoldBy(null);
+        }
+        this.stepTransLinesService.saveAll(allChildLines);
     }
 }

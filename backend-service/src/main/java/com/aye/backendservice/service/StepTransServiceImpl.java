@@ -31,6 +31,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -172,14 +173,14 @@ public class StepTransServiceImpl implements StepTransService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "StepTrans not found with this id " + dbstepTransLines.getStepTrans().getStepTransId()));
 
-//        boolean isNotLocked = this.redisIdLockService
-//                .tryLock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(),
-//                        dbstepTransLines.getStepTransLinesId(), Duration.ofHours(8).getSeconds()); // Locked for 8 Hours
-//
-//        if (!isNotLocked) {
-//            throw new RuntimeException("Step Trans Lines event request for this id "
-//                    + reqStepTransLines.getStepTransLinesId() + " is locked");
-//        }
+        boolean isNotLocked = this.redisIdLockService
+                .tryLock(STEP_TRANS_LINE_LOCK_KEY, reqStepTransLines.getStepStatus().getDisplayName(),
+                        dbstepTransLines.getStepTransLinesId(), Duration.ofHours(8).getSeconds()); // Locked for 8 Hours
+
+        if (!isNotLocked) {
+            throw new RuntimeException("Step Trans Lines event request for this id "
+                    + reqStepTransLines.getStepTransLinesId() + " is locked");
+        }
 
         try {
             return strategies.stream()

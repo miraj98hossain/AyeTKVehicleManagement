@@ -57,6 +57,12 @@ public class StepTransLinesServiceImpl implements StepTransLinesService {
         return this.stepTransLinesRepository.save(stepTransLines);
     }
 
+    @Transactional
+    @Override
+    public List<StepTransLines> saveAll(List<StepTransLines> stepTransLines) {
+        return this.stepTransLinesRepository.saveAll(stepTransLines);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public StepTransLines getStepTransLine(String stepTransLinesNo) {
