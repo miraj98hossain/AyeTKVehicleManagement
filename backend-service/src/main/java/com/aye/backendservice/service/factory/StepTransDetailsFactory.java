@@ -85,6 +85,20 @@ public class StepTransDetailsFactory {
 
     public StepTransDetailsLines fromStepDetailsLineReq(StepTransDetailsLinesRequest request, Muser user) {
         var obj = stepTransDetailsLinesMapper.dtoToEntity(request);
+
+        List<MItemCatVNew> items = this.mItemCatVService.findByInvItemId(request.getInvItemId());
+        if (items != null && !items.isEmpty()) {
+            var item = items.get(0);
+            obj.setItemGroupName(item.getFamily());
+            ItemFamilyWiseStepDetail familyWiseStepDetail = this.familySetupService.findByOrgIdAndInvOrgId(item.getOrgId(), item.getOrganizationId(), item.getFamily());
+            if (familyWiseStepDetail.getStepSetupDetails() == null) {
+                throw new IllegalArgumentException("This Item Family " + item.getFamily() + " Setup not found");
+            }
+            obj.setStepSetup(familyWiseStepDetail.getStepSetupDetails());
+        } else {
+            throw new IllegalArgumentException("Items not found with id: " + request.getInvItemId());
+        }
+
         obj.setStepTransDtlLnNo(noGenService.createTransDtlLNo());
         obj.setCreatedBy(Long.valueOf(user.getId()));
         return obj;
@@ -97,7 +111,7 @@ public class StepTransDetailsFactory {
             request.setItemGroupName(item.getFamily());
             ItemFamilyWiseStepDetail familyWiseStepDetail = this.familySetupService.findByOrgIdAndInvOrgId(item.getOrgId(), item.getOrganizationId(), item.getFamily());
             if (familyWiseStepDetail.getStepSetupDetails() == null) {
-                throw new IllegalArgumentException("This Item Family" + item.getFamily() + " Setup not found");
+                throw new IllegalArgumentException("This Item Family " + item.getFamily() + " Setup not found");
             }
             dbObj.setStepSetup(familyWiseStepDetail.getStepSetupDetails());
         } else {
@@ -118,7 +132,7 @@ public class StepTransDetailsFactory {
             ln.setItemGroupName(item.getFamily());
             ItemFamilyWiseStepDetail familyWiseStepDetail = this.familySetupService.findByOrgIdAndInvOrgId(item.getOrgId(), item.getOrganizationId(), item.getFamily());
             if (familyWiseStepDetail.getStepSetupDetails() == null) {
-                throw new IllegalArgumentException("This Item Family" + item.getFamily() + " Setup not found");
+                throw new IllegalArgumentException("This Item Family " + item.getFamily() + " Setup not found");
             }
             ln.setStepSetup(familyWiseStepDetail.getStepSetupDetails());
         } else {
@@ -155,7 +169,7 @@ public class StepTransDetailsFactory {
             ln.setItemGroupName(item.getFamily());
             ItemFamilyWiseStepDetail familyWiseStepDetail = this.familySetupService.findByOrgIdAndInvOrgId(item.getOrgId(), item.getOrganizationId(), item.getFamily());
             if (familyWiseStepDetail.getStepSetupDetails() == null) {
-                throw new IllegalArgumentException("This Item Family" + item.getFamily() + " Setup not found");
+                throw new IllegalArgumentException("This Item Family " + item.getFamily() + " Setup not found");
             }
             ln.setStepSetup(familyWiseStepDetail.getStepSetupDetails());
         } else {

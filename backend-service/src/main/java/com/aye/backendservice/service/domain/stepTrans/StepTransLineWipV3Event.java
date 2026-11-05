@@ -157,7 +157,7 @@ public class StepTransLineWipV3Event implements StepTransLineEventStrategy {
 
     private boolean belongsToStep(StepTransDetailsLines line, Long stepSetupDetailsId) {
         return line.getStepSetup() != null
-                && Objects.equals(line.getStepSetup().getStepSetupDetailsId(), stepSetupDetailsId);
+                && Objects.equals(line.getStepSetup(), stepSetupDetailsId);
     }
 
     // ------------------------------------------------------------------------------------------
@@ -256,7 +256,7 @@ public class StepTransLineWipV3Event implements StepTransLineEventStrategy {
                 //.filter(item -> item.getStepSetup() != null && item.getStepSetup().getStepSetupDetailsId() != null)
                 //.filter(item -> !StepStatus.C.equals(item.getStepStatus()))
                 //.filter(item -> !belongsToStep(item, currentSetupId) || (item.getInvItemId() != null && accessibleItemIds.contains(item.getInvItemId())))
-                .collect(Collectors.groupingBy(item -> item.getStepSetup().getStepSetupDetailsId()));
+                .collect(Collectors.groupingBy(StepTransDetailsLines::getStepSetup));
     }
 
     // ------------------------------------------------------------------------------------------
